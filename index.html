@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orkesta — Automatización e IA para tu negocio</title>
+  <meta name="description" content="Consultoría en automatización con n8n, IA con Claude e integraciones a medida. Del discovery a producción, sin fricción." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Orkesta — Automatización e IA para tu negocio" />
+  <meta property="og:description" content="Diseño e implemento flujos automatizados y soluciones de IA que ahorran horas a tu equipo." />
+  <meta property="og:type" content="website" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            ink: '#0b0b14',
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; }
+    body { background: #0b0b14; }
+    .grad-text { background: linear-gradient(90deg,#a78bfa,#22d3ee); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .glow { box-shadow: 0 0 80px -20px rgba(124,58,237,.55); }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState } = React;
+
+    /* ============================================================
+       CONFIGURACIÓN RÁPIDA — edita estos valores y listo
+       ============================================================ */
+    const CONFIG = {
+      marca: "Orkesta",
+      tagline: "Automatización e IA que orquesta tu negocio",
+      whatsapp: "525587662865",           // <-- tu número con código de país, sin + ni espacios
+      email: "alanguerrerog98@gmail.com",  // <-- tu correo
+      calendly: "https://calendly.com/tu-usuario/charla-30min", // <-- tu link de agenda
+      formspree: ""                        // <-- pega tu endpoint de Formspree (https://formspree.io/f/xxxx) o deja vacío para usar mailto
+    };
+
+    const waLink = (msg) =>
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || "Hola, vi su sitio y quiero automatizar procesos en mi negocio.")}`;
+
+    /* ----------------------- UI helpers ----------------------- */
+    const Chip = ({ children }) => (
+      <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-violet-200">{children}</span>
+    );
+
+    const Section = ({ id, children, className = "" }) => (
+      <section id={id} className={`mx-auto max-w-6xl px-6 ${className}`}>{children}</section>
+    );
+
+    /* ----------------------- NAV ----------------------- */
+    const Nav = () => {
+      const [open, setOpen] = useState(false);
+      const links = [
+        ["Servicios", "#servicios"],
+        ["Proceso", "#proceso"],
+        ["Soluciones", "#soluciones"],
+        ["Precios", "#precios"],
+        ["Contacto", "#contacto"],
+      ];
+      return (
+        <header className="sticky top-0 z-50 border-b border-white/5 bg-ink/80 backdrop-blur">
+          <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+            <a href="#top" className="flex items-center gap-2 text-white">
+              <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-violet-500 to-cyan-400 font-black">O</span>
+              <span className="text-lg font-extrabold tracking-tight">{CONFIG.marca}</span>
+            </a>
+            <div className="hidden items-center gap-7 md:flex">
+              {links.map(([t, h]) => (
+                <a key={h} href={h} className="text-sm font-medium text-slate-300 hover:text-white">{t}</a>
+              ))}
+              <a href="#contacto" className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-ink hover:bg-slate-200">Agenda una charla</a>
+            </div>
+            <button onClick={() => setOpen(!open)} className="text-white md:hidden">☰</button>
+          </nav>
+          {open && (
+            <div className="border-t border-white/5 px-6 py-3 md:hidden">
+              {links.map(([t, h]) => (
+                <a key={h} href={h} onClick={() => setOpen(false)} className="block py-2 text-slate-300">{t}</a>
+              ))}
+            </div>
+          )}
+        </header>
+      );
+    };
+
+    /* ----------------------- HERO ----------------------- */
+    const Hero = () => (
+      <Section id="top" className="relative pt-20 pb-24 text-center">
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_50%_at_50%_0%,rgba(124,58,237,.25),transparent)]"></div>
+        <div className="mx-auto mb-6 flex justify-center"><Chip>⚡ Consultoría en automatización e IA aplicada</Chip></div>
+        <h1 className="mx-auto max-w-4xl text-4xl font-extrabold leading-tight text-white sm:text-6xl">
+          {CONFIG.tagline.split("orquesta")[0]}
+          <span className="grad-text">orquesta</span>
+          {CONFIG.tagline.split("orquesta")[1]}
+        </h1>
+        <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-300">
+          Diseñamos e implementamos automatizaciones con <b className="text-white">n8n</b>, agentes y soluciones con <b className="text-white">Claude</b>, e integraciones a medida. Menos trabajo manual, más resultados — del discovery a producción.
+        </p>
+        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+          <a href="#contacto" className="rounded-xl bg-gradient-to-r from-violet-500 to-cyan-400 px-6 py-3 font-semibold text-ink glow hover:opacity-90">Agenda tu diagnóstico gratis</a>
+          <a href={waLink()} target="_blank" className="rounded-xl border border-white/15 px-6 py-3 font-semibold text-white hover:bg-white/5">Escríbeme por WhatsApp</a>
+        </div>
+        <div className="mx-auto mt-12 flex max-w-3xl flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-slate-400">
+          <span>✓ Primera charla sin costo</span>
+          <span>✓ Entregables claros por etapa</span>
+          <span>✓ Buenas prácticas y soporte</span>
+        </div>
+      </Section>
+    );
+
+    /* ----------------------- SERVICIOS ----------------------- */
+    const servicios = [
+      { icon: "🤖", t: "Chatbots y agentes con IA", d: "Asistentes con Claude para ventas, soporte y procesos internos, en web o WhatsApp." },
+      { icon: "🔗", t: "Automatización con n8n", d: "Conectamos tus apps (CRM, correo, hojas, facturación) y eliminamos el trabajo manual repetitivo." },
+      { icon: "📄", t: "Procesamiento de documentos con IA", d: "Extracción y clasificación de facturas, correos y documentos con IA." },
+      { icon: "🧠", t: "Claude integrado a tu negocio", d: "Optimización de procesos incorporando modelos de IA donde generan más valor." },
+      { icon: "💳", t: "Integraciones de Mercado Pago", d: "Cobros online e in-store conectados a tu operación y conciliación automática." },
+      { icon: "⚙️", t: "Integraciones a medida", d: "Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable." },
+    ];
+    const Servicios = () => (
+      <Section id="servicios" className="py-20">
+        <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Servicios</h2>
+        <p className="mt-3 max-w-2xl text-slate-300">Soluciones que puedes contratar por proyecto o como iguala continua.</p>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {servicios.map((s) => (
+            <div key={s.t} className="rounded-2xl border border-white/10 bg-white/5 p-6 transition hover:border-violet-400/40 hover:bg-white/[0.07]">
+              <div className="text-3xl">{s.icon}</div>
+              <h3 className="mt-4 text-lg font-bold text-white">{s.t}</h3>
+              <p className="mt-2 text-sm text-slate-300">{s.d}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+    );
+
+    /* ----------------------- PROCESO ----------------------- */
+    const etapas = [
+      { n: "01", t: "Discovery", d: "Entendemos tu negocio, mapeamos procesos y detectamos las automatizaciones de mayor impacto." },
+      { n: "02", t: "Diseño", d: "Definimos la arquitectura de la solución, herramientas y alcance con entregables claros." },
+      { n: "03", t: "Implementación", d: "Construimos los flujos, agentes e integraciones siguiendo buenas prácticas." },
+      { n: "04", t: "Testing", d: "Pruebas de extremo a extremo para asegurar que todo funciona en escenarios reales." },
+      { n: "05", t: "Checklist de buenas prácticas", d: "Seguridad, manejo de errores, logs y documentación antes de liberar." },
+      { n: "06", t: "Salida a producción", d: "Despliegue, monitoreo y acompañamiento para que la solución viva sin sobresaltos." },
+    ];
+    const Proceso = () => (
+      <Section id="proceso" className="py-20">
+        <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Cómo trabajamos</h2>
+        <p className="mt-3 max-w-2xl text-slate-300">Un proceso probado, de la idea a producción.</p>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {etapas.map((e) => (
+            <div key={e.n} className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-transparent p-6">
+              <div className="grad-text text-3xl font-black">{e.n}</div>
+              <h3 className="mt-3 text-lg font-bold text-white">{e.t}</h3>
+              <p className="mt-2 text-sm text-slate-300">{e.d}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+    );
+
+    /* ----------------------- SOLUCIONES (revendibles) ----------------------- */
+    const soluciones = [
+      { t: "Asistente de atención 24/7", d: "Agente con Claude que responde dudas, califica leads y agenda — en tu web o WhatsApp.", tags: ["Claude", "WhatsApp", "Leads"] },
+      { t: "Conciliación de pagos automática", d: "Integra Mercado Pago, registra ventas y concilia con tu hoja o ERP sin intervención manual.", tags: ["Mercado Pago", "n8n"] },
+      { t: "Lector inteligente de facturas", d: "Recibe facturas por correo, extrae datos con IA y los carga a tu sistema.", tags: ["IA Docs", "n8n"] },
+      { t: "Orquestador de back-office", d: "Automatiza alta de clientes, notificaciones y reportes recurrentes entre tus apps.", tags: ["Integraciones", "n8n"] },
+    ];
+    const Soluciones = () => (
+      <Section id="soluciones" className="py-20">
+        <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-violet-600/10 to-cyan-500/5 p-8 sm:p-12">
+          <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Soluciones listas para tu negocio</h2>
+          <p className="mt-3 max-w-2xl text-slate-300">Plantillas que adaptamos a tu operación — implementación rápida, valor inmediato.</p>
+          <div className="mt-10 grid gap-5 md:grid-cols-2">
+            {soluciones.map((s) => (
+              <div key={s.t} className="rounded-2xl border border-white/10 bg-ink/40 p-6">
+                <h3 className="text-lg font-bold text-white">{s.t}</h3>
+                <p className="mt-2 text-sm text-slate-300">{s.d}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {s.tags.map((t) => <Chip key={t}>{t}</Chip>)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+    );
+
+    /* ----------------------- PRECIOS ----------------------- */
+    const planes = [
+      {
+        t: "Diagnóstico inicial", precio: "Sin costo", unidad: "primera llamada de 30 min",
+        d: "Conocemos tu negocio y detectamos oportunidades.",
+        items: ["Entendemos tus procesos", "Identificamos qué automatizar primero", "Estimación de impacto", "Próximos pasos claros"],
+        cta: "Agendar llamada",
+      },
+      {
+        t: "Diseño e implementación", precio: "A tu medida", unidad: "según alcance del proyecto", destacado: true,
+        d: "Construimos la solución de extremo a extremo.",
+        items: ["Discovery y diseño de la solución", "Implementación y testing", "Checklist de buenas prácticas", "Salida a producción y handoff"],
+        cta: "Solicitar propuesta",
+      },
+      {
+        t: "Soporte continuo", precio: "Plan a medida", unidad: "acompañamiento mensual",
+        d: "Mejoramos y escalamos lo que ya funciona.",
+        items: ["Monitoreo y mantenimiento", "Ajustes y mejoras", "Nuevas automatizaciones", "Soporte prioritario"],
+        cta: "Conversemos",
+      },
+    ];
+    const Precios = () => (
+      <Section id="precios" className="py-20">
+        <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Cómo colaboramos</h2>
+        <p className="mt-3 max-w-2xl text-slate-300">Cada negocio es distinto, por eso cada propuesta es a la medida. Empezamos con una llamada sin costo para entender tu caso y diseñar la mejor solución para ti.</p>
+        <div className="mt-10 grid gap-5 lg:grid-cols-3">
+          {planes.map((p) => (
+            <div key={p.t} className={`flex flex-col rounded-2xl border p-7 ${p.destacado ? "border-violet-400/50 bg-gradient-to-b from-violet-600/15 to-transparent glow" : "border-white/10 bg-white/5"}`}>
+              {p.destacado && <div className="mb-3"><Chip>Recomendado</Chip></div>}
+              <h3 className="text-lg font-bold text-white">{p.t}</h3>
+              <p className="mt-1 text-sm text-slate-400">{p.d}</p>
+              <div className="mt-5">
+                <div className="text-2xl font-extrabold text-white">{p.precio}</div>
+                <div className="text-xs text-slate-400">{p.unidad}</div>
+              </div>
+              <ul className="mt-5 space-y-2 text-sm text-slate-300">
+                {p.items.map((i) => <li key={i} className="flex gap-2"><span className="text-cyan-300">✓</span>{i}</li>)}
+              </ul>
+              <a href="#contacto" className={`mt-7 rounded-xl px-4 py-2.5 text-center text-sm font-semibold ${p.destacado ? "bg-gradient-to-r from-violet-500 to-cyan-400 text-ink" : "border border-white/15 text-white hover:bg-white/5"}`}>{p.cta}</a>
+            </div>
+          ))}
+        </div>
+        <p className="mt-6 text-sm text-slate-400">¿Listo para empezar? La primera llamada es gratis y sin compromiso. <a href={waLink()} target="_blank" className="font-semibold text-cyan-300 hover:underline">Escríbenos por WhatsApp →</a></p>
+      </Section>
+    );
+
+    /* ----------------------- CONTACTO ----------------------- */
+    const Contacto = () => {
+      const [sent, setSent] = useState(false);
+      const handle = (e) => {
+        e.preventDefault();
+        const f = e.target;
+        const nombre = f.nombre.value, correo = f.correo.value, empresa = f.empresa.value, mensaje = f.mensaje.value;
+        if (CONFIG.formspree) {
+          fetch(CONFIG.formspree, {
+            method: "POST",
+            headers: { "Accept": "application/json", "Content-Type": "application/json" },
+            body: JSON.stringify({ nombre, correo, empresa, mensaje }),
+          }).then(() => setSent(true)).catch(() => { window.location.href = mailto(); });
+        } else {
+          window.location.href = mailto(nombre, correo, empresa, mensaje);
+          setSent(true);
+        }
+      };
+      const mailto = (n="", c="", em="", m="") =>
+        `mailto:${CONFIG.email}?subject=${encodeURIComponent("Nuevo lead desde " + CONFIG.marca + " — " + (em||n))}&body=${encodeURIComponent(`Nombre: ${n}\nCorreo: ${c}\nEmpresa: ${em}\n\n${m}`)}`;
+
+      return (
+        <Section id="contacto" className="py-20">
+          <div className="grid gap-10 rounded-3xl border border-white/10 bg-white/5 p-8 sm:p-12 lg:grid-cols-2">
+            <div>
+              <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Hablemos de tu negocio</h2>
+              <p className="mt-3 text-slate-300">Agenda una charla de 30 minutos sin costo. Identificamos qué automatizar primero y cómo podemos ayudarte.</p>
+              <div className="mt-8 space-y-3">
+                <a href={CONFIG.calendly} target="_blank" className="flex items-center gap-3 rounded-xl border border-white/10 bg-ink/40 px-5 py-4 text-white hover:border-violet-400/40">
+                  <span className="text-xl">📅</span><div><div className="font-semibold">Agenda en mi calendario</div><div className="text-xs text-slate-400">Charla de 30 min</div></div>
+                </a>
+                <a href={waLink()} target="_blank" className="flex items-center gap-3 rounded-xl border border-white/10 bg-ink/40 px-5 py-4 text-white hover:border-violet-400/40">
+                  <span className="text-xl">💬</span><div><div className="font-semibold">WhatsApp directo</div><div className="text-xs text-slate-400">Respuesta rápida</div></div>
+                </a>
+                <a href={`mailto:${CONFIG.email}`} className="flex items-center gap-3 rounded-xl border border-white/10 bg-ink/40 px-5 py-4 text-white hover:border-violet-400/40">
+                  <span className="text-xl">✉️</span><div><div className="font-semibold">{CONFIG.email}</div><div className="text-xs text-slate-400">Correo</div></div>
+                </a>
+              </div>
+            </div>
+            <div>
+              {sent ? (
+                <div className="grid h-full place-items-center rounded-2xl border border-cyan-400/30 bg-cyan-400/5 p-8 text-center">
+                  <div>
+                    <div className="text-4xl">✅</div>
+                    <h3 className="mt-3 text-xl font-bold text-white">¡Gracias!</h3>
+                    <p className="mt-2 text-sm text-slate-300">Tu mensaje está listo para enviarse. Te responderé muy pronto.</p>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handle} className="space-y-4">
+                  <input name="nombre" required placeholder="Tu nombre" className="w-full rounded-xl border border-white/10 bg-ink/40 px-4 py-3 text-white placeholder-slate-500 outline-none focus:border-violet-400" />
+                  <input name="correo" type="email" required placeholder="Correo" className="w-full rounded-xl border border-white/10 bg-ink/40 px-4 py-3 text-white placeholder-slate-500 outline-none focus:border-violet-400" />
+                  <input name="empresa" placeholder="Empresa (opcional)" className="w-full rounded-xl border border-white/10 bg-ink/40 px-4 py-3 text-white placeholder-slate-500 outline-none focus:border-violet-400" />
+                  <textarea name="mensaje" required rows="4" placeholder="¿Qué proceso te gustaría automatizar?" className="w-full rounded-xl border border-white/10 bg-ink/40 px-4 py-3 text-white placeholder-slate-500 outline-none focus:border-violet-400"></textarea>
+                  <button type="submit" className="w-full rounded-xl bg-gradient-to-r from-violet-500 to-cyan-400 px-6 py-3 font-semibold text-ink hover:opacity-90">Enviar mensaje</button>
+                </form>
+              )}
+            </div>
+          </div>
+        </Section>
+      );
+    };
+
+    const Footer = () => (
+      <footer className="border-t border-white/5 py-10 text-center text-sm text-slate-500">
+        <p>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México</p>
+        <p className="mt-1">Consultoría en arquitectura, integraciones e inteligencia artificial</p>
+      </footer>
+    );
+
+    /* ----------------------- Botón flotante de WhatsApp ----------------------- */
+    const FloatingWA = () => (
+      <a href={waLink()} target="_blank" aria-label="WhatsApp"
+         className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-3 font-semibold text-white shadow-lg shadow-emerald-900/40 transition hover:scale-105">
+        <span className="text-xl">💬</span>
+        <span className="hidden sm:inline">WhatsApp</span>
+      </a>
+    );
+
+    const App = () => (
+      <div className="min-h-screen font-sans text-white">
+        <Nav /><Hero /><Servicios /><Proceso /><Soluciones /><Precios /><Contacto /><Footer /><FloatingWA />
+      </div>
+    );
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
