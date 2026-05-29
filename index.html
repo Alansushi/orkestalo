@@ -14,29 +14,656 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
-          colors: {
-            ink: '#0b0b14',
-          }
-        }
-      }
-    }
-  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
   <style>
+    /* ============================================================
+       ORKESTA — Diseño v2
+       Papel cálido · tinta · una señal verde
+       ============================================================ */
+
+    :root {
+      --paper:      #ECE6D7;
+      --paper-2:    #F4EFE3;
+      --paper-3:    #E1DAC6;
+      --ink:        #1A1712;
+      --ink-70:     rgba(26,23,18,0.66);
+      --ink-45:     rgba(26,23,18,0.44);
+      --ink-25:     rgba(26,23,18,0.22);
+      --line:       rgba(26,23,18,0.16);
+      --green:      #1F5A3A;
+      --green-deep: #143E27;
+      --green-tint: #DCE6DA;
+      --wa:         #25D366;
+      --serif: 'Newsreader', Georgia, serif;
+      --sans:  'Archivo', system-ui, sans-serif;
+      --mono:  'IBM Plex Mono', ui-monospace, monospace;
+      --maxw: 1180px;
+      --gut: 56px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { background: #0b0b14; }
-    .grad-text { background: linear-gradient(90deg,#a78bfa,#22d3ee); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .glow { box-shadow: 0 0 80px -20px rgba(124,58,237,.55); }
+    ::selection { background: var(--green); color: var(--paper-2); }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; }
+
+    /* ---- Layout ---- */
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 var(--gut);
+    }
+    .section { padding: 80px 0; }
+
+    /* ---- Buttons ---- */
+    .btn {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      padding: 13px 24px;
+      border: 1.5px solid var(--ink);
+      background: var(--paper);
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      transition: transform .12s, box-shadow .12s;
+      text-decoration: none;
+    }
+    .btn:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+    .btn:active { transform: none; box-shadow: none; }
+    .btn-primary { background: var(--ink); color: var(--paper-2); }
+    .btn-green { background: var(--green); color: var(--paper-2); border-color: var(--green-deep); }
+    .btn-green:hover { box-shadow: 4px 4px 0 var(--green-deep); }
+    .btn-ghost { border-color: transparent; background: transparent; }
+    .btn-ghost:hover { transform: none; box-shadow: none; text-decoration: underline; text-underline-offset: 4px; }
+
+    /* ---- Badges ---- */
+    .badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 5px 11px;
+      border: 1px solid var(--ink);
+      background: var(--paper-2);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+    .badge-green { border-color: var(--green); color: var(--green-deep); background: var(--green-tint); }
+    .badge-ink { background: var(--ink); color: var(--paper-2); border-color: var(--ink); }
+
+    /* ---- Section header (shared) ---- */
+    .sec-hdr {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 52px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--ink);
+    }
+    .sec-num {
+      font-family: var(--sans);
+      font-weight: 800;
+      font-size: 64px;
+      line-height: 0.85;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+    }
+    .sec-kicker {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+    .sec-title {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3.5vw, 38px);
+      font-weight: 500;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .sec-title em { font-style: italic; }
+    .sec-desc {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink-70);
+      max-width: 560px;
+    }
+
+    /* ---- Nav ---- */
+    .nav-bar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--paper);
+      border-bottom: 1px solid var(--ink);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px var(--gut);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+    .nav-wordmark {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .nav-link {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-70);
+      text-decoration: none;
+      transition: color .15s;
+    }
+    .nav-link:hover { color: var(--ink); }
+    .nav-cta { font-size: 13px; padding: 10px 20px; }
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: 1.5px solid var(--ink);
+      padding: 8px 10px;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 20px;
+      height: 1.5px;
+      background: var(--ink);
+    }
+    .nav-mobile {
+      border-top: 1px solid var(--line);
+      padding: 16px var(--gut);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .nav-mobile a {
+      display: block;
+      padding: 10px 0;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-70);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-mobile a:last-child { border-bottom: none; }
+
+    /* ---- Hero ---- */
+    .hero {
+      padding: 96px 0 80px;
+      text-align: center;
+      border-bottom: 1px solid var(--ink);
+    }
+    .hero-kicker {
+      display: inline-flex;
+      margin-bottom: 28px;
+    }
+    .hero-headline {
+      font-family: var(--serif);
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 400;
+      line-height: 1.04;
+      letter-spacing: -0.025em;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .hero-headline em { font-style: italic; }
+    .hero-sub {
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--ink-70);
+      max-width: 600px;
+      margin: 24px auto 0;
+    }
+    .hero-sub b { color: var(--ink); font-weight: 600; }
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 36px;
+    }
+    .hero-trust {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 32px;
+    }
+
+    /* ---- Servicios ---- */
+    .svc-grid {
+      border: 1px solid var(--ink);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .svc-card {
+      padding: 30px 26px 32px;
+      border-right: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      background: var(--paper-2);
+      transition: background .15s;
+    }
+    .svc-card:nth-child(3n) { border-right: none; }
+    .svc-card:nth-last-child(-n+3) { border-bottom: none; }
+    .svc-card:hover { background: var(--paper); }
+    .svc-ico {
+      width: 46px;
+      height: 46px;
+      border: 1.5px solid var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      flex-shrink: 0;
+      color: var(--ink);
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .svc-card:hover .svc-ico {
+      background: var(--green);
+      border-color: var(--green-deep);
+      color: var(--paper-2);
+    }
+    .svc-title {
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .svc-desc {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--ink-70);
+    }
+
+    /* ---- Proceso ---- */
+    .proceso-grid {
+      border: 1px solid var(--ink);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .proceso-card {
+      padding: 28px 26px 30px;
+      border-right: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      background: var(--paper-2);
+    }
+    .proceso-card:nth-child(3n) { border-right: none; }
+    .proceso-card:nth-last-child(-n+3) { border-bottom: none; }
+    .proceso-n {
+      font-family: var(--mono);
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      color: var(--ink-25);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .proceso-title {
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+    .proceso-desc {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink-70);
+    }
+
+    /* ---- Soluciones ---- */
+    .soluciones-wrap {
+      border: 1px solid var(--ink);
+      background: var(--paper-2);
+      padding: 48px var(--gut);
+    }
+    .soluciones-hdr {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--ink);
+    }
+    .soluciones-hdr .sec-title { margin-bottom: 10px; }
+    .soluciones-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--ink);
+    }
+    .sol-card {
+      padding: 28px 26px 30px;
+      border-right: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      background: var(--paper);
+      transition: background .15s;
+    }
+    .sol-card:nth-child(2n) { border-right: none; }
+    .sol-card:nth-last-child(-n+2) { border-bottom: none; }
+    .sol-card:hover { background: var(--paper-2); }
+    .sol-title { font-weight: 700; font-size: 16px; letter-spacing: -0.01em; margin-bottom: 8px; }
+    .sol-desc { font-size: 13.5px; line-height: 1.6; color: var(--ink-70); margin-bottom: 16px; }
+    .sol-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    /* ---- Precios ---- */
+    .precios-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--ink);
+    }
+    .precio-card {
+      padding: 32px 28px 36px;
+      border-right: 1px solid var(--ink);
+      background: var(--paper-2);
+      display: flex;
+      flex-direction: column;
+    }
+    .precio-card:last-child { border-right: none; }
+    .precio-card--dest {
+      background: var(--paper);
+      border-left: 3px solid var(--green);
+      border-right: 1px solid var(--ink);
+    }
+    .precio-rec {
+      margin-bottom: 16px;
+    }
+    .precio-title {
+      font-weight: 700;
+      font-size: 17px;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+    .precio-d {
+      font-size: 13px;
+      color: var(--ink-70);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .precio-price {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .precio-unit {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-45);
+      margin-bottom: 22px;
+    }
+    .precio-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+      flex: 1;
+    }
+    .precio-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--ink-70);
+    }
+    .precio-item-ico {
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: var(--green);
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ---- Contacto ---- */
+    .contacto-wrap {
+      border: 1px solid var(--ink);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .contacto-left {
+      padding: 48px 40px;
+      border-right: 1px solid var(--ink);
+      background: var(--paper-2);
+    }
+    .contacto-right {
+      padding: 48px 40px;
+      background: var(--paper);
+    }
+    .contacto-title {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 500;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .contacto-title em { font-style: italic; }
+    .contacto-sub {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink-70);
+      margin-bottom: 32px;
+    }
+    .contact-links { display: flex; flex-direction: column; gap: 10px; }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      border: 1.5px solid var(--ink);
+      background: var(--paper);
+      text-decoration: none;
+      color: var(--ink);
+      transition: background .15s, box-shadow .12s, transform .12s;
+    }
+    .contact-link:hover { background: var(--paper-2); transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--ink); }
+    .contact-link-ico {
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--ink);
+    }
+    .contact-link-title { font-weight: 600; font-size: 14px; margin-bottom: 3px; }
+    .contact-link-sub { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-45); }
+
+    /* Form */
+    .form-field { margin-bottom: 14px; }
+    .field-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-70);
+      display: block;
+      margin-bottom: 7px;
+    }
+    .field {
+      width: 100%;
+      background: var(--paper-2);
+      border: 1.5px solid var(--ink);
+      padding: 12px 14px;
+      font-family: var(--sans);
+      font-size: 15px;
+      color: var(--ink);
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .field::placeholder { color: var(--ink-45); }
+    .field:focus { border-color: var(--green); box-shadow: 3px 3px 0 var(--green); }
+    textarea.field { resize: none; }
+    .form-submit { margin-top: 18px; width: 100%; justify-content: center; font-size: 15px; padding: 15px 24px; }
+
+    /* Success state */
+    .form-success {
+      border: 1.5px solid var(--green);
+      background: var(--green-tint);
+      padding: 48px 32px;
+      text-align: center;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+    .form-success-ico { color: var(--green); }
+    .form-success h3 {
+      font-family: var(--serif);
+      font-size: 26px;
+      font-weight: 500;
+    }
+    .form-success p { font-size: 14px; color: var(--ink-70); max-width: 280px; line-height: 1.6; }
+
+    /* ---- Footer ---- */
+    .site-footer {
+      border-top: 1px solid var(--ink);
+      padding: 24px var(--gut);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-45);
+    }
+    .footer-dot { color: var(--green); }
+
+    /* ---- Floating WhatsApp ---- */
+    .floating-wa {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 50;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 13px 20px;
+      background: var(--wa);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      box-shadow: 3px 3px 0 rgba(0,0,0,.25);
+      text-decoration: none;
+      transition: transform .12s, box-shadow .12s;
+    }
+    .floating-wa:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 rgba(0,0,0,.25); }
+    .floating-wa-text { display: none; }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 960px) {
+      :root { --gut: 28px; }
+      .svc-grid { grid-template-columns: 1fr 1fr; }
+      .svc-card:nth-child(3n) { border-right: 1px solid var(--ink); }
+      .svc-card:nth-child(2n) { border-right: none; }
+      .svc-card:nth-last-child(-n+3) { border-bottom: 1px solid var(--ink); }
+      .svc-card:nth-last-child(-n+2) { border-bottom: none; }
+      .proceso-grid { grid-template-columns: 1fr 1fr; }
+      .proceso-card:nth-child(3n) { border-right: 1px solid var(--ink); }
+      .proceso-card:nth-child(2n) { border-right: none; }
+      .proceso-card:nth-last-child(-n+3) { border-bottom: 1px solid var(--ink); }
+      .proceso-card:nth-last-child(-n+2) { border-bottom: none; }
+      .precios-grid { grid-template-columns: 1fr; }
+      .precio-card { border-right: none; border-bottom: 1px solid var(--ink); }
+      .precio-card:last-child { border-bottom: none; }
+      .precio-card--dest { border-left: 3px solid var(--green); }
+      .contacto-wrap { grid-template-columns: 1fr; }
+      .contacto-left { border-right: none; border-bottom: 1px solid var(--ink); }
+      .soluciones-grid { grid-template-columns: 1fr; }
+      .sol-card:nth-child(2n) { border-right: none; }
+      .sol-card:nth-last-child(-n+2) { border-bottom: 1px solid var(--ink); }
+      .sol-card:last-child { border-bottom: none; }
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+    }
+    @media (max-width: 640px) {
+      .svc-grid { grid-template-columns: 1fr; }
+      .svc-card { border-right: none; border-bottom: 1px solid var(--ink); }
+      .svc-card:last-child { border-bottom: none; }
+      .proceso-grid { grid-template-columns: 1fr; }
+      .proceso-card { border-right: none; border-bottom: 1px solid var(--ink); }
+      .proceso-card:last-child { border-bottom: none; }
+      .sec-hdr { grid-template-columns: 1fr; gap: 10px; }
+      .sec-num { font-size: 48px; }
+      .hero { padding: 64px 0 56px; }
+      .soluciones-wrap { padding: 32px var(--gut); }
+      .contacto-left, .contacto-right { padding: 32px 24px; }
+      .floating-wa-text { display: inline; }
+    }
   </style>
 </head>
 <body>
+  <!-- SVG icon defs -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="mark" viewBox="0 0 48 48">
+        <circle cx="24" cy="24" r="21" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <path d="M9 29 Q16.5 13 24 24 Q31.5 35 39 19" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="9" cy="29" r="3.2" fill="currentColor"/>
+        <circle cx="39" cy="19" r="3.2" fill="currentColor"/>
+      </symbol>
+      <symbol id="i-agente" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v10H9l-4 4V5z"/><circle cx="9.5" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="14.5" cy="10" r="1" fill="currentColor" stroke="none"/></g></symbol>
+      <symbol id="i-auto" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8 11 15.5 6.8M8 13 15.5 17.2"/></g></symbol>
+      <symbol id="i-flujo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15 Q8 4 12 12 Q15 18 21 9"/><circle cx="3" cy="15" r="1.6" fill="currentColor" stroke="none"/><circle cx="21" cy="9" r="1.6" fill="currentColor" stroke="none"/></g></symbol>
+      <symbol id="i-integra" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="11" height="11"/><rect x="9.5" y="9.5" width="11" height="11"/></g></symbol>
+      <symbol id="i-modelo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10"/><path d="M10 4v3M14 4v3M10 17v3M14 17v3M4 10h3M4 14h3M17 10h3M17 14h3"/></g></symbol>
+      <symbol id="i-tiempo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2.5"/></g></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6"/></g></symbol>
+      <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></g></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H10l-5 4V5z"/></g></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></g></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></g></symbol>
+    </defs>
+  </svg>
+
   <div id="root"></div>
 
   <script type="text/babel" data-presets="react">
@@ -49,21 +676,16 @@
       marca: "Orkesta",
       tagline: "Automatización e IA que orquesta tu negocio",
       whatsapp: "525587662865",           // <-- tu número con código de país, sin + ni espacios
-      email: "alanguerrerog98@gmail.com",  // <-- tu correo
+      email: "info@orkestalo.com",           // <-- correo general
       calendly: "https://calendly.com/tu-usuario/charla-30min", // <-- tu link de agenda
-      formspree: ""                        // <-- pega tu endpoint de Formspree (https://formspree.io/f/xxxx) o deja vacío para usar mailto
+      formspree: ""                        // <-- pega tu endpoint de Formspree o deja vacío para mailto
     };
 
     const waLink = (msg) =>
       `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || "Hola, vi su sitio y quiero automatizar procesos en mi negocio.")}`;
 
-    /* ----------------------- UI helpers ----------------------- */
-    const Chip = ({ children }) => (
-      <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-violet-200">{children}</span>
-    );
-
-    const Section = ({ id, children, className = "" }) => (
-      <section id={id} className={`mx-auto max-w-6xl px-6 ${className}`}>{children}</section>
+    const Ico = ({ id, w = 18, h = 18 }) => (
+      <svg width={w} height={h} aria-hidden="true"><use href={`#${id}`}/></svg>
     );
 
     /* ----------------------- NAV ----------------------- */
@@ -77,24 +699,30 @@
         ["Contacto", "#contacto"],
       ];
       return (
-        <header className="sticky top-0 z-50 border-b border-white/5 bg-ink/80 backdrop-blur">
-          <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-            <a href="#top" className="flex items-center gap-2 text-white">
-              <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-violet-500 to-cyan-400 font-black">O</span>
-              <span className="text-lg font-extrabold tracking-tight">{CONFIG.marca}</span>
+        <header className="nav-bar">
+          <div className="nav-inner">
+            <a href="#top" className="nav-logo">
+              <svg width="34" height="34" style={{color:"var(--ink)"}}><use href="#mark"/></svg>
+              <span className="nav-wordmark">{CONFIG.marca}</span>
             </a>
-            <div className="hidden items-center gap-7 md:flex">
+            <nav className="nav-links">
               {links.map(([t, h]) => (
-                <a key={h} href={h} className="text-sm font-medium text-slate-300 hover:text-white">{t}</a>
+                <a key={h} href={h} className="nav-link">{t}</a>
               ))}
-              <a href="#contacto" className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-ink hover:bg-slate-200">Agenda una charla</a>
-            </div>
-            <button onClick={() => setOpen(!open)} className="text-white md:hidden">☰</button>
-          </nav>
+              <a href="#contacto" className="btn btn-primary nav-cta">Agenda una charla</a>
+            </nav>
+            <button
+              onClick={() => setOpen(!open)}
+              className="nav-toggle"
+              aria-label="Menú"
+            >
+              <span/><span/><span/>
+            </button>
+          </div>
           {open && (
-            <div className="border-t border-white/5 px-6 py-3 md:hidden">
+            <div className="nav-mobile">
               {links.map(([t, h]) => (
-                <a key={h} href={h} onClick={() => setOpen(false)} className="block py-2 text-slate-300">{t}</a>
+                <a key={h} href={h} onClick={() => setOpen(false)}>{t}</a>
               ))}
             </div>
           )}
@@ -104,104 +732,131 @@
 
     /* ----------------------- HERO ----------------------- */
     const Hero = () => (
-      <Section id="top" className="relative pt-20 pb-24 text-center">
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_50%_at_50%_0%,rgba(124,58,237,.25),transparent)]"></div>
-        <div className="mx-auto mb-6 flex justify-center"><Chip>⚡ Consultoría en automatización e IA aplicada</Chip></div>
-        <h1 className="mx-auto max-w-4xl text-4xl font-extrabold leading-tight text-white sm:text-6xl">
-          {CONFIG.tagline.split("orquesta")[0]}
-          <span className="grad-text">orquesta</span>
-          {CONFIG.tagline.split("orquesta")[1]}
-        </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-300">
-          Diseñamos e implementamos automatizaciones con <b className="text-white">n8n</b>, agentes y soluciones con <b className="text-white">Claude</b>, e integraciones a medida. Menos trabajo manual, más resultados — del discovery a producción.
-        </p>
-        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-          <a href="#contacto" className="rounded-xl bg-gradient-to-r from-violet-500 to-cyan-400 px-6 py-3 font-semibold text-ink glow hover:opacity-90">Agenda tu diagnóstico gratis</a>
-          <a href={waLink()} target="_blank" className="rounded-xl border border-white/15 px-6 py-3 font-semibold text-white hover:bg-white/5">Escríbeme por WhatsApp</a>
+      <section id="top" className="hero">
+        <div className="wrap">
+          <div className="hero-kicker">
+            <span className="badge badge-green"><Ico id="i-check" w={13} h={13}/>Consultoría en automatización e IA aplicada</span>
+          </div>
+          <h1 className="hero-headline">
+            Automatización e IA que <em>orquesta</em> tu negocio
+          </h1>
+          <p className="hero-sub">
+            Diseñamos e implementamos automatizaciones con <b>n8n</b>, agentes y soluciones con <b>Claude</b>, e integraciones a medida. Menos trabajo manual, más resultados — del discovery a producción.
+          </p>
+          <div className="hero-ctas">
+            <a href="#contacto" className="btn btn-green"><Ico id="i-cal"/>Agenda tu diagnóstico gratis</a>
+            <a href={waLink()} target="_blank" className="btn"><Ico id="i-chat"/>WhatsApp</a>
+          </div>
+          <div className="hero-trust">
+            <span className="badge">Primera charla sin costo</span>
+            <span className="badge">Entregables claros por etapa</span>
+            <span className="badge">Buenas prácticas y soporte</span>
+          </div>
         </div>
-        <div className="mx-auto mt-12 flex max-w-3xl flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-slate-400">
-          <span>✓ Primera charla sin costo</span>
-          <span>✓ Entregables claros por etapa</span>
-          <span>✓ Buenas prácticas y soporte</span>
-        </div>
-      </Section>
+      </section>
     );
 
     /* ----------------------- SERVICIOS ----------------------- */
     const servicios = [
-      { icon: "🤖", t: "Chatbots y agentes con IA", d: "Asistentes con Claude para ventas, soporte y procesos internos, en web o WhatsApp." },
-      { icon: "🔗", t: "Automatización con n8n", d: "Conectamos tus apps (CRM, correo, hojas, facturación) y eliminamos el trabajo manual repetitivo." },
-      { icon: "📄", t: "Procesamiento de documentos con IA", d: "Extracción y clasificación de facturas, correos y documentos con IA." },
-      { icon: "🧠", t: "Claude integrado a tu negocio", d: "Optimización de procesos incorporando modelos de IA donde generan más valor." },
-      { icon: "💳", t: "Integraciones de Mercado Pago", d: "Cobros online e in-store conectados a tu operación y conciliación automática." },
-      { icon: "⚙️", t: "Integraciones a medida", d: "Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable." },
+      { iconId: "i-agente",  t: "Chatbots y agentes con IA",           d: "Asistentes con Claude para ventas, soporte y procesos internos, en web o WhatsApp." },
+      { iconId: "i-auto",    t: "Automatización con n8n",               d: "Conectamos tus apps (CRM, correo, hojas, facturación) y eliminamos el trabajo manual repetitivo." },
+      { iconId: "i-flujo",   t: "Procesamiento de documentos con IA",   d: "Extracción y clasificación de facturas, correos y documentos con IA." },
+      { iconId: "i-modelo",  t: "Claude integrado a tu negocio",        d: "Optimización de procesos incorporando modelos de IA donde generan más valor." },
+      { iconId: "i-integra", t: "Integraciones de Mercado Pago",        d: "Cobros online e in-store conectados a tu operación y conciliación automática." },
+      { iconId: "i-tiempo",  t: "Integraciones a medida",               d: "Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable." },
     ];
+
     const Servicios = () => (
-      <Section id="servicios" className="py-20">
-        <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Servicios</h2>
-        <p className="mt-3 max-w-2xl text-slate-300">Soluciones que puedes contratar por proyecto o como iguala continua.</p>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {servicios.map((s) => (
-            <div key={s.t} className="rounded-2xl border border-white/10 bg-white/5 p-6 transition hover:border-violet-400/40 hover:bg-white/[0.07]">
-              <div className="text-3xl">{s.icon}</div>
-              <h3 className="mt-4 text-lg font-bold text-white">{s.t}</h3>
-              <p className="mt-2 text-sm text-slate-300">{s.d}</p>
+      <section id="servicios" className="section">
+        <div className="wrap">
+          <div className="sec-hdr">
+            <div className="sec-num">01</div>
+            <div>
+              <div className="sec-kicker">Servicios · Oferta</div>
+              <h2 className="sec-title">Lo que <em>construimos</em> juntos.</h2>
+              <p className="sec-desc">Soluciones que puedes contratar por proyecto o como iguala continua.</p>
             </div>
-          ))}
-        </div>
-      </Section>
-    );
-
-    /* ----------------------- PROCESO ----------------------- */
-    const etapas = [
-      { n: "01", t: "Discovery", d: "Entendemos tu negocio, mapeamos procesos y detectamos las automatizaciones de mayor impacto." },
-      { n: "02", t: "Diseño", d: "Definimos la arquitectura de la solución, herramientas y alcance con entregables claros." },
-      { n: "03", t: "Implementación", d: "Construimos los flujos, agentes e integraciones siguiendo buenas prácticas." },
-      { n: "04", t: "Testing", d: "Pruebas de extremo a extremo para asegurar que todo funciona en escenarios reales." },
-      { n: "05", t: "Checklist de buenas prácticas", d: "Seguridad, manejo de errores, logs y documentación antes de liberar." },
-      { n: "06", t: "Salida a producción", d: "Despliegue, monitoreo y acompañamiento para que la solución viva sin sobresaltos." },
-    ];
-    const Proceso = () => (
-      <Section id="proceso" className="py-20">
-        <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Cómo trabajamos</h2>
-        <p className="mt-3 max-w-2xl text-slate-300">Un proceso probado, de la idea a producción.</p>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {etapas.map((e) => (
-            <div key={e.n} className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-transparent p-6">
-              <div className="grad-text text-3xl font-black">{e.n}</div>
-              <h3 className="mt-3 text-lg font-bold text-white">{e.t}</h3>
-              <p className="mt-2 text-sm text-slate-300">{e.d}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-    );
-
-    /* ----------------------- SOLUCIONES (revendibles) ----------------------- */
-    const soluciones = [
-      { t: "Asistente de atención 24/7", d: "Agente con Claude que responde dudas, califica leads y agenda — en tu web o WhatsApp.", tags: ["Claude", "WhatsApp", "Leads"] },
-      { t: "Conciliación de pagos automática", d: "Integra Mercado Pago, registra ventas y concilia con tu hoja o ERP sin intervención manual.", tags: ["Mercado Pago", "n8n"] },
-      { t: "Lector inteligente de facturas", d: "Recibe facturas por correo, extrae datos con IA y los carga a tu sistema.", tags: ["IA Docs", "n8n"] },
-      { t: "Orquestador de back-office", d: "Automatiza alta de clientes, notificaciones y reportes recurrentes entre tus apps.", tags: ["Integraciones", "n8n"] },
-    ];
-    const Soluciones = () => (
-      <Section id="soluciones" className="py-20">
-        <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-violet-600/10 to-cyan-500/5 p-8 sm:p-12">
-          <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Soluciones listas para tu negocio</h2>
-          <p className="mt-3 max-w-2xl text-slate-300">Plantillas que adaptamos a tu operación — implementación rápida, valor inmediato.</p>
-          <div className="mt-10 grid gap-5 md:grid-cols-2">
-            {soluciones.map((s) => (
-              <div key={s.t} className="rounded-2xl border border-white/10 bg-ink/40 p-6">
-                <h3 className="text-lg font-bold text-white">{s.t}</h3>
-                <p className="mt-2 text-sm text-slate-300">{s.d}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {s.tags.map((t) => <Chip key={t}>{t}</Chip>)}
-                </div>
+          </div>
+          <div className="svc-grid">
+            {servicios.map((s) => (
+              <div key={s.t} className="svc-card">
+                <div className="svc-ico"><Ico id={s.iconId} w={26} h={26}/></div>
+                <div className="svc-title">{s.t}</div>
+                <p className="svc-desc">{s.d}</p>
               </div>
             ))}
           </div>
         </div>
-      </Section>
+      </section>
+    );
+
+    /* ----------------------- PROCESO ----------------------- */
+    const etapas = [
+      { n: "01", t: "Discovery",                   d: "Entendemos tu negocio, mapeamos procesos y detectamos las automatizaciones de mayor impacto." },
+      { n: "02", t: "Diseño",                       d: "Definimos la arquitectura de la solución, herramientas y alcance con entregables claros." },
+      { n: "03", t: "Implementación",               d: "Construimos los flujos, agentes e integraciones siguiendo buenas prácticas." },
+      { n: "04", t: "Testing",                      d: "Pruebas de extremo a extremo para asegurar que todo funciona en escenarios reales." },
+      { n: "05", t: "Checklist de buenas prácticas", d: "Seguridad, manejo de errores, logs y documentación antes de liberar." },
+      { n: "06", t: "Salida a producción",          d: "Despliegue, monitoreo y acompañamiento para que la solución viva sin sobresaltos." },
+    ];
+
+    const Proceso = () => (
+      <section id="proceso" className="section" style={{background:"var(--paper-2)"}}>
+        <div className="wrap">
+          <div className="sec-hdr">
+            <div className="sec-num">02</div>
+            <div>
+              <div className="sec-kicker">Proceso · Método</div>
+              <h2 className="sec-title">De la idea a producción, <em>sin fricción</em>.</h2>
+              <p className="sec-desc">Un proceso probado, transparente en cada etapa.</p>
+            </div>
+          </div>
+          <div className="proceso-grid">
+            {etapas.map((e) => (
+              <div key={e.n} className="proceso-card">
+                <div className="proceso-n">{e.n}</div>
+                <div className="proceso-title">{e.t}</div>
+                <p className="proceso-desc">{e.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ----------------------- SOLUCIONES ----------------------- */
+    const soluciones = [
+      { t: "Asistente de atención 24/7",       d: "Agente con Claude que responde dudas, califica leads y agenda — en tu web o WhatsApp.", tags: ["Claude", "WhatsApp", "Leads"] },
+      { t: "Conciliación de pagos automática", d: "Integra Mercado Pago, registra ventas y concilia con tu hoja o ERP sin intervención manual.", tags: ["Mercado Pago", "n8n"] },
+      { t: "Lector inteligente de facturas",   d: "Recibe facturas por correo, extrae datos con IA y los carga a tu sistema.", tags: ["IA Docs", "n8n"] },
+      { t: "Orquestador de back-office",       d: "Automatiza alta de clientes, notificaciones y reportes recurrentes entre tus apps.", tags: ["Integraciones", "n8n"] },
+    ];
+
+    const Soluciones = () => (
+      <section id="soluciones" className="section">
+        <div className="wrap">
+          <div className="soluciones-wrap">
+            <div className="soluciones-hdr">
+              <div className="sec-kicker">Soluciones · Plantillas</div>
+              <h2 className="sec-title">Listas para <em>tu negocio</em>.</h2>
+              <p className="sec-desc">Plantillas que adaptamos a tu operación — implementación rápida, valor inmediato.</p>
+            </div>
+            <div className="soluciones-grid">
+              {soluciones.map((s) => (
+                <div key={s.t} className="sol-card">
+                  <div className="sol-title">{s.t}</div>
+                  <p className="sol-desc">{s.d}</p>
+                  <div className="sol-tags">
+                    {s.tags.map((tag) => (
+                      <span key={tag} className="badge badge-green">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
     );
 
     /* ----------------------- PRECIOS ----------------------- */
@@ -225,29 +880,48 @@
         cta: "Conversemos",
       },
     ];
+
     const Precios = () => (
-      <Section id="precios" className="py-20">
-        <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Cómo colaboramos</h2>
-        <p className="mt-3 max-w-2xl text-slate-300">Cada negocio es distinto, por eso cada propuesta es a la medida. Empezamos con una llamada sin costo para entender tu caso y diseñar la mejor solución para ti.</p>
-        <div className="mt-10 grid gap-5 lg:grid-cols-3">
-          {planes.map((p) => (
-            <div key={p.t} className={`flex flex-col rounded-2xl border p-7 ${p.destacado ? "border-violet-400/50 bg-gradient-to-b from-violet-600/15 to-transparent glow" : "border-white/10 bg-white/5"}`}>
-              {p.destacado && <div className="mb-3"><Chip>Recomendado</Chip></div>}
-              <h3 className="text-lg font-bold text-white">{p.t}</h3>
-              <p className="mt-1 text-sm text-slate-400">{p.d}</p>
-              <div className="mt-5">
-                <div className="text-2xl font-extrabold text-white">{p.precio}</div>
-                <div className="text-xs text-slate-400">{p.unidad}</div>
-              </div>
-              <ul className="mt-5 space-y-2 text-sm text-slate-300">
-                {p.items.map((i) => <li key={i} className="flex gap-2"><span className="text-cyan-300">✓</span>{i}</li>)}
-              </ul>
-              <a href="#contacto" className={`mt-7 rounded-xl px-4 py-2.5 text-center text-sm font-semibold ${p.destacado ? "bg-gradient-to-r from-violet-500 to-cyan-400 text-ink" : "border border-white/15 text-white hover:bg-white/5"}`}>{p.cta}</a>
+      <section id="precios" className="section" style={{background:"var(--paper-3)"}}>
+        <div className="wrap">
+          <div className="sec-hdr">
+            <div className="sec-num">03</div>
+            <div>
+              <div className="sec-kicker">Precios · Modelos</div>
+              <h2 className="sec-title">Cada propuesta es <em>a la medida</em>.</h2>
+              <p className="sec-desc">Empieza con una llamada sin costo para entender tu caso y diseñar la mejor solución.</p>
             </div>
-          ))}
+          </div>
+          <div className="precios-grid">
+            {planes.map((p) => (
+              <div key={p.t} className={`precio-card${p.destacado ? " precio-card--dest" : ""}`}>
+                {p.destacado && (
+                  <div className="precio-rec">
+                    <span className="badge badge-green"><Ico id="i-check" w={13} h={13}/>Recomendado</span>
+                  </div>
+                )}
+                <div className="precio-title">{p.t}</div>
+                <p className="precio-d">{p.d}</p>
+                <div className="precio-price">{p.precio}</div>
+                <div className="precio-unit">{p.unidad}</div>
+                <ul className="precio-items">
+                  {p.items.map((item) => (
+                    <li key={item} className="precio-item">
+                      <svg className="precio-item-ico" width="16" height="16"><use href="#i-check"/></svg>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <a href="#contacto" className={`btn${p.destacado ? " btn-green" : " btn-primary"}`} style={{justifyContent:"center"}}>{p.cta}</a>
+              </div>
+            ))}
+          </div>
+          <p style={{marginTop:"20px", fontFamily:"var(--mono)", fontSize:"12px", letterSpacing:"0.04em", textTransform:"uppercase", color:"var(--ink-45)"}}>
+            ¿Listo para empezar? La primera llamada es gratis y sin compromiso. &nbsp;
+            <a href={waLink()} target="_blank" style={{color:"var(--green)", fontWeight:600}}>WhatsApp →</a>
+          </p>
         </div>
-        <p className="mt-6 text-sm text-slate-400">¿Listo para empezar? La primera llamada es gratis y sin compromiso. <a href={waLink()} target="_blank" className="font-semibold text-cyan-300 hover:underline">Escríbenos por WhatsApp →</a></p>
-      </Section>
+      </section>
     );
 
     /* ----------------------- CONTACTO ----------------------- */
@@ -262,7 +936,7 @@
             method: "POST",
             headers: { "Accept": "application/json", "Content-Type": "application/json" },
             body: JSON.stringify({ nombre, correo, empresa, mensaje }),
-          }).then(() => setSent(true)).catch(() => { window.location.href = mailto(); });
+          }).then(() => setSent(true)).catch(() => { window.location.href = mailto(nombre, correo, empresa, mensaje); });
         } else {
           window.location.href = mailto(nombre, correo, empresa, mensaje);
           setSent(true);
@@ -272,66 +946,109 @@
         `mailto:${CONFIG.email}?subject=${encodeURIComponent("Nuevo lead desde " + CONFIG.marca + " — " + (em||n))}&body=${encodeURIComponent(`Nombre: ${n}\nCorreo: ${c}\nEmpresa: ${em}\n\n${m}`)}`;
 
       return (
-        <Section id="contacto" className="py-20">
-          <div className="grid gap-10 rounded-3xl border border-white/10 bg-white/5 p-8 sm:p-12 lg:grid-cols-2">
-            <div>
-              <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Hablemos de tu negocio</h2>
-              <p className="mt-3 text-slate-300">Agenda una charla de 30 minutos sin costo. Identificamos qué automatizar primero y cómo podemos ayudarte.</p>
-              <div className="mt-8 space-y-3">
-                <a href={CONFIG.calendly} target="_blank" className="flex items-center gap-3 rounded-xl border border-white/10 bg-ink/40 px-5 py-4 text-white hover:border-violet-400/40">
-                  <span className="text-xl">📅</span><div><div className="font-semibold">Agenda en mi calendario</div><div className="text-xs text-slate-400">Charla de 30 min</div></div>
-                </a>
-                <a href={waLink()} target="_blank" className="flex items-center gap-3 rounded-xl border border-white/10 bg-ink/40 px-5 py-4 text-white hover:border-violet-400/40">
-                  <span className="text-xl">💬</span><div><div className="font-semibold">WhatsApp directo</div><div className="text-xs text-slate-400">Respuesta rápida</div></div>
-                </a>
-                <a href={`mailto:${CONFIG.email}`} className="flex items-center gap-3 rounded-xl border border-white/10 bg-ink/40 px-5 py-4 text-white hover:border-violet-400/40">
-                  <span className="text-xl">✉️</span><div><div className="font-semibold">{CONFIG.email}</div><div className="text-xs text-slate-400">Correo</div></div>
-                </a>
+        <section id="contacto" className="section">
+          <div className="wrap">
+            <div className="sec-hdr">
+              <div className="sec-num">04</div>
+              <div>
+                <div className="sec-kicker">Contacto · Agenda</div>
+                <h2 className="sec-title">Hablemos de <em>tu negocio</em>.</h2>
+                <p className="sec-desc">30 minutos sin costo. Identificamos qué automatizar primero y cómo podemos ayudarte.</p>
               </div>
             </div>
-            <div>
-              {sent ? (
-                <div className="grid h-full place-items-center rounded-2xl border border-cyan-400/30 bg-cyan-400/5 p-8 text-center">
-                  <div>
-                    <div className="text-4xl">✅</div>
-                    <h3 className="mt-3 text-xl font-bold text-white">¡Gracias!</h3>
-                    <p className="mt-2 text-sm text-slate-300">Tu mensaje está listo para enviarse. Te responderé muy pronto.</p>
-                  </div>
+            <div className="contacto-wrap">
+              <div className="contacto-left">
+                <div className="contact-links">
+                  <a href={CONFIG.calendly} target="_blank" className="contact-link">
+                    <div className="contact-link-ico"><Ico id="i-cal" w={20} h={20}/></div>
+                    <div>
+                      <div className="contact-link-title">Agenda en mi calendario</div>
+                      <div className="contact-link-sub">Charla de 30 min</div>
+                    </div>
+                  </a>
+                  <a href={waLink()} target="_blank" className="contact-link">
+                    <div className="contact-link-ico"><Ico id="i-chat" w={20} h={20}/></div>
+                    <div>
+                      <div className="contact-link-title">WhatsApp directo</div>
+                      <div className="contact-link-sub">Respuesta rápida</div>
+                    </div>
+                  </a>
+                  <a href={`mailto:${CONFIG.email}`} className="contact-link">
+                    <div className="contact-link-ico"><Ico id="i-mail" w={20} h={20}/></div>
+                    <div>
+                      <div className="contact-link-title">{CONFIG.email}</div>
+                      <div className="contact-link-sub">Correo</div>
+                    </div>
+                  </a>
                 </div>
-              ) : (
-                <form onSubmit={handle} className="space-y-4">
-                  <input name="nombre" required placeholder="Tu nombre" className="w-full rounded-xl border border-white/10 bg-ink/40 px-4 py-3 text-white placeholder-slate-500 outline-none focus:border-violet-400" />
-                  <input name="correo" type="email" required placeholder="Correo" className="w-full rounded-xl border border-white/10 bg-ink/40 px-4 py-3 text-white placeholder-slate-500 outline-none focus:border-violet-400" />
-                  <input name="empresa" placeholder="Empresa (opcional)" className="w-full rounded-xl border border-white/10 bg-ink/40 px-4 py-3 text-white placeholder-slate-500 outline-none focus:border-violet-400" />
-                  <textarea name="mensaje" required rows="4" placeholder="¿Qué proceso te gustaría automatizar?" className="w-full rounded-xl border border-white/10 bg-ink/40 px-4 py-3 text-white placeholder-slate-500 outline-none focus:border-violet-400"></textarea>
-                  <button type="submit" className="w-full rounded-xl bg-gradient-to-r from-violet-500 to-cyan-400 px-6 py-3 font-semibold text-ink hover:opacity-90">Enviar mensaje</button>
-                </form>
-              )}
+              </div>
+              <div className="contacto-right">
+                {sent ? (
+                  <div className="form-success">
+                    <svg className="form-success-ico" width="40" height="40"><use href="#i-check"/></svg>
+                    <h3>¡Mensaje listo!</h3>
+                    <p>Tu mensaje está en camino. Te responderé muy pronto.</p>
+                  </div>
+                ) : (
+                  <form onSubmit={handle}>
+                    <div className="form-field">
+                      <label className="field-label">Nombre</label>
+                      <input name="nombre" required placeholder="Tu nombre" className="field" />
+                    </div>
+                    <div className="form-field">
+                      <label className="field-label">Correo</label>
+                      <input name="correo" type="email" required placeholder="tu@empresa.com" className="field" />
+                    </div>
+                    <div className="form-field">
+                      <label className="field-label">Empresa (opcional)</label>
+                      <input name="empresa" placeholder="Nombre de tu empresa" className="field" />
+                    </div>
+                    <div className="form-field">
+                      <label className="field-label">¿Qué proceso te quita tiempo?</label>
+                      <textarea name="mensaje" required rows="4" placeholder="Ej: facturas manuales, atención al cliente, reportes..." className="field"></textarea>
+                    </div>
+                    <button type="submit" className="btn btn-green form-submit">
+                      <Ico id="i-arrow"/>Enviar mensaje
+                    </button>
+                  </form>
+                )}
+              </div>
             </div>
           </div>
-        </Section>
+        </section>
       );
     };
 
+    /* ----------------------- FOOTER ----------------------- */
     const Footer = () => (
-      <footer className="border-t border-white/5 py-10 text-center text-sm text-slate-500">
-        <p>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México</p>
-        <p className="mt-1">Consultoría en arquitectura, integraciones e inteligencia artificial</p>
+      <footer className="site-footer">
+        <span>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México · <a href={`mailto:${CONFIG.email}`} className="hover:text-violet-400 transition-colors">{CONFIG.email}</a></span>
+        <span>Hecho a mano — <span className="footer-dot">●</span> No curado por defecto</span>
       </footer>
     );
 
     /* ----------------------- Botón flotante de WhatsApp ----------------------- */
     const FloatingWA = () => (
-      <a href={waLink()} target="_blank" aria-label="WhatsApp"
-         className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-3 font-semibold text-white shadow-lg shadow-emerald-900/40 transition hover:scale-105">
-        <span className="text-xl">💬</span>
-        <span className="hidden sm:inline">WhatsApp</span>
+      <a href={waLink()} target="_blank" aria-label="WhatsApp" className="floating-wa">
+        <Ico id="i-chat" w={20} h={20}/>
+        <span className="floating-wa-text">WhatsApp</span>
       </a>
     );
 
+    /* ----------------------- APP ----------------------- */
     const App = () => (
-      <div className="min-h-screen font-sans text-white">
-        <Nav /><Hero /><Servicios /><Proceso /><Soluciones /><Precios /><Contacto /><Footer /><FloatingWA />
+      <div>
+        <Nav/>
+        <main>
+          <Hero/>
+          <Servicios/>
+          <Proceso/>
+          <Soluciones/>
+          <Precios/>
+          <Contacto/>
+        </main>
+        <Footer/>
+        <FloatingWA/>
       </div>
     );
 
