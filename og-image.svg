@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1F5A3A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#143E27;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4ADE80;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#86EFAC;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#ECE6D7"/>
+
+  <!-- Top border accent -->
+  <rect width="1200" height="6" fill="#1F5A3A"/>
+
+  <!-- Left accent bar -->
+  <rect x="80" y="80" width="4" height="470" fill="#1F5A3A"/>
+
+  <!-- Mark / logo -->
+  <g transform="translate(116, 94)" color="#1A1712">
+    <circle cx="40" cy="40" r="35" fill="none" stroke="#1A1712" stroke-width="2.4"/>
+    <path d="M14 48 Q24 26 40 38 Q56 50 66 30" fill="none" stroke="#1A1712" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="14" cy="48" r="4" fill="#1A1712"/>
+    <circle cx="66" cy="30" r="4" fill="#1A1712"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="200" y="150" font-family="Georgia, serif" font-size="52" font-weight="400" fill="#1A1712" letter-spacing="-1">Orkesta</text>
+
+  <!-- Divider -->
+  <line x1="116" y1="200" x2="1084" y2="200" stroke="#1A1712" stroke-width="1"/>
+
+  <!-- Main headline -->
+  <text x="116" y="300" font-family="Georgia, serif" font-size="72" font-weight="400" fill="#1A1712" letter-spacing="-2">Automatización e IA</text>
+  <text x="116" y="385" font-family="Georgia, serif" font-size="72" font-weight="400" fill="#1F5A3A" letter-spacing="-2" font-style="italic">para tu negocio.</text>
+
+  <!-- Tagline -->
+  <text x="116" y="460" font-family="'Courier New', monospace" font-size="22" fill="#1A1712" opacity="0.55" letter-spacing="2">CONSULTORÍA · N8N · CLAUDE · MERCADO PAGO</text>
+
+  <!-- Divider -->
+  <line x1="116" y1="495" x2="1084" y2="495" stroke="#1A1712" stroke-width="1"/>
+
+  <!-- URL -->
+  <text x="116" y="538" font-family="'Courier New', monospace" font-size="22" fill="#1F5A3A" letter-spacing="1" font-weight="600">orkestalo.com</text>
+
+  <!-- Badge -->
+  <rect x="900" y="508" width="184" height="40" fill="none" stroke="#1A1712" stroke-width="1.5"/>
+  <text x="992" y="534" font-family="'Courier New', monospace" font-size="13" fill="#1A1712" opacity="0.5" letter-spacing="2" text-anchor="middle">CDMX · LATAM · USA</text>
+</svg>

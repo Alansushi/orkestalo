@@ -1,0 +1,155 @@
+# Orkesta — Contenido completo del sitio
+Última actualización: 2026-05-30
+Generado automáticamente desde TRANSLATIONS.es en index.html — ejecutar /update-llm para refrescar.
+
+---
+
+## Hero
+
+**Titular:** Automatización e IA que orquesta tu negocio
+
+**Subtítulo:** Diseñamos e implementamos automatizaciones con n8n, agentes y soluciones con Claude, e integraciones a medida. Menos trabajo manual, más resultados — del discovery a producción.
+
+**Badge:** Consultoría en automatización e IA aplicada
+
+**CTAs:** Agenda tu diagnóstico inicial · WhatsApp
+
+**Trust badges:** Diagnóstico · $500 / hr · Entregables claros por etapa · Buenas prácticas y soporte
+
+---
+
+## Servicios
+
+Sección: Lo que construimos juntos.
+Descripción: Soluciones que puedes contratar por proyecto o como iguala continua.
+
+1. **Chatbots y agentes con IA**
+   Asistentes con Claude para ventas, soporte y procesos internos, en web o WhatsApp.
+
+2. **Automatización con n8n**
+   Conectamos tus apps (CRM, correo, hojas, facturación) y eliminamos el trabajo manual repetitivo.
+
+3. **Procesamiento de documentos con IA**
+   Extracción y clasificación de facturas, correos y documentos con IA.
+
+4. **Claude integrado a tu negocio**
+   Optimización de procesos incorporando modelos de IA donde generan más valor.
+
+5. **Configuración de OpenClaw y LLMs**
+   Conectamos y configuramos modelos de lenguaje (Claude, GPT, Mistral y más) como motor de tus flujos de n8n y automatizaciones.
+
+6. **Integraciones de Mercado Pago**
+   Cobros online e in-store conectados a tu operación y conciliación automática.
+
+7. **Integraciones a medida**
+   Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable.
+
+---
+
+## Proceso
+
+Sección: De la idea a producción, sin fricción.
+Descripción: Un proceso probado, transparente en cada etapa.
+
+01. **Discovery**
+    Entendemos tu negocio, mapeamos procesos y detectamos las automatizaciones de mayor impacto.
+
+02. **Diseño**
+    Definimos la arquitectura de la solución, herramientas y alcance con entregables claros.
+
+03. **Implementación**
+    Construimos los flujos, agentes e integraciones siguiendo buenas prácticas.
+
+04. **Testing**
+    Pruebas de extremo a extremo para asegurar que todo funciona en escenarios reales.
+
+05. **Checklist de buenas prácticas**
+    Seguridad, manejo de errores, logs y documentación antes de liberar.
+
+06. **Salida a producción**
+    Despliegue, monitoreo y acompañamiento para que la solución viva sin sobresaltos.
+
+---
+
+## Soluciones
+
+Sección: Listas para tu negocio.
+Descripción: Plantillas que adaptamos a tu operación — implementación rápida, valor inmediato.
+
+1. **Asistente de atención 24/7**
+   Agente con Claude que responde dudas, califica leads y agenda — en tu web o WhatsApp.
+   Tags: Claude, WhatsApp, Leads
+
+2. **Conciliación de pagos automática**
+   Integra Mercado Pago, registra ventas y concilia con tu hoja o ERP sin intervención manual.
+   Tags: Mercado Pago, n8n
+
+3. **Lector inteligente de facturas**
+   Recibe facturas por correo, extrae datos con IA y los carga a tu sistema.
+   Tags: IA Docs, n8n
+
+4. **Orquestador de back-office**
+   Automatiza alta de clientes, notificaciones y reportes recurrentes entre tus apps.
+   Tags: Integraciones, n8n
+
+---
+
+## Precios
+
+Sección: Cada propuesta es a la medida.
+Descripción: Empieza con una sesión de diagnóstico para entender tu caso y diseñar la mejor solución.
+
+**Plan 1 — Diagnóstico inicial**
+Precio: $500 | Por sesión de hasta 1 hora
+Descripción: Conocemos tu negocio y detectamos oportunidades.
+Incluye:
+- Entendemos tus procesos
+- Identificamos qué automatizar primero
+- Estimación de impacto
+- Próximos pasos claros
+CTA: Agendar llamada
+
+**Plan 2 — Diseño e implementación** ⭐ Recomendado
+Precio: A tu medida | Según alcance del proyecto
+Descripción: Construimos la solución de extremo a extremo.
+Incluye:
+- Discovery y diseño de la solución
+- Implementación y testing
+- Checklist de buenas prácticas
+- Salida a producción y handoff
+CTA: Solicitar propuesta
+
+**Plan 3 — Soporte continuo**
+Precio: Plan a medida | Acompañamiento mensual
+Descripción: Mejoramos y escalamos lo que ya funciona.
+Incluye:
+- Monitoreo y mantenimiento
+- Ajustes y mejoras
+- Nuevas automatizaciones
+- Soporte prioritario
+CTA: Conversemos
+
+---
+
+## Contacto
+
+Sección: Hablemos de tu negocio.
+Descripción: Cuéntanos tu caso. Identificamos qué automatizar primero y cómo podemos ayudarte.
+
+**Canales directos:**
+- WhatsApp directo — Respuesta rápida
+- Email: info@orkestalo.com
+
+**Formulario de contacto:**
+- Nombre
+- Correo
+- Empresa (opcional)
+- ¿Qué proceso te quita tiempo?
+
+---
+
+## Footer
+
+© 2026 Orkesta · Automatización e IA · México
+Email: info@orkestalo.com
+Web: https://orkestalo.com

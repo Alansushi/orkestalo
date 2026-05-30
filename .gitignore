@@ -1,3 +1,22 @@
 .DS_Store
 .claude/
 .vercel
+
+# Playwright MCP snapshots
+.playwright-mcp/
+
+# Superpowers internal
+.superpowers/
+
+# Screenshots de desarrollo
+orkesta-es.png
+orkesta-en.png
+orkesta-ds-check.png
+orkesta-v2-above-fold.png
+orkesta-v2-full.png
+
+# Prototipos y assets de diseño
+design-system.html
+index-hero-bg.html
+hero-bg-desktop.png
+hero-bg-mobile.png

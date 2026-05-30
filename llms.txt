@@ -1,0 +1,52 @@
+# Orkesta
+
+> Consultoría en automatización de procesos e IA aplicada para empresas en CDMX, México y LATAM. Especialistas en n8n, Claude API, Mercado Pago e integraciones a medida.
+
+Orkesta diseña e implementa automatizaciones con n8n, agentes inteligentes con Claude, y soluciones de integración para empresas que quieren reducir trabajo manual y escalar sus operaciones. Del discovery a producción, sin fricción. Disponible en español e inglés.
+
+## Servicios
+
+- **Chatbots y agentes con IA**: Asistentes con Claude para ventas, soporte y procesos internos en web o WhatsApp.
+- **Automatización con n8n**: Conectamos CRM, correo, hojas de cálculo, facturación y más para eliminar trabajo manual repetitivo.
+- **Procesamiento de documentos con IA**: Extracción y clasificación automática de facturas, correos y documentos.
+- **Claude integrado a tu negocio**: Optimización de procesos incorporando modelos de IA donde generan más valor operativo.
+- **Configuración de LLMs**: Claude, GPT, Mistral como motor de flujos de n8n y automatizaciones.
+- **Integraciones de Mercado Pago**: Cobros online e in-store conectados a tu operación con conciliación automática.
+- **Integraciones a medida**: Conectamos sistemas que no se comunican entre sí vía APIs y webhooks.
+
+## Proceso de trabajo
+
+1. Discovery — Mapeamos procesos y detectamos automatizaciones de mayor impacto.
+2. Diseño — Arquitectura de la solución con entregables claros.
+3. Implementación — Flujos, agentes e integraciones siguiendo buenas prácticas.
+4. Testing — Pruebas de extremo a extremo en escenarios reales.
+5. Checklist de buenas prácticas — Seguridad, manejo de errores, logs, documentación.
+6. Salida a producción — Despliegue, monitoreo y acompañamiento.
+
+## Soluciones listas para implementar
+
+- **Asistente de atención 24/7**: Agente con Claude que responde dudas, califica leads y agenda — en web o WhatsApp.
+- **Conciliación automática de pagos**: Integra Mercado Pago, registra ventas y concilia con hoja o ERP sin intervención manual.
+- **Lector inteligente de facturas**: Recibe facturas por correo, extrae datos con IA y los carga al sistema.
+- **Orquestador de back-office**: Automatiza alta de clientes, notificaciones y reportes recurrentes entre apps.
+
+## Precios
+
+- **Diagnóstico inicial**: $500 USD por sesión de hasta 1 hora — entendemos tu negocio e identificamos oportunidades.
+- **Diseño e implementación**: Propuesta a medida según alcance del proyecto — solución de extremo a extremo.
+- **Soporte continuo**: Plan mensual a medida — monitoreo, mejoras y nuevas automatizaciones.
+
+## Contacto
+
+- Web: https://orkestalo.com
+- Email: info@orkestalo.com
+- WhatsApp: +52 55 8766 2865
+- Versión en inglés: https://orkestalo.com/?lang=en
+
+## Área de servicio
+
+Ciudad de México (CDMX) · México · LATAM · Estados Unidos
+
+## Contenido completo
+
+Para el texto completo de todas las secciones del sitio, ver: https://orkestalo.com/llms-full.txt
