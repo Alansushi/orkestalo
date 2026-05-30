@@ -37,3 +37,22 @@ Everything is in one `<script type="text/babel">` block inside `index.html`. Rea
 ## Sections & IDs
 
 Nav links anchor to: `#top`, `#servicios`, `#proceso`, `#soluciones`, `#precios`, `#contacto`. Smooth scroll is enabled via `html { scroll-behavior: smooth }`.
+
+## Responsive Standards
+
+Breakpoints:
+- `960px` — tablet (2-col grids collapse, nav links hide, hamburger appears)
+- `640px` — mobile (1-col grids, reduced section padding, stacked CTAs)
+
+Viewport height:
+- Always use `100dvh` (not `100vh`) for full-screen fills — `dvh` accounts for the mobile browser URL bar appearing/disappearing.
+- The nav height is stored in `--nav-h: 67px` in `:root`. Update this variable if the nav structure changes height.
+- Full-viewport sections use: `min-height: calc(100dvh - var(--nav-h)); display: flex; align-items: center;`
+
+Checklist for any new section or component:
+- [ ] Works at 390px wide without horizontal scroll
+- [ ] Interactive elements (buttons, links) have min 44px tap height
+- [ ] Multi-column grids collapse to 1 column at ≤640px
+- [ ] CTA buttons stack vertically (`flex-direction: column; width: 100%`) on mobile
+- [ ] No fixed widths that break at narrow viewports
+- [ ] Section padding reduces from 80px to 56px at ≤640px

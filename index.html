@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Orkesta — Automatización e IA para tu negocio</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <meta name="description" content="Consultoría en automatización con n8n, IA con Claude e integraciones a medida. Del discovery a producción, sin fricción." />
 
   <!-- Open Graph -->
@@ -42,6 +43,7 @@
       --mono:  'IBM Plex Mono', ui-monospace, monospace;
       --maxw: 1180px;
       --gut: 56px;
+      --nav-h: 67px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -231,10 +233,14 @@
 
     /* ---- Hero ---- */
     .hero {
-      padding: 96px 0 80px;
+      min-height: calc(100dvh - var(--nav-h));
+      display: flex;
+      align-items: center;
+      padding: 80px 0;
       text-align: center;
       border-bottom: 1px solid var(--ink);
     }
+    .hero .wrap { width: 100%; }
     .hero-kicker {
       display: inline-flex;
       margin-bottom: 28px;
@@ -563,6 +569,7 @@
     .site-footer {
       border-top: 1px solid var(--ink);
       padding: 24px var(--gut);
+      padding-bottom: max(24px, env(safe-area-inset-bottom));
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -633,7 +640,10 @@
       .proceso-card:last-child { border-bottom: none; }
       .sec-hdr { grid-template-columns: 1fr; gap: 10px; }
       .sec-num { font-size: 48px; }
-      .hero { padding: 64px 0 56px; }
+      .section { padding: 56px 0; }
+      .hero { padding: 48px 0 56px; }
+      .hero-ctas { flex-direction: column; }
+      .hero-ctas .btn { width: 100%; justify-content: center; }
       .soluciones-wrap { padding: 32px var(--gut); }
       .contacto-left, .contacto-right { padding: 32px 24px; }
       .floating-wa-text { display: inline; }
@@ -959,13 +969,6 @@
             <div className="contacto-wrap">
               <div className="contacto-left">
                 <div className="contact-links">
-                  <a href={CONFIG.calendly} target="_blank" className="contact-link">
-                    <div className="contact-link-ico"><Ico id="i-cal" w={20} h={20}/></div>
-                    <div>
-                      <div className="contact-link-title">Agenda en mi calendario</div>
-                      <div className="contact-link-sub">Charla de 30 min</div>
-                    </div>
-                  </a>
                   <a href={waLink()} target="_blank" className="contact-link">
                     <div className="contact-link-ico"><Ico id="i-chat" w={20} h={20}/></div>
                     <div>
@@ -1023,7 +1026,7 @@
     const Footer = () => (
       <footer className="site-footer">
         <span>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México · <a href={`mailto:${CONFIG.email}`} className="hover:text-violet-400 transition-colors">{CONFIG.email}</a></span>
-        <span>Hecho a mano — <span className="footer-dot">●</span> No curado por defecto</span>
+        <a href={`mailto:${CONFIG.email}`} className="hover:text-violet-400 transition-colors">{CONFIG.email}</a>
       </footer>
     );
 
