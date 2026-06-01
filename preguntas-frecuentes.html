@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preguntas frecuentes — Orkesta | Automatización e IA</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="description" content="Preguntas frecuentes sobre Orkesta: precios, tiempos de proyecto, tecnologías (n8n, Claude, Mercado Pago), soporte continuo, seguridad de datos, propiedad del código y facturación." />
+  <meta name="keywords" content="FAQs Orkesta, preguntas automatización IA, cuánto cuesta automatizar, cuánto tarda un proyecto n8n, NDA consultoría IA México" />
+  <meta name="author" content="Orkesta" />
+  <meta name="robots" content="index, follow" />
+  <meta name="geo.region" content="MX-CMX" />
+  <meta name="geo.placename" content="Ciudad de México" />
+  <link rel="canonical" href="https://orkestalo.com/preguntas-frecuentes.html" />
+  <link rel="alternate" hreflang="es" href="https://orkestalo.com/preguntas-frecuentes.html" />
+  <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/preguntas-frecuentes.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Preguntas frecuentes — Orkesta" />
+  <meta property="og:description" content="Todo lo que preguntan antes de empezar: precios, tiempos, stack, soporte, seguridad, propiedad del código, facturación." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://orkestalo.com/preguntas-frecuentes.html" />
+  <meta property="og:image" content="https://orkestalo.com/og-image.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="es_MX" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Preguntas frecuentes — Orkesta" />
+  <meta name="twitter:description" content="Todo lo que preguntan antes de empezar: precios, tiempos, stack, soporte, seguridad, propiedad del código, facturación." />
+  <meta name="twitter:image" content="https://orkestalo.com/og-image.svg" />
+
+  <!-- Schema.org · FAQPage (12 preguntas — superset del FAQPage del home) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Cuánto cuesta una automatización con Orkesta?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Cada propuesta es a la medida según el alcance. Empezamos con un diagnóstico inicial sin costo (30 minutos) donde detectamos las oportunidades de mayor impacto y entregamos una propuesta concreta con tiempos y entregables." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cuánto tarda un proyecto típico?",
+        "acceptedAnswer": { "@type": "Answer", "text": "La mayoría de las automatizaciones puntuales viven entre 2 y 6 semanas, desde discovery hasta producción. Proyectos más complejos (integraciones múltiples o agentes con varios pasos) pueden extenderse a 8-12 semanas." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué tecnologías usan?",
+        "acceptedAnswer": { "@type": "Answer", "text": "n8n para orquestación de flujos, Claude API para agentes e IA aplicada, Mercado Pago para cobros, y APIs/webhooks para integrar cualquier sistema con HTTP. Trabajamos sobre tu stack existente — no te forzamos a cambiar herramientas." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Necesito tener n8n o lo proveen ustedes?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Las dos opciones. Si ya tenés n8n self-hosted o cloud, construimos sobre tu instancia. Si no, te ayudamos a decidir entre n8n cloud (más simple) o self-hosted (más control) y lo dejamos configurado a tu nombre antes de implementar." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Pueden trabajar con mi stack actual o tenemos que migrar?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Trabajamos sobre lo que ya tenés. Si tu CRM es HubSpot, integramos con HubSpot. Si tu ERP es SAP, integramos con SAP. Las migraciones forzadas son anti-pattern — solo proponemos cambio de herramienta si la actual no expone API ni es razonable mantener." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Dan soporte después de implementar?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Sí. Ofrecemos un plan de soporte continuo mensual a medida que incluye monitoreo, mantenimiento, ajustes y nuevas automatizaciones. También dejamos documentación completa para que tu equipo pueda operar sin depender de nosotros." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cómo manejan la seguridad de los datos?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Las credenciales viven en tu propia instancia de n8n o en gestores de secretos (1Password, Vault, AWS Secrets Manager). Nunca almacenamos llaves en código. Para Claude y otros LLMs configuramos zero data retention donde el proveedor lo permite." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Firman NDA?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Sí, sin problema. Firmamos NDA mutuo antes del diagnóstico inicial si hay información sensible en juego. Tenemos un template estándar que podemos compartir o trabajamos sobre el tuyo." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿En qué países trabajan?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Estamos basados en Ciudad de México y trabajamos con empresas en México, LATAM y Estados Unidos. Operamos 100% remoto vía WhatsApp, email y videollamada — la distancia no es un problema." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Trabajan con empresas que no son técnicas?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Sí, es nuestro caso típico. Nos especializamos en PyMEs y equipos sin desarrollador in-house. Hablamos en lenguaje de negocio, no de fierros, y entregamos soluciones que tu equipo puede operar y mantener sin saber programar." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿De quién es el código y los flujos al final del proyecto?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Tuyo. Todo lo que construimos vive en tu infraestructura (tu n8n, tu cuenta de Claude, tu Mercado Pago). Te entregamos accesos completos, código, documentación y handoff sin lock-in." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cómo facturan? ¿Aceptan pagos en pesos o USD?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Facturamos en pesos mexicanos con CFDI 4.0 para clientes en México. Para clientes fuera de México facturamos en USD vía invoice estándar. Aceptamos transferencia, Mercado Pago o Stripe — lo que más te convenga." }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Vercel Web Analytics -->
+  <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preload" href="/defs.svg" as="image" type="image/svg+xml">
+</head>
+<body>
+  <div id="root">
+    <div class="ssr-fallback">
+      <header>
+        <a href="/"><strong>Orkesta</strong> · Automatización e IA</a>
+        <nav>
+          <a href="/#soluciones">Soluciones</a>
+          <a href="/#servicios">Servicios</a>
+          <a href="/#proceso">Proceso</a>
+          <a href="/#precios">Precios</a>
+          <a href="/casos-de-uso.html">Casos de uso</a>
+          <a href="/#contacto">Contacto</a>
+        </nav>
+      </header>
+      <main>
+        <section id="top">
+          <h1>Preguntas frecuentes</h1>
+          <p>Todo lo que preguntan antes de empezar — precios, tiempos, stack, soporte, seguridad, propiedad del código y facturación. Si tu duda no está acá, escribinos por WhatsApp.</p>
+          <p><a href="https://wa.me/525587662865">WhatsApp +52 55 8766 2865</a> · <a href="mailto:info@orkestalo.com">info@orkestalo.com</a></p>
+        </section>
+        <section><h2>¿Cuánto cuesta una automatización?</h2><p>Cada propuesta es a la medida. Empezamos con un diagnóstico inicial sin costo (30 min) y entregamos propuesta concreta con tiempos y entregables.</p></section>
+        <section><h2>¿Cuánto tarda un proyecto típico?</h2><p>2 a 6 semanas para automatizaciones puntuales. 8 a 12 semanas para proyectos complejos con múltiples integraciones o agentes con varios pasos.</p></section>
+        <section><h2>¿Qué tecnologías usan?</h2><p>n8n, Claude API, Mercado Pago, APIs y webhooks. Trabajamos sobre tu stack existente — no te forzamos a cambiar herramientas.</p></section>
+        <section><h2>¿Necesito tener n8n o lo proveen ustedes?</h2><p>Las dos opciones. Si ya tenés n8n, construimos sobre tu instancia. Si no, te ayudamos a configurarlo a tu nombre antes de implementar.</p></section>
+        <section><h2>¿Pueden trabajar con mi stack actual?</h2><p>Sí. Trabajamos sobre lo que ya tenés. Las migraciones forzadas son anti-pattern — solo proponemos cambio si no hay API ni es razonable mantener.</p></section>
+        <section><h2>¿Dan soporte después de implementar?</h2><p>Sí. Plan mensual a medida con monitoreo, mantenimiento, ajustes y nuevas automatizaciones. También dejamos documentación completa.</p></section>
+        <section><h2>¿Cómo manejan la seguridad?</h2><p>Credenciales viven en tu n8n o gestor de secretos. Nunca almacenamos llaves en código. Claude con zero data retention donde aplica.</p></section>
+        <section><h2>¿Firman NDA?</h2><p>Sí, sin problema. Template propio o trabajamos sobre el tuyo.</p></section>
+        <section><h2>¿En qué países trabajan?</h2><p>CDMX, México, LATAM y Estados Unidos. 100% remoto.</p></section>
+        <section><h2>¿Trabajan con empresas no técnicas?</h2><p>Sí, es nuestro caso típico. PyMEs y equipos sin developer in-house. Hablamos en lenguaje de negocio.</p></section>
+        <section><h2>¿De quién es el código al final?</h2><p>Tuyo. Todo vive en tu infraestructura. Accesos, código, documentación y handoff sin lock-in.</p></section>
+        <section><h2>¿Cómo facturan?</h2><p>CFDI 4.0 en pesos para clientes en México. USD via invoice estándar para fuera de México. Transferencia, MP o Stripe.</p></section>
+      </main>
+    </div>
+  </div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState } = React;
+
+    const CONFIG = {
+      marca: "Orkesta",
+      whatsapp: "525587662865",
+      email: "info@orkestalo.com",
+    };
+
+    const waLink = (msg) =>
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || "Hola, tengo una pregunta sobre automatización.")}`;
+
+    const Ico = ({ id, w = 18, h = 18 }) => (
+      <svg width={w} height={h} aria-hidden="true"><use href={`/defs.svg#${id}`}/></svg>
+    );
+
+    /* ----------------------- NAV (sub-página) ----------------------- */
+    const Nav = () => {
+      const [open, setOpen] = useState(false);
+      const links = [
+        ["Soluciones", "/#soluciones"],
+        ["Servicios",  "/#servicios"],
+        ["Proceso",    "/#proceso"],
+        ["Precios",    "/#precios"],
+        ["Casos",      "/casos-de-uso.html"],
+        ["Contacto",   "/#contacto"],
+      ];
+      return (
+        <header className="nav-bar nav-bar--green">
+          <div className="nav-inner">
+            <a href="/" className="nav-logo">
+              <svg width="34" height="34"><use href="/defs.svg#mark"/></svg>
+              <span className="nav-wordmark">{CONFIG.marca}</span>
+            </a>
+            <nav className="nav-links">
+              {links.map(([t, h]) => (
+                <a key={h} href={h} className="nav-link">{t}</a>
+              ))}
+              <a href="/#contacto" className="btn btn-primary nav-cta">Agenda una charla</a>
+            </nav>
+            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label="Menú">
+              <span/><span/><span/>
+            </button>
+          </div>
+          {open && (
+            <div className="nav-mobile">
+              {links.map(([t, h]) => (
+                <a key={h} href={h} onClick={() => setOpen(false)}>{t}</a>
+              ))}
+            </div>
+          )}
+        </header>
+      );
+    };
+
+    /* ----------------------- PAGE HERO ----------------------- */
+    const PageHero = () => (
+      <section id="top" className="page-hero">
+        <div className="wrap">
+          <span className="badge badge-green hero-kicker"><Ico id="i-check" w={13} h={13}/>Preguntas frecuentes</span>
+          <h1>Todo lo que <em>preguntan</em> antes de empezar.</h1>
+          <p className="lead">
+            Precios, tiempos, stack, soporte, seguridad, propiedad del código, facturación. Si tu duda no está acá, escribinos por WhatsApp — respondemos rápido.
+          </p>
+          <div className="ctas">
+            <a href={waLink()} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
+            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ----------------------- FAQS (agrupados por tema) ----------------------- */
+    const grupos = [
+      {
+        titulo: "Trabajo y proyecto",
+        items: [
+          { q: "¿Cuánto cuesta una automatización con Orkesta?", a: "Cada propuesta es a la medida según el alcance. Empezamos con un diagnóstico inicial sin costo (30 minutos) donde detectamos las oportunidades de mayor impacto y entregamos una propuesta concreta con tiempos y entregables." },
+          { q: "¿Cuánto tarda un proyecto típico?", a: "La mayoría de las automatizaciones puntuales viven entre 2 y 6 semanas, desde discovery hasta producción. Proyectos más complejos (integraciones múltiples o agentes con varios pasos) pueden extenderse a 8-12 semanas." },
+          { q: "¿Cómo facturan? ¿Aceptan pagos en pesos o USD?", a: "Facturamos en pesos mexicanos con CFDI 4.0 para clientes en México. Para clientes fuera de México facturamos en USD vía invoice estándar. Aceptamos transferencia, Mercado Pago o Stripe — lo que más te convenga." },
+        ],
+      },
+      {
+        titulo: "Stack y soporte",
+        items: [
+          { q: "¿Qué tecnologías usan?", a: "n8n para orquestación de flujos, Claude API para agentes e IA aplicada, Mercado Pago para cobros, y APIs/webhooks para integrar cualquier sistema con HTTP. Trabajamos sobre tu stack existente — no te forzamos a cambiar herramientas." },
+          { q: "¿Necesito tener n8n o lo proveen ustedes?", a: "Las dos opciones. Si ya tenés n8n self-hosted o cloud, construimos sobre tu instancia. Si no, te ayudamos a decidir entre n8n cloud (más simple) o self-hosted (más control) y lo dejamos configurado a tu nombre antes de implementar." },
+          { q: "¿Pueden trabajar con mi stack actual o tenemos que migrar?", a: "Trabajamos sobre lo que ya tenés. Si tu CRM es HubSpot, integramos con HubSpot. Si tu ERP es SAP, integramos con SAP. Las migraciones forzadas son anti-pattern — solo proponemos cambio de herramienta si la actual no expone API ni es razonable mantener." },
+          { q: "¿Dan soporte después de implementar?", a: "Sí. Ofrecemos un plan de soporte continuo mensual a medida que incluye monitoreo, mantenimiento, ajustes y nuevas automatizaciones. También dejamos documentación completa para que tu equipo pueda operar sin depender de nosotros." },
+        ],
+      },
+      {
+        titulo: "Logística y equipo",
+        items: [
+          { q: "¿En qué países trabajan?", a: "Estamos basados en Ciudad de México y trabajamos con empresas en México, LATAM y Estados Unidos. Operamos 100% remoto vía WhatsApp, email y videollamada — la distancia no es un problema." },
+          { q: "¿Trabajan con empresas que no son técnicas?", a: "Sí, es nuestro caso típico. Nos especializamos en PyMEs y equipos sin desarrollador in-house. Hablamos en lenguaje de negocio, no de fierros, y entregamos soluciones que tu equipo puede operar y mantener sin saber programar." },
+        ],
+      },
+      {
+        titulo: "Datos, propiedad y legal",
+        items: [
+          { q: "¿Cómo manejan la seguridad de los datos?", a: "Las credenciales viven en tu propia instancia de n8n o en gestores de secretos (1Password, Vault, AWS Secrets Manager). Nunca almacenamos llaves en código. Para Claude y otros LLMs configuramos zero data retention donde el proveedor lo permite." },
+          { q: "¿Firman NDA?", a: "Sí, sin problema. Firmamos NDA mutuo antes del diagnóstico inicial si hay información sensible en juego. Tenemos un template estándar que podemos compartir o trabajamos sobre el tuyo." },
+          { q: "¿De quién es el código y los flujos al final del proyecto?", a: "Tuyo. Todo lo que construimos vive en tu infraestructura (tu n8n, tu cuenta de Claude, tu Mercado Pago). Te entregamos accesos completos, código, documentación y handoff sin lock-in." },
+        ],
+      },
+    ];
+
+    const FaqGroup = ({ titulo, items }) => (
+      <div style={{marginBottom: "48px"}}>
+        <h3 style={{
+          fontFamily: "var(--mono)",
+          fontSize: "13px",
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          color: "var(--green)",
+          marginBottom: "16px",
+        }}>{titulo}</h3>
+        <div className="faq-list">
+          {items.map(item => (
+            <details key={item.q} className="faq-item">
+              <summary>{item.q}</summary>
+              <div className="faq-body">{item.a}</div>
+            </details>
+          ))}
+        </div>
+      </div>
+    );
+
+    const FAQs = () => (
+      <section id="faqs" className="section">
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">12 preguntas · Agrupadas por tema</div>
+              <h2 className="sec-title">Lo que <em>quieren saber</em> primero.</h2>
+              <p className="sec-desc">Si necesitás más detalle en alguna, o tenés una pregunta que no esté acá, escribinos por WhatsApp.</p>
+            </div>
+          </div>
+          {grupos.map(g => <FaqGroup key={g.titulo} {...g}/>)}
+        </div>
+      </section>
+    );
+
+    /* ----------------------- CTA FINAL ----------------------- */
+    const CtaFinal = () => (
+      <section className="section">
+        <div className="wrap">
+          <div className="cta-block">
+            <h2>¿Tu pregunta no está <em>en la lista</em>?</h2>
+            <p>Escribinos por WhatsApp o agenda la llamada de 30 minutos. Te respondemos rápido y sin pitch.</p>
+            <div className="ctas">
+              <a href={waLink()} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
+              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ----------------------- FOOTER ----------------------- */
+    const Footer = () => (
+      <footer className="site-footer">
+        <span>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
+        <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
+      </footer>
+    );
+
+    /* ----------------------- Floating WhatsApp ----------------------- */
+    const FloatingWA = () => (
+      <a href={waLink()} target="_blank" aria-label="WhatsApp" className="floating-wa">
+        <Ico id="i-wa" w={22} h={22}/>
+        <span className="floating-wa-text">WhatsApp</span>
+      </a>
+    );
+
+    /* ----------------------- APP ----------------------- */
+    const App = () => (
+      <div>
+        <Nav/>
+        <main>
+          <PageHero/>
+          <FAQs/>
+          <CtaFinal/>
+        </main>
+        <Footer/>
+        <FloatingWA/>
+      </div>
+    );
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

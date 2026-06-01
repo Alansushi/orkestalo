@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Casos de uso — Automatizaciones por industria | Orkesta</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="description" content="Casos de uso descriptivos de automatizaciones que implementamos por industria: inmobiliaria, e-commerce, servicios B2C, manufactura y SaaS B2B. Stack, problema y solución concreta." />
+  <meta name="keywords" content="casos de uso automatización, ejemplos n8n, automatización inmobiliaria, conciliación Mercado Pago, atención WhatsApp IA, reportes manufactura, lead enrichment SaaS" />
+  <meta name="author" content="Orkesta" />
+  <meta name="robots" content="index, follow" />
+  <meta name="geo.region" content="MX-CMX" />
+  <meta name="geo.placename" content="Ciudad de México" />
+  <link rel="canonical" href="https://orkestalo.com/casos-de-uso.html" />
+  <link rel="alternate" hreflang="es" href="https://orkestalo.com/casos-de-uso.html" />
+  <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/casos-de-uso.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Casos de uso — Automatizaciones por industria | Orkesta" />
+  <meta property="og:description" content="Cinco automatizaciones descriptivas por industria, con stack, problema y solución concreta. Reemplaza horas de trabajo manual con flujos confiables." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://orkestalo.com/casos-de-uso.html" />
+  <meta property="og:image" content="https://orkestalo.com/og-image.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="es_MX" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Casos de uso — Automatizaciones por industria | Orkesta" />
+  <meta name="twitter:description" content="Cinco automatizaciones descriptivas por industria, con stack, problema y solución concreta." />
+  <meta name="twitter:image" content="https://orkestalo.com/og-image.svg" />
+
+  <!-- Schema.org · CollectionPage con ItemList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Casos de uso de automatización",
+    "url": "https://orkestalo.com/casos-de-uso.html",
+    "inLanguage": "es",
+    "description": "Cinco casos de uso descriptivos de automatizaciones con n8n, Claude API y Mercado Pago por industria.",
+    "isPartOf": { "@type": "WebSite", "name": "Orkesta", "url": "https://orkestalo.com" },
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Captura automática de facturas para inmobiliarias PyME" },
+        { "@type": "ListItem", "position": 2, "name": "Conciliación de Mercado Pago para e-commerce" },
+        { "@type": "ListItem", "position": 3, "name": "Atención WhatsApp 24/7 para servicios B2C" },
+        { "@type": "ListItem", "position": 4, "name": "Reportes operativos diarios para manufactura" },
+        { "@type": "ListItem", "position": 5, "name": "Lead enrichment + outreach para SaaS B2B" }
+      ]
+    }
+  }
+  </script>
+
+  <!-- Vercel Web Analytics -->
+  <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preload" href="/defs.svg" as="image" type="image/svg+xml">
+</head>
+<body>
+  <div id="root">
+    <div class="ssr-fallback">
+      <header>
+        <a href="/"><strong>Orkesta</strong> · Automatización e IA</a>
+        <nav>
+          <a href="/#soluciones">Soluciones</a>
+          <a href="/#servicios">Servicios</a>
+          <a href="/#proceso">Proceso</a>
+          <a href="/#precios">Precios</a>
+          <a href="/#faqs">FAQs</a>
+          <a href="/#contacto">Contacto</a>
+        </nav>
+      </header>
+      <main>
+        <section id="top">
+          <h1>Casos de uso — automatizaciones por industria</h1>
+          <p>Estos son <strong>casos de uso descriptivos</strong>, no historias específicas de clientes. Cubren patrones que vemos repetirse en PyMEs LATAM.</p>
+        </section>
+        <section>
+          <h2>1. Inmobiliaria PyME — captura automática de facturas</h2>
+          <p><strong>Problema:</strong> el equipo recibe 200+ facturas/mes en correo, captura datos a mano y los carga al ERP.</p>
+          <p><strong>Solución:</strong> n8n + Claude vision extrae monto, RFC, fecha, concepto y los carga al ERP. Excepciones van a Slack.</p>
+        </section>
+        <section>
+          <h2>2. E-commerce LATAM — conciliación de Mercado Pago</h2>
+          <p><strong>Problema:</strong> el lunes contabilidad cruza el extracto MP con ventas del ERP manualmente.</p>
+          <p><strong>Solución:</strong> n8n consume webhooks de MP en tiempo real y concilia automáticamente. Las discrepancias se marcan al ocurrir.</p>
+        </section>
+        <section>
+          <h2>3. Servicios B2C — atención WhatsApp 24/7</h2>
+          <p><strong>Problema:</strong> 80+ mensajes/día en WhatsApp que el equipo no alcanza a responder fuera de horario.</p>
+          <p><strong>Solución:</strong> agente con Claude responde FAQ, consulta calendario para agendar y escala solo casos complejos.</p>
+        </section>
+        <section>
+          <h2>4. Manufactura PyME — reportes operativos diarios</h2>
+          <p><strong>Problema:</strong> consolidar producción del día anterior cruzando 4 sistemas toma horas; el reporte sale tarde.</p>
+          <p><strong>Solución:</strong> n8n ejecuta a las 6am, normaliza datos, calcula KPIs y publica el reporte en Slack con anomalías destacadas.</p>
+        </section>
+        <section>
+          <h2>5. SaaS B2B — lead enrichment + outreach</h2>
+          <p><strong>Problema:</strong> 200-500 leads/mes sin enriquecer ni priorizar. Muchos se quedan sin tocar.</p>
+          <p><strong>Solución:</strong> n8n enriquece datos, Claude clasifica fit, prioriza y redacta primer correo. Ventas revisa y aprueba.</p>
+        </section>
+        <section>
+          <h2>¿Tu caso es parecido?</h2>
+          <p>
+            <a href="https://wa.me/525587662865">WhatsApp +52 55 8766 2865</a> ·
+            <a href="/#contacto">Agendar diagnóstico</a> ·
+            <a href="mailto:info@orkestalo.com">info@orkestalo.com</a>
+          </p>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState } = React;
+
+    const CONFIG = {
+      marca: "Orkesta",
+      whatsapp: "525587662865",
+      email: "info@orkestalo.com",
+    };
+
+    const waLink = (msg) =>
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || "Hola, vi sus casos de uso y quiero hablar de mi proceso.")}`;
+
+    const Ico = ({ id, w = 18, h = 18 }) => (
+      <svg width={w} height={h} aria-hidden="true"><use href={`/defs.svg#${id}`}/></svg>
+    );
+
+    /* ----------------------- NAV (sub-página, anchors van a /#...) ----------------------- */
+    const Nav = () => {
+      const [open, setOpen] = useState(false);
+      const links = [
+        ["Soluciones", "/#soluciones"],
+        ["Servicios",  "/#servicios"],
+        ["Proceso",    "/#proceso"],
+        ["Precios",    "/#precios"],
+        ["FAQs",       "/#faqs"],
+        ["Contacto",   "/#contacto"],
+      ];
+      return (
+        <header className="nav-bar nav-bar--green">
+          <div className="nav-inner">
+            <a href="/" className="nav-logo">
+              <svg width="34" height="34"><use href="/defs.svg#mark"/></svg>
+              <span className="nav-wordmark">{CONFIG.marca}</span>
+            </a>
+            <nav className="nav-links">
+              {links.map(([t, h]) => (
+                <a key={h} href={h} className="nav-link">{t}</a>
+              ))}
+              <a href="/#contacto" className="btn btn-primary nav-cta">Agenda una charla</a>
+            </nav>
+            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label="Menú">
+              <span/><span/><span/>
+            </button>
+          </div>
+          {open && (
+            <div className="nav-mobile">
+              {links.map(([t, h]) => (
+                <a key={h} href={h} onClick={() => setOpen(false)}>{t}</a>
+              ))}
+            </div>
+          )}
+        </header>
+      );
+    };
+
+    /* ----------------------- PAGE HERO ----------------------- */
+    const PageHero = () => (
+      <section id="top" className="page-hero">
+        <div className="wrap">
+          <span className="badge badge-green hero-kicker"><Ico id="i-check" w={13} h={13}/>Casos de uso · Por industria</span>
+          <h1>Cinco automatizaciones <em>concretas</em> que reemplazan trabajo manual.</h1>
+          <p className="lead">
+            Estos son <b>casos de uso descriptivos</b> (no historias específicas de clientes). Cubren patrones que vemos repetirse en PyMEs LATAM en inmobiliaria, e-commerce, servicios, manufactura y SaaS. Si tu proceso se parece a alguno, escribinos — probablemente lo podemos resolver con el mismo stack.
+          </p>
+          <div className="ctas">
+            <a href={waLink()} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
+            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ----------------------- CASOS ----------------------- */
+    const casos = [
+      {
+        industria: "Inmobiliaria PyME",
+        tamano: "10-50 empleados",
+        stack: ["n8n", "Claude API", "Google Drive", "ERP"],
+        titulo: "Captura manual de <em>200+ facturas/mes</em> desde correos.",
+        problema: "El equipo de admin recibe facturas como adjuntos en correo (proveedores, servicios, mantenimiento), extrae datos a mano y los carga al ERP. Horas perdidas, errores frecuentes.",
+        solucion: "Workflow n8n monitorea inbox, detecta facturas, Claude vision extrae monto/RFC/fecha/concepto, valida contra reglas de negocio y carga al ERP vía API. Excepciones van a Slack para revisión humana.",
+        impacto: "De ~40 horas/mes de data entry a una revisión semanal de excepciones. Los errores de captura se detectan antes de llegar al ERP.",
+      },
+      {
+        industria: "E-commerce mid-market",
+        tamano: "500-2000 ventas/mes",
+        stack: ["n8n", "Mercado Pago", "Google Sheets", "ERP"],
+        titulo: "Conciliación <em>manual</em> de Mercado Pago contra ventas internas.",
+        problema: "Cada lunes contabilidad descarga el extracto de Mercado Pago y lo cruza con las ventas del ERP a mano. Discrepancias (devoluciones, comisiones, cashback) requieren investigación case-by-case.",
+        solucion: "n8n consume webhooks de Mercado Pago en tiempo real, registra cada transacción con su payment_id y comisión, y concilia automáticamente con la venta correspondiente del ERP. Discrepancias se marcan al ocurrir.",
+        impacto: "De 1 día/semana de conciliación manual a un dashboard que se actualiza solo. Inconsistencias se detectan el día que ocurren, no una semana después.",
+      },
+      {
+        industria: "Servicios al consumidor",
+        tamano: "100-500 clientes activos",
+        stack: ["WhatsApp Business API", "Claude API", "Google Calendar", "CRM"],
+        titulo: "WhatsApp con <em>80+ mensajes/día</em> que el equipo no alcanza a responder.",
+        problema: "Clientes preguntan horarios, precios, agendan citas y piden info por WhatsApp. El equipo atiende cuando puede, pero responde tarde y se pierden ventas o se causa frustración fuera de horario.",
+        solucion: "Agente con Claude integrado a WhatsApp Business responde 24/7 las preguntas frecuentes, consulta el calendario en tiempo real para agendar/reagendar, y escala a un humano solo cuando es necesario (queja, cancelación, caso complejo).",
+        impacto: "Respuesta inmediata 24/7 sin sumar headcount. El equipo se enfoca solo en los casos que realmente requieren juicio humano.",
+      },
+      {
+        industria: "Manufactura PyME",
+        tamano: "20-100 empleados",
+        stack: ["n8n", "SQL Server", "Google Sheets", "Slack"],
+        titulo: "Reportes operativos diarios que toman <em>horas de copy-paste</em>.",
+        problema: "Cada mañana, operaciones consolida producción del día anterior cruzando 4 sistemas (ERP, sistema de planta, hojas de líderes de turno, mantenimiento). El reporte sale a media mañana — tarde para tomar decisiones.",
+        solucion: "n8n ejecuta a las 6am: jala datos de cada fuente, los normaliza, calcula KPIs (eficiencia, throughput, tiempo muerto, scrap), genera el reporte en Sheets y lo publica en Slack con resumen ejecutivo. Anomalías destacadas automáticamente.",
+        impacto: "Reporte disponible al inicio del día, no a media mañana. Decisiones de turno se toman con datos del turno anterior, no con intuición.",
+      },
+      {
+        industria: "SaaS B2B",
+        tamano: "50-200 empleados, equipo outbound",
+        stack: ["n8n", "Claude API", "Apollo/Clearbit", "HubSpot"],
+        titulo: "Lista de leads en Excel <em>sin enriquecer ni priorizar</em>.",
+        problema: "Marketing entrega 200-500 leads/mes a ventas en un Excel: nombre, empresa, correo. Ventas tiene que investigar empresa por empresa, decidir cuáles vale priorizar, redactar primer correo. Muchos leads se quedan sin tocar.",
+        solucion: "n8n procesa cada lead nuevo: enriquece con datos de empresa (tamaño, industria, stack), Claude clasifica el fit (ICP score), prioriza, y redacta un primer correo personalizado con contexto del negocio. Ventas revisa y aprueba antes de enviar.",
+        impacto: "Cero leads sin tocar. El equipo de ventas pasa de investigar a hablar con prospects pre-calificados.",
+      },
+    ];
+
+    const Casos = () => (
+      <section id="casos" className="section">
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">Cinco patrones · Cinco industrias</div>
+              <h2 className="sec-title">Casos que <em>se repiten</em> en PyMEs LATAM.</h2>
+              <p className="sec-desc">Cada uno con su problema, solución concreta y stack. Si tu situación se parece, el camino al MVP suele ser similar.</p>
+            </div>
+          </div>
+          <div className="casos-list">
+            {casos.map((c, idx) => (
+              <article key={idx} className="caso-card">
+                <div className="caso-meta">
+                  <span className="badge badge-ink">{c.industria}</span>
+                  <span className="badge">{c.tamano}</span>
+                  {c.stack.map(s => <span key={s} className="badge badge-green">{s}</span>)}
+                </div>
+                <h3 className="caso-title" dangerouslySetInnerHTML={{__html: c.titulo}}/>
+                <div className="caso-grid">
+                  <div>
+                    <div className="caso-block-label">Problema</div>
+                    <p className="caso-block-text">{c.problema}</p>
+                  </div>
+                  <div>
+                    <div className="caso-block-label">Solución</div>
+                    <p className="caso-block-text">{c.solucion}</p>
+                  </div>
+                </div>
+                <div className="caso-impact">
+                  <svg className="caso-impact-ico"><use href="/defs.svg#i-check"/></svg>
+                  <div>
+                    <div className="caso-block-label" style={{marginBottom:"4px"}}>Impacto típico</div>
+                    <p className="caso-impact-text">{c.impacto}</p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ----------------------- CTA FINAL ----------------------- */
+    const CtaFinal = () => (
+      <section className="section">
+        <div className="wrap">
+          <div className="cta-block">
+            <h2>¿Tu proceso se parece a <em>alguno de estos</em>?</h2>
+            <p>30 minutos sin compromiso. Te escuchamos, miramos tu caso y te decimos qué se puede automatizar primero — con tiempos y orden de magnitud de costo.</p>
+            <div className="ctas">
+              <a href={waLink()} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
+              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ----------------------- FOOTER ----------------------- */
+    const Footer = () => (
+      <footer className="site-footer">
+        <span>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
+        <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
+      </footer>
+    );
+
+    /* ----------------------- Floating WhatsApp ----------------------- */
+    const FloatingWA = () => (
+      <a href={waLink()} target="_blank" aria-label="WhatsApp" className="floating-wa">
+        <Ico id="i-wa" w={22} h={22}/>
+        <span className="floating-wa-text">WhatsApp</span>
+      </a>
+    );
+
+    /* ----------------------- APP ----------------------- */
+    const App = () => (
+      <div>
+        <Nav/>
+        <main>
+          <PageHero/>
+          <Casos/>
+          <CtaFinal/>
+        </main>
+        <Footer/>
+        <FloatingWA/>
+      </div>
+    );
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

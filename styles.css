@@ -754,6 +754,80 @@
       .cta-block .btn { width: 100%; justify-content: center; }
     }
 
+    /* ---- Casos de uso (cards estructurados problema/solución/impacto) ---- */
+    .casos-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .caso-card {
+      border: 1px solid var(--ink);
+      background: var(--paper-2);
+      padding: 36px 40px;
+      transition: background .15s;
+    }
+    .caso-card:hover { background: var(--paper); }
+    .caso-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .caso-title {
+      font-family: var(--serif);
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+      margin-bottom: 28px;
+    }
+    .caso-title em { font-style: italic; color: var(--green); }
+    .caso-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-bottom: 24px;
+    }
+    .caso-block-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+    .caso-block-text {
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+    .caso-impact {
+      border-top: 1px dashed var(--line);
+      padding-top: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .caso-impact-ico {
+      width: 24px;
+      height: 24px;
+      color: var(--green);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .caso-impact-text {
+      font-family: var(--serif);
+      font-size: 16px;
+      font-style: italic;
+      line-height: 1.55;
+      color: var(--ink);
+    }
+    @media (max-width: 640px) {
+      .caso-card { padding: 28px 22px; }
+      .caso-grid { grid-template-columns: 1fr; gap: 20px; }
+      .caso-impact-text { font-size: 15px; }
+    }
+
     /* ---- ¿Es para ti? (qualifier) ---- */
     .pq-grid {
       border: 1px solid var(--ink);
