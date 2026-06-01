@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orkesta — Automatización e IA para tu negocio</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="description" content="Consultoría en automatización con n8n, IA con Claude e integraciones a medida. Del discovery a producción, sin fricción." />
+  <meta name="keywords" content="automatización IA CDMX, consultoría n8n México, chatbots IA empresas, integraciones Claude API, automatización negocios LATAM, agentes IA, n8n Mexico, AI automation consulting" />
+  <meta name="author" content="Orkesta" />
+  <meta name="robots" content="index, follow" />
+  <meta name="geo.region" content="MX-CMX" />
+  <meta name="geo.placename" content="Ciudad de México" />
+  <link rel="canonical" href="https://orkestalo.com/" />
+  <link rel="alternate" hreflang="es" href="https://orkestalo.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Orkesta — Automatización e IA para tu negocio" />
+  <meta property="og:description" content="Diseño e implemento flujos automatizados y soluciones de IA que ahorran horas a tu equipo." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://orkestalo.com/" />
+  <meta property="og:image" content="https://orkestalo.com/og-image.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="es_MX" />
+
+  <!-- Vercel Web Analytics -->
+  <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       ORKESTA — Diseño v2
+       Papel cálido · tinta · una señal verde
+       ============================================================ */
+
+    :root {
+      --paper:      #ECE6D7;
+      --paper-2:    #F4EFE3;
+      --paper-3:    #E1DAC6;
+      --ink:        #1A1712;
+      --ink-70:     rgba(26,23,18,0.66);
+      --ink-45:     rgba(26,23,18,0.44);
+      --ink-25:     rgba(26,23,18,0.22);
+      --line:       rgba(26,23,18,0.16);
+      --green:      #1F5A3A;
+      --green-deep: #143E27;
+      --green-tint: #DCE6DA;
+      --wa:         #25D366;
+      --serif: 'Newsreader', Georgia, serif;
+      --sans:  'Archivo', system-ui, sans-serif;
+      --mono:  'IBM Plex Mono', ui-monospace, monospace;
+      --maxw: 1180px;
+      --gut: 56px;
+      --nav-h: 67px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    ::selection { background: var(--green); color: var(--paper-2); }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; }
+
+    /* ---- Layout ---- */
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 var(--gut);
+    }
+    .section { padding: 80px 0; }
+
+    /* ---- Buttons ---- */
+    .btn {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      padding: 13px 24px;
+      border: 1.5px solid var(--ink);
+      background: var(--paper);
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      transition: transform .12s, box-shadow .12s;
+      text-decoration: none;
+    }
+    .btn:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+    .btn:active { transform: none; box-shadow: none; }
+    .btn-primary { background: var(--ink); color: var(--paper-2); }
+    .btn-green { background: var(--green); color: var(--paper-2); border-color: var(--green-deep); }
+    .btn-green:hover { box-shadow: 4px 4px 0 var(--green-deep); }
+    .btn-ghost { border-color: transparent; background: transparent; }
+    .btn-ghost:hover { transform: none; box-shadow: none; text-decoration: underline; text-underline-offset: 4px; }
+
+    /* ---- Badges ---- */
+    .badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 5px 11px;
+      border: 1px solid var(--ink);
+      background: var(--paper-2);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+    .badge-green { border-color: var(--green); color: var(--green-deep); background: var(--green-tint); }
+    .badge-ink { background: var(--ink); color: var(--paper-2); border-color: var(--ink); }
+
+    /* ---- Section header (shared) ---- */
+    .sec-hdr {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 52px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--ink);
+    }
+    .sec-num {
+      font-family: var(--sans);
+      font-weight: 800;
+      font-size: 64px;
+      line-height: 0.85;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+    }
+    .sec-kicker {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+    .sec-title {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3.5vw, 38px);
+      font-weight: 500;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .sec-title em { font-style: italic; }
+    .sec-desc {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink-70);
+      max-width: 560px;
+    }
+
+    /* ---- Nav ---- */
+    .nav-bar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--paper);
+      border-bottom: 1px solid var(--ink);
+      transition: background .35s, border-color .35s;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px var(--gut);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+    .nav-logo svg {
+      color: var(--ink);
+      transition: color .35s;
+    }
+    .nav-wordmark {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      transition: color .35s;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .nav-link {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-70);
+      text-decoration: none;
+      transition: color .15s;
+    }
+    .nav-link:hover { color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+    .nav-cta { font-size: 13px; padding: 10px 20px; }
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: 1.5px solid var(--ink);
+      padding: 8px 10px;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 20px;
+      height: 1.5px;
+      background: var(--ink);
+    }
+    .nav-mobile {
+      border-top: 1px solid var(--line);
+      padding: 16px var(--gut);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .nav-mobile a {
+      display: block;
+      padding: 10px 0;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-70);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-mobile a:last-child { border-bottom: none; }
+
+    /* ---- Nav — estado verde (fuera del hero) ---- */
+    .nav-bar--green { background: var(--green); border-bottom-color: var(--green-deep); }
+    .nav-bar--green .nav-wordmark { color: var(--paper-2); }
+    .nav-bar--green .nav-logo svg { color: var(--paper-2); }
+    .nav-bar--green .nav-link { color: rgba(244,239,227,0.65); }
+    .nav-bar--green .nav-link:hover { color: var(--paper-2); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+    .nav-bar--green .nav-cta {
+      background: var(--paper-2);
+      color: var(--green-deep);
+      border-color: var(--paper-2);
+    }
+    .nav-bar--green .nav-cta:hover { box-shadow: 4px 4px 0 var(--green-deep); }
+    .nav-bar--green .nav-toggle { border-color: rgba(244,239,227,0.6); }
+    .nav-bar--green .nav-toggle span { background: var(--paper-2); }
+    .nav-bar--green .nav-mobile { border-top-color: rgba(244,239,227,0.15); background: var(--green); }
+    .nav-bar--green .nav-mobile a { color: rgba(244,239,227,0.65); border-bottom-color: rgba(244,239,227,0.12); }
+    .nav-mobile a:hover { color: var(--ink); font-weight: 700; }
+    .nav-bar--green .nav-mobile a:hover { color: var(--paper-2); font-weight: 700; }
+
+    /* ---- Hero ---- */
+    .hero {
+      position: relative;
+      min-height: calc(100dvh - var(--nav-h));
+      display: flex;
+      align-items: center;
+      padding: 80px 0;
+      text-align: center;
+      border-bottom: 1px solid var(--ink);
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .hero .wrap { position: relative; z-index: 1; width: 100%; }
+    .hero-kicker {
+      display: inline-flex;
+      margin-bottom: 28px;
+    }
+    .hero-headline {
+      font-family: var(--serif);
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 400;
+      line-height: 1.04;
+      letter-spacing: -0.025em;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .hero-headline em { font-style: italic; }
+    .hero-sub {
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--ink-70);
+      max-width: 600px;
+      margin: 24px auto 0;
+    }
+    .hero-sub b { color: var(--ink); font-weight: 600; }
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 36px;
+    }
+    .hero-trust {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 32px;
+    }
+
+    /* ---- Servicios ---- */
+    .svc-grid {
+      border: 1px solid var(--ink);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .svc-card {
+      padding: 30px 26px 32px;
+      border-right: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      background: var(--paper-2);
+      transition: background .15s;
+    }
+    .svc-card:nth-child(3n) { border-right: none; }
+    .svc-card:nth-last-child(-n+3) { border-bottom: none; }
+    .svc-card:hover { background: var(--paper); }
+    .svc-ico {
+      width: 46px;
+      height: 46px;
+      border: 1.5px solid var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      flex-shrink: 0;
+      color: var(--ink);
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .svc-card:hover .svc-ico {
+      background: var(--green);
+      border-color: var(--green-deep);
+      color: var(--paper-2);
+    }
+    .svc-title {
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .svc-desc {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--ink-70);
+    }
+
+    /* ---- Proceso ---- */
+    .proceso-grid {
+      border: 1px solid var(--ink);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .proceso-card {
+      padding: 28px 26px 30px;
+      border-right: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      background: var(--paper-2);
+    }
+    .proceso-card:nth-child(3n) { border-right: none; }
+    .proceso-card:nth-last-child(-n+3) { border-bottom: none; }
+    .proceso-n {
+      font-family: var(--mono);
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      color: var(--ink-25);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .proceso-title {
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+    .proceso-desc {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink-70);
+    }
+
+    /* ---- Soluciones ---- */
+    .soluciones-wrap {
+      border: 1px solid var(--ink);
+      background: var(--paper-2);
+      padding: 48px var(--gut);
+    }
+    .soluciones-hdr {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--ink);
+    }
+    .soluciones-hdr .sec-title { margin-bottom: 10px; }
+    .soluciones-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--ink);
+    }
+    .sol-card {
+      padding: 28px 26px 30px;
+      border-right: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      background: var(--paper);
+      transition: background .15s;
+    }
+    .sol-card:nth-child(2n) { border-right: none; }
+    .sol-card:nth-last-child(-n+2) { border-bottom: none; }
+    .sol-card:hover { background: var(--paper-2); }
+    .sol-title { font-weight: 700; font-size: 16px; letter-spacing: -0.01em; margin-bottom: 8px; }
+    .sol-desc { font-size: 13.5px; line-height: 1.6; color: var(--ink-70); margin-bottom: 16px; }
+    .sol-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    /* ---- Precios ---- */
+    .precios-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--ink);
+    }
+    .precio-card {
+      padding: 32px 28px 36px;
+      border-right: 1px solid var(--ink);
+      background: var(--paper-2);
+      display: flex;
+      flex-direction: column;
+    }
+    .precio-card:last-child { border-right: none; }
+    .precio-card--dest {
+      background: var(--paper);
+      border-left: 3px solid var(--green);
+      border-right: 1px solid var(--ink);
+    }
+    .precio-rec {
+      margin-bottom: 16px;
+    }
+    .precio-title {
+      font-weight: 700;
+      font-size: 17px;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+    .precio-d {
+      font-size: 13px;
+      color: var(--ink-70);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .precio-price {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .precio-unit {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-45);
+      margin-bottom: 22px;
+    }
+    .precio-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+      flex: 1;
+    }
+    .precio-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--ink-70);
+    }
+    .precio-item-ico {
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: var(--green);
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ---- Contacto ---- */
+    .contacto-wrap {
+      border: 1px solid var(--ink);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .contacto-left {
+      padding: 48px 40px;
+      border-right: 1px solid var(--ink);
+      background: var(--paper-2);
+    }
+    .contacto-right {
+      padding: 48px 40px;
+      background: var(--paper);
+    }
+    .contacto-title {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 500;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .contacto-title em { font-style: italic; }
+    .contacto-sub {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink-70);
+      margin-bottom: 32px;
+    }
+    .contact-links { display: flex; flex-direction: column; gap: 10px; }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      border: 1.5px solid var(--ink);
+      background: var(--paper);
+      text-decoration: none;
+      color: var(--ink);
+      transition: background .15s, box-shadow .12s, transform .12s;
+    }
+    .contact-link:hover { background: var(--paper-2); transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--ink); }
+    .contact-link-ico {
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--ink);
+    }
+    .contact-link-title { font-weight: 600; font-size: 14px; margin-bottom: 3px; }
+    .contact-link-sub { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-45); }
+
+    /* Form */
+    .form-field { margin-bottom: 14px; }
+    .field-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-70);
+      display: block;
+      margin-bottom: 7px;
+    }
+    .field {
+      width: 100%;
+      background: var(--paper-2);
+      border: 1.5px solid var(--ink);
+      padding: 12px 14px;
+      font-family: var(--sans);
+      font-size: 15px;
+      color: var(--ink);
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .field::placeholder { color: var(--ink-45); }
+    .field:focus { border-color: var(--green); box-shadow: 3px 3px 0 var(--green); }
+    textarea.field { resize: none; }
+    .sel-field { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231A1712' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; cursor: pointer; }
+    .sel-field option:disabled { color: var(--ink-45); }
+    .seg-wrap { margin-bottom: 20px; }
+    .seg-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip-btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; padding: 8px 12px; border: 1.5px solid var(--ink); background: var(--paper-2); color: var(--ink); cursor: pointer; transition: background .12s, color .12s; line-height: 1; }
+    .chip-btn:hover { background: var(--paper-3); }
+    .chip-sel { background: var(--green) !important; color: var(--paper-2) !important; border-color: var(--green-deep) !important; }
+    @media (max-width: 640px) { .chip-btn { font-size: 10px; padding: 7px 10px; } }
+    .form-submit { margin-top: 18px; width: 100%; justify-content: center; font-size: 15px; padding: 15px 24px; }
+
+    /* Success state */
+    .form-success {
+      border: 1.5px solid var(--green);
+      background: var(--green-tint);
+      padding: 48px 32px;
+      text-align: center;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+    .form-success-ico { color: var(--green); }
+    .form-success h3 {
+      font-family: var(--serif);
+      font-size: 26px;
+      font-weight: 500;
+    }
+    .form-success p { font-size: 14px; color: var(--ink-70); max-width: 280px; line-height: 1.6; }
+
+    /* ---- Footer ---- */
+    .site-footer {
+      border-top: 1px solid var(--ink);
+      padding: 24px var(--gut);
+      padding-bottom: max(24px, env(safe-area-inset-bottom));
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-45);
+    }
+    .footer-dot { color: var(--green); }
+
+    /* ---- Floating WhatsApp ---- */
+    .floating-wa {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 50;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 13px 20px;
+      background: var(--wa);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      box-shadow: 3px 3px 0 rgba(0,0,0,.25);
+      text-decoration: none;
+      transition: transform .12s, box-shadow .12s;
+    }
+    .floating-wa:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 rgba(0,0,0,.25); }
+    .floating-wa-text { display: none; }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 960px) {
+      :root { --gut: 28px; }
+      .svc-grid { grid-template-columns: 1fr 1fr; }
+      .svc-card:nth-child(3n) { border-right: 1px solid var(--ink); }
+      .svc-card:nth-child(2n) { border-right: none; }
+      .svc-card:nth-last-child(-n+3) { border-bottom: 1px solid var(--ink); }
+      .svc-card:nth-last-child(-n+2) { border-bottom: none; }
+      .proceso-grid { grid-template-columns: 1fr 1fr; }
+      .proceso-card:nth-child(3n) { border-right: 1px solid var(--ink); }
+      .proceso-card:nth-child(2n) { border-right: none; }
+      .proceso-card:nth-last-child(-n+3) { border-bottom: 1px solid var(--ink); }
+      .proceso-card:nth-last-child(-n+2) { border-bottom: none; }
+      .precios-grid { grid-template-columns: 1fr; }
+      .precio-card { border-right: none; border-bottom: 1px solid var(--ink); }
+      .precio-card:last-child { border-bottom: none; }
+      .precio-card--dest { border-left: 3px solid var(--green); }
+      .contacto-wrap { grid-template-columns: 1fr; }
+      .contacto-left { border-right: none; border-bottom: 1px solid var(--ink); }
+      .soluciones-grid { grid-template-columns: 1fr; }
+      .sol-card:nth-child(2n) { border-right: none; }
+      .sol-card:nth-last-child(-n+2) { border-bottom: 1px solid var(--ink); }
+      .sol-card:last-child { border-bottom: none; }
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+    }
+    @media (max-width: 640px) {
+      .svc-grid { grid-template-columns: 1fr; }
+      .svc-card { border-right: none; border-bottom: 1px solid var(--ink); }
+      .svc-card:last-child { border-bottom: none; }
+      .proceso-grid { grid-template-columns: 1fr; }
+      .proceso-card { border-right: none; border-bottom: 1px solid var(--ink); }
+      .proceso-card:last-child { border-bottom: none; }
+      .sec-hdr { grid-template-columns: 1fr; gap: 10px; }
+      .sec-num { font-size: 48px; }
+      .section { padding: 56px 0; }
+      .hero { padding: 48px 0 56px; }
+      .hero-ctas { flex-direction: column; }
+      .hero-ctas .btn { width: 100%; justify-content: center; }
+      .soluciones-wrap { padding: 32px var(--gut); }
+      .contacto-left, .contacto-right { padding: 32px 24px; }
+      .floating-wa-text { display: inline; }
+    }
+  </style>
+</head>
+<body>
+  <!-- SVG icon defs -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="mark" viewBox="0 0 48 48">
+        <circle cx="24" cy="24" r="21" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <path d="M9 29 Q16.5 13 24 24 Q31.5 35 39 19" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="9" cy="29" r="3.2" fill="currentColor"/>
+        <circle cx="39" cy="19" r="3.2" fill="currentColor"/>
+      </symbol>
+      <symbol id="i-agente" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v10H9l-4 4V5z"/><circle cx="9.5" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="14.5" cy="10" r="1" fill="currentColor" stroke="none"/></g></symbol>
+      <symbol id="i-auto" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8 11 15.5 6.8M8 13 15.5 17.2"/></g></symbol>
+      <symbol id="i-flujo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15 Q8 4 12 12 Q15 18 21 9"/><circle cx="3" cy="15" r="1.6" fill="currentColor" stroke="none"/><circle cx="21" cy="9" r="1.6" fill="currentColor" stroke="none"/></g></symbol>
+      <symbol id="i-integra" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="11" height="11"/><rect x="9.5" y="9.5" width="11" height="11"/></g></symbol>
+      <symbol id="i-modelo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10"/><path d="M10 4v3M14 4v3M10 17v3M14 17v3M4 10h3M4 14h3M17 10h3M17 14h3"/></g></symbol>
+      <symbol id="i-tiempo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2.5"/></g></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6"/></g></symbol>
+      <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></g></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H10l-5 4V5z"/></g></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></g></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></g></symbol>
+      <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></symbol>
+    </defs>
+  </svg>
+
+  <div id="root"></div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState } = React;
+
+    /* ============================================================
+       CONFIGURACIÓN RÁPIDA — edita estos valores y listo
+       ============================================================ */
+    const CONFIG = {
+      marca: "Orkesta",
+      tagline: "Automatización e IA que orquesta tu negocio",
+      whatsapp: "525587662865",           // <-- tu número con código de país, sin + ni espacios
+      email: "info@orkestalo.com",           // <-- correo general
+      calendly: "https://calendly.com/tu-usuario/charla-30min", // <-- tu link de agenda
+      formspree: ""                        // <-- pega tu endpoint de Formspree o deja vacío para mailto
+    };
+
+    const waLink = (msg) =>
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || "Hola, vi su sitio y quiero automatizar procesos en mi negocio.")}`;
+
+    const Ico = ({ id, w = 18, h = 18 }) => (
+      <svg width={w} height={h} aria-hidden="true"><use href={`#${id}`}/></svg>
+    );
+
+    /* ----------------------- NAV ----------------------- */
+    const Nav = () => {
+      const [open, setOpen] = useState(false);
+      const [scrolled, setScrolled] = useState(false);
+
+      React.useEffect(() => {
+        const heroEl = document.getElementById('top');
+        if (!heroEl) return;
+        const obs = new IntersectionObserver(
+          ([entry]) => setScrolled(!entry.isIntersecting),
+          { threshold: 0 }
+        );
+        obs.observe(heroEl);
+        return () => obs.disconnect();
+      }, []);
+
+      const links = [
+        ["Servicios", "#servicios"],
+        ["Proceso", "#proceso"],
+        ["Soluciones", "#soluciones"],
+        ["Precios", "#precios"],
+        ["Contacto", "#contacto"],
+      ];
+      return (
+        <header className={`nav-bar${scrolled ? " nav-bar--green" : ""}`}>
+          <div className="nav-inner">
+            <a href="#top" className="nav-logo">
+              <svg width="34" height="34"><use href="#mark"/></svg>
+              <span className="nav-wordmark">{CONFIG.marca}</span>
+            </a>
+            <nav className="nav-links">
+              {links.map(([t, h]) => (
+                <a key={h} href={h} className="nav-link">{t}</a>
+              ))}
+              <a href="#contacto" className="btn btn-primary nav-cta">Agenda una charla</a>
+            </nav>
+            <button
+              onClick={() => setOpen(!open)}
+              className="nav-toggle"
+              aria-label="Menú"
+            >
+              <span/><span/><span/>
+            </button>
+          </div>
+          {open && (
+            <div className="nav-mobile">
+              {links.map(([t, h]) => (
+                <a key={h} href={h} onClick={() => setOpen(false)}>{t}</a>
+              ))}
+            </div>
+          )}
+        </header>
+      );
+    };
+
+    /* ----------------------- HERO BG ----------------------- */
+    function HeroBg() {
+      const canvasRef = React.useRef(null);
+      React.useEffect(() => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+        const GAP = 28, DOT = 2, OP = 0.35;
+        const REPEL_R = 55, REPEL_F = 18, EASE = 0.08;
+        const PAPER = '#ECE6D7';
+        const INK = '26,23,18';
+        let dots = [];
+        let mouse = { x: -9999, y: -9999 };
+        let rafId;
+
+        function buildDots() {
+          dots = [];
+          const cols = Math.ceil(canvas.width / GAP) + 1;
+          const rows = Math.ceil(canvas.height / GAP) + 1;
+          for (let r = 0; r <= rows; r++)
+            for (let c = 0; c <= cols; c++) {
+              const ox = c * GAP, oy = r * GAP;
+              dots.push({ ox, oy, x: ox, y: oy });
+            }
+        }
+
+        function resize() {
+          canvas.width = canvas.offsetWidth;
+          canvas.height = canvas.offsetHeight;
+          buildDots();
+        }
+
+        function draw() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = PAPER;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = `rgba(${INK},${OP})`;
+          for (const d of dots) {
+            const dx = d.x - mouse.x;
+            const dy = d.y - mouse.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < REPEL_R && dist > 0) {
+              const force = (1 - dist / REPEL_R) * REPEL_F;
+              d.x += (dx / dist) * force * 0.12;
+              d.y += (dy / dist) * force * 0.12;
+            }
+            d.x += (d.ox - d.x) * EASE;
+            d.y += (d.oy - d.y) * EASE;
+            ctx.fillRect(Math.round(d.x) - 1, Math.round(d.y) - 1, DOT, DOT);
+          }
+          rafId = requestAnimationFrame(draw);
+        }
+
+        const ro = new ResizeObserver(resize);
+        ro.observe(canvas.parentElement);
+        resize();
+        draw();
+
+        const hero = canvas.parentElement;
+        const onMove = e => {
+          const r = canvas.getBoundingClientRect();
+          mouse.x = e.clientX - r.left;
+          mouse.y = e.clientY - r.top;
+        };
+        const onLeave = () => { mouse.x = -9999; mouse.y = -9999; };
+        hero.addEventListener('mousemove', onMove);
+        hero.addEventListener('mouseleave', onLeave);
+
+        return () => {
+          cancelAnimationFrame(rafId);
+          ro.disconnect();
+          hero.removeEventListener('mousemove', onMove);
+          hero.removeEventListener('mouseleave', onLeave);
+        };
+      }, []);
+      return <canvas ref={canvasRef} className="hero-bg" />;
+    }
+
+    /* ----------------------- HERO ----------------------- */
+    const Hero = () => (
+      <section id="top" className="hero">
+        <HeroBg />
+        <div className="wrap">
+          <div className="hero-kicker">
+            <span className="badge badge-green"><Ico id="i-check" w={13} h={13}/>Consultoría en automatización e IA aplicada</span>
+          </div>
+          <h1 className="hero-headline">
+            Automatización e IA que <em>orquesta</em> tu negocio
+          </h1>
+          <p className="hero-sub">
+            Diseñamos e implementamos automatizaciones con <b>n8n</b>, agentes y soluciones con <b>Claude</b>, e integraciones a medida. Menos trabajo manual, más resultados — del discovery a producción.
+          </p>
+          <div className="hero-ctas">
+            <a href={waLink()} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
+          </div>
+          <div className="hero-trust">
+            <span className="badge">Entregables claros por etapa</span>
+            <span className="badge">Fácil y sin dependencias</span>
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ----------------------- SERVICIOS ----------------------- */
+    const servicios = [
+      { iconId: "i-agente",  t: "Chatbots y agentes con IA",           d: "Asistentes con Claude para ventas, soporte y procesos internos, en web o WhatsApp." },
+      { iconId: "i-auto",    t: "Automatización con n8n",               d: "Conectamos tus apps (CRM, correo, hojas, facturación) y eliminamos el trabajo manual repetitivo." },
+      { iconId: "i-flujo",   t: "Procesamiento de documentos con IA",   d: "Extracción y clasificación de facturas, correos y documentos con IA." },
+      { iconId: "i-modelo",  t: "Claude integrado a tu negocio",        d: "Optimización de procesos incorporando modelos de IA donde generan más valor." },
+      { iconId: "i-integra", t: "Integraciones de Mercado Pago",        d: "Cobros online e in-store conectados a tu operación y conciliación automática." },
+      { iconId: "i-tiempo",  t: "Integraciones a medida",               d: "Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable." },
+    ];
+
+    const Servicios = () => (
+      <section id="servicios" className="section">
+        <div className="wrap">
+          <div className="sec-hdr">
+            <div className="sec-num">01</div>
+            <div>
+              <div className="sec-kicker">Servicios · Oferta</div>
+              <h2 className="sec-title">Lo que <em>construimos</em> juntos.</h2>
+              <p className="sec-desc">Soluciones que puedes contratar por proyecto.</p>
+            </div>
+          </div>
+          <div className="svc-grid">
+            {servicios.map((s) => (
+              <div key={s.t} className="svc-card">
+                <div className="svc-ico"><Ico id={s.iconId} w={26} h={26}/></div>
+                <div className="svc-title">{s.t}</div>
+                <p className="svc-desc">{s.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ----------------------- PROCESO ----------------------- */
+    const etapas = [
+      { n: "01", t: "Discovery",                   d: "Entendemos tu negocio, mapeamos procesos y detectamos las automatizaciones de mayor impacto." },
+      { n: "02", t: "Diseño",                       d: "Definimos la arquitectura de la solución, herramientas y alcance con entregables claros." },
+      { n: "03", t: "Implementación",               d: "Construimos los flujos, agentes e integraciones siguiendo buenas prácticas." },
+      { n: "04", t: "Testing",                      d: "Pruebas de extremo a extremo para asegurar que todo funciona en escenarios reales." },
+      { n: "05", t: "Checklist de buenas prácticas", d: "Seguridad, manejo de errores, logs y documentación antes de liberar." },
+      { n: "06", t: "Salida a producción",          d: "Despliegue, monitoreo y acompañamiento para que la solución viva sin sobresaltos." },
+    ];
+
+    const Proceso = () => (
+      <section id="proceso" className="section" style={{background:"var(--paper-2)"}}>
+        <div className="wrap">
+          <div className="sec-hdr">
+            <div className="sec-num">02</div>
+            <div>
+              <div className="sec-kicker">Proceso · Método</div>
+              <h2 className="sec-title">De la idea a producción, <em>sin fricción</em>.</h2>
+              <p className="sec-desc">Un proceso probado, transparente en cada etapa.</p>
+            </div>
+          </div>
+          <div className="proceso-grid">
+            {etapas.map((e) => (
+              <div key={e.n} className="proceso-card">
+                <div className="proceso-n">{e.n}</div>
+                <div className="proceso-title">{e.t}</div>
+                <p className="proceso-desc">{e.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ----------------------- SOLUCIONES ----------------------- */
+    const soluciones = [
+      { t: "Asistente de atención 24/7",       d: "Agente con Claude que responde dudas, califica leads y agenda — en tu web o WhatsApp.", tags: ["Claude", "WhatsApp", "Leads"] },
+      { t: "Conciliación de pagos automática", d: "Integra Mercado Pago, registra ventas y concilia con tu hoja o ERP sin intervención manual.", tags: ["Mercado Pago", "n8n"] },
+      { t: "Lector inteligente de facturas",   d: "Recibe facturas por correo, extrae datos con IA y los carga a tu sistema.", tags: ["IA Docs", "n8n"] },
+      { t: "Orquestador de back-office",       d: "Automatiza alta de clientes, notificaciones y reportes recurrentes entre tus apps.", tags: ["Integraciones", "n8n"] },
+    ];
+
+    const Soluciones = () => (
+      <section id="soluciones" className="section">
+        <div className="wrap">
+          <div className="soluciones-wrap">
+            <div className="soluciones-hdr">
+              <div className="sec-kicker">Soluciones</div>
+              <h2 className="sec-title">Listas para <em>tu negocio</em>.</h2>
+              <p className="sec-desc">Flujos que adaptamos a tu operación — implementación rápida, valor inmediato.</p>
+            </div>
+            <div className="soluciones-grid">
+              {soluciones.map((s) => (
+                <div key={s.t} className="sol-card">
+                  <div className="sol-title">{s.t}</div>
+                  <p className="sol-desc">{s.d}</p>
+                  <div className="sol-tags">
+                    {s.tags.map((tag) => (
+                      <span key={tag} className="badge badge-green">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ----------------------- PRECIOS ----------------------- */
+    const planes = [
+      {
+        t: "Diagnóstico inicial", precio: "Sin costo", unidad: "primera llamada de 30 min",
+        d: "Conocemos tu negocio y detectamos oportunidades.",
+        items: ["Entendemos tus procesos", "Identificamos qué automatizar primero", "Estimación de impacto", "Próximos pasos claros"],
+        cta: "Agendar llamada",
+      },
+      {
+        t: "Diseño e implementación", precio: "A tu medida", unidad: "según alcance del proyecto", destacado: true,
+        d: "Construimos la solución de extremo a extremo.",
+        items: ["Discovery y diseño de la solución", "Implementación y testing", "Salida a producción"],
+        cta: "Solicitar propuesta",
+      },
+      {
+        t: "Soporte continuo", precio: "Plan a medida", unidad: "acompañamiento mensual",
+        d: "Mejoramos y escalamos lo que ya funciona.",
+        items: ["Monitoreo y mantenimiento", "Ajustes y mejoras", "Nuevas automatizaciones", "Soporte prioritario"],
+        cta: "Conversemos",
+      },
+    ];
+
+    const Precios = () => (
+      <section id="precios" className="section" style={{background:"var(--paper-3)"}}>
+        <div className="wrap">
+          <div className="sec-hdr">
+            <div className="sec-num">03</div>
+            <div>
+              <div className="sec-kicker">Precios · Modelos</div>
+              <h2 className="sec-title">Cada propuesta es <em>a la medida</em>.</h2>
+              <p className="sec-desc">Empieza con una llamada sin costo para entender tu caso y diseñar la mejor solución.</p>
+            </div>
+          </div>
+          <div className="precios-grid">
+            {planes.map((p) => (
+              <div key={p.t} className={`precio-card${p.destacado ? " precio-card--dest" : ""}`}>
+                {p.destacado && (
+                  <div className="precio-rec">
+                    <span className="badge badge-green"><Ico id="i-check" w={13} h={13}/>Recomendado</span>
+                  </div>
+                )}
+                <div className="precio-title">{p.t}</div>
+                <p className="precio-d">{p.d}</p>
+                <div className="precio-price">{p.precio}</div>
+                <div className="precio-unit">{p.unidad}</div>
+                <ul className="precio-items">
+                  {p.items.map((item) => (
+                    <li key={item} className="precio-item">
+                      <svg className="precio-item-ico" width="16" height="16"><use href="#i-check"/></svg>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <a href="#contacto" className={`btn${p.destacado ? " btn-green" : " btn-primary"}`} style={{justifyContent:"center"}}>{p.cta}</a>
+              </div>
+            ))}
+          </div>
+          <p style={{marginTop:"20px", fontFamily:"var(--mono)", fontSize:"12px", letterSpacing:"0.04em", textTransform:"uppercase", color:"var(--ink-45)"}}>
+            ¿Listo para empezar? La primera llamada es gratis y sin compromiso. &nbsp;
+            <a href={waLink()} target="_blank" style={{color:"var(--green)", fontWeight:600}}>WhatsApp →</a>
+          </p>
+        </div>
+      </section>
+    );
+
+    /* ----------------------- CONTACTO ----------------------- */
+    const Contacto = () => {
+      const [sent, setSent] = useState(false);
+      const [situacion, setSituacion] = useState('');
+      const handle = (e) => {
+        e.preventDefault();
+        const f = e.target;
+        const nombre = f.nombre.value, correo = f.correo.value, empresa = f.empresa.value,
+              industria = f.industria.value, personas = f.personas.value, urgencia = f.urgencia.value,
+              mensaje = f.mensaje.value;
+        const payload = { nombre, correo, empresa, industria, personas, urgencia, mensaje, situacion };
+        if (CONFIG.formspree) {
+          fetch(CONFIG.formspree, {
+            method: "POST",
+            headers: { "Accept": "application/json", "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          }).then(() => setSent(true)).catch(() => { window.location.href = mailto(nombre, correo, empresa, industria, personas, urgencia, mensaje); });
+        } else {
+          window.location.href = mailto(nombre, correo, empresa, industria, personas, urgencia, mensaje);
+          setSent(true);
+        }
+      };
+      const mailto = (n="", c="", em="", ind="", per="", urg="", m="") =>
+        `mailto:${CONFIG.email}?subject=${encodeURIComponent("Nuevo lead — " + (em||n))}&body=${encodeURIComponent(`Situación: ${situacion}\nNombre: ${n}\nCorreo: ${c}\nEmpresa: ${em}\nIndustria: ${ind}\nPersonas: ${per}\nUrgencia: ${urg}\n\n${m}`)}`;
+
+      return (
+        <section id="contacto" className="section">
+          <div className="wrap">
+            <div className="sec-hdr">
+              <div className="sec-num">04</div>
+              <div>
+                <div className="sec-kicker">Contacto · Agenda</div>
+                <h2 className="sec-title">Hablemos de <em>tu negocio</em>.</h2>
+                <p className="sec-desc">En 30 minutos te decimos exactamente qué proceso de tu equipo puede automatizarse con IA esta semana.</p>
+              </div>
+            </div>
+            <div className="contacto-wrap">
+              <div className="contacto-left">
+                <div className="contact-links">
+                  <a href={waLink()} target="_blank" className="contact-link">
+                    <div className="contact-link-ico"><Ico id="i-chat" w={20} h={20}/></div>
+                    <div>
+                      <div className="contact-link-title">WhatsApp directo</div>
+                      <div className="contact-link-sub">Respuesta rápida</div>
+                    </div>
+                  </a>
+                  <a href={`mailto:${CONFIG.email}`} className="contact-link">
+                    <div className="contact-link-ico"><Ico id="i-mail" w={20} h={20}/></div>
+                    <div>
+                      <div className="contact-link-title">{CONFIG.email}</div>
+                      <div className="contact-link-sub">Correo</div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div className="contacto-right">
+                {sent ? (
+                  <div className="form-success">
+                    <svg className="form-success-ico" width="40" height="40"><use href="#i-check"/></svg>
+                    <h3>¡Mensaje listo!</h3>
+                    <p>Tu mensaje está en camino. Te responderé muy pronto.</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="seg-wrap">
+                      <div className="field-label" style={{marginBottom:'10px'}}>¿Qué describe mejor tu situación?</div>
+                      <div className="seg-chips">
+                        {['No sé por dónde empezar','Tengo un proceso específico','Estoy comparando opciones','Mi directivo me lo pidió'].map(op => (
+                          <button key={op} type="button"
+                            className={`chip-btn${situacion === op ? ' chip-sel' : ''}`}
+                            onClick={() => setSituacion(situacion === op ? '' : op)}>
+                            {op}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <form onSubmit={handle}>
+                      <div className="form-field">
+                        <label className="field-label">Nombre</label>
+                        <input name="nombre" required placeholder="Tu nombre" className="field" />
+                      </div>
+                      <div className="form-field">
+                        <label className="field-label">Correo</label>
+                        <input name="correo" type="email" required placeholder="tu@empresa.com" className="field" />
+                      </div>
+                      <div className="form-field">
+                        <label className="field-label">Empresa</label>
+                        <input name="empresa" required placeholder="Nombre de tu empresa" className="field" />
+                      </div>
+                      <div className="form-field">
+                        <label className="field-label">Industria</label>
+                        <select name="industria" required className="field sel-field" defaultValue="">
+                          <option value="" disabled>Selecciona tu industria</option>
+                          <option>Manufactura</option>
+                          <option>Retail / Comercio</option>
+                          <option>Servicios Financieros</option>
+                          <option>Salud</option>
+                          <option>Logística y Distribución</option>
+                          <option>Educación</option>
+                          <option>Tecnología</option>
+                          <option>Consultoría</option>
+                          <option>Otra</option>
+                        </select>
+                      </div>
+                      <div className="form-field">
+                        <label className="field-label">¿Cuántas personas realizan ese proceso hoy?</label>
+                        <select name="personas" required className="field sel-field" defaultValue="">
+                          <option value="" disabled>Selecciona una opción</option>
+                          <option>Solo yo</option>
+                          <option>2 a 5 personas</option>
+                          <option>6 a 20 personas</option>
+                          <option>Más de 20 personas</option>
+                        </select>
+                      </div>
+                      <div className="form-field">
+                        <label className="field-label">¿Cuándo quieres tenerlo resuelto?</label>
+                        <select name="urgencia" required className="field sel-field" defaultValue="">
+                          <option value="" disabled>Selecciona una opción</option>
+                          <option>Lo antes posible (es urgente)</option>
+                          <option>Este trimestre</option>
+                          <option>En los próximos 6 meses</option>
+                          <option>Solo estoy explorando</option>
+                        </select>
+                      </div>
+                      <div className="form-field">
+                        <label className="field-label">¿Qué proceso quieres automatizar?</label>
+                        <textarea name="mensaje" required rows="4" placeholder="Ej: facturas manuales, reportes, seguimiento de clientes, cotizaciones, atención al cliente..." className="field"></textarea>
+                      </div>
+                      <button type="submit" className="btn btn-green form-submit">
+                        <Ico id="i-arrow"/>Agendar 30 minutos gratis
+                      </button>
+                    </form>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    /* ----------------------- FOOTER ----------------------- */
+    const Footer = () => (
+      <footer className="site-footer">
+        <span>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México · <a href={`mailto:${CONFIG.email}`} className="hover:text-violet-400 transition-colors">{CONFIG.email}</a></span>
+        <a href={`mailto:${CONFIG.email}`} className="hover:text-violet-400 transition-colors">{CONFIG.email}</a>
+      </footer>
+    );
+
+    /* ----------------------- Botón flotante de WhatsApp ----------------------- */
+    const FloatingWA = () => (
+      <a href={waLink()} target="_blank" aria-label="WhatsApp" className="floating-wa">
+        <Ico id="i-wa" w={22} h={22}/>
+        <span className="floating-wa-text">WhatsApp</span>
+      </a>
+    );
+
+    /* ----------------------- APP ----------------------- */
+    const App = () => (
+      <div>
+        <Nav/>
+        <main>
+          <Hero/>
+          <Servicios/>
+          <Proceso/>
+          <Soluciones/>
+          <Precios/>
+          <Contacto/>
+        </main>
+        <Footer/>
+        <FloatingWA/>
+      </div>
+    );
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
