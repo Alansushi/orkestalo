@@ -3,10 +3,58 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://orkestalo.com/</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/?lang=es"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://orkestalo.com/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/"/>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://orkestalo.com/sobre-orkesta.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/sobre-orkesta.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/sobre-orkesta.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://orkestalo.com/casos-de-uso.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/casos-de-uso.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/casos-de-uso.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://orkestalo.com/preguntas-frecuentes.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/preguntas-frecuentes.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/preguntas-frecuentes.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://orkestalo.com/automatizacion-n8n.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/automatizacion-n8n.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/automatizacion-n8n.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://orkestalo.com/agentes-ia-claude.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/agentes-ia-claude.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/agentes-ia-claude.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://orkestalo.com/integraciones-mercado-pago.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/integraciones-mercado-pago.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/integraciones-mercado-pago.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://orkestalo.com/procesamiento-documentos-ia.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/procesamiento-documentos-ia.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/procesamiento-documentos-ia.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
 </urlset>

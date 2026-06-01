@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Integraciones de Mercado Pago — Orkesta | Cobros y conciliación automática</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="description" content="Integración de Mercado Pago con tu operación: checkout, links de pago, suscripciones, Point, conciliación automática con ERP/sheets, notificaciones y reportes en tiempo real." />
+  <meta name="keywords" content="integración Mercado Pago México, conciliación MP automática, webhooks Mercado Pago, MP API LATAM, cobros online integrados, Mercado Pago Point integración" />
+  <meta name="author" content="Orkesta" />
+  <meta name="robots" content="index, follow" />
+  <meta name="geo.region" content="MX-CMX" />
+  <meta name="geo.placename" content="Ciudad de México" />
+  <link rel="canonical" href="https://orkestalo.com/integraciones-mercado-pago.html" />
+  <link rel="alternate" hreflang="es" href="https://orkestalo.com/integraciones-mercado-pago.html" />
+  <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/integraciones-mercado-pago.html" />
+
+  <meta property="og:title" content="Integraciones de Mercado Pago — Orkesta" />
+  <meta property="og:description" content="Cobros conectados a tu operación con conciliación automática end-to-end. Sin captura manual ni errores de matching." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://orkestalo.com/integraciones-mercado-pago.html" />
+  <meta property="og:image" content="https://orkestalo.com/og-image.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="es_MX" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Integraciones de Mercado Pago — Orkesta" />
+  <meta name="twitter:description" content="Cobros conectados a tu operación con conciliación automática end-to-end." />
+  <meta name="twitter:image" content="https://orkestalo.com/og-image.svg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Integraciones de Mercado Pago",
+    "url": "https://orkestalo.com/integraciones-mercado-pago.html",
+    "serviceType": "Payment Integration Consulting",
+    "provider": { "@type": "Organization", "name": "Orkesta", "url": "https://orkestalo.com" },
+    "areaServed": [
+      { "@type": "Country", "name": "Mexico" },
+      { "@type": "Place", "name": "Latin America" }
+    ],
+    "description": "Integración de Mercado Pago con tu operación: checkout, links de pago, suscripciones, Point, conciliación automática con ERP/sheets, notificaciones y reportes en tiempo real."
+  }
+  </script>
+
+  <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preload" href="/defs.svg" as="image" type="image/svg+xml">
+</head>
+<body>
+  <div id="root">
+    <div class="ssr-fallback">
+      <header>
+        <a href="/"><strong>Orkesta</strong> · Integraciones de Mercado Pago</a>
+        <nav>
+          <a href="/#soluciones">Soluciones</a>
+          <a href="/casos-de-uso.html">Casos</a>
+          <a href="/preguntas-frecuentes.html">FAQs</a>
+          <a href="/#contacto">Contacto</a>
+        </nav>
+      </header>
+      <main>
+        <section id="top">
+          <h1>Mercado Pago conectado a tu operación</h1>
+          <p>Integramos checkout, links de pago, Point y suscripciones de Mercado Pago con tu ERP, hoja o CRM. Conciliación automática end-to-end, sin captura manual.</p>
+          <p><a href="https://wa.me/525587662865">WhatsApp +52 55 8766 2865</a> · <a href="/#contacto">Agendar diagnóstico</a></p>
+        </section>
+        <section><h2>Qué integramos</h2><ul>
+          <li>Checkout web, links de pago dinámicos y suscripciones recurrentes.</li>
+          <li>Mercado Pago Point (cobros in-store con terminal física).</li>
+          <li>Conciliación automática contra ERP, Google Sheets o sistema interno.</li>
+          <li>Notificaciones a clientes, refunds automatizados y dashboard de ventas en tiempo real.</li>
+        </ul></section>
+      </main>
+    </div>
+  </div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState } = React;
+
+    const CONFIG = { marca: "Orkesta", whatsapp: "525587662865", email: "info@orkestalo.com" };
+    const waLink = (msg) =>
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || "Hola, quiero integrar Mercado Pago a mi operación.")}`;
+    const Ico = ({ id, w = 18, h = 18 }) => (
+      <svg width={w} height={h} aria-hidden="true"><use href={`/defs.svg#${id}`}/></svg>
+    );
+
+    const Nav = () => {
+      const [open, setOpen] = useState(false);
+      const links = [
+        ["Soluciones", "/#soluciones"],
+        ["Servicios",  "/#servicios"],
+        ["Casos",      "/casos-de-uso.html"],
+        ["FAQs",       "/preguntas-frecuentes.html"],
+        ["Precios",    "/#precios"],
+        ["Contacto",   "/#contacto"],
+      ];
+      return (
+        <header className="nav-bar nav-bar--green">
+          <div className="nav-inner">
+            <a href="/" className="nav-logo">
+              <svg width="34" height="34"><use href="/defs.svg#mark"/></svg>
+              <span className="nav-wordmark">{CONFIG.marca}</span>
+            </a>
+            <nav className="nav-links">
+              {links.map(([t, h]) => <a key={h} href={h} className="nav-link">{t}</a>)}
+              <a href="/#contacto" className="btn btn-primary nav-cta">Agenda una charla</a>
+            </nav>
+            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label="Menú">
+              <span/><span/><span/>
+            </button>
+          </div>
+          {open && (
+            <div className="nav-mobile">
+              {links.map(([t, h]) => <a key={h} href={h} onClick={() => setOpen(false)}>{t}</a>)}
+            </div>
+          )}
+        </header>
+      );
+    };
+
+    const PageHero = () => (
+      <section id="top" className="page-hero">
+        <div className="wrap">
+          <span className="badge badge-green hero-kicker"><Ico id="i-integra" w={13} h={13}/>Servicio · Integraciones de Mercado Pago</span>
+          <h1><em>Mercado Pago</em> conectado a tu operación, sin captura manual.</h1>
+          <p className="lead">
+            Integramos <b>checkout</b>, <b>links de pago</b>, <b>Point</b> y <b>suscripciones</b> de Mercado Pago con tu ERP, hoja o CRM. Cada venta queda registrada y conciliada en tiempo real — cero data entry, cero discrepancias el lunes en la mañana.
+          </p>
+          <div className="ctas">
+            <a href={waLink()} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
+            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+          </div>
+        </div>
+      </section>
+    );
+
+    const capabilities = [
+      { iconId: "i-integra", t: "Checkout, links y suscripciones",       d: "Checkout web embebido o redirect, links de pago dinámicos para WhatsApp/correo, y suscripciones recurrentes con manejo de fallos de cobro." },
+      { iconId: "i-auto",    t: "Mercado Pago Point (in-store)",          d: "Cobros con terminal física Point conectados a tu sistema de inventario o POS. Cada venta dispara stock y registro contable." },
+      { iconId: "i-flujo",   t: "Conciliación automática",                d: "Webhooks de MP cruzados en tiempo real con ventas del ERP/sheet. Discrepancias marcadas el día que ocurren, no una semana después." },
+      { iconId: "i-chat",    t: "Notificaciones, refunds y reportes",     d: "Confirmaciones automáticas por WhatsApp/correo, refunds vía API sin contactar soporte, y dashboard live de ventas con corte por canal." },
+    ];
+
+    const Capabilities = () => (
+      <section id="capabilities" className="section">
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">Qué integramos</div>
+              <h2 className="sec-title">Toda la operación de pagos, <em>end-to-end</em>.</h2>
+              <p className="sec-desc">Desde el momento del cobro hasta la conciliación contable. Sin cajas negras ni "magia": cada paso queda documentado y trazable.</p>
+            </div>
+          </div>
+          <div className="svc-grid">
+            {capabilities.map(c => (
+              <div key={c.t} className="svc-card">
+                <div className="svc-ico"><Ico id={c.iconId} w={26} h={26}/></div>
+                <div className="svc-title">{c.t}</div>
+                <p className="svc-desc">{c.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    const sinOrkesta = [
+      "Descargar extracto MP los lunes y cruzar con ventas a mano.",
+      "Errores de matching: pagos parciales, devoluciones, comisiones cambiantes.",
+      "Inconsistencias detectadas días o semanas después.",
+      "Sin notificaciones al cliente: dudas sobre si llegó el pago.",
+    ];
+    const conOrkesta = [
+      "Cada transacción se registra automáticamente al ocurrir vía webhook.",
+      "Comisiones, refunds y disputas se manejan con reglas, no a ojo.",
+      "Dashboard live con corte por canal, sucursal o vendedor.",
+      "Confirmación automática al cliente por WhatsApp o correo al cobrar.",
+    ];
+
+    const Compare = () => (
+      <section id="compare" className="section" style={{background:"var(--paper-2)"}}>
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">Comparativa · Manual vs integrado</div>
+              <h2 className="sec-title">Procesar pagos a mano <em>vs.</em> conciliación automática.</h2>
+              <p className="sec-desc">El costo real de la conciliación manual no es el tiempo — son los errores que descubrís tarde y las decisiones que tomás con datos incompletos.</p>
+            </div>
+          </div>
+          <div className="compare-grid">
+            <div className="compare-col">
+              <div className="compare-label">Procesar pagos a mano</div>
+              <h3 className="compare-title">Descargar extracto, cruzar en Excel</h3>
+              <ul className="compare-list">
+                {sinOrkesta.map(item => (
+                  <li key={item} className="compare-item">
+                    <svg className="compare-item-ico"><use href="/defs.svg#i-arrow"/></svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="compare-col compare-col--orkesta">
+              <div className="compare-label">Con Orkesta · MP integrado</div>
+              <h3 className="compare-title">Cobros conciliados al ocurrir</h3>
+              <ul className="compare-list">
+                {conOrkesta.map(item => (
+                  <li key={item} className="compare-item">
+                    <svg className="compare-item-ico"><use href="/defs.svg#i-check"/></svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    const CtaFinal = () => (
+      <section className="section">
+        <div className="wrap">
+          <div className="cta-block">
+            <h2>¿Tu equipo <em>concilia Mercado Pago</em> el lunes en la mañana?</h2>
+            <p>30 minutos sin compromiso. Te decimos qué partes de tu flujo MP se pueden automatizar primero, qué requiere webhooks vs reconciliación batch, y cuánto se demora la implementación.</p>
+            <div className="ctas">
+              <a href={waLink()} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
+              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    const Footer = () => (
+      <footer className="site-footer">
+        <span>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
+        <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
+      </footer>
+    );
+
+    const FloatingWA = () => (
+      <a href={waLink()} target="_blank" aria-label="WhatsApp" className="floating-wa">
+        <Ico id="i-wa" w={22} h={22}/>
+        <span className="floating-wa-text">WhatsApp</span>
+      </a>
+    );
+
+    const App = () => (
+      <div>
+        <Nav/>
+        <main>
+          <PageHero/>
+          <Capabilities/>
+          <Compare/>
+          <CtaFinal/>
+        </main>
+        <Footer/>
+        <FloatingWA/>
+      </div>
+    );
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

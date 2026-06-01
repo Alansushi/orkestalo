@@ -1,51 +1,87 @@
 # Orkesta
 
-> Consultoría en automatización de procesos e IA aplicada para empresas en CDMX, México y LATAM. Especialistas en n8n, Claude API, Mercado Pago e integraciones a medida.
+> Consultoría en automatización de procesos e IA aplicada para PyMEs en CDMX, México y LATAM. Especialistas en n8n, Claude API, Mercado Pago e integraciones a medida.
 
-Orkesta diseña e implementa automatizaciones con n8n, agentes inteligentes con Claude, y soluciones de integración para empresas que quieren reducir trabajo manual y escalar sus operaciones. Del discovery a producción, sin fricción. Disponible en español e inglés.
+Orkesta diseña e implementa automatizaciones con n8n, agentes inteligentes con Claude, y soluciones de integración para empresas que quieren reducir trabajo manual y escalar sus operaciones. Posicionamiento: **automatización pragmática con ROI medible, sin lock-in, sin moda.** Del discovery a producción en semanas, no meses.
+
+## Páginas del sitio
+
+- [Home](https://orkestalo.com/) — Landing principal con servicios, proceso, soluciones, precios, FAQs y formulario de contacto.
+- [Sobre Orkesta](https://orkestalo.com/sobre-orkesta.html) — Quiénes somos, manifiesto de 3 principios (pragmatismo, ROI, sin lock-in), stack productivo y cobertura geográfica.
+- [Casos de uso](https://orkestalo.com/casos-de-uso.html) — 5 casos descriptivos por industria (inmobiliaria, e-commerce, servicios B2C, manufactura, SaaS B2B) con problema, solución y stack.
+- [Preguntas frecuentes](https://orkestalo.com/preguntas-frecuentes.html) — 12 FAQs agrupadas en 4 temas: trabajo y proyecto, stack y soporte, logística, datos/propiedad/legal.
+- [Automatización con n8n](https://orkestalo.com/automatizacion-n8n.html) — Página de servicio: capabilities y comparativa vs Zapier/Make/custom code.
+- [Agentes con IA y Claude](https://orkestalo.com/agentes-ia-claude.html) — Página de servicio: capabilities (asistentes, tool use, documentos, clasificación) y comparativa vs chatbots tradicionales.
+- [Integraciones de Mercado Pago](https://orkestalo.com/integraciones-mercado-pago.html) — Página de servicio: checkout, Point, conciliación, notificaciones y reportes en tiempo real.
+- [Procesamiento de documentos con IA](https://orkestalo.com/procesamiento-documentos-ia.html) — Página de servicio: facturas, recibos, contratos, emails con Claude vision (vs OCR tradicional).
 
 ## Servicios
 
-- **Chatbots y agentes con IA**: Asistentes con Claude para ventas, soporte y procesos internos en web o WhatsApp.
-- **Automatización con n8n**: Conectamos CRM, correo, hojas de cálculo, facturación y más para eliminar trabajo manual repetitivo.
-- **Procesamiento de documentos con IA**: Extracción y clasificación automática de facturas, correos y documentos.
+- **Chatbots y agentes con IA**: Asistentes con Claude para ventas, soporte y procesos internos en web o WhatsApp. Tool use real, no chatbots de reglas.
+- **Automatización con n8n**: Conectamos CRM, correo, hojas de cálculo, facturación y APIs externas para eliminar trabajo manual repetitivo. Self-hosted o cloud.
+- **Procesamiento de documentos con IA**: Extracción y clasificación automática de facturas, recibos, contratos y emails con Claude vision. Entiende layout y contexto.
 - **Claude integrado a tu negocio**: Optimización de procesos incorporando modelos de IA donde generan más valor operativo.
-- **Configuración de LLMs**: Claude, GPT, Mistral como motor de flujos de n8n y automatizaciones.
-- **Integraciones de Mercado Pago**: Cobros online e in-store conectados a tu operación con conciliación automática.
-- **Integraciones a medida**: Conectamos sistemas que no se comunican entre sí vía APIs y webhooks.
+- **Integraciones de Mercado Pago**: Cobros online (checkout, links, suscripciones) e in-store (Point) conectados a tu operación con conciliación automática.
+- **Integraciones a medida**: Conectamos sistemas que no se comunican entre sí vía APIs y webhooks, con retries y observabilidad de producción.
 
 ## Proceso de trabajo
 
-1. Discovery — Mapeamos procesos y detectamos automatizaciones de mayor impacto.
-2. Diseño — Arquitectura de la solución con entregables claros.
-3. Implementación — Flujos, agentes e integraciones siguiendo buenas prácticas.
-4. Testing — Pruebas de extremo a extremo en escenarios reales.
-5. Checklist de buenas prácticas — Seguridad, manejo de errores, logs, documentación.
-6. Salida a producción — Despliegue, monitoreo y acompañamiento.
+1. **Discovery** — Mapeamos procesos y detectamos automatizaciones de mayor impacto.
+2. **Diseño** — Arquitectura de la solución con entregables claros y estimación de ROI.
+3. **Implementación** — Flujos, agentes e integraciones siguiendo buenas prácticas.
+4. **Testing** — Pruebas de extremo a extremo en escenarios reales.
+5. **Checklist de buenas prácticas** — Seguridad, manejo de errores, logs, documentación.
+6. **Salida a producción** — Despliegue, monitoreo y acompañamiento.
 
 ## Soluciones listas para implementar
 
-- **Asistente de atención 24/7**: Agente con Claude que responde dudas, califica leads y agenda — en web o WhatsApp.
-- **Conciliación automática de pagos**: Integra Mercado Pago, registra ventas y concilia con hoja o ERP sin intervención manual.
-- **Lector inteligente de facturas**: Recibe facturas por correo, extrae datos con IA y los carga al sistema.
-- **Orquestador de back-office**: Automatiza alta de clientes, notificaciones y reportes recurrentes entre apps.
+- **Asistente de atención 24/7**: Agente con Claude que responde dudas, califica leads y agenda — en web o WhatsApp. Beneficio: atiende fuera de horario sin sumar headcount.
+- **Conciliación automática de pagos**: Integra Mercado Pago, registra ventas y concilia con hoja o ERP sin intervención manual. Beneficio: elimina la captura manual de cobros.
+- **Lector inteligente de facturas**: Recibe facturas por correo, extrae datos con IA y los carga al sistema. Beneficio: reduce horas de data entry.
+- **Orquestador de back-office**: Automatiza alta de clientes, notificaciones y reportes recurrentes entre apps. Beneficio: libera al equipo de tareas mecánicas recurrentes.
+
+## ¿Es para ti?
+
+Trabajamos mejor con empresas que:
+
+- Usan Excel para procesos repetitivos que ya no escalan.
+- Tienen tareas manuales que cruzan sistemas (CRM, correo, ERP, contabilidad).
+- Pierden horas capturando información a mano desde correos o documentos.
+- Atienden clientes por WhatsApp y el volumen ya no se sostiene manual.
+- Quieren IA pragmática sin contratar un equipo técnico in-house.
 
 ## Precios
 
-- **Diagnóstico inicial**: $500 USD por sesión de hasta 1 hora — entendemos tu negocio e identificamos oportunidades.
-- **Diseño e implementación**: Propuesta a medida según alcance del proyecto — solución de extremo a extremo.
-- **Soporte continuo**: Plan mensual a medida — monitoreo, mejoras y nuevas automatizaciones.
+- **Diagnóstico inicial**: Sin costo, primera llamada de 30 minutos — entendemos tu negocio y entregamos próximos pasos claros.
+- **Diseño e implementación**: Propuesta a medida según alcance del proyecto — solución de extremo a extremo (discovery → producción).
+- **Soporte continuo**: Plan mensual a medida — monitoreo, ajustes, mejoras y nuevas automatizaciones.
+
+## Stack productivo
+
+- **n8n** para orquestación de flujos (self-hosted o cloud, según el caso).
+- **Claude API** (Anthropic) para agentes, asistentes y procesamiento de documentos con razonamiento.
+- **Mercado Pago** para cobros online e in-store con conciliación automática.
+- **APIs y webhooks** para integrar cualquier sistema con HTTP.
+- Trabajamos sobre el stack existente del cliente — no forzamos migraciones.
+
+## Filosofía / posicionamiento
+
+Tres principios:
+
+1. **Pragmatismo sobre buzz**. Si Excel resuelve, no vendemos un agente. Empezamos por lo más simple que entregue valor.
+2. **ROI antes que tecnología**. Cada propuesta tiene una estimación clara de impacto. Si no hay ROI, lo decimos.
+3. **Sin lock-in**. El código y los flujos viven en la infraestructura del cliente. Entregamos accesos, documentación y handoff.
 
 ## Contacto
 
 - Web: https://orkestalo.com
 - Email: info@orkestalo.com
 - WhatsApp: +52 55 8766 2865
-- Versión en inglés: https://orkestalo.com/?lang=en
+- Diagnóstico inicial sin costo (30 min): https://orkestalo.com/#contacto
 
 ## Área de servicio
 
-Ciudad de México (CDMX) · México · LATAM · Estados Unidos
+Ciudad de México (CDMX) · México · LATAM · Estados Unidos. Operación 100% remota vía WhatsApp, correo y videollamada.
 
 ## Contenido completo
 

@@ -828,6 +828,70 @@
       .caso-impact-text { font-size: 15px; }
     }
 
+    /* ---- Compare grid (sin Orkesta vs con Orkesta, para service pages) ---- */
+    .compare-grid {
+      border: 1px solid var(--ink);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .compare-col {
+      padding: 32px 36px;
+      background: var(--paper-2);
+    }
+    .compare-col--orkesta {
+      background: var(--green-tint);
+      border-left: 1px solid var(--ink);
+    }
+    .compare-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-70);
+      margin-bottom: 16px;
+    }
+    .compare-col--orkesta .compare-label {
+      color: var(--green-deep);
+      font-weight: 600;
+    }
+    .compare-title {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+      margin-bottom: 20px;
+      color: var(--ink);
+    }
+    .compare-col--orkesta .compare-title { color: var(--green-deep); }
+    .compare-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .compare-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--ink);
+    }
+    .compare-item-ico {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      color: var(--ink-45);
+    }
+    .compare-col--orkesta .compare-item-ico { color: var(--green); }
+    @media (max-width: 640px) {
+      .compare-grid { grid-template-columns: 1fr; }
+      .compare-col { padding: 24px 22px; }
+      .compare-col--orkesta { border-left: none; border-top: 1px solid var(--ink); }
+    }
+
     /* ---- ¿Es para ti? (qualifier) ---- */
     .pq-grid {
       border: 1px solid var(--ink);

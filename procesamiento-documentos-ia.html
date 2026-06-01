@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Procesamiento de documentos con IA — Orkesta | Extracción inteligente</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="description" content="Extracción inteligente de datos desde facturas, recibos, contratos y emails con Claude vision. Entiende layout y contexto — no es OCR tradicional. Reduce horas de captura manual." />
+  <meta name="keywords" content="procesamiento documentos IA, extracción facturas IA, OCR Claude vision, lector inteligente PDF, automatización captura contable, extracción contratos IA México" />
+  <meta name="author" content="Orkesta" />
+  <meta name="robots" content="index, follow" />
+  <meta name="geo.region" content="MX-CMX" />
+  <meta name="geo.placename" content="Ciudad de México" />
+  <link rel="canonical" href="https://orkestalo.com/procesamiento-documentos-ia.html" />
+  <link rel="alternate" hreflang="es" href="https://orkestalo.com/procesamiento-documentos-ia.html" />
+  <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/procesamiento-documentos-ia.html" />
+
+  <meta property="og:title" content="Procesamiento de documentos con IA — Orkesta" />
+  <meta property="og:description" content="Extracción de facturas, contratos y emails con Claude vision. Entiende contexto, maneja variantes, sin re-entrenar." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://orkestalo.com/procesamiento-documentos-ia.html" />
+  <meta property="og:image" content="https://orkestalo.com/og-image.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="es_MX" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Procesamiento de documentos con IA — Orkesta" />
+  <meta name="twitter:description" content="Extracción de facturas, contratos y emails con Claude vision." />
+  <meta name="twitter:image" content="https://orkestalo.com/og-image.svg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Procesamiento de documentos con IA",
+    "url": "https://orkestalo.com/procesamiento-documentos-ia.html",
+    "serviceType": "Intelligent Document Processing",
+    "provider": { "@type": "Organization", "name": "Orkesta", "url": "https://orkestalo.com" },
+    "areaServed": [
+      { "@type": "Country", "name": "Mexico" },
+      { "@type": "Place", "name": "Latin America" },
+      { "@type": "Country", "name": "United States" }
+    ],
+    "description": "Extracción inteligente de datos desde facturas, recibos, contratos y emails usando Claude vision. Entiende layout y contexto, maneja variantes sin re-entrenar."
+  }
+  </script>
+
+  <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preload" href="/defs.svg" as="image" type="image/svg+xml">
+</head>
+<body>
+  <div id="root">
+    <div class="ssr-fallback">
+      <header>
+        <a href="/"><strong>Orkesta</strong> · Procesamiento de documentos con IA</a>
+        <nav>
+          <a href="/#soluciones">Soluciones</a>
+          <a href="/casos-de-uso.html">Casos</a>
+          <a href="/preguntas-frecuentes.html">FAQs</a>
+          <a href="/#contacto">Contacto</a>
+        </nav>
+      </header>
+      <main>
+        <section id="top">
+          <h1>Extracción inteligente de facturas, contratos y emails</h1>
+          <p>Claude vision lee tus documentos, entiende layout y contexto, y extrae datos estructurados directo a tu sistema. No es OCR tradicional — funciona con variantes y casos nuevos.</p>
+          <p><a href="https://wa.me/525587662865">WhatsApp +52 55 8766 2865</a> · <a href="/#contacto">Agendar diagnóstico</a></p>
+        </section>
+        <section><h2>Qué procesamos</h2><ul>
+          <li>Facturas (PDF, imagen, correo): monto, RFC, fecha, concepto, partidas.</li>
+          <li>Recibos y comprobantes para reembolsos y rendición de gastos.</li>
+          <li>Contratos: extracción de cláusulas, fechas clave, montos, partes.</li>
+          <li>Emails: clasificación, extracción de campos y enrutamiento.</li>
+        </ul></section>
+      </main>
+    </div>
+  </div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState } = React;
+
+    const CONFIG = { marca: "Orkesta", whatsapp: "525587662865", email: "info@orkestalo.com" };
+    const waLink = (msg) =>
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || "Hola, quiero automatizar el procesamiento de documentos con IA.")}`;
+    const Ico = ({ id, w = 18, h = 18 }) => (
+      <svg width={w} height={h} aria-hidden="true"><use href={`/defs.svg#${id}`}/></svg>
+    );
+
+    const Nav = () => {
+      const [open, setOpen] = useState(false);
+      const links = [
+        ["Soluciones", "/#soluciones"],
+        ["Servicios",  "/#servicios"],
+        ["Casos",      "/casos-de-uso.html"],
+        ["FAQs",       "/preguntas-frecuentes.html"],
+        ["Precios",    "/#precios"],
+        ["Contacto",   "/#contacto"],
+      ];
+      return (
+        <header className="nav-bar nav-bar--green">
+          <div className="nav-inner">
+            <a href="/" className="nav-logo">
+              <svg width="34" height="34"><use href="/defs.svg#mark"/></svg>
+              <span className="nav-wordmark">{CONFIG.marca}</span>
+            </a>
+            <nav className="nav-links">
+              {links.map(([t, h]) => <a key={h} href={h} className="nav-link">{t}</a>)}
+              <a href="/#contacto" className="btn btn-primary nav-cta">Agenda una charla</a>
+            </nav>
+            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label="Menú">
+              <span/><span/><span/>
+            </button>
+          </div>
+          {open && (
+            <div className="nav-mobile">
+              {links.map(([t, h]) => <a key={h} href={h} onClick={() => setOpen(false)}>{t}</a>)}
+            </div>
+          )}
+        </header>
+      );
+    };
+
+    const PageHero = () => (
+      <section id="top" className="page-hero">
+        <div className="wrap">
+          <span className="badge badge-green hero-kicker"><Ico id="i-flujo" w={13} h={13}/>Servicio · Procesamiento de documentos con IA</span>
+          <h1>Extracción <em>inteligente</em> desde facturas, contratos y emails.</h1>
+          <p className="lead">
+            <b>Claude vision</b> lee tus documentos como una persona: entiende layout, distingue tablas de párrafos, maneja sellos y firmas, y se adapta a variantes sin re-entrenar. La salida queda estructurada y carga directo a tu ERP, hoja o base de datos.
+          </p>
+          <div className="ctas">
+            <a href={waLink()} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
+            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+          </div>
+        </div>
+      </section>
+    );
+
+    const capabilities = [
+      { iconId: "i-flujo",   t: "Facturas y CFDI",                       d: "PDFs, imágenes o XML CFDI: extraemos emisor, receptor, monto, IVA, fecha, concepto y partidas. Validamos contra reglas (RFC válido, montos coherentes, fechas en rango)." },
+      { iconId: "i-modelo",  t: "Recibos y comprobantes",                 d: "Reembolsos, gastos de viaje, propinas. Manejamos múltiples idiomas y monedas, conversión automática y categorización contable." },
+      { iconId: "i-agente",  t: "Contratos con campos clave",             d: "Identificamos partes, fechas clave (firma, inicio, vencimiento, renovación), montos, cláusulas críticas (rescisión, exclusividad) y los exportamos estructurados." },
+      { iconId: "i-mail",    t: "Emails: clasificación y extracción",     d: "Detectamos tipo (queja, cotización, factura adjunta), extraemos campos relevantes y enrutamos al equipo o sistema correcto automáticamente." },
+    ];
+
+    const Capabilities = () => (
+      <section id="capabilities" className="section">
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">Qué procesamos</div>
+              <h2 className="sec-title">Cuatro tipos de documentos <em>que generan el 80% del trabajo</em>.</h2>
+              <p className="sec-desc">Si tu equipo pasa horas leyendo y capturando información desde papel/PDF/correo, probablemente sea uno de estos cuatro patrones.</p>
+            </div>
+          </div>
+          <div className="svc-grid">
+            {capabilities.map(c => (
+              <div key={c.t} className="svc-card">
+                <div className="svc-ico"><Ico id={c.iconId} w={26} h={26}/></div>
+                <div className="svc-title">{c.t}</div>
+                <p className="svc-desc">{c.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    const sinOrkesta = [
+      "OCR tradicional (Tesseract, ABBYY) requiere reglas por layout — frágil a variantes.",
+      "Cada nuevo proveedor o formato implica ajustar templates manualmente.",
+      "No entiende contexto: confunde columnas, ignora sellos, falla con tablas complejas.",
+      "Errores difíciles de detectar: el sistema entrega valores incorrectos sin alertar.",
+    ];
+    const conOrkesta = [
+      "Claude vision lee como humano: maneja layouts variados sin templates específicos.",
+      "Nuevos formatos funcionan sin configuración — el modelo se adapta solo.",
+      "Entiende contexto: distingue total de subtotal, tabla de prosa, firma de logo.",
+      "Validación con reglas de negocio: alertas cuando algo no cuadra antes de pasar al sistema.",
+    ];
+
+    const Compare = () => (
+      <section id="compare" className="section" style={{background:"var(--paper-2)"}}>
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">Comparativa · OCR tradicional vs IA con razonamiento</div>
+              <h2 className="sec-title">Por qué Claude vision <em>vs.</em> OCR con reglas.</h2>
+              <p className="sec-desc">El OCR clásico funciona bien cuando todos los documentos son idénticos. En la realidad, cada proveedor manda formato distinto — y ahí los templates se rompen.</p>
+            </div>
+          </div>
+          <div className="compare-grid">
+            <div className="compare-col">
+              <div className="compare-label">OCR tradicional + reglas</div>
+              <h3 className="compare-title">Tesseract, ABBYY, templates manuales</h3>
+              <ul className="compare-list">
+                {sinOrkesta.map(item => (
+                  <li key={item} className="compare-item">
+                    <svg className="compare-item-ico"><use href="/defs.svg#i-arrow"/></svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="compare-col compare-col--orkesta">
+              <div className="compare-label">Con Orkesta · Claude vision</div>
+              <h3 className="compare-title">Extracción que escala sin re-entrenar</h3>
+              <ul className="compare-list">
+                {conOrkesta.map(item => (
+                  <li key={item} className="compare-item">
+                    <svg className="compare-item-ico"><use href="/defs.svg#i-check"/></svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    const CtaFinal = () => (
+      <section className="section">
+        <div className="wrap">
+          <div className="cta-block">
+            <h2>¿Tu equipo está <em>capturando datos a mano</em> desde PDFs?</h2>
+            <p>30 minutos sin compromiso. Te decimos qué documentos vale automatizar primero (alto volumen + bajo valor agregado), cómo medir precisión, y qué excepciones requieren humano en el loop.</p>
+            <div className="ctas">
+              <a href={waLink()} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
+              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    const Footer = () => (
+      <footer className="site-footer">
+        <span>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
+        <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
+      </footer>
+    );
+
+    const FloatingWA = () => (
+      <a href={waLink()} target="_blank" aria-label="WhatsApp" className="floating-wa">
+        <Ico id="i-wa" w={22} h={22}/>
+        <span className="floating-wa-text">WhatsApp</span>
+      </a>
+    );
+
+    const App = () => (
+      <div>
+        <Nav/>
+        <main>
+          <PageHero/>
+          <Capabilities/>
+          <Compare/>
+          <CtaFinal/>
+        </main>
+        <Footer/>
+        <FloatingWA/>
+      </div>
+    );
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

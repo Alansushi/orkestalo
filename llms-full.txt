@@ -1,155 +1,329 @@
 # Orkesta — Contenido completo del sitio
-Última actualización: 2026-05-30
-Generado automáticamente desde TRANSLATIONS.es en index.html — ejecutar /update-llm para refrescar.
+Última actualización: 2026-06-01
 
 ---
+
+# Home — https://orkestalo.com/
 
 ## Hero
 
-**Titular:** Automatización e IA que orquesta tu negocio
+**Titular:** Automatización pragmática para que tu equipo deje de hacer trabajo manual.
 
-**Subtítulo:** Diseñamos e implementamos automatizaciones con n8n, agentes y soluciones con Claude, e integraciones a medida. Menos trabajo manual, más resultados — del discovery a producción.
+**Subtítulo:** Implementamos agentes con Claude, flujos en n8n e integraciones a medida. Discovery → producción en semanas, no meses. Foco en procesos con ROI medible.
 
 **Badge:** Consultoría en automatización e IA aplicada
 
-**CTAs:** Agenda tu diagnóstico inicial · WhatsApp
+**CTAs:** WhatsApp · Agendar diagnóstico
 
-**Trust badges:** Diagnóstico · $500 / hr · Entregables claros por etapa · Buenas prácticas y soporte
+**Trust strip:** Stack: Claude · n8n · Mercado Pago | Discovery → producción en semanas | CDMX · LATAM · USA | Primera llamada sin costo
 
 ---
 
-## Servicios
+## ¿Es para ti?
 
-Sección: Lo que construimos juntos.
-Descripción: Soluciones que puedes contratar por proyecto o como iguala continua.
+Sección de calificación. Trabajamos mejor con empresas que se reconocen en al menos dos de estos puntos:
 
-1. **Chatbots y agentes con IA**
-   Asistentes con Claude para ventas, soporte y procesos internos, en web o WhatsApp.
+- Usan Excel para procesos repetitivos que ya no escalan.
+- Tienen tareas manuales que cruzan sistemas (CRM, correo, ERP, contabilidad).
+- Pierden horas capturando información a mano desde correos o documentos.
+- Atienden clientes por WhatsApp y el volumen ya no se sostiene manual.
+- Quieren IA pragmática sin contratar un equipo técnico in-house.
 
-2. **Automatización con n8n**
-   Conectamos tus apps (CRM, correo, hojas, facturación) y eliminamos el trabajo manual repetitivo.
+---
 
-3. **Procesamiento de documentos con IA**
-   Extracción y clasificación de facturas, correos y documentos con IA.
+## Soluciones listas
 
-4. **Claude integrado a tu negocio**
-   Optimización de procesos incorporando modelos de IA donde generan más valor.
+Plantillas que se adaptan a la operación de cada cliente — implementación rápida, valor inmediato.
 
-5. **Configuración de OpenClaw y LLMs**
-   Conectamos y configuramos modelos de lenguaje (Claude, GPT, Mistral y más) como motor de tus flujos de n8n y automatizaciones.
+1. **Asistente de atención 24/7** — Beneficio: atiende fuera de horario sin sumar headcount. Agente con Claude que responde dudas, califica leads y agenda — en web o WhatsApp. Tags: Claude, WhatsApp, Leads.
+2. **Conciliación de pagos automática** — Beneficio: elimina la captura manual de cobros. Integra Mercado Pago, registra ventas y concilia con hoja o ERP sin intervención manual. Tags: Mercado Pago, n8n.
+3. **Lector inteligente de facturas** — Beneficio: reduce horas de data entry de facturas y recibos. Recibe facturas por correo, extrae datos con IA y los carga al sistema. Tags: IA Docs, n8n.
+4. **Orquestador de back-office** — Beneficio: libera al equipo de tareas mecánicas. Automatiza alta de clientes, notificaciones y reportes recurrentes entre apps. Tags: Integraciones, n8n.
 
-6. **Integraciones de Mercado Pago**
-   Cobros online e in-store conectados a tu operación y conciliación automática.
+---
 
-7. **Integraciones a medida**
-   Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable.
+## Servicios (lo que construimos juntos)
+
+1. **Chatbots y agentes con IA** — Asistentes con Claude para ventas, soporte y procesos internos, en web o WhatsApp.
+2. **Automatización con n8n** — Conectamos tus apps (CRM, correo, hojas, facturación) y eliminamos el trabajo manual repetitivo.
+3. **Procesamiento de documentos con IA** — Extracción y clasificación de facturas, correos y documentos con IA.
+4. **Claude integrado a tu negocio** — Optimización de procesos incorporando modelos de IA donde generan más valor.
+5. **Integraciones de Mercado Pago** — Cobros online e in-store conectados a tu operación y conciliación automática.
+6. **Integraciones a medida** — Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable.
 
 ---
 
 ## Proceso
 
-Sección: De la idea a producción, sin fricción.
-Descripción: Un proceso probado, transparente en cada etapa.
+De la idea a producción, sin fricción. Proceso probado, transparente en cada etapa.
 
-01. **Discovery**
-    Entendemos tu negocio, mapeamos procesos y detectamos las automatizaciones de mayor impacto.
-
-02. **Diseño**
-    Definimos la arquitectura de la solución, herramientas y alcance con entregables claros.
-
-03. **Implementación**
-    Construimos los flujos, agentes e integraciones siguiendo buenas prácticas.
-
-04. **Testing**
-    Pruebas de extremo a extremo para asegurar que todo funciona en escenarios reales.
-
-05. **Checklist de buenas prácticas**
-    Seguridad, manejo de errores, logs y documentación antes de liberar.
-
-06. **Salida a producción**
-    Despliegue, monitoreo y acompañamiento para que la solución viva sin sobresaltos.
-
----
-
-## Soluciones
-
-Sección: Listas para tu negocio.
-Descripción: Plantillas que adaptamos a tu operación — implementación rápida, valor inmediato.
-
-1. **Asistente de atención 24/7**
-   Agente con Claude que responde dudas, califica leads y agenda — en tu web o WhatsApp.
-   Tags: Claude, WhatsApp, Leads
-
-2. **Conciliación de pagos automática**
-   Integra Mercado Pago, registra ventas y concilia con tu hoja o ERP sin intervención manual.
-   Tags: Mercado Pago, n8n
-
-3. **Lector inteligente de facturas**
-   Recibe facturas por correo, extrae datos con IA y los carga a tu sistema.
-   Tags: IA Docs, n8n
-
-4. **Orquestador de back-office**
-   Automatiza alta de clientes, notificaciones y reportes recurrentes entre tus apps.
-   Tags: Integraciones, n8n
+1. **Discovery** — Entendemos tu negocio, mapeamos procesos y detectamos las automatizaciones de mayor impacto.
+2. **Diseño** — Definimos la arquitectura de la solución, herramientas y alcance con entregables claros.
+3. **Implementación** — Construimos los flujos, agentes e integraciones siguiendo buenas prácticas.
+4. **Testing** — Pruebas de extremo a extremo para asegurar que todo funciona en escenarios reales.
+5. **Checklist de buenas prácticas** — Seguridad, manejo de errores, logs y documentación antes de liberar.
+6. **Salida a producción** — Despliegue, monitoreo y acompañamiento para que la solución viva sin sobresaltos.
 
 ---
 
 ## Precios
 
-Sección: Cada propuesta es a la medida.
-Descripción: Empieza con una sesión de diagnóstico para entender tu caso y diseñar la mejor solución.
+Cada propuesta es a la medida. Empieza con una llamada sin costo para entender tu caso.
 
-**Plan 1 — Diagnóstico inicial**
-Precio: $500 | Por sesión de hasta 1 hora
-Descripción: Conocemos tu negocio y detectamos oportunidades.
-Incluye:
-- Entendemos tus procesos
-- Identificamos qué automatizar primero
-- Estimación de impacto
-- Próximos pasos claros
-CTA: Agendar llamada
+- **Diagnóstico inicial** — Sin costo · primera llamada de 30 min. Conocemos tu negocio y detectamos oportunidades. Incluye: entendemos tus procesos, identificamos qué automatizar primero, estimación de impacto, próximos pasos claros.
+- **Diseño e implementación** ⭐ Recomendado — A tu medida · según alcance del proyecto. Construimos la solución de extremo a extremo. Incluye: discovery y diseño, implementación y testing, salida a producción.
+- **Soporte continuo** — Plan a medida · acompañamiento mensual. Mejoramos y escalamos lo que ya funciona. Incluye: monitoreo y mantenimiento, ajustes y mejoras, nuevas automatizaciones, soporte prioritario.
 
-**Plan 2 — Diseño e implementación** ⭐ Recomendado
-Precio: A tu medida | Según alcance del proyecto
-Descripción: Construimos la solución de extremo a extremo.
-Incluye:
-- Discovery y diseño de la solución
-- Implementación y testing
-- Checklist de buenas prácticas
-- Salida a producción y handoff
-CTA: Solicitar propuesta
+---
 
-**Plan 3 — Soporte continuo**
-Precio: Plan a medida | Acompañamiento mensual
-Descripción: Mejoramos y escalamos lo que ya funciona.
-Incluye:
-- Monitoreo y mantenimiento
-- Ajustes y mejoras
-- Nuevas automatizaciones
-- Soporte prioritario
-CTA: Conversemos
+## FAQs (home — subset de 5; ver /preguntas-frecuentes.html para las 12)
+
+1. **¿Cuánto cuesta una automatización?** Cada propuesta es a la medida. Empezamos con un diagnóstico inicial sin costo (30 min) y entregamos propuesta concreta.
+2. **¿Cuánto tarda un proyecto típico?** 2 a 6 semanas para automatizaciones puntuales; 8 a 12 semanas para proyectos complejos.
+3. **¿Qué tecnologías usan?** n8n, Claude API, Mercado Pago, APIs y webhooks. Trabajamos sobre tu stack existente.
+4. **¿Dan soporte después de implementar?** Sí. Plan mensual a medida con monitoreo, mantenimiento, ajustes y nuevas automatizaciones.
+5. **¿De quién es el código al final?** Tuyo. Todo vive en tu infraestructura. Sin lock-in.
 
 ---
 
 ## Contacto
 
-Sección: Hablemos de tu negocio.
-Descripción: Cuéntanos tu caso. Identificamos qué automatizar primero y cómo podemos ayudarte.
+**Canales directos:** WhatsApp directo (+52 55 8766 2865) · info@orkestalo.com
 
-**Canales directos:**
-- WhatsApp directo — Respuesta rápida
-- Email: info@orkestalo.com
-
-**Formulario de contacto:**
-- Nombre
-- Correo
-- Empresa (opcional)
-- ¿Qué proceso te quita tiempo?
+**Formulario:** Chips opcionales de situación (¿qué describe mejor tu caso?) + Nombre + Correo + ¿Qué proceso quieres automatizar?
 
 ---
 
 ## Footer
 
-© 2026 Orkesta · Automatización e IA · México
-Email: info@orkestalo.com
-Web: https://orkestalo.com
+© 2026 Orkesta · Automatización e IA · México · info@orkestalo.com
+
+---
+---
+
+# Sobre Orkesta — https://orkestalo.com/sobre-orkesta.html
+
+**Hero:** Automatización pragmática para PyMEs que quieren resultados, no demos.
+
+**Lead:** Consultora pequeña, técnica y enfocada. Implementamos automatizaciones con n8n, agentes con Claude e integraciones a medida — con foco en ROI medible y sin lock-in.
+
+## Manifiesto · 3 principios
+
+1. **Pragmatismo sobre buzz.** Si Excel resuelve, no te vendemos un agente. Empezamos por lo más simple que entregue valor y crecemos sólo cuando hace falta.
+2. **ROI antes que tecnología.** Cada propuesta tiene una estimación clara de impacto: horas ahorradas, errores reducidos, throughput. Si no hay ROI, lo decimos.
+3. **Sin lock-in.** El código, los flujos y los accesos viven en tu infraestructura. Te entregamos documentación, handoff y autonomía operativa.
+
+## Stack productivo
+
+- **n8n** — Orquestación de flujos: triggers, lógica condicional, retries, observabilidad. Self-hosted o cloud según tu caso.
+- **Claude API** — Agentes y asistentes con razonamiento, tool use y procesamiento de documentos. Configuramos zero data retention donde aplica.
+- **Mercado Pago** — Cobros online e in-store conectados a tu ERP/Sheet con conciliación automática y manejo de webhooks.
+- **APIs y webhooks** — Integramos cualquier sistema que hable HTTP. Sin reinventar — usamos las APIs que ya existen.
+
+## Dónde estamos
+
+Basados en Ciudad de México. Trabajamos con empresas en México, LATAM y Estados Unidos. 100% remoto vía WhatsApp, email y videollamada.
+
+---
+---
+
+# Casos de uso — https://orkestalo.com/casos-de-uso.html
+
+**Hero:** Cinco automatizaciones concretas que reemplazan trabajo manual.
+
+**Nota:** Casos de uso descriptivos (no historias específicas de clientes). Cubren patrones repetidos en PyMEs LATAM.
+
+## Caso 1 — Inmobiliaria PyME
+
+- **Industria:** Inmobiliaria PyME (10-50 empleados)
+- **Stack:** n8n + Claude API + Google Drive + ERP
+- **Problema:** El equipo de admin recibe 200+ facturas/mes en correo, captura datos a mano y los carga al ERP.
+- **Solución:** n8n monitorea inbox, Claude vision extrae monto/RFC/fecha/concepto, valida contra reglas y carga al ERP. Excepciones van a Slack.
+- **Impacto típico:** De ~40 horas/mes de data entry a una revisión semanal de excepciones.
+
+## Caso 2 — E-commerce mid-market
+
+- **Industria:** E-commerce (500-2000 ventas/mes)
+- **Stack:** n8n + Mercado Pago + Google Sheets + ERP
+- **Problema:** Cada lunes contabilidad descarga el extracto de MP y lo cruza con ventas del ERP a mano.
+- **Solución:** n8n consume webhooks de MP en tiempo real, registra cada transacción con su payment_id y concilia automáticamente.
+- **Impacto típico:** De 1 día/semana de conciliación manual a un dashboard live.
+
+## Caso 3 — Servicios al consumidor
+
+- **Industria:** Servicios B2C (100-500 clientes activos)
+- **Stack:** WhatsApp Business API + Claude + Google Calendar + CRM
+- **Problema:** 80+ mensajes/día en WhatsApp; el equipo no alcanza a responder fuera de horario.
+- **Solución:** Agente con Claude responde 24/7, consulta calendario para agendar y escala a humano solo en casos complejos.
+- **Impacto típico:** Respuesta inmediata 24/7 sin sumar headcount.
+
+## Caso 4 — Manufactura PyME
+
+- **Industria:** Manufactura (20-100 empleados)
+- **Stack:** n8n + SQL Server + Google Sheets + Slack
+- **Problema:** Reportes diarios consolidando 4 sistemas a mano; salen tarde para tomar decisiones.
+- **Solución:** n8n ejecuta a las 6am, normaliza datos, calcula KPIs y publica el reporte en Slack con anomalías destacadas.
+- **Impacto típico:** Reporte disponible al inicio del día, no a media mañana.
+
+## Caso 5 — SaaS B2B
+
+- **Industria:** SaaS B2B (50-200 empleados, equipo outbound)
+- **Stack:** n8n + Claude + Apollo/Clearbit + HubSpot
+- **Problema:** 200-500 leads/mes sin enriquecer ni priorizar. Muchos se quedan sin tocar.
+- **Solución:** n8n enriquece datos, Claude clasifica fit (ICP score), prioriza y redacta primer correo personalizado.
+- **Impacto típico:** Cero leads sin tocar; ventas pasa de investigar a hablar con prospects pre-calificados.
+
+---
+---
+
+# Preguntas frecuentes — https://orkestalo.com/preguntas-frecuentes.html
+
+12 FAQs agrupadas en 4 temas.
+
+## Trabajo y proyecto
+
+- **¿Cuánto cuesta una automatización con Orkesta?** Cada propuesta es a la medida según el alcance. Empezamos con un diagnóstico inicial sin costo (30 minutos) donde detectamos las oportunidades de mayor impacto y entregamos una propuesta concreta con tiempos y entregables.
+- **¿Cuánto tarda un proyecto típico?** La mayoría de las automatizaciones puntuales viven entre 2 y 6 semanas, desde discovery hasta producción. Proyectos más complejos pueden extenderse a 8-12 semanas.
+- **¿Cómo facturan? ¿Aceptan pagos en pesos o USD?** Facturamos en pesos mexicanos con CFDI 4.0 para clientes en México. Para clientes fuera de México facturamos en USD vía invoice estándar. Aceptamos transferencia, Mercado Pago o Stripe.
+
+## Stack y soporte
+
+- **¿Qué tecnologías usan?** n8n para orquestación, Claude API para agentes, Mercado Pago para cobros, y APIs/webhooks para integrar cualquier sistema HTTP. Trabajamos sobre tu stack existente.
+- **¿Necesito tener n8n o lo proveen ustedes?** Las dos opciones. Si ya tenés n8n, construimos sobre tu instancia. Si no, te ayudamos a configurarlo a tu nombre antes de implementar.
+- **¿Pueden trabajar con mi stack actual o tenemos que migrar?** Trabajamos sobre lo que ya tenés. Las migraciones forzadas son anti-pattern — solo proponemos cambio si no hay API ni es razonable mantener.
+- **¿Dan soporte después de implementar?** Sí. Plan mensual a medida que incluye monitoreo, mantenimiento, ajustes y nuevas automatizaciones. También dejamos documentación completa.
+
+## Logística y equipo
+
+- **¿En qué países trabajan?** CDMX, México, LATAM y Estados Unidos. 100% remoto.
+- **¿Trabajan con empresas que no son técnicas?** Sí, es nuestro caso típico. PyMEs y equipos sin developer in-house.
+
+## Datos, propiedad y legal
+
+- **¿Cómo manejan la seguridad de los datos?** Credenciales viven en tu n8n o gestor de secretos (1Password, Vault, AWS Secrets Manager). Nunca almacenamos llaves en código. Claude con zero data retention donde aplica.
+- **¿Firman NDA?** Sí, sin problema. Template propio o trabajamos sobre el tuyo.
+- **¿De quién es el código y los flujos al final del proyecto?** Tuyo. Todo vive en tu infraestructura. Te entregamos accesos completos, código, documentación y handoff sin lock-in.
+
+---
+---
+
+# Automatización con n8n — https://orkestalo.com/automatizacion-n8n.html
+
+**Hero:** n8n: el motor de orquestación que cose tus apps.
+
+**Lead:** Workflows con n8n para sincronizar CRM, correo, hojas, ERP y APIs externas. Self-hosted o cloud, con retries automáticos, manejo de errores robusto y observabilidad. Sin lock-in.
+
+## Capabilities
+
+1. **Sincronización entre apps** — CRM, correo, hojas, ERP, contabilidad. Datos coherentes sin captura manual.
+2. **Workflows programados** — Reportes diarios, exports semanales, jobs nocturnos. Triggers cron con manejo de errores.
+3. **Webhooks y triggers en tiempo real** — Eventos de Mercado Pago, Stripe, formularios web, GitHub. Procesamos con lógica condicional.
+4. **Workflows long-running robustos** — Retries automáticos, dead-letter queues, alertas en fallas, logs persistentes.
+
+## Comparativa
+
+**Hacerlo por tu cuenta (Zapier/Make/custom code):**
+- Zapier/Make limita lógica condicional y escala mal en costo.
+- Custom code requiere boilerplate de retries, error handling y observabilidad.
+- Sin self-hosting: datos sensibles pasan por servidores de terceros.
+- Cambiar de proveedor implica reescribir todo.
+
+**Con Orkesta + n8n:**
+- Lógica condicional, branches, loops y sub-workflows sin código.
+- Retries, dead-letter queues y alertas listas en producción.
+- Self-hosted en tu infraestructura para casos sensibles.
+- Sin lock-in: el código vive en tu n8n.
+
+---
+---
+
+# Agentes con IA y Claude — https://orkestalo.com/agentes-ia-claude.html
+
+**Hero:** Claude: agentes que razonan sobre tu negocio.
+
+**Lead:** Asistentes con Claude API que entienden contexto de tu CRM, ejecutan acciones vía tool use y razonan sobre documentos. No chatbots de reglas — agentes reales.
+
+## Capabilities
+
+1. **Asistentes conversacionales** — WhatsApp, web o Slack con contexto de tu CRM y catálogo.
+2. **Agentes con tool use** — Acceso real a tus APIs internas, bases de datos, sistemas de tickets.
+3. **Procesamiento de documentos con razonamiento** — Facturas, contratos, emails. Entiende layout, contexto y excepciones.
+4. **Clasificación y resumen** — Categorizar tickets, resumir hilos de correo, priorizar leads, generar reportes ejecutivos.
+
+## Comparativa
+
+**Chatbots de reglas (Manychat, Landbot, scripts):**
+- Fallan en casos nuevos no contemplados.
+- No entienden contexto ni adaptan tono.
+- Sin acceso a sistemas: conversan pero no ejecutan.
+- Cada nuevo caso requiere agregar reglas manualmente.
+
+**Con Orkesta + Claude:**
+- Razonamiento real: entiende intención y contexto.
+- Tool use: ejecuta acciones (agendar, consultar, actualizar).
+- Context window grande: lee todo el hilo.
+- Zero data retention configurado donde aplica.
+
+---
+---
+
+# Integraciones de Mercado Pago — https://orkestalo.com/integraciones-mercado-pago.html
+
+**Hero:** Mercado Pago conectado a tu operación, sin captura manual.
+
+**Lead:** Integramos checkout, links de pago, Point y suscripciones de MP con tu ERP, hoja o CRM. Cada venta queda registrada y conciliada en tiempo real.
+
+## Capabilities
+
+1. **Checkout, links y suscripciones** — Checkout web, links de pago dinámicos, suscripciones recurrentes con manejo de fallos de cobro.
+2. **Mercado Pago Point (in-store)** — Cobros con terminal física conectados a inventario o POS.
+3. **Conciliación automática** — Webhooks de MP cruzados en tiempo real con ventas del ERP/sheet.
+4. **Notificaciones, refunds y reportes** — Confirmaciones automáticas, refunds vía API, dashboard live de ventas.
+
+## Comparativa
+
+**Procesar pagos a mano:**
+- Descargar extracto MP los lunes y cruzar con ventas a mano.
+- Errores de matching: pagos parciales, devoluciones, comisiones cambiantes.
+- Inconsistencias detectadas días o semanas después.
+
+**Con Orkesta + MP integrado:**
+- Cada transacción se registra automáticamente al ocurrir vía webhook.
+- Comisiones, refunds y disputas se manejan con reglas, no a ojo.
+- Dashboard live con corte por canal, sucursal o vendedor.
+- Confirmación automática al cliente al cobrar.
+
+---
+---
+
+# Procesamiento de documentos con IA — https://orkestalo.com/procesamiento-documentos-ia.html
+
+**Hero:** Extracción inteligente desde facturas, contratos y emails.
+
+**Lead:** Claude vision lee tus documentos como una persona: entiende layout, distingue tablas de párrafos, maneja sellos y firmas. La salida queda estructurada y carga directo a tu ERP, hoja o base de datos.
+
+## Capabilities
+
+1. **Facturas y CFDI** — Emisor, receptor, monto, IVA, fecha, concepto, partidas. Validación contra reglas (RFC válido, montos coherentes).
+2. **Recibos y comprobantes** — Reembolsos, gastos de viaje, propinas. Múltiples idiomas y monedas con conversión y categorización.
+3. **Contratos con campos clave** — Partes, fechas (firma, inicio, vencimiento, renovación), montos, cláusulas críticas.
+4. **Emails: clasificación y extracción** — Detectamos tipo (queja, cotización, factura adjunta), extraemos campos relevantes, enrutamos automáticamente.
+
+## Comparativa
+
+**OCR tradicional + reglas (Tesseract, ABBYY, templates):**
+- Frágil a variantes; cada nuevo formato requiere ajustar templates.
+- No entiende contexto: confunde columnas, ignora sellos, falla con tablas complejas.
+- Errores difíciles de detectar.
+
+**Con Orkesta + Claude vision:**
+- Maneja layouts variados sin templates específicos.
+- Nuevos formatos funcionan sin configuración — el modelo se adapta solo.
+- Entiende contexto: distingue total de subtotal, tabla de prosa, firma de logo.
+- Validación con reglas de negocio antes de pasar al sistema.
+
+---
+
+## Generado / actualización
+
+Este archivo se actualiza manualmente cuando cambia el contenido visible del sitio. Última actualización: 2026-06-01.
