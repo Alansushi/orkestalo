@@ -13,6 +13,7 @@
   <meta name="geo.placename" content="Ciudad de México" />
   <link rel="canonical" href="https://orkestalo.com/procesamiento-documentos-ia.html" />
   <link rel="alternate" hreflang="es" href="https://orkestalo.com/procesamiento-documentos-ia.html" />
+  <link rel="alternate" hreflang="en" href="https://orkestalo.com/procesamiento-documentos-ia.html?lang=en" />
   <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/procesamiento-documentos-ia.html" />
 
   <meta property="og:title" content="Procesamiento de documentos con IA — Orkesta" />
@@ -75,12 +76,6 @@
           <p>Claude vision lee tus documentos, entiende layout y contexto, y extrae datos estructurados directo a tu sistema. No es OCR tradicional — funciona con variantes y casos nuevos.</p>
           <p><a href="https://wa.me/525587662865">WhatsApp +52 55 8766 2865</a> · <a href="/#contacto">Agendar diagnóstico</a></p>
         </section>
-        <section><h2>Qué procesamos</h2><ul>
-          <li>Facturas (PDF, imagen, correo): monto, RFC, fecha, concepto, partidas.</li>
-          <li>Recibos y comprobantes para reembolsos y rendición de gastos.</li>
-          <li>Contratos: extracción de cláusulas, fechas clave, montos, partes.</li>
-          <li>Emails: clasificación, extracción de campos y enrutamiento.</li>
-        </ul></section>
       </main>
     </div>
   </div>
@@ -89,22 +84,162 @@
     const { useState } = React;
 
     const CONFIG = { marca: "Orkesta", whatsapp: "525587662865", email: "info@orkestalo.com" };
-    const waLink = (msg) =>
-      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || "Hola, quiero automatizar el procesamiento de documentos con IA.")}`;
+
+    const TRANSLATIONS = {
+      es: {
+        htmlLang: "es",
+        meta: {
+          title: "Procesamiento de documentos con IA — Orkesta | Extracción inteligente",
+          desc: "Extracción inteligente de datos desde facturas, recibos, contratos y emails con Claude vision. Entiende layout y contexto, sin templates.",
+        },
+        waDefault: "Hola, quiero automatizar el procesamiento de documentos con IA.",
+        nav: {
+          links: [
+            ["Soluciones", "/#soluciones"],
+            ["Servicios",  "/#servicios"],
+            ["Casos",      "/casos-de-uso.html"],
+            ["FAQs",       "/preguntas-frecuentes.html"],
+            ["Precios",    "/#precios"],
+            ["Contacto",   "/#contacto"],
+          ],
+          cta: "Agenda una charla",
+          menuLabel: "Menú",
+        },
+        hero: {
+          kicker: "Servicio · Procesamiento de documentos con IA",
+          h1: 'Extracción <em>inteligente</em> desde facturas, contratos y emails.',
+          lead: '<b>Claude vision</b> lee tus documentos como una persona: entiende layout, distingue tablas de párrafos, maneja sellos y firmas, y se adapta a variantes sin re-entrenar. La salida queda estructurada y carga directo a tu ERP, hoja o base de datos.',
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Agendar diagnóstico",
+        },
+        capabilities: {
+          kicker: "Qué procesamos",
+          title: 'Cuatro tipos de documentos <em>que generan el 80% del trabajo</em>.',
+          desc: "Si tu equipo pasa horas leyendo y capturando información desde papel/PDF/correo, probablemente sea uno de estos cuatro patrones.",
+          items: [
+            { iconId: "i-flujo",   t: "Facturas y CFDI",                    d: "PDFs, imágenes o XML CFDI: extraemos emisor, receptor, monto, IVA, fecha, concepto y partidas. Validamos contra reglas (RFC válido, montos coherentes, fechas en rango)." },
+            { iconId: "i-modelo",  t: "Recibos y comprobantes",             d: "Reembolsos, gastos de viaje, propinas. Manejamos múltiples idiomas y monedas, conversión automática y categorización contable." },
+            { iconId: "i-agente",  t: "Contratos con campos clave",         d: "Identificamos partes, fechas clave (firma, inicio, vencimiento, renovación), montos, cláusulas críticas (rescisión, exclusividad) y los exportamos estructurados." },
+            { iconId: "i-mail",    t: "Emails: clasificación y extracción", d: "Detectamos tipo (queja, cotización, factura adjunta), extraemos campos relevantes y enrutamos al equipo o sistema correcto automáticamente." },
+          ],
+        },
+        compare: {
+          kicker: "Comparativa · OCR tradicional vs IA con razonamiento",
+          title: 'Por qué Claude vision <em>vs.</em> OCR con reglas.',
+          desc: "El OCR clásico funciona bien cuando todos los documentos son idénticos. En la realidad, cada proveedor manda formato distinto — y ahí los templates se rompen.",
+          leftLabel: "OCR tradicional + reglas",
+          leftTitle: "Tesseract, ABBYY, templates manuales",
+          rightLabel: "Con Orkesta · Claude vision",
+          rightTitle: "Extracción que escala sin re-entrenar",
+          sin: [
+            "OCR tradicional (Tesseract, ABBYY) requiere reglas por layout — frágil a variantes.",
+            "Cada nuevo proveedor o formato implica ajustar templates manualmente.",
+            "No entiende contexto: confunde columnas, ignora sellos, falla con tablas complejas.",
+            "Errores difíciles de detectar: el sistema entrega valores incorrectos sin alertar.",
+          ],
+          con: [
+            "Claude vision lee como humano: maneja layouts variados sin templates específicos.",
+            "Nuevos formatos funcionan sin configuración — el modelo se adapta solo.",
+            "Entiende contexto: distingue total de subtotal, tabla de prosa, firma de logo.",
+            "Validación con reglas de negocio: alertas cuando algo no cuadra antes de pasar al sistema.",
+          ],
+        },
+        cta: {
+          title: '¿Tu equipo está <em>capturando datos a mano</em> desde PDFs?',
+          desc: "30 minutos sin compromiso. Te decimos qué documentos vale automatizar primero (alto volumen + bajo valor agregado), cómo medir precisión, y qué excepciones requieren humano en el loop.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Agendar diagnóstico",
+        },
+        footer: { tagline: "Automatización e IA", country: "México" },
+      },
+      en: {
+        htmlLang: "en",
+        meta: {
+          title: "AI document processing — Orkesta | Intelligent extraction",
+          desc: "Intelligent data extraction from invoices, receipts, contracts and emails with Claude vision. Understands layout and context, no templates.",
+        },
+        waDefault: "Hi, I want to automate document processing with AI.",
+        nav: {
+          links: [
+            ["Solutions", "/#soluciones"],
+            ["Services",  "/#servicios"],
+            ["Cases",     "/casos-de-uso.html"],
+            ["FAQs",      "/preguntas-frecuentes.html"],
+            ["Pricing",   "/#precios"],
+            ["Contact",   "/#contacto"],
+          ],
+          cta: "Schedule a call",
+          menuLabel: "Menu",
+        },
+        hero: {
+          kicker: "Service · AI document processing",
+          h1: "<em>Intelligent</em> extraction from invoices, contracts and emails.",
+          lead: "<b>Claude vision</b> reads your documents like a person: understands layout, distinguishes tables from paragraphs, handles stamps and signatures, and adapts to variants without re-training. Output is structured and loads directly into your ERP, sheet or database.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Book a diagnostic",
+        },
+        capabilities: {
+          kicker: "What we process",
+          title: "Four document types <em>that generate 80% of the work</em>.",
+          desc: "If your team spends hours reading and capturing information from paper/PDF/email, it's probably one of these four patterns.",
+          items: [
+            { iconId: "i-flujo",   t: "Invoices and CFDI",                  d: "PDFs, images or CFDI XML: we extract issuer, receiver, amount, tax, date, concept and line items. We validate against rules (valid tax ID, consistent amounts, dates in range)." },
+            { iconId: "i-modelo",  t: "Receipts and proofs of payment",     d: "Reimbursements, travel expenses, tips. We handle multiple languages and currencies, automatic conversion and accounting categorization." },
+            { iconId: "i-agente",  t: "Contracts with key fields",          d: "We identify parties, key dates (signing, start, expiration, renewal), amounts, critical clauses (termination, exclusivity) and export them structured." },
+            { iconId: "i-mail",    t: "Emails: classification & extraction", d: "We detect type (complaint, quote, attached invoice), extract relevant fields and automatically route to the right team or system." },
+          ],
+        },
+        compare: {
+          kicker: "Comparison · Traditional OCR vs reasoning AI",
+          title: "Why Claude vision <em>vs.</em> rule-based OCR.",
+          desc: "Classic OCR works well when all documents are identical. In reality, each vendor sends a different format — and that's where templates break.",
+          leftLabel: "Traditional OCR + rules",
+          leftTitle: "Tesseract, ABBYY, manual templates",
+          rightLabel: "With Orkesta · Claude vision",
+          rightTitle: "Extraction that scales without re-training",
+          sin: [
+            "Traditional OCR (Tesseract, ABBYY) requires per-layout rules — fragile to variants.",
+            "Each new vendor or format means manually adjusting templates.",
+            "Doesn't understand context: confuses columns, ignores stamps, fails with complex tables.",
+            "Errors hard to detect: the system delivers wrong values without alerting.",
+          ],
+          con: [
+            "Claude vision reads like a human: handles varied layouts without specific templates.",
+            "New formats work without configuration — the model adapts on its own.",
+            "Understands context: distinguishes total from subtotal, table from prose, signature from logo.",
+            "Validation with business rules: alerts when something doesn't add up before reaching the system.",
+          ],
+        },
+        cta: {
+          title: "Is your team <em>capturing data by hand</em> from PDFs?",
+          desc: "30 minutes no commitment. We tell you which documents are worth automating first (high volume + low added value), how to measure precision, and what exceptions need human-in-the-loop.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Book a diagnostic",
+        },
+        footer: { tagline: "Automation & AI", country: "Mexico" },
+      },
+    };
+
+    function detectLanguage() {
+      try {
+        const param = new URLSearchParams(window.location.search).get('lang');
+        if (param === 'en' || param === 'es') return param;
+        const stored = localStorage.getItem('orkesta-lang');
+        if (stored === 'en' || stored === 'es') return stored;
+        const browser = (navigator.language || 'es').slice(0, 2);
+        return browser === 'en' ? 'en' : 'es';
+      } catch { return 'es'; }
+    }
+
+    const waLink = (msg, lang = 'es') =>
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || TRANSLATIONS[lang].waDefault)}`;
+
     const Ico = ({ id, w = 18, h = 18 }) => (
       <svg width={w} height={h} aria-hidden="true"><use href={`/defs.svg#${id}`}/></svg>
     );
 
-    const Nav = () => {
+    const Nav = ({ lang, setLanguage, t }) => {
       const [open, setOpen] = useState(false);
-      const links = [
-        ["Soluciones", "/#soluciones"],
-        ["Servicios",  "/#servicios"],
-        ["Casos",      "/casos-de-uso.html"],
-        ["FAQs",       "/preguntas-frecuentes.html"],
-        ["Precios",    "/#precios"],
-        ["Contacto",   "/#contacto"],
-      ];
       return (
         <header className="nav-bar nav-bar--green">
           <div className="nav-inner">
@@ -113,57 +248,58 @@
               <span className="nav-wordmark">{CONFIG.marca}</span>
             </a>
             <nav className="nav-links">
-              {links.map(([t, h]) => <a key={h} href={h} className="nav-link">{t}</a>)}
-              <a href="/#contacto" className="btn btn-primary nav-cta">Agenda una charla</a>
+              {t.links.map(([label, href]) => <a key={href} href={href} className="nav-link">{label}</a>)}
+              <div className="lang-toggle">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => setLanguage('es')}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => setLanguage('en')}>EN</button>
+              </div>
+              <a href="/#contacto" className="btn btn-primary nav-cta">{t.cta}</a>
             </nav>
-            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label="Menú">
+            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label={t.menuLabel}>
               <span/><span/><span/>
             </button>
           </div>
           {open && (
             <div className="nav-mobile">
-              {links.map(([t, h]) => <a key={h} href={h} onClick={() => setOpen(false)}>{t}</a>)}
+              <div className="lang-mobile">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => { setLanguage('es'); setOpen(false); }}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => { setLanguage('en'); setOpen(false); }}>EN</button>
+              </div>
+              {t.links.map(([label, href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}
             </div>
           )}
         </header>
       );
     };
 
-    const PageHero = () => (
+    const PageHero = ({ t, lang }) => (
       <section id="top" className="page-hero">
         <div className="wrap">
-          <span className="badge badge-green hero-kicker"><Ico id="i-flujo" w={13} h={13}/>Servicio · Procesamiento de documentos con IA</span>
-          <h1>Extracción <em>inteligente</em> desde facturas, contratos y emails.</h1>
-          <p className="lead">
-            <b>Claude vision</b> lee tus documentos como una persona: entiende layout, distingue tablas de párrafos, maneja sellos y firmas, y se adapta a variantes sin re-entrenar. La salida queda estructurada y carga directo a tu ERP, hoja o base de datos.
-          </p>
+          <span className="badge badge-green hero-kicker"><Ico id="i-flujo" w={13} h={13}/>{t.kicker}</span>
+          <h1 dangerouslySetInnerHTML={{ __html: t.h1 }} />
+          <p className="lead" dangerouslySetInnerHTML={{ __html: t.lead }} />
           <div className="ctas">
-            <a href={waLink()} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
-            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+            <a href={waLink(null, lang)} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>{t.ctaWA}</a>
+            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>{t.ctaAgendar}</a>
           </div>
         </div>
       </section>
     );
 
-    const capabilities = [
-      { iconId: "i-flujo",   t: "Facturas y CFDI",                       d: "PDFs, imágenes o XML CFDI: extraemos emisor, receptor, monto, IVA, fecha, concepto y partidas. Validamos contra reglas (RFC válido, montos coherentes, fechas en rango)." },
-      { iconId: "i-modelo",  t: "Recibos y comprobantes",                 d: "Reembolsos, gastos de viaje, propinas. Manejamos múltiples idiomas y monedas, conversión automática y categorización contable." },
-      { iconId: "i-agente",  t: "Contratos con campos clave",             d: "Identificamos partes, fechas clave (firma, inicio, vencimiento, renovación), montos, cláusulas críticas (rescisión, exclusividad) y los exportamos estructurados." },
-      { iconId: "i-mail",    t: "Emails: clasificación y extracción",     d: "Detectamos tipo (queja, cotización, factura adjunta), extraemos campos relevantes y enrutamos al equipo o sistema correcto automáticamente." },
-    ];
-
-    const Capabilities = () => (
+    const Capabilities = ({ t }) => (
       <section id="capabilities" className="section">
         <div className="wrap">
           <div className="sec-hdr sec-hdr--solo">
             <div>
-              <div className="sec-kicker">Qué procesamos</div>
-              <h2 className="sec-title">Cuatro tipos de documentos <em>que generan el 80% del trabajo</em>.</h2>
-              <p className="sec-desc">Si tu equipo pasa horas leyendo y capturando información desde papel/PDF/correo, probablemente sea uno de estos cuatro patrones.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
           </div>
           <div className="svc-grid">
-            {capabilities.map(c => (
+            {t.items.map(c => (
               <div key={c.t} className="svc-card">
                 <div className="svc-ico"><Ico id={c.iconId} w={26} h={26}/></div>
                 <div className="svc-title">{c.t}</div>
@@ -175,35 +311,22 @@
       </section>
     );
 
-    const sinOrkesta = [
-      "OCR tradicional (Tesseract, ABBYY) requiere reglas por layout — frágil a variantes.",
-      "Cada nuevo proveedor o formato implica ajustar templates manualmente.",
-      "No entiende contexto: confunde columnas, ignora sellos, falla con tablas complejas.",
-      "Errores difíciles de detectar: el sistema entrega valores incorrectos sin alertar.",
-    ];
-    const conOrkesta = [
-      "Claude vision lee como humano: maneja layouts variados sin templates específicos.",
-      "Nuevos formatos funcionan sin configuración — el modelo se adapta solo.",
-      "Entiende contexto: distingue total de subtotal, tabla de prosa, firma de logo.",
-      "Validación con reglas de negocio: alertas cuando algo no cuadra antes de pasar al sistema.",
-    ];
-
-    const Compare = () => (
+    const Compare = ({ t }) => (
       <section id="compare" className="section" style={{background:"var(--paper-2)"}}>
         <div className="wrap">
           <div className="sec-hdr sec-hdr--solo">
             <div>
-              <div className="sec-kicker">Comparativa · OCR tradicional vs IA con razonamiento</div>
-              <h2 className="sec-title">Por qué Claude vision <em>vs.</em> OCR con reglas.</h2>
-              <p className="sec-desc">El OCR clásico funciona bien cuando todos los documentos son idénticos. En la realidad, cada proveedor manda formato distinto — y ahí los templates se rompen.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
           </div>
           <div className="compare-grid">
             <div className="compare-col">
-              <div className="compare-label">OCR tradicional + reglas</div>
-              <h3 className="compare-title">Tesseract, ABBYY, templates manuales</h3>
+              <div className="compare-label">{t.leftLabel}</div>
+              <h3 className="compare-title">{t.leftTitle}</h3>
               <ul className="compare-list">
-                {sinOrkesta.map(item => (
+                {t.sin.map(item => (
                   <li key={item} className="compare-item">
                     <svg className="compare-item-ico"><use href="/defs.svg#i-arrow"/></svg>
                     <span>{item}</span>
@@ -212,10 +335,10 @@
               </ul>
             </div>
             <div className="compare-col compare-col--orkesta">
-              <div className="compare-label">Con Orkesta · Claude vision</div>
-              <h3 className="compare-title">Extracción que escala sin re-entrenar</h3>
+              <div className="compare-label">{t.rightLabel}</div>
+              <h3 className="compare-title">{t.rightTitle}</h3>
               <ul className="compare-list">
-                {conOrkesta.map(item => (
+                {t.con.map(item => (
                   <li key={item} className="compare-item">
                     <svg className="compare-item-ico"><use href="/defs.svg#i-check"/></svg>
                     <span>{item}</span>
@@ -228,48 +351,78 @@
       </section>
     );
 
-    const CtaFinal = () => (
+    const CtaFinal = ({ t, lang }) => (
       <section className="section">
         <div className="wrap">
           <div className="cta-block">
-            <h2>¿Tu equipo está <em>capturando datos a mano</em> desde PDFs?</h2>
-            <p>30 minutos sin compromiso. Te decimos qué documentos vale automatizar primero (alto volumen + bajo valor agregado), cómo medir precisión, y qué excepciones requieren humano en el loop.</p>
+            <h2 dangerouslySetInnerHTML={{ __html: t.title }} />
+            <p>{t.desc}</p>
             <div className="ctas">
-              <a href={waLink()} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
-              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+              <a href={waLink(null, lang)} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>{t.ctaWA}</a>
+              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>{t.ctaAgendar}</a>
             </div>
           </div>
         </div>
       </section>
     );
 
-    const Footer = () => (
+    const Footer = ({ t }) => (
       <footer className="site-footer">
-        <span>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
+        <span>© {new Date().getFullYear()} {CONFIG.marca} · {t.tagline} · {t.country} · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
         <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
       </footer>
     );
 
-    const FloatingWA = () => (
-      <a href={waLink()} target="_blank" aria-label="WhatsApp" className="floating-wa">
+    const FloatingWA = ({ lang }) => (
+      <a href={waLink(null, lang)} target="_blank" aria-label="WhatsApp" className="floating-wa">
         <Ico id="i-wa" w={22} h={22}/>
         <span className="floating-wa-text">WhatsApp</span>
       </a>
     );
 
-    const App = () => (
-      <div>
-        <Nav/>
-        <main>
-          <PageHero/>
-          <Capabilities/>
-          <Compare/>
-          <CtaFinal/>
-        </main>
-        <Footer/>
-        <FloatingWA/>
-      </div>
-    );
+    const App = () => {
+      const [lang, setLang] = useState(detectLanguage);
+      const t = TRANSLATIONS[lang];
+
+      React.useEffect(() => {
+        document.documentElement.lang = t.htmlLang;
+        document.title = t.meta.title;
+        const update = (sel, attr, val) => {
+          const el = document.querySelector(sel);
+          if (el) el.setAttribute(attr, val);
+        };
+        update('meta[name="description"]', 'content', t.meta.desc);
+        update('meta[property="og:title"]', 'content', t.meta.title);
+        update('meta[property="og:description"]', 'content', t.meta.desc);
+        update('meta[name="twitter:title"]', 'content', t.meta.title);
+        update('meta[name="twitter:description"]', 'content', t.meta.desc);
+      }, [lang]);
+
+      const setLanguage = (l) => {
+        setLang(l);
+        try { localStorage.setItem('orkesta-lang', l); } catch {}
+        try {
+          const url = new URL(window.location);
+          if (l === 'en') url.searchParams.set('lang', 'en');
+          else url.searchParams.delete('lang');
+          window.history.replaceState({}, '', url);
+        } catch {}
+      };
+
+      return (
+        <div>
+          <Nav lang={lang} setLanguage={setLanguage} t={t.nav} />
+          <main>
+            <PageHero t={t.hero} lang={lang} />
+            <Capabilities t={t.capabilities} />
+            <Compare t={t.compare} />
+            <CtaFinal t={t.cta} lang={lang} />
+          </main>
+          <Footer t={t.footer} />
+          <FloatingWA lang={lang} />
+        </div>
+      );
+    };
 
     ReactDOM.createRoot(document.getElementById("root")).render(<App />);
   </script>
