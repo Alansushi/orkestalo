@@ -13,6 +13,7 @@
   <meta name="geo.placename" content="Ciudad de México" />
   <link rel="canonical" href="https://orkestalo.com/automatizacion-n8n.html" />
   <link rel="alternate" hreflang="es" href="https://orkestalo.com/automatizacion-n8n.html" />
+  <link rel="alternate" hreflang="en" href="https://orkestalo.com/automatizacion-n8n.html?lang=en" />
   <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/automatizacion-n8n.html" />
 
   <meta property="og:title" content="Automatización con n8n — Orkesta" />
@@ -80,17 +81,6 @@
           <p>Implementamos workflows con n8n para sincronizar CRM, correo, hojas, ERP y APIs externas. Self-hosted o cloud, sin lock-in, con retries y manejo de errores robusto.</p>
           <p><a href="https://wa.me/525587662865">WhatsApp +52 55 8766 2865</a> · <a href="/#contacto">Agendar diagnóstico</a></p>
         </section>
-        <section><h2>Qué hacemos con n8n</h2><ul>
-          <li>Sincronización entre apps (CRM, correo, hojas, ERP, contabilidad).</li>
-          <li>Workflows programados: reportes diarios, exports semanales, jobs nocturnos.</li>
-          <li>Webhooks y triggers en tiempo real (eventos de Mercado Pago, Stripe, formularios).</li>
-          <li>Workflows long-running con retries automáticos, dead-letter queues y alertas.</li>
-        </ul></section>
-        <section><h2>vs. hacerlo por tu cuenta</h2>
-          <p><strong>Zapier/Make:</strong> rápido para casos simples, pero limita lógica condicional, escala mal en costo y no permite self-hosting.</p>
-          <p><strong>Custom code:</strong> control total, pero lento de mantener, mucho boilerplate de retries/errors/observabilidad.</p>
-          <p><strong>n8n con Orkesta:</strong> control sin código repetitivo, self-hosted o cloud, costos predecibles a escala.</p>
-        </section>
       </main>
     </div>
   </div>
@@ -99,22 +89,163 @@
     const { useState } = React;
 
     const CONFIG = { marca: "Orkesta", whatsapp: "525587662865", email: "info@orkestalo.com" };
-    const waLink = (msg) =>
-      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || "Hola, quiero automatizar procesos con n8n.")}`;
+
+    const TRANSLATIONS = {
+      es: {
+        htmlLang: "es",
+        meta: {
+          title: "Automatización con n8n — Orkesta | Consultoría en LATAM",
+          desc: "Consultoría e implementación de automatizaciones con n8n para PyMEs LATAM. Sincronización entre apps, workflows programados, webhooks, retries y manejo de errores.",
+        },
+        waDefault: "Hola, quiero automatizar procesos con n8n.",
+        nav: {
+          links: [
+            ["Soluciones", "/#soluciones"],
+            ["Servicios",  "/#servicios"],
+            ["Casos",      "/casos-de-uso.html"],
+            ["FAQs",       "/preguntas-frecuentes.html"],
+            ["Precios",    "/#precios"],
+            ["Contacto",   "/#contacto"],
+          ],
+          cta: "Agenda una charla",
+          menuLabel: "Menú",
+        },
+        hero: {
+          kicker: "Servicio · Automatización con n8n",
+          h1: '<em>n8n</em>: el motor de orquestación que cose tus apps.',
+          lead: 'Implementamos workflows con <b>n8n</b> para sincronizar CRM, correo, hojas, ERP y APIs externas. Self-hosted o cloud, con <b>retries automáticos</b>, manejo de errores robusto y observabilidad. Sin lock-in: el código vive en tu infraestructura.',
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Agendar diagnóstico",
+        },
+        capabilities: {
+          kicker: "Qué hacemos con n8n",
+          title: 'Cuatro patrones que <em>cubren la mayoría</em> de los casos.',
+          desc: "Cualquier proceso que cruce dos o más sistemas, requiera ejecutarse a horas fijas o reaccionar a eventos, encaja en uno de estos.",
+          items: [
+            { iconId: "i-integra", t: "Sincronización entre apps",          d: "Conectamos CRM, correo, hojas, ERP, contabilidad y herramientas internas. Datos coherentes entre sistemas sin captura manual." },
+            { iconId: "i-tiempo",  t: "Workflows programados",              d: "Reportes diarios, exports semanales, jobs nocturnos. Triggers cron con manejo de errores y notificaciones a Slack/correo." },
+            { iconId: "i-flujo",   t: "Webhooks y triggers en tiempo real", d: "Eventos de Mercado Pago, Stripe, formularios web, GitHub. Procesamos cada evento con lógica condicional y enrutamiento dinámico." },
+            { iconId: "i-modelo",  t: "Workflows long-running robustos",    d: "Retries automáticos, dead-letter queues, alertas en fallas, logs persistentes. Producción real, no demos." },
+          ],
+        },
+        compare: {
+          kicker: "Comparativa · Alternativas",
+          title: 'Por qué n8n con Orkesta <em>vs.</em> otras opciones.',
+          desc: "No vendemos n8n por moda — vendemos automatizaciones que sobreviven a producción real. Esto es lo que ganas vs hacerlo por tu cuenta.",
+          leftLabel: "Hacerlo por tu cuenta",
+          leftTitle: "Zapier, Make o custom code",
+          rightLabel: "Con Orkesta · n8n",
+          rightTitle: "Workflows productivos sin reinventar la rueda",
+          sin: [
+            "Zapier/Make limita la lógica condicional y escalan mal en costo cuando creces.",
+            "Custom code requiere boilerplate de retries, error handling y observabilidad.",
+            "Sin self-hosting: datos sensibles pasan por servidores de terceros.",
+            "Cambiar de proveedor implica reescribir todo desde cero.",
+          ],
+          con: [
+            "Lógica condicional, branches, loops y sub-workflows sin código.",
+            "Retries, dead-letter queues y alertas listas en producción.",
+            "Self-hosted en tu infraestructura para casos sensibles.",
+            "Sin lock-in: el código y los flujos viven en tu n8n, no en el nuestro.",
+          ],
+        },
+        cta: {
+          title: '¿Tu equipo está <em>cosiendo apps a mano</em>?',
+          desc: "30 minutos sin compromiso. Te decimos qué workflow tiene mayor ROI, qué piezas requieren n8n vs herramientas más simples, y con qué orden empezar.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Agendar diagnóstico",
+        },
+        footer: { tagline: "Automatización e IA", country: "México" },
+      },
+      en: {
+        htmlLang: "en",
+        meta: {
+          title: "Automation with n8n — Orkesta | LATAM consulting",
+          desc: "Consulting and implementation of automations with n8n for LATAM SMBs. App sync, scheduled workflows, webhooks, retries and error handling. Self-hosted or cloud.",
+        },
+        waDefault: "Hi, I want to automate processes with n8n.",
+        nav: {
+          links: [
+            ["Solutions", "/#soluciones"],
+            ["Services",  "/#servicios"],
+            ["Cases",     "/casos-de-uso.html"],
+            ["FAQs",      "/preguntas-frecuentes.html"],
+            ["Pricing",   "/#precios"],
+            ["Contact",   "/#contacto"],
+          ],
+          cta: "Schedule a call",
+          menuLabel: "Menu",
+        },
+        hero: {
+          kicker: "Service · Automation with n8n",
+          h1: "<em>n8n</em>: the orchestration engine that stitches your apps together.",
+          lead: "We build workflows with <b>n8n</b> to sync CRM, email, sheets, ERP and external APIs. Self-hosted or cloud, with <b>automatic retries</b>, robust error handling and observability. No lock-in: the code lives in your infrastructure.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Book a diagnostic",
+        },
+        capabilities: {
+          kicker: "What we do with n8n",
+          title: "Four patterns that <em>cover most</em> of the cases.",
+          desc: "Any process that crosses two or more systems, needs to run at fixed times or react to events, fits into one of these.",
+          items: [
+            { iconId: "i-integra", t: "App synchronization",            d: "We connect CRM, email, sheets, ERP, accounting and internal tools. Consistent data across systems without manual capture." },
+            { iconId: "i-tiempo",  t: "Scheduled workflows",            d: "Daily reports, weekly exports, nightly jobs. Cron triggers with error handling and Slack/email notifications." },
+            { iconId: "i-flujo",   t: "Webhooks & real-time triggers",  d: "Events from Mercado Pago, Stripe, web forms, GitHub. We process each event with conditional logic and dynamic routing." },
+            { iconId: "i-modelo",  t: "Robust long-running workflows",  d: "Automatic retries, dead-letter queues, failure alerts, persistent logs. Real production, not demos." },
+          ],
+        },
+        compare: {
+          kicker: "Comparison · Alternatives",
+          title: "Why n8n with Orkesta <em>vs.</em> other options.",
+          desc: "We don't sell n8n as a trend — we sell automations that survive real production. This is what you gain vs doing it yourself.",
+          leftLabel: "Doing it yourself",
+          leftTitle: "Zapier, Make or custom code",
+          rightLabel: "With Orkesta · n8n",
+          rightTitle: "Productive workflows without reinventing the wheel",
+          sin: [
+            "Zapier/Make limits conditional logic and scales poorly in cost as you grow.",
+            "Custom code requires boilerplate for retries, error handling and observability.",
+            "No self-hosting: sensitive data passes through third-party servers.",
+            "Switching providers means rewriting everything from scratch.",
+          ],
+          con: [
+            "Conditional logic, branches, loops and sub-workflows without code.",
+            "Retries, dead-letter queues and alerts ready in production.",
+            "Self-hosted in your infrastructure for sensitive cases.",
+            "No lock-in: code and workflows live in your n8n, not ours.",
+          ],
+        },
+        cta: {
+          title: "Is your team <em>stitching apps by hand</em>?",
+          desc: "30 minutes no commitment. We tell you which workflow has the highest ROI, what pieces need n8n vs simpler tools, and what order to start in.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Book a diagnostic",
+        },
+        footer: { tagline: "Automation & AI", country: "Mexico" },
+      },
+    };
+
+    function detectLanguage() {
+      try {
+        const param = new URLSearchParams(window.location.search).get('lang');
+        if (param === 'en' || param === 'es') return param;
+        const stored = localStorage.getItem('orkesta-lang');
+        if (stored === 'en' || stored === 'es') return stored;
+        const browser = (navigator.language || 'es').slice(0, 2);
+        return browser === 'en' ? 'en' : 'es';
+      } catch { return 'es'; }
+    }
+
+    const waLink = (msg, lang = 'es') =>
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || TRANSLATIONS[lang].waDefault)}`;
+
     const Ico = ({ id, w = 18, h = 18 }) => (
       <svg width={w} height={h} aria-hidden="true"><use href={`/defs.svg#${id}`}/></svg>
     );
 
-    const Nav = () => {
+    /* ----------------------- NAV ----------------------- */
+    const Nav = ({ lang, setLanguage, t }) => {
       const [open, setOpen] = useState(false);
-      const links = [
-        ["Soluciones", "/#soluciones"],
-        ["Servicios",  "/#servicios"],
-        ["Casos",      "/casos-de-uso.html"],
-        ["FAQs",       "/preguntas-frecuentes.html"],
-        ["Precios",    "/#precios"],
-        ["Contacto",   "/#contacto"],
-      ];
       return (
         <header className="nav-bar nav-bar--green">
           <div className="nav-inner">
@@ -123,57 +254,60 @@
               <span className="nav-wordmark">{CONFIG.marca}</span>
             </a>
             <nav className="nav-links">
-              {links.map(([t, h]) => <a key={h} href={h} className="nav-link">{t}</a>)}
-              <a href="/#contacto" className="btn btn-primary nav-cta">Agenda una charla</a>
+              {t.links.map(([label, href]) => <a key={href} href={href} className="nav-link">{label}</a>)}
+              <div className="lang-toggle">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => setLanguage('es')}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => setLanguage('en')}>EN</button>
+              </div>
+              <a href="/#contacto" className="btn btn-primary nav-cta">{t.cta}</a>
             </nav>
-            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label="Menú">
+            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label={t.menuLabel}>
               <span/><span/><span/>
             </button>
           </div>
           {open && (
             <div className="nav-mobile">
-              {links.map(([t, h]) => <a key={h} href={h} onClick={() => setOpen(false)}>{t}</a>)}
+              <div className="lang-mobile">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => { setLanguage('es'); setOpen(false); }}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => { setLanguage('en'); setOpen(false); }}>EN</button>
+              </div>
+              {t.links.map(([label, href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}
             </div>
           )}
         </header>
       );
     };
 
-    const PageHero = () => (
+    /* ----------------------- HERO ----------------------- */
+    const PageHero = ({ t, lang }) => (
       <section id="top" className="page-hero">
         <div className="wrap">
-          <span className="badge badge-green hero-kicker"><Ico id="i-auto" w={13} h={13}/>Servicio · Automatización con n8n</span>
-          <h1><em>n8n</em>: el motor de orquestación que cose tus apps.</h1>
-          <p className="lead">
-            Implementamos workflows con <b>n8n</b> para sincronizar CRM, correo, hojas, ERP y APIs externas. Self-hosted o cloud, con <b>retries automáticos</b>, manejo de errores robusto y observabilidad. Sin lock-in: el código vive en tu infraestructura.
-          </p>
+          <span className="badge badge-green hero-kicker"><Ico id="i-auto" w={13} h={13}/>{t.kicker}</span>
+          <h1 dangerouslySetInnerHTML={{ __html: t.h1 }} />
+          <p className="lead" dangerouslySetInnerHTML={{ __html: t.lead }} />
           <div className="ctas">
-            <a href={waLink()} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
-            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+            <a href={waLink(null, lang)} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>{t.ctaWA}</a>
+            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>{t.ctaAgendar}</a>
           </div>
         </div>
       </section>
     );
 
-    const capabilities = [
-      { iconId: "i-integra", t: "Sincronización entre apps",       d: "Conectamos CRM, correo, hojas, ERP, contabilidad y herramientas internas. Datos coherentes entre sistemas sin captura manual." },
-      { iconId: "i-tiempo",  t: "Workflows programados",           d: "Reportes diarios, exports semanales, jobs nocturnos. Triggers cron con manejo de errores y notificaciones a Slack/correo." },
-      { iconId: "i-flujo",   t: "Webhooks y triggers en tiempo real", d: "Eventos de Mercado Pago, Stripe, formularios web, GitHub. Procesamos cada evento con lógica condicional y enrutamiento dinámico." },
-      { iconId: "i-modelo",  t: "Workflows long-running robustos",    d: "Retries automáticos, dead-letter queues, alertas en fallas, logs persistentes. Producción real, no demos." },
-    ];
-
-    const Capabilities = () => (
+    /* ----------------------- CAPABILITIES ----------------------- */
+    const Capabilities = ({ t }) => (
       <section id="capabilities" className="section">
         <div className="wrap">
           <div className="sec-hdr sec-hdr--solo">
             <div>
-              <div className="sec-kicker">Qué hacemos con n8n</div>
-              <h2 className="sec-title">Cuatro patrones que <em>cubren la mayoría</em> de los casos.</h2>
-              <p className="sec-desc">Cualquier proceso que cruce dos o más sistemas, requiera ejecutarse a horas fijas o reaccionar a eventos, encaja en uno de estos.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
           </div>
           <div className="svc-grid">
-            {capabilities.map(c => (
+            {t.items.map(c => (
               <div key={c.t} className="svc-card">
                 <div className="svc-ico"><Ico id={c.iconId} w={26} h={26}/></div>
                 <div className="svc-title">{c.t}</div>
@@ -185,35 +319,23 @@
       </section>
     );
 
-    const sinOrkesta = [
-      "Zapier/Make limita la lógica condicional y escalan mal en costo cuando creces.",
-      "Custom code requiere boilerplate de retries, error handling y observabilidad.",
-      "Sin self-hosting: datos sensibles pasan por servidores de terceros.",
-      "Cambiar de proveedor implica reescribir todo desde cero.",
-    ];
-    const conOrkesta = [
-      "Lógica condicional, branches, loops y sub-workflows sin código.",
-      "Retries, dead-letter queues y alertas listas en producción.",
-      "Self-hosted en tu infraestructura para casos sensibles.",
-      "Sin lock-in: el código y los flujos viven en tu n8n, no en el nuestro.",
-    ];
-
-    const Compare = () => (
+    /* ----------------------- COMPARE ----------------------- */
+    const Compare = ({ t }) => (
       <section id="compare" className="section" style={{background:"var(--paper-2)"}}>
         <div className="wrap">
           <div className="sec-hdr sec-hdr--solo">
             <div>
-              <div className="sec-kicker">Comparativa · Alternativas</div>
-              <h2 className="sec-title">Por qué n8n con Orkesta <em>vs.</em> otras opciones.</h2>
-              <p className="sec-desc">No vendemos n8n por moda — vendemos automatizaciones que sobreviven a producción real. Esto es lo que ganas vs hacerlo por tu cuenta.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
           </div>
           <div className="compare-grid">
             <div className="compare-col">
-              <div className="compare-label">Hacerlo por tu cuenta</div>
-              <h3 className="compare-title">Zapier, Make o custom code</h3>
+              <div className="compare-label">{t.leftLabel}</div>
+              <h3 className="compare-title">{t.leftTitle}</h3>
               <ul className="compare-list">
-                {sinOrkesta.map(item => (
+                {t.sin.map(item => (
                   <li key={item} className="compare-item">
                     <svg className="compare-item-ico"><use href="/defs.svg#i-arrow"/></svg>
                     <span>{item}</span>
@@ -222,10 +344,10 @@
               </ul>
             </div>
             <div className="compare-col compare-col--orkesta">
-              <div className="compare-label">Con Orkesta · n8n</div>
-              <h3 className="compare-title">Workflows productivos sin reinventar la rueda</h3>
+              <div className="compare-label">{t.rightLabel}</div>
+              <h3 className="compare-title">{t.rightTitle}</h3>
               <ul className="compare-list">
-                {conOrkesta.map(item => (
+                {t.con.map(item => (
                   <li key={item} className="compare-item">
                     <svg className="compare-item-ico"><use href="/defs.svg#i-check"/></svg>
                     <span>{item}</span>
@@ -238,48 +360,82 @@
       </section>
     );
 
-    const CtaFinal = () => (
+    /* ----------------------- CTA FINAL ----------------------- */
+    const CtaFinal = ({ t, lang }) => (
       <section className="section">
         <div className="wrap">
           <div className="cta-block">
-            <h2>¿Tu equipo está <em>cosiendo apps a mano</em>?</h2>
-            <p>30 minutos sin compromiso. Te decimos qué workflow tiene mayor ROI, qué piezas requieren n8n vs herramientas más simples, y con qué orden empezar.</p>
+            <h2 dangerouslySetInnerHTML={{ __html: t.title }} />
+            <p>{t.desc}</p>
             <div className="ctas">
-              <a href={waLink()} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
-              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+              <a href={waLink(null, lang)} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>{t.ctaWA}</a>
+              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>{t.ctaAgendar}</a>
             </div>
           </div>
         </div>
       </section>
     );
 
-    const Footer = () => (
+    /* ----------------------- FOOTER ----------------------- */
+    const Footer = ({ t }) => (
       <footer className="site-footer">
-        <span>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
+        <span>© {new Date().getFullYear()} {CONFIG.marca} · {t.tagline} · {t.country} · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
         <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
       </footer>
     );
 
-    const FloatingWA = () => (
-      <a href={waLink()} target="_blank" aria-label="WhatsApp" className="floating-wa">
+    /* ----------------------- Floating WhatsApp ----------------------- */
+    const FloatingWA = ({ lang }) => (
+      <a href={waLink(null, lang)} target="_blank" aria-label="WhatsApp" className="floating-wa">
         <Ico id="i-wa" w={22} h={22}/>
         <span className="floating-wa-text">WhatsApp</span>
       </a>
     );
 
-    const App = () => (
-      <div>
-        <Nav/>
-        <main>
-          <PageHero/>
-          <Capabilities/>
-          <Compare/>
-          <CtaFinal/>
-        </main>
-        <Footer/>
-        <FloatingWA/>
-      </div>
-    );
+    /* ----------------------- APP ----------------------- */
+    const App = () => {
+      const [lang, setLang] = useState(detectLanguage);
+      const t = TRANSLATIONS[lang];
+
+      React.useEffect(() => {
+        document.documentElement.lang = t.htmlLang;
+        document.title = t.meta.title;
+        const update = (sel, attr, val) => {
+          const el = document.querySelector(sel);
+          if (el) el.setAttribute(attr, val);
+        };
+        update('meta[name="description"]', 'content', t.meta.desc);
+        update('meta[property="og:title"]', 'content', t.meta.title);
+        update('meta[property="og:description"]', 'content', t.meta.desc);
+        update('meta[name="twitter:title"]', 'content', t.meta.title);
+        update('meta[name="twitter:description"]', 'content', t.meta.desc);
+      }, [lang]);
+
+      const setLanguage = (l) => {
+        setLang(l);
+        try { localStorage.setItem('orkesta-lang', l); } catch {}
+        try {
+          const url = new URL(window.location);
+          if (l === 'en') url.searchParams.set('lang', 'en');
+          else url.searchParams.delete('lang');
+          window.history.replaceState({}, '', url);
+        } catch {}
+      };
+
+      return (
+        <div>
+          <Nav lang={lang} setLanguage={setLanguage} t={t.nav} />
+          <main>
+            <PageHero t={t.hero} lang={lang} />
+            <Capabilities t={t.capabilities} />
+            <Compare t={t.compare} />
+            <CtaFinal t={t.cta} lang={lang} />
+          </main>
+          <Footer t={t.footer} />
+          <FloatingWA lang={lang} />
+        </div>
+      );
+    };
 
     ReactDOM.createRoot(document.getElementById("root")).render(<App />);
   </script>

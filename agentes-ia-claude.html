@@ -13,6 +13,7 @@
   <meta name="geo.placename" content="Ciudad de México" />
   <link rel="canonical" href="https://orkestalo.com/agentes-ia-claude.html" />
   <link rel="alternate" hreflang="es" href="https://orkestalo.com/agentes-ia-claude.html" />
+  <link rel="alternate" hreflang="en" href="https://orkestalo.com/agentes-ia-claude.html?lang=en" />
   <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/agentes-ia-claude.html" />
 
   <meta property="og:title" content="Agentes con IA y Claude — Orkesta" />
@@ -75,12 +76,6 @@
           <p>Implementamos asistentes conversacionales, agentes con tool use y procesamiento de documentos con razonamiento — todo sobre Claude API con context de tu negocio.</p>
           <p><a href="https://wa.me/525587662865">WhatsApp +52 55 8766 2865</a> · <a href="/#contacto">Agendar diagnóstico</a></p>
         </section>
-        <section><h2>Qué construimos con Claude</h2><ul>
-          <li>Asistentes conversacionales (WhatsApp, web, Slack) con contexto de tu CRM y catálogo.</li>
-          <li>Agentes con tool use: acceso a tus APIs internas, bases de datos, sistemas de tickets.</li>
-          <li>Procesamiento de documentos con razonamiento (no solo OCR): facturas, contratos, emails.</li>
-          <li>Clasificación, extracción y resumen de información no estructurada.</li>
-        </ul></section>
       </main>
     </div>
   </div>
@@ -89,22 +84,162 @@
     const { useState } = React;
 
     const CONFIG = { marca: "Orkesta", whatsapp: "525587662865", email: "info@orkestalo.com" };
-    const waLink = (msg) =>
-      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || "Hola, quiero implementar un agente IA con Claude.")}`;
+
+    const TRANSLATIONS = {
+      es: {
+        htmlLang: "es",
+        meta: {
+          title: "Agentes con IA y Claude — Orkesta | Asistentes para tu negocio",
+          desc: "Diseño e implementación de agentes con Claude API: asistentes con contexto de tu negocio, tool use real y procesamiento de documentos con razonamiento.",
+        },
+        waDefault: "Hola, quiero implementar un agente IA con Claude.",
+        nav: {
+          links: [
+            ["Soluciones", "/#soluciones"],
+            ["Servicios",  "/#servicios"],
+            ["Casos",      "/casos-de-uso.html"],
+            ["FAQs",       "/preguntas-frecuentes.html"],
+            ["Precios",    "/#precios"],
+            ["Contacto",   "/#contacto"],
+          ],
+          cta: "Agenda una charla",
+          menuLabel: "Menú",
+        },
+        hero: {
+          kicker: "Servicio · Agentes con Claude",
+          h1: '<em>Claude</em>: agentes que razonan sobre tu negocio.',
+          lead: 'Implementamos asistentes con <b>Claude API</b> que entienden contexto de tu CRM, ejecutan acciones vía <b>tool use</b> y razonan sobre documentos. No chatbots de reglas — agentes reales que mejoran con cada conversación.',
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Agendar diagnóstico",
+        },
+        capabilities: {
+          kicker: "Qué construimos con Claude",
+          title: 'Cuatro tipos de agentes <em>que entregan ROI</em>.',
+          desc: "No vendemos \"IA\" como concepto. Vendemos agentes con un trabajo concreto, métrica clara y dueño asignado en tu equipo.",
+          items: [
+            { iconId: "i-agente",  t: "Asistentes conversacionales",                  d: "WhatsApp, web o Slack con contexto de tu CRM y catálogo. Responden, califican, agendan, escalan a humano cuando hace falta." },
+            { iconId: "i-integra", t: "Agentes con tool use",                         d: "Acceso real a tus APIs internas, bases de datos, sistemas de tickets. El agente no solo conversa — ejecuta acciones." },
+            { iconId: "i-flujo",   t: "Procesamiento de documentos con razonamiento", d: "Facturas, contratos, emails. Claude no solo extrae datos: entiende layout, contexto y excepciones. Ver también: /procesamiento-documentos-ia.html" },
+            { iconId: "i-modelo",  t: "Clasificación y resumen",                       d: "Categorizar tickets, resumir hilos de correo, priorizar leads, generar reportes ejecutivos a partir de datos crudos." },
+          ],
+        },
+        compare: {
+          kicker: "Comparativa · Chatbots tradicionales vs agentes IA",
+          title: 'Por qué Claude <em>vs.</em> bots de reglas.',
+          desc: "La diferencia no es marketing — es la capacidad real del agente de manejar casos que no anticipaste.",
+          leftLabel: "Chatbots de reglas",
+          leftTitle: "Manychat, Landbot, scripts",
+          rightLabel: "Con Orkesta · Claude",
+          rightTitle: "Agentes que razonan y ejecutan",
+          sin: [
+            "Chatbots de reglas (Manychat, Landbot) que fallan en casos nuevos.",
+            "Scripts y plantillas: no entienden contexto ni adaptan tono.",
+            "Sin acceso a tus sistemas: el agente conversa pero no ejecuta.",
+            "Cada nuevo caso requiere agregar reglas manualmente.",
+          ],
+          con: [
+            "Razonamiento real: el agente entiende intención y contexto, no solo keywords.",
+            "Tool use: acceso a tus APIs, ejecuta acciones (agendar, consultar, actualizar).",
+            "Context window grande: lee todo el hilo, no solo el último mensaje.",
+            "Zero data retention configurado donde aplica — datos sensibles no se entrenan.",
+          ],
+        },
+        cta: {
+          title: '¿Tu equipo está <em>respondiendo lo mismo</em> 100 veces al día?',
+          desc: "30 minutos sin compromiso. Te decimos qué conversaciones puede tomar un agente con Claude, qué requiere quedarse con humanos, y cómo medir el impacto antes de invertir.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Agendar diagnóstico",
+        },
+        footer: { tagline: "Automatización e IA", country: "México" },
+      },
+      en: {
+        htmlLang: "en",
+        meta: {
+          title: "AI agents with Claude — Orkesta | Assistants for your business",
+          desc: "Design and implementation of agents with Claude API: assistants with your business context, real tool use and document processing with reasoning.",
+        },
+        waDefault: "Hi, I want to implement an AI agent with Claude.",
+        nav: {
+          links: [
+            ["Solutions", "/#soluciones"],
+            ["Services",  "/#servicios"],
+            ["Cases",     "/casos-de-uso.html"],
+            ["FAQs",      "/preguntas-frecuentes.html"],
+            ["Pricing",   "/#precios"],
+            ["Contact",   "/#contacto"],
+          ],
+          cta: "Schedule a call",
+          menuLabel: "Menu",
+        },
+        hero: {
+          kicker: "Service · Agents with Claude",
+          h1: "<em>Claude</em>: agents that reason about your business.",
+          lead: "We build assistants with <b>Claude API</b> that understand your CRM context, take actions via <b>tool use</b> and reason over documents. Not rule-based chatbots — real agents that improve with every conversation.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Book a diagnostic",
+        },
+        capabilities: {
+          kicker: "What we build with Claude",
+          title: "Four types of agents <em>that deliver ROI</em>.",
+          desc: "We don't sell \"AI\" as a concept. We sell agents with a concrete job, clear metrics and an assigned owner on your team.",
+          items: [
+            { iconId: "i-agente",  t: "Conversational assistants",            d: "WhatsApp, web or Slack with context from your CRM and catalog. They answer, qualify, schedule, escalate to a human when needed." },
+            { iconId: "i-integra", t: "Agents with tool use",                  d: "Real access to your internal APIs, databases, ticket systems. The agent doesn't just chat — it takes action." },
+            { iconId: "i-flujo",   t: "Document processing with reasoning",   d: "Invoices, contracts, emails. Claude doesn't just extract data: it understands layout, context and exceptions. See also: /procesamiento-documentos-ia.html" },
+            { iconId: "i-modelo",  t: "Classification and summarization",     d: "Categorize tickets, summarize email threads, prioritize leads, generate executive reports from raw data." },
+          ],
+        },
+        compare: {
+          kicker: "Comparison · Traditional chatbots vs AI agents",
+          title: "Why Claude <em>vs.</em> rule-based bots.",
+          desc: "The difference isn't marketing — it's the agent's real ability to handle cases you didn't anticipate.",
+          leftLabel: "Rule-based chatbots",
+          leftTitle: "Manychat, Landbot, scripts",
+          rightLabel: "With Orkesta · Claude",
+          rightTitle: "Agents that reason and act",
+          sin: [
+            "Rule-based chatbots (Manychat, Landbot) that fail on new cases.",
+            "Scripts and templates: don't understand context or adapt tone.",
+            "No access to your systems: the agent chats but doesn't act.",
+            "Each new case requires manually adding rules.",
+          ],
+          con: [
+            "Real reasoning: the agent understands intent and context, not just keywords.",
+            "Tool use: access to your APIs, takes actions (schedule, query, update).",
+            "Large context window: reads the whole thread, not just the last message.",
+            "Zero data retention configured where applicable — sensitive data isn't trained on.",
+          ],
+        },
+        cta: {
+          title: "Is your team <em>answering the same thing</em> 100 times a day?",
+          desc: "30 minutes no commitment. We tell you which conversations a Claude agent can take, what needs to stay with humans, and how to measure impact before investing.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Book a diagnostic",
+        },
+        footer: { tagline: "Automation & AI", country: "Mexico" },
+      },
+    };
+
+    function detectLanguage() {
+      try {
+        const param = new URLSearchParams(window.location.search).get('lang');
+        if (param === 'en' || param === 'es') return param;
+        const stored = localStorage.getItem('orkesta-lang');
+        if (stored === 'en' || stored === 'es') return stored;
+        const browser = (navigator.language || 'es').slice(0, 2);
+        return browser === 'en' ? 'en' : 'es';
+      } catch { return 'es'; }
+    }
+
+    const waLink = (msg, lang = 'es') =>
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || TRANSLATIONS[lang].waDefault)}`;
+
     const Ico = ({ id, w = 18, h = 18 }) => (
       <svg width={w} height={h} aria-hidden="true"><use href={`/defs.svg#${id}`}/></svg>
     );
 
-    const Nav = () => {
+    const Nav = ({ lang, setLanguage, t }) => {
       const [open, setOpen] = useState(false);
-      const links = [
-        ["Soluciones", "/#soluciones"],
-        ["Servicios",  "/#servicios"],
-        ["Casos",      "/casos-de-uso.html"],
-        ["FAQs",       "/preguntas-frecuentes.html"],
-        ["Precios",    "/#precios"],
-        ["Contacto",   "/#contacto"],
-      ];
       return (
         <header className="nav-bar nav-bar--green">
           <div className="nav-inner">
@@ -113,57 +248,58 @@
               <span className="nav-wordmark">{CONFIG.marca}</span>
             </a>
             <nav className="nav-links">
-              {links.map(([t, h]) => <a key={h} href={h} className="nav-link">{t}</a>)}
-              <a href="/#contacto" className="btn btn-primary nav-cta">Agenda una charla</a>
+              {t.links.map(([label, href]) => <a key={href} href={href} className="nav-link">{label}</a>)}
+              <div className="lang-toggle">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => setLanguage('es')}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => setLanguage('en')}>EN</button>
+              </div>
+              <a href="/#contacto" className="btn btn-primary nav-cta">{t.cta}</a>
             </nav>
-            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label="Menú">
+            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label={t.menuLabel}>
               <span/><span/><span/>
             </button>
           </div>
           {open && (
             <div className="nav-mobile">
-              {links.map(([t, h]) => <a key={h} href={h} onClick={() => setOpen(false)}>{t}</a>)}
+              <div className="lang-mobile">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => { setLanguage('es'); setOpen(false); }}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => { setLanguage('en'); setOpen(false); }}>EN</button>
+              </div>
+              {t.links.map(([label, href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}
             </div>
           )}
         </header>
       );
     };
 
-    const PageHero = () => (
+    const PageHero = ({ t, lang }) => (
       <section id="top" className="page-hero">
         <div className="wrap">
-          <span className="badge badge-green hero-kicker"><Ico id="i-modelo" w={13} h={13}/>Servicio · Agentes con Claude</span>
-          <h1><em>Claude</em>: agentes que razonan sobre tu negocio.</h1>
-          <p className="lead">
-            Implementamos asistentes con <b>Claude API</b> que entienden contexto de tu CRM, ejecutan acciones vía <b>tool use</b> y razonan sobre documentos. No chatbots de reglas — agentes reales que mejoran con cada conversación.
-          </p>
+          <span className="badge badge-green hero-kicker"><Ico id="i-modelo" w={13} h={13}/>{t.kicker}</span>
+          <h1 dangerouslySetInnerHTML={{ __html: t.h1 }} />
+          <p className="lead" dangerouslySetInnerHTML={{ __html: t.lead }} />
           <div className="ctas">
-            <a href={waLink()} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
-            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+            <a href={waLink(null, lang)} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>{t.ctaWA}</a>
+            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>{t.ctaAgendar}</a>
           </div>
         </div>
       </section>
     );
 
-    const capabilities = [
-      { iconId: "i-agente",  t: "Asistentes conversacionales",          d: "WhatsApp, web o Slack con contexto de tu CRM y catálogo. Responden, califican, agendan, escalan a humano cuando hace falta." },
-      { iconId: "i-integra", t: "Agentes con tool use",                  d: "Acceso real a tus APIs internas, bases de datos, sistemas de tickets. El agente no solo conversa — ejecuta acciones." },
-      { iconId: "i-flujo",   t: "Procesamiento de documentos con razonamiento", d: "Facturas, contratos, emails. Claude no solo extrae datos: entiende layout, contexto y excepciones. Ver también: /procesamiento-documentos-ia.html" },
-      { iconId: "i-modelo",  t: "Clasificación y resumen",                d: "Categorizar tickets, resumir hilos de correo, priorizar leads, generar reportes ejecutivos a partir de datos crudos." },
-    ];
-
-    const Capabilities = () => (
+    const Capabilities = ({ t }) => (
       <section id="capabilities" className="section">
         <div className="wrap">
           <div className="sec-hdr sec-hdr--solo">
             <div>
-              <div className="sec-kicker">Qué construimos con Claude</div>
-              <h2 className="sec-title">Cuatro tipos de agentes <em>que entregan ROI</em>.</h2>
-              <p className="sec-desc">No vendemos "IA" como concepto. Vendemos agentes con un trabajo concreto, métrica clara y dueño asignado en tu equipo.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
           </div>
           <div className="svc-grid">
-            {capabilities.map(c => (
+            {t.items.map(c => (
               <div key={c.t} className="svc-card">
                 <div className="svc-ico"><Ico id={c.iconId} w={26} h={26}/></div>
                 <div className="svc-title">{c.t}</div>
@@ -175,35 +311,22 @@
       </section>
     );
 
-    const sinOrkesta = [
-      "Chatbots de reglas (Manychat, Landbot) que fallan en casos nuevos.",
-      "Scripts y plantillas: no entienden contexto ni adaptan tono.",
-      "Sin acceso a tus sistemas: el agente conversa pero no ejecuta.",
-      "Cada nuevo caso requiere agregar reglas manualmente.",
-    ];
-    const conOrkesta = [
-      "Razonamiento real: el agente entiende intención y contexto, no solo keywords.",
-      "Tool use: acceso a tus APIs, ejecuta acciones (agendar, consultar, actualizar).",
-      "Context window grande: lee todo el hilo, no solo el último mensaje.",
-      "Zero data retention configurado donde aplica — datos sensibles no se entrenan.",
-    ];
-
-    const Compare = () => (
+    const Compare = ({ t }) => (
       <section id="compare" className="section" style={{background:"var(--paper-2)"}}>
         <div className="wrap">
           <div className="sec-hdr sec-hdr--solo">
             <div>
-              <div className="sec-kicker">Comparativa · Chatbots tradicionales vs agentes IA</div>
-              <h2 className="sec-title">Por qué Claude <em>vs.</em> bots de reglas.</h2>
-              <p className="sec-desc">La diferencia no es marketing — es la capacidad real del agente de manejar casos que no anticipaste.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
           </div>
           <div className="compare-grid">
             <div className="compare-col">
-              <div className="compare-label">Chatbots de reglas</div>
-              <h3 className="compare-title">Manychat, Landbot, scripts</h3>
+              <div className="compare-label">{t.leftLabel}</div>
+              <h3 className="compare-title">{t.leftTitle}</h3>
               <ul className="compare-list">
-                {sinOrkesta.map(item => (
+                {t.sin.map(item => (
                   <li key={item} className="compare-item">
                     <svg className="compare-item-ico"><use href="/defs.svg#i-arrow"/></svg>
                     <span>{item}</span>
@@ -212,10 +335,10 @@
               </ul>
             </div>
             <div className="compare-col compare-col--orkesta">
-              <div className="compare-label">Con Orkesta · Claude</div>
-              <h3 className="compare-title">Agentes que razonan y ejecutan</h3>
+              <div className="compare-label">{t.rightLabel}</div>
+              <h3 className="compare-title">{t.rightTitle}</h3>
               <ul className="compare-list">
-                {conOrkesta.map(item => (
+                {t.con.map(item => (
                   <li key={item} className="compare-item">
                     <svg className="compare-item-ico"><use href="/defs.svg#i-check"/></svg>
                     <span>{item}</span>
@@ -228,48 +351,78 @@
       </section>
     );
 
-    const CtaFinal = () => (
+    const CtaFinal = ({ t, lang }) => (
       <section className="section">
         <div className="wrap">
           <div className="cta-block">
-            <h2>¿Tu equipo está <em>respondiendo lo mismo</em> 100 veces al día?</h2>
-            <p>30 minutos sin compromiso. Te decimos qué conversaciones puede tomar un agente con Claude, qué requiere quedarse con humanos, y cómo medir el impacto antes de invertir.</p>
+            <h2 dangerouslySetInnerHTML={{ __html: t.title }} />
+            <p>{t.desc}</p>
             <div className="ctas">
-              <a href={waLink()} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
-              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+              <a href={waLink(null, lang)} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>{t.ctaWA}</a>
+              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>{t.ctaAgendar}</a>
             </div>
           </div>
         </div>
       </section>
     );
 
-    const Footer = () => (
+    const Footer = ({ t }) => (
       <footer className="site-footer">
-        <span>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
+        <span>© {new Date().getFullYear()} {CONFIG.marca} · {t.tagline} · {t.country} · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
         <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
       </footer>
     );
 
-    const FloatingWA = () => (
-      <a href={waLink()} target="_blank" aria-label="WhatsApp" className="floating-wa">
+    const FloatingWA = ({ lang }) => (
+      <a href={waLink(null, lang)} target="_blank" aria-label="WhatsApp" className="floating-wa">
         <Ico id="i-wa" w={22} h={22}/>
         <span className="floating-wa-text">WhatsApp</span>
       </a>
     );
 
-    const App = () => (
-      <div>
-        <Nav/>
-        <main>
-          <PageHero/>
-          <Capabilities/>
-          <Compare/>
-          <CtaFinal/>
-        </main>
-        <Footer/>
-        <FloatingWA/>
-      </div>
-    );
+    const App = () => {
+      const [lang, setLang] = useState(detectLanguage);
+      const t = TRANSLATIONS[lang];
+
+      React.useEffect(() => {
+        document.documentElement.lang = t.htmlLang;
+        document.title = t.meta.title;
+        const update = (sel, attr, val) => {
+          const el = document.querySelector(sel);
+          if (el) el.setAttribute(attr, val);
+        };
+        update('meta[name="description"]', 'content', t.meta.desc);
+        update('meta[property="og:title"]', 'content', t.meta.title);
+        update('meta[property="og:description"]', 'content', t.meta.desc);
+        update('meta[name="twitter:title"]', 'content', t.meta.title);
+        update('meta[name="twitter:description"]', 'content', t.meta.desc);
+      }, [lang]);
+
+      const setLanguage = (l) => {
+        setLang(l);
+        try { localStorage.setItem('orkesta-lang', l); } catch {}
+        try {
+          const url = new URL(window.location);
+          if (l === 'en') url.searchParams.set('lang', 'en');
+          else url.searchParams.delete('lang');
+          window.history.replaceState({}, '', url);
+        } catch {}
+      };
+
+      return (
+        <div>
+          <Nav lang={lang} setLanguage={setLanguage} t={t.nav} />
+          <main>
+            <PageHero t={t.hero} lang={lang} />
+            <Capabilities t={t.capabilities} />
+            <Compare t={t.compare} />
+            <CtaFinal t={t.cta} lang={lang} />
+          </main>
+          <Footer t={t.footer} />
+          <FloatingWA lang={lang} />
+        </div>
+      );
+    };
 
     ReactDOM.createRoot(document.getElementById("root")).render(<App />);
   </script>
