@@ -261,6 +261,7 @@
       padding-bottom: 24px;
       border-bottom: 1px solid var(--ink);
     }
+    .sec-hdr--solo { grid-template-columns: 1fr; }
     .sec-num {
       font-family: var(--sans);
       font-weight: 800;
@@ -785,6 +786,107 @@
     .floating-wa:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 rgba(0,0,0,.25); }
     .floating-wa-text { display: none; }
 
+    /* ---- ¿Es para ti? (qualifier) ---- */
+    .pq-grid {
+      border: 1px solid var(--ink);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .pq-item {
+      padding: 22px 24px;
+      border-right: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      background: var(--paper);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: background .15s;
+    }
+    .pq-item:nth-child(2n) { border-right: none; }
+    .pq-item:nth-last-child(-n+2) { border-bottom: none; }
+    .pq-item:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+      border-right: none;
+    }
+    .pq-item:hover { background: var(--paper-2); }
+    .pq-ico {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--paper-2);
+      background: var(--green);
+      border: 1.5px solid var(--green-deep);
+    }
+    .pq-text {
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--ink);
+    }
+
+    /* ---- Soluciones: línea de beneficio ---- */
+    .sol-beneficio {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--green-deep);
+      font-weight: 600;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    /* ---- FAQs (accordion nativo sin JS) ---- */
+    .faq-list {
+      border: 1px solid var(--ink);
+      background: var(--paper-2);
+    }
+    .faq-item { border-bottom: 1px solid var(--ink); }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-item summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 20px 24px;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transition: background .12s;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary:hover { background: var(--paper); }
+    .faq-item summary::after {
+      content: "+";
+      font-family: var(--mono);
+      font-weight: 400;
+      font-size: 22px;
+      color: var(--green);
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .faq-item[open] summary::after { content: "−"; }
+    .faq-item[open] summary { background: var(--paper); }
+    .faq-body {
+      padding: 0 24px 22px;
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: var(--ink-70);
+      max-width: 720px;
+    }
+    .faq-more {
+      margin-top: 20px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .faq-more a { color: var(--green-deep); text-decoration: underline; text-underline-offset: 3px; }
+
     /* ---- Responsive ---- */
     @media (max-width: 960px) {
       :root { --gut: 28px; }
@@ -808,6 +910,10 @@
       .sol-card:nth-child(2n) { border-right: none; }
       .sol-card:nth-last-child(-n+2) { border-bottom: 1px solid var(--ink); }
       .sol-card:last-child { border-bottom: none; }
+      .pq-grid { grid-template-columns: 1fr; }
+      .pq-item { border-right: none; }
+      .pq-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--ink); }
+      .pq-item:last-child { border-bottom: none; }
       .nav-links { display: none; }
       .nav-toggle { display: flex; }
     }
@@ -873,6 +979,10 @@
       .soluciones-wrap { padding: 32px var(--gut); }
       .contacto-left, .contacto-right { padding: 32px 24px; }
       .floating-wa-text { display: inline; }
+      .pq-item { padding: 18px 20px; gap: 14px; }
+      .pq-text { font-size: 13.5px; }
+      .faq-item summary { padding: 16px 18px; font-size: 14px; }
+      .faq-body { padding: 0 18px 18px; font-size: 13.5px; }
     }
   </style>
 </head>
@@ -1016,10 +1126,11 @@
       }, []);
 
       const links = [
+        ["Soluciones", "#soluciones"],
         ["Servicios", "#servicios"],
         ["Proceso", "#proceso"],
-        ["Soluciones", "#soluciones"],
         ["Precios", "#precios"],
+        ["FAQs", "#faqs"],
         ["Contacto", "#contacto"],
       ];
       return (
@@ -1140,17 +1251,51 @@
             <span className="badge badge-green"><Ico id="i-check" w={13} h={13}/>Consultoría en automatización e IA aplicada</span>
           </div>
           <h1 className="hero-headline">
-            Automatización e IA que <em>orquesta</em> tu negocio
+            Automatización <em>pragmática</em> para que tu equipo deje de hacer trabajo manual.
           </h1>
           <p className="hero-sub">
-            Diseñamos e implementamos automatizaciones con <b>n8n</b>, agentes y soluciones con <b>Claude</b>, e integraciones a medida. Menos trabajo manual, más resultados — del discovery a producción.
+            Implementamos agentes con <b>Claude</b>, flujos en <b>n8n</b> e integraciones a medida. Discovery → producción en semanas, no meses. Foco en procesos con <b>ROI medible</b>.
           </p>
           <div className="hero-ctas">
             <a href={waLink()} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
+            <a href="#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
           </div>
           <div className="hero-trust">
-            <span className="badge">Entregables claros por etapa</span>
-            <span className="badge">Fácil y sin dependencias</span>
+            <span className="badge">Stack: Claude · n8n · Mercado Pago</span>
+            <span className="badge">Discovery → producción en semanas</span>
+            <span className="badge">CDMX · LATAM · USA</span>
+            <span className="badge">Primera llamada sin costo</span>
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ----------------------- ¿ES PARA TI? ----------------------- */
+    const paraQuien = [
+      "Usan Excel para procesos repetitivos que ya no escalan.",
+      "Tienen tareas manuales que cruzan sistemas (CRM, correo, ERP, contabilidad).",
+      "Pierden horas capturando información a mano desde correos o documentos.",
+      "Atienden clientes por WhatsApp y el volumen ya no se sostiene manual.",
+      "Quieren IA pragmática sin contratar un equipo técnico in-house.",
+    ];
+
+    const ParaQuien = () => (
+      <section id="para-quien" className="section" style={{background:"var(--paper-2)"}}>
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">Para quién · Calificación</div>
+              <h2 className="sec-title">¿Es <em>para ti</em>?</h2>
+              <p className="sec-desc">Trabajamos mejor con empresas que se reconocen en al menos dos de estos puntos.</p>
+            </div>
+          </div>
+          <div className="pq-grid">
+            {paraQuien.map((item) => (
+              <div key={item} className="pq-item">
+                <div className="pq-ico"><Ico id="i-check" w={16} h={16}/></div>
+                <div className="pq-text">{item}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -1226,10 +1371,10 @@
 
     /* ----------------------- SOLUCIONES ----------------------- */
     const soluciones = [
-      { t: "Asistente de atención 24/7",       d: "Agente con Claude que responde dudas, califica leads y agenda — en tu web o WhatsApp.", tags: ["Claude", "WhatsApp", "Leads"] },
-      { t: "Conciliación de pagos automática", d: "Integra Mercado Pago, registra ventas y concilia con tu hoja o ERP sin intervención manual.", tags: ["Mercado Pago", "n8n"] },
-      { t: "Lector inteligente de facturas",   d: "Recibe facturas por correo, extrae datos con IA y los carga a tu sistema.", tags: ["IA Docs", "n8n"] },
-      { t: "Orquestador de back-office",       d: "Automatiza alta de clientes, notificaciones y reportes recurrentes entre tus apps.", tags: ["Integraciones", "n8n"] },
+      { t: "Asistente de atención 24/7",       beneficio: "Atiende fuera de horario sin sumar headcount", d: "Agente con Claude que responde dudas, califica leads y agenda — en tu web o WhatsApp.",            tags: ["Claude", "WhatsApp", "Leads"] },
+      { t: "Conciliación de pagos automática", beneficio: "Elimina la captura manual de cobros",         d: "Integra Mercado Pago, registra ventas y concilia con tu hoja o ERP sin intervención manual.",     tags: ["Mercado Pago", "n8n"] },
+      { t: "Lector inteligente de facturas",   beneficio: "Reduce horas de data entry de facturas",      d: "Recibe facturas por correo, extrae datos con IA y los carga a tu sistema.",                       tags: ["IA Docs", "n8n"] },
+      { t: "Orquestador de back-office",       beneficio: "Libera al equipo de tareas mecánicas",        d: "Automatiza alta de clientes, notificaciones y reportes recurrentes entre tus apps.",              tags: ["Integraciones", "n8n"] },
     ];
 
     const Soluciones = () => (
@@ -1245,6 +1390,7 @@
               {soluciones.map((s) => (
                 <div key={s.t} className="sol-card">
                   <div className="sol-title">{s.t}</div>
+                  <div className="sol-beneficio">{s.beneficio}</div>
                   <p className="sol-desc">{s.d}</p>
                   <div className="sol-tags">
                     {s.tags.map((tag) => (
@@ -1324,6 +1470,56 @@
       </section>
     );
 
+    /* ----------------------- FAQS ----------------------- */
+    const faqs = [
+      {
+        q: "¿Cuánto cuesta una automatización?",
+        a: "Cada propuesta es a la medida según el alcance. Empezamos con un diagnóstico inicial sin costo (30 minutos) donde detectamos las oportunidades de mayor impacto y entregamos una propuesta concreta con tiempos y entregables.",
+      },
+      {
+        q: "¿Cuánto tarda un proyecto típico?",
+        a: "La mayoría de las automatizaciones puntuales viven entre 2 y 6 semanas, desde discovery hasta producción. Proyectos más complejos (integraciones múltiples o agentes con varios pasos) pueden extenderse a 8-12 semanas.",
+      },
+      {
+        q: "¿Qué tecnologías usan?",
+        a: "n8n para orquestación de flujos, Claude API para agentes e IA aplicada, Mercado Pago para cobros, y APIs/webhooks para integrar cualquier sistema con HTTP. Trabajamos sobre tu stack existente — no te forzamos a cambiar herramientas.",
+      },
+      {
+        q: "¿Dan soporte después de implementar?",
+        a: "Sí. Ofrecemos un plan de soporte continuo mensual a medida que incluye monitoreo, mantenimiento, ajustes y nuevas automatizaciones. También dejamos documentación completa para que tu equipo pueda operar sin depender de nosotros.",
+      },
+      {
+        q: "¿De quién es el código al final del proyecto?",
+        a: "Tuyo. Todo lo que construimos vive en tu infraestructura (tu n8n, tu cuenta de Claude, tu Mercado Pago). Te entregamos accesos completos, código, documentación y handoff sin lock-in.",
+      },
+    ];
+
+    const FAQs = () => (
+      <section id="faqs" className="section">
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">Preguntas frecuentes</div>
+              <h2 className="sec-title">Lo que <em>preguntan</em> primero.</h2>
+              <p className="sec-desc">Si tu duda no está acá, escribinos por WhatsApp o agenda el diagnóstico — respondemos rápido.</p>
+            </div>
+          </div>
+          <div className="faq-list">
+            {faqs.map((f) => (
+              <details key={f.q} className="faq-item">
+                <summary>{f.q}</summary>
+                <div className="faq-body">{f.a}</div>
+              </details>
+            ))}
+          </div>
+          <p className="faq-more">
+            {/* TODO Fase 2: /preguntas-frecuentes.html aún no existe */}
+            <a href="/preguntas-frecuentes.html">Ver todas las preguntas →</a>
+          </p>
+        </div>
+      </section>
+    );
+
     /* ----------------------- CONTACTO ----------------------- */
     const Contacto = () => {
       const [sent, setSent] = useState(false);
@@ -1331,23 +1527,21 @@
       const handle = (e) => {
         e.preventDefault();
         const f = e.target;
-        const nombre = f.nombre.value, correo = f.correo.value, empresa = f.empresa.value,
-              industria = f.industria.value, personas = f.personas.value, urgencia = f.urgencia.value,
-              mensaje = f.mensaje.value;
-        const payload = { nombre, correo, empresa, industria, personas, urgencia, mensaje, situacion };
+        const nombre = f.nombre.value, correo = f.correo.value, mensaje = f.mensaje.value;
+        const payload = { nombre, correo, mensaje, situacion };
         if (CONFIG.formspree) {
           fetch(CONFIG.formspree, {
             method: "POST",
             headers: { "Accept": "application/json", "Content-Type": "application/json" },
             body: JSON.stringify(payload),
-          }).then(() => setSent(true)).catch(() => { window.location.href = mailto(nombre, correo, empresa, industria, personas, urgencia, mensaje); });
+          }).then(() => setSent(true)).catch(() => { window.location.href = mailto(nombre, correo, mensaje); });
         } else {
-          window.location.href = mailto(nombre, correo, empresa, industria, personas, urgencia, mensaje);
+          window.location.href = mailto(nombre, correo, mensaje);
           setSent(true);
         }
       };
-      const mailto = (n="", c="", em="", ind="", per="", urg="", m="") =>
-        `mailto:${CONFIG.email}?subject=${encodeURIComponent("Nuevo lead — " + (em||n))}&body=${encodeURIComponent(`Situación: ${situacion}\nNombre: ${n}\nCorreo: ${c}\nEmpresa: ${em}\nIndustria: ${ind}\nPersonas: ${per}\nUrgencia: ${urg}\n\n${m}`)}`;
+      const mailto = (n="", c="", m="") =>
+        `mailto:${CONFIG.email}?subject=${encodeURIComponent("Nuevo lead — " + n)}&body=${encodeURIComponent(`Situación: ${situacion || '(no especificada)'}\nNombre: ${n}\nCorreo: ${c}\n\n${m}`)}`;
 
       return (
         <section id="contacto" className="section">
@@ -1410,47 +1604,8 @@
                         <input name="correo" type="email" required placeholder="tu@empresa.com" className="field" />
                       </div>
                       <div className="form-field">
-                        <label className="field-label">Empresa</label>
-                        <input name="empresa" required placeholder="Nombre de tu empresa" className="field" />
-                      </div>
-                      <div className="form-field">
-                        <label className="field-label">Industria</label>
-                        <select name="industria" required className="field sel-field" defaultValue="">
-                          <option value="" disabled>Selecciona tu industria</option>
-                          <option>Manufactura</option>
-                          <option>Retail / Comercio</option>
-                          <option>Servicios Financieros</option>
-                          <option>Salud</option>
-                          <option>Logística y Distribución</option>
-                          <option>Educación</option>
-                          <option>Tecnología</option>
-                          <option>Consultoría</option>
-                          <option>Otra</option>
-                        </select>
-                      </div>
-                      <div className="form-field">
-                        <label className="field-label">¿Cuántas personas realizan ese proceso hoy?</label>
-                        <select name="personas" required className="field sel-field" defaultValue="">
-                          <option value="" disabled>Selecciona una opción</option>
-                          <option>Solo yo</option>
-                          <option>2 a 5 personas</option>
-                          <option>6 a 20 personas</option>
-                          <option>Más de 20 personas</option>
-                        </select>
-                      </div>
-                      <div className="form-field">
-                        <label className="field-label">¿Cuándo quieres tenerlo resuelto?</label>
-                        <select name="urgencia" required className="field sel-field" defaultValue="">
-                          <option value="" disabled>Selecciona una opción</option>
-                          <option>Lo antes posible (es urgente)</option>
-                          <option>Este trimestre</option>
-                          <option>En los próximos 6 meses</option>
-                          <option>Solo estoy explorando</option>
-                        </select>
-                      </div>
-                      <div className="form-field">
                         <label className="field-label">¿Qué proceso quieres automatizar?</label>
-                        <textarea name="mensaje" required rows="4" placeholder="Ej: facturas manuales, reportes, seguimiento de clientes, cotizaciones, atención al cliente..." className="field"></textarea>
+                        <textarea name="mensaje" required rows="5" placeholder="Ej: facturas manuales, reportes, seguimiento de clientes, cotizaciones, atención al cliente..." className="field"></textarea>
                       </div>
                       <button type="submit" className="btn btn-green form-submit">
                         <Ico id="i-arrow"/>Agendar 30 minutos gratis
@@ -1487,10 +1642,12 @@
         <Nav/>
         <main>
           <Hero/>
+          <ParaQuien/>
+          <Soluciones/>
           <Servicios/>
           <Proceso/>
-          <Soluciones/>
           <Precios/>
+          <FAQs/>
           <Contacto/>
         </main>
         <Footer/>
