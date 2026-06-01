@@ -13,6 +13,7 @@
   <meta name="geo.placename" content="Ciudad de México" />
   <link rel="canonical" href="https://orkestalo.com/casos-de-uso.html" />
   <link rel="alternate" hreflang="es" href="https://orkestalo.com/casos-de-uso.html" />
+  <link rel="alternate" hreflang="en" href="https://orkestalo.com/casos-de-uso.html?lang=en" />
   <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/casos-de-uso.html" />
 
   <!-- Open Graph -->
@@ -111,14 +112,6 @@
           <p><strong>Problema:</strong> 200-500 leads/mes sin enriquecer ni priorizar. Muchos se quedan sin tocar.</p>
           <p><strong>Solución:</strong> n8n enriquece datos, Claude clasifica fit, prioriza y redacta primer correo. Ventas revisa y aprueba.</p>
         </section>
-        <section>
-          <h2>¿Tu caso es parecido?</h2>
-          <p>
-            <a href="https://wa.me/525587662865">WhatsApp +52 55 8766 2865</a> ·
-            <a href="/#contacto">Agendar diagnóstico</a> ·
-            <a href="mailto:info@orkestalo.com">info@orkestalo.com</a>
-          </p>
-        </section>
       </main>
     </div>
   </div>
@@ -132,24 +125,208 @@
       email: "info@orkestalo.com",
     };
 
-    const waLink = (msg) =>
-      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || "Hola, vi sus casos de uso y quiero hablar de mi proceso.")}`;
+    const TRANSLATIONS = {
+      es: {
+        htmlLang: "es",
+        meta: {
+          title: "Casos de uso — Automatizaciones por industria | Orkesta",
+          desc: "Casos de uso descriptivos de automatizaciones por industria: inmobiliaria, e-commerce, servicios B2C, manufactura y SaaS B2B. Stack, problema y solución concreta.",
+        },
+        waDefault: "Hola, vi sus casos de uso y quiero hablar de mi proceso.",
+        nav: {
+          links: [
+            ["Soluciones", "/#soluciones"],
+            ["Servicios",  "/#servicios"],
+            ["Proceso",    "/#proceso"],
+            ["Precios",    "/#precios"],
+            ["FAQs",       "/#faqs"],
+            ["Contacto",   "/#contacto"],
+          ],
+          cta: "Agenda una charla",
+          menuLabel: "Menú",
+        },
+        hero: {
+          kicker: "Casos de uso · Por industria",
+          h1: 'Cinco automatizaciones <em>concretas</em> que reemplazan trabajo manual.',
+          lead: 'Estos son <b>casos de uso descriptivos</b> (no historias específicas de clientes). Cubren patrones que vemos repetirse en PyMEs LATAM en inmobiliaria, e-commerce, servicios, manufactura y SaaS. Si tu proceso se parece a alguno, escribinos — probablemente lo podemos resolver con el mismo stack.',
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Agendar diagnóstico",
+        },
+        casos: {
+          kicker: "Cinco patrones · Cinco industrias",
+          title: 'Casos que <em>se repiten</em> en PyMEs LATAM.',
+          desc: "Cada uno con su problema, solución concreta y stack. Si tu situación se parece, el camino al MVP suele ser similar.",
+          problemaLabel: "Problema",
+          solucionLabel: "Solución",
+          impactoLabel: "Impacto típico",
+          items: [
+            {
+              industria: "Inmobiliaria PyME",
+              tamano: "10-50 empleados",
+              stack: ["n8n", "Claude API", "Google Drive", "ERP"],
+              titulo: 'Captura manual de <em>200+ facturas/mes</em> desde correos.',
+              problema: "El equipo de admin recibe facturas como adjuntos en correo (proveedores, servicios, mantenimiento), extrae datos a mano y los carga al ERP. Horas perdidas, errores frecuentes.",
+              solucion: "Workflow n8n monitorea inbox, detecta facturas, Claude vision extrae monto/RFC/fecha/concepto, valida contra reglas de negocio y carga al ERP vía API. Excepciones van a Slack para revisión humana.",
+              impacto: "De ~40 horas/mes de data entry a una revisión semanal de excepciones. Los errores de captura se detectan antes de llegar al ERP.",
+            },
+            {
+              industria: "E-commerce mid-market",
+              tamano: "500-2000 ventas/mes",
+              stack: ["n8n", "Mercado Pago", "Google Sheets", "ERP"],
+              titulo: 'Conciliación <em>manual</em> de Mercado Pago contra ventas internas.',
+              problema: "Cada lunes contabilidad descarga el extracto de Mercado Pago y lo cruza con las ventas del ERP a mano. Discrepancias (devoluciones, comisiones, cashback) requieren investigación case-by-case.",
+              solucion: "n8n consume webhooks de Mercado Pago en tiempo real, registra cada transacción con su payment_id y comisión, y concilia automáticamente con la venta correspondiente del ERP. Discrepancias se marcan al ocurrir.",
+              impacto: "De 1 día/semana de conciliación manual a un dashboard que se actualiza solo. Inconsistencias se detectan el día que ocurren, no una semana después.",
+            },
+            {
+              industria: "Servicios al consumidor",
+              tamano: "100-500 clientes activos",
+              stack: ["WhatsApp Business API", "Claude API", "Google Calendar", "CRM"],
+              titulo: 'WhatsApp con <em>80+ mensajes/día</em> que el equipo no alcanza a responder.',
+              problema: "Clientes preguntan horarios, precios, agendan citas y piden info por WhatsApp. El equipo atiende cuando puede, pero responde tarde y se pierden ventas o se causa frustración fuera de horario.",
+              solucion: "Agente con Claude integrado a WhatsApp Business responde 24/7 las preguntas frecuentes, consulta el calendario en tiempo real para agendar/reagendar, y escala a un humano solo cuando es necesario (queja, cancelación, caso complejo).",
+              impacto: "Respuesta inmediata 24/7 sin sumar headcount. El equipo se enfoca solo en los casos que realmente requieren juicio humano.",
+            },
+            {
+              industria: "Manufactura PyME",
+              tamano: "20-100 empleados",
+              stack: ["n8n", "SQL Server", "Google Sheets", "Slack"],
+              titulo: 'Reportes operativos diarios que toman <em>horas de copy-paste</em>.',
+              problema: "Cada mañana, operaciones consolida producción del día anterior cruzando 4 sistemas (ERP, sistema de planta, hojas de líderes de turno, mantenimiento). El reporte sale a media mañana — tarde para tomar decisiones.",
+              solucion: "n8n ejecuta a las 6am: jala datos de cada fuente, los normaliza, calcula KPIs (eficiencia, throughput, tiempo muerto, scrap), genera el reporte en Sheets y lo publica en Slack con resumen ejecutivo. Anomalías destacadas automáticamente.",
+              impacto: "Reporte disponible al inicio del día, no a media mañana. Decisiones de turno se toman con datos del turno anterior, no con intuición.",
+            },
+            {
+              industria: "SaaS B2B",
+              tamano: "50-200 empleados, equipo outbound",
+              stack: ["n8n", "Claude API", "Apollo/Clearbit", "HubSpot"],
+              titulo: 'Lista de leads en Excel <em>sin enriquecer ni priorizar</em>.',
+              problema: "Marketing entrega 200-500 leads/mes a ventas en un Excel: nombre, empresa, correo. Ventas tiene que investigar empresa por empresa, decidir cuáles vale priorizar, redactar primer correo. Muchos leads se quedan sin tocar.",
+              solucion: "n8n procesa cada lead nuevo: enriquece con datos de empresa (tamaño, industria, stack), Claude clasifica el fit (ICP score), prioriza, y redacta un primer correo personalizado con contexto del negocio. Ventas revisa y aprueba antes de enviar.",
+              impacto: "Cero leads sin tocar. El equipo de ventas pasa de investigar a hablar con prospects pre-calificados.",
+            },
+          ],
+        },
+        cta: {
+          title: '¿Tu proceso se parece a <em>alguno de estos</em>?',
+          desc: "30 minutos sin compromiso. Te escuchamos, miramos tu caso y te decimos qué se puede automatizar primero — con tiempos y orden de magnitud de costo.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Agendar diagnóstico",
+        },
+        footer: { tagline: "Automatización e IA", country: "México" },
+      },
+      en: {
+        htmlLang: "en",
+        meta: {
+          title: "Use cases — Automation by industry | Orkesta",
+          desc: "Descriptive automation use cases by industry: real estate, e-commerce, B2C services, manufacturing and B2B SaaS. Stack, problem and concrete solution.",
+        },
+        waDefault: "Hi, I saw your use cases and want to talk about my process.",
+        nav: {
+          links: [
+            ["Solutions", "/#soluciones"],
+            ["Services",  "/#servicios"],
+            ["Process",   "/#proceso"],
+            ["Pricing",   "/#precios"],
+            ["FAQs",      "/#faqs"],
+            ["Contact",   "/#contacto"],
+          ],
+          cta: "Schedule a call",
+          menuLabel: "Menu",
+        },
+        hero: {
+          kicker: "Use cases · By industry",
+          h1: 'Five <em>concrete</em> automations that replace manual work.',
+          lead: 'These are <b>descriptive use cases</b> (not specific client stories). They cover patterns we see repeat in LATAM SMBs across real estate, e-commerce, services, manufacturing and SaaS. If your process looks like one of these, write to us — we can probably solve it with the same stack.',
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Book a diagnostic",
+        },
+        casos: {
+          kicker: "Five patterns · Five industries",
+          title: 'Cases that <em>repeat</em> in LATAM SMBs.',
+          desc: "Each one with its problem, concrete solution and stack. If your situation looks similar, the path to MVP is usually similar.",
+          problemaLabel: "Problem",
+          solucionLabel: "Solution",
+          impactoLabel: "Typical impact",
+          items: [
+            {
+              industria: "SMB real estate",
+              tamano: "10-50 employees",
+              stack: ["n8n", "Claude API", "Google Drive", "ERP"],
+              titulo: 'Manual capture of <em>200+ invoices/month</em> from emails.',
+              problema: "The admin team receives invoices as email attachments (vendors, services, maintenance), extracts data by hand and loads them into the ERP. Hours lost, frequent errors.",
+              solucion: "An n8n workflow monitors the inbox, detects invoices, Claude vision extracts amount/tax ID/date/concept, validates against business rules and loads to the ERP via API. Exceptions go to Slack for human review.",
+              impacto: "From ~40 hours/month of data entry to a weekly review of exceptions. Capture errors are caught before reaching the ERP.",
+            },
+            {
+              industria: "Mid-market e-commerce",
+              tamano: "500-2000 sales/month",
+              stack: ["n8n", "Mercado Pago", "Google Sheets", "ERP"],
+              titulo: '<em>Manual</em> reconciliation of Mercado Pago against internal sales.',
+              problema: "Every Monday accounting downloads the Mercado Pago statement and cross-references it with ERP sales by hand. Discrepancies (refunds, fees, cashback) require case-by-case investigation.",
+              solucion: "n8n consumes Mercado Pago webhooks in real time, logs each transaction with its payment_id and fee, and automatically reconciles with the corresponding ERP sale. Discrepancies are flagged when they happen.",
+              impacto: "From 1 day/week of manual reconciliation to a dashboard that updates itself. Inconsistencies are detected the day they happen, not a week later.",
+            },
+            {
+              industria: "Consumer services",
+              tamano: "100-500 active customers",
+              stack: ["WhatsApp Business API", "Claude API", "Google Calendar", "CRM"],
+              titulo: "WhatsApp with <em>80+ messages/day</em> the team can't keep up with.",
+              problema: "Customers ask about hours, prices, schedule appointments and request info via WhatsApp. The team responds when they can, but late — sales are lost and frustration grows after hours.",
+              solucion: "A Claude agent integrated with WhatsApp Business answers FAQs 24/7, queries the calendar in real time to schedule/reschedule, and escalates to a human only when needed (complaint, cancellation, complex case).",
+              impacto: "Immediate 24/7 response without adding headcount. The team focuses only on cases that truly need human judgment.",
+            },
+            {
+              industria: "SMB manufacturing",
+              tamano: "20-100 employees",
+              stack: ["n8n", "SQL Server", "Google Sheets", "Slack"],
+              titulo: 'Daily ops reports that take <em>hours of copy-paste</em>.',
+              problema: "Every morning operations consolidates the previous day's production by cross-referencing 4 systems (ERP, plant system, shift-lead sheets, maintenance). The report comes out mid-morning — too late for decisions.",
+              solucion: "n8n runs at 6am: pulls data from each source, normalizes it, calculates KPIs (efficiency, throughput, downtime, scrap), generates the report in Sheets and publishes it to Slack with executive summary. Anomalies highlighted automatically.",
+              impacto: "Report available at the start of the day, not mid-morning. Shift decisions are made with previous-shift data, not intuition.",
+            },
+            {
+              industria: "B2B SaaS",
+              tamano: "50-200 employees, outbound team",
+              stack: ["n8n", "Claude API", "Apollo/Clearbit", "HubSpot"],
+              titulo: 'Excel lead list <em>not enriched or prioritized</em>.',
+              problema: "Marketing delivers 200-500 leads/month to sales in an Excel: name, company, email. Sales has to research company by company, decide which to prioritize, write the first email. Many leads stay untouched.",
+              solucion: "n8n processes each new lead: enriches with company data (size, industry, stack), Claude classifies fit (ICP score), prioritizes, and drafts a personalized first email with business context. Sales reviews and approves before sending.",
+              impacto: "Zero untouched leads. The sales team goes from researching to talking to pre-qualified prospects.",
+            },
+          ],
+        },
+        cta: {
+          title: 'Does your process look like <em>any of these</em>?',
+          desc: "30 minutes no commitment. We listen, look at your case and tell you what can be automated first — with timing and order-of-magnitude cost.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Book a diagnostic",
+        },
+        footer: { tagline: "Automation & AI", country: "Mexico" },
+      },
+    };
+
+    function detectLanguage() {
+      try {
+        const param = new URLSearchParams(window.location.search).get('lang');
+        if (param === 'en' || param === 'es') return param;
+        const stored = localStorage.getItem('orkesta-lang');
+        if (stored === 'en' || stored === 'es') return stored;
+        const browser = (navigator.language || 'es').slice(0, 2);
+        return browser === 'en' ? 'en' : 'es';
+      } catch { return 'es'; }
+    }
+
+    const waLink = (msg, lang = 'es') =>
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || TRANSLATIONS[lang].waDefault)}`;
 
     const Ico = ({ id, w = 18, h = 18 }) => (
       <svg width={w} height={h} aria-hidden="true"><use href={`/defs.svg#${id}`}/></svg>
     );
 
-    /* ----------------------- NAV (sub-página, anchors van a /#...) ----------------------- */
-    const Nav = () => {
+    /* ----------------------- NAV ----------------------- */
+    const Nav = ({ lang, setLanguage, t }) => {
       const [open, setOpen] = useState(false);
-      const links = [
-        ["Soluciones", "/#soluciones"],
-        ["Servicios",  "/#servicios"],
-        ["Proceso",    "/#proceso"],
-        ["Precios",    "/#precios"],
-        ["FAQs",       "/#faqs"],
-        ["Contacto",   "/#contacto"],
-      ];
       return (
         <header className="nav-bar nav-bar--green">
           <div className="nav-inner">
@@ -158,19 +335,29 @@
               <span className="nav-wordmark">{CONFIG.marca}</span>
             </a>
             <nav className="nav-links">
-              {links.map(([t, h]) => (
-                <a key={h} href={h} className="nav-link">{t}</a>
+              {t.links.map(([label, href]) => (
+                <a key={href} href={href} className="nav-link">{label}</a>
               ))}
-              <a href="/#contacto" className="btn btn-primary nav-cta">Agenda una charla</a>
+              <div className="lang-toggle">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => setLanguage('es')}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => setLanguage('en')}>EN</button>
+              </div>
+              <a href="/#contacto" className="btn btn-primary nav-cta">{t.cta}</a>
             </nav>
-            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label="Menú">
+            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label={t.menuLabel}>
               <span/><span/><span/>
             </button>
           </div>
           {open && (
             <div className="nav-mobile">
-              {links.map(([t, h]) => (
-                <a key={h} href={h} onClick={() => setOpen(false)}>{t}</a>
+              <div className="lang-mobile">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => { setLanguage('es'); setOpen(false); }}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => { setLanguage('en'); setOpen(false); }}>EN</button>
+              </div>
+              {t.links.map(([label, href]) => (
+                <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>
               ))}
             </div>
           )}
@@ -178,84 +365,34 @@
       );
     };
 
-    /* ----------------------- PAGE HERO ----------------------- */
-    const PageHero = () => (
+    /* ----------------------- HERO ----------------------- */
+    const PageHero = ({ t, lang }) => (
       <section id="top" className="page-hero">
         <div className="wrap">
-          <span className="badge badge-green hero-kicker"><Ico id="i-check" w={13} h={13}/>Casos de uso · Por industria</span>
-          <h1>Cinco automatizaciones <em>concretas</em> que reemplazan trabajo manual.</h1>
-          <p className="lead">
-            Estos son <b>casos de uso descriptivos</b> (no historias específicas de clientes). Cubren patrones que vemos repetirse en PyMEs LATAM en inmobiliaria, e-commerce, servicios, manufactura y SaaS. Si tu proceso se parece a alguno, escribinos — probablemente lo podemos resolver con el mismo stack.
-          </p>
+          <span className="badge badge-green hero-kicker"><Ico id="i-check" w={13} h={13}/>{t.kicker}</span>
+          <h1 dangerouslySetInnerHTML={{ __html: t.h1 }} />
+          <p className="lead" dangerouslySetInnerHTML={{ __html: t.lead }} />
           <div className="ctas">
-            <a href={waLink()} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
-            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+            <a href={waLink(null, lang)} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>{t.ctaWA}</a>
+            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>{t.ctaAgendar}</a>
           </div>
         </div>
       </section>
     );
 
     /* ----------------------- CASOS ----------------------- */
-    const casos = [
-      {
-        industria: "Inmobiliaria PyME",
-        tamano: "10-50 empleados",
-        stack: ["n8n", "Claude API", "Google Drive", "ERP"],
-        titulo: "Captura manual de <em>200+ facturas/mes</em> desde correos.",
-        problema: "El equipo de admin recibe facturas como adjuntos en correo (proveedores, servicios, mantenimiento), extrae datos a mano y los carga al ERP. Horas perdidas, errores frecuentes.",
-        solucion: "Workflow n8n monitorea inbox, detecta facturas, Claude vision extrae monto/RFC/fecha/concepto, valida contra reglas de negocio y carga al ERP vía API. Excepciones van a Slack para revisión humana.",
-        impacto: "De ~40 horas/mes de data entry a una revisión semanal de excepciones. Los errores de captura se detectan antes de llegar al ERP.",
-      },
-      {
-        industria: "E-commerce mid-market",
-        tamano: "500-2000 ventas/mes",
-        stack: ["n8n", "Mercado Pago", "Google Sheets", "ERP"],
-        titulo: "Conciliación <em>manual</em> de Mercado Pago contra ventas internas.",
-        problema: "Cada lunes contabilidad descarga el extracto de Mercado Pago y lo cruza con las ventas del ERP a mano. Discrepancias (devoluciones, comisiones, cashback) requieren investigación case-by-case.",
-        solucion: "n8n consume webhooks de Mercado Pago en tiempo real, registra cada transacción con su payment_id y comisión, y concilia automáticamente con la venta correspondiente del ERP. Discrepancias se marcan al ocurrir.",
-        impacto: "De 1 día/semana de conciliación manual a un dashboard que se actualiza solo. Inconsistencias se detectan el día que ocurren, no una semana después.",
-      },
-      {
-        industria: "Servicios al consumidor",
-        tamano: "100-500 clientes activos",
-        stack: ["WhatsApp Business API", "Claude API", "Google Calendar", "CRM"],
-        titulo: "WhatsApp con <em>80+ mensajes/día</em> que el equipo no alcanza a responder.",
-        problema: "Clientes preguntan horarios, precios, agendan citas y piden info por WhatsApp. El equipo atiende cuando puede, pero responde tarde y se pierden ventas o se causa frustración fuera de horario.",
-        solucion: "Agente con Claude integrado a WhatsApp Business responde 24/7 las preguntas frecuentes, consulta el calendario en tiempo real para agendar/reagendar, y escala a un humano solo cuando es necesario (queja, cancelación, caso complejo).",
-        impacto: "Respuesta inmediata 24/7 sin sumar headcount. El equipo se enfoca solo en los casos que realmente requieren juicio humano.",
-      },
-      {
-        industria: "Manufactura PyME",
-        tamano: "20-100 empleados",
-        stack: ["n8n", "SQL Server", "Google Sheets", "Slack"],
-        titulo: "Reportes operativos diarios que toman <em>horas de copy-paste</em>.",
-        problema: "Cada mañana, operaciones consolida producción del día anterior cruzando 4 sistemas (ERP, sistema de planta, hojas de líderes de turno, mantenimiento). El reporte sale a media mañana — tarde para tomar decisiones.",
-        solucion: "n8n ejecuta a las 6am: jala datos de cada fuente, los normaliza, calcula KPIs (eficiencia, throughput, tiempo muerto, scrap), genera el reporte en Sheets y lo publica en Slack con resumen ejecutivo. Anomalías destacadas automáticamente.",
-        impacto: "Reporte disponible al inicio del día, no a media mañana. Decisiones de turno se toman con datos del turno anterior, no con intuición.",
-      },
-      {
-        industria: "SaaS B2B",
-        tamano: "50-200 empleados, equipo outbound",
-        stack: ["n8n", "Claude API", "Apollo/Clearbit", "HubSpot"],
-        titulo: "Lista de leads en Excel <em>sin enriquecer ni priorizar</em>.",
-        problema: "Marketing entrega 200-500 leads/mes a ventas en un Excel: nombre, empresa, correo. Ventas tiene que investigar empresa por empresa, decidir cuáles vale priorizar, redactar primer correo. Muchos leads se quedan sin tocar.",
-        solucion: "n8n procesa cada lead nuevo: enriquece con datos de empresa (tamaño, industria, stack), Claude clasifica el fit (ICP score), prioriza, y redacta un primer correo personalizado con contexto del negocio. Ventas revisa y aprueba antes de enviar.",
-        impacto: "Cero leads sin tocar. El equipo de ventas pasa de investigar a hablar con prospects pre-calificados.",
-      },
-    ];
-
-    const Casos = () => (
+    const Casos = ({ t }) => (
       <section id="casos" className="section">
         <div className="wrap">
           <div className="sec-hdr sec-hdr--solo">
             <div>
-              <div className="sec-kicker">Cinco patrones · Cinco industrias</div>
-              <h2 className="sec-title">Casos que <em>se repiten</em> en PyMEs LATAM.</h2>
-              <p className="sec-desc">Cada uno con su problema, solución concreta y stack. Si tu situación se parece, el camino al MVP suele ser similar.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
           </div>
           <div className="casos-list">
-            {casos.map((c, idx) => (
+            {t.items.map((c, idx) => (
               <article key={idx} className="caso-card">
                 <div className="caso-meta">
                   <span className="badge badge-ink">{c.industria}</span>
@@ -265,18 +402,18 @@
                 <h3 className="caso-title" dangerouslySetInnerHTML={{__html: c.titulo}}/>
                 <div className="caso-grid">
                   <div>
-                    <div className="caso-block-label">Problema</div>
+                    <div className="caso-block-label">{t.problemaLabel}</div>
                     <p className="caso-block-text">{c.problema}</p>
                   </div>
                   <div>
-                    <div className="caso-block-label">Solución</div>
+                    <div className="caso-block-label">{t.solucionLabel}</div>
                     <p className="caso-block-text">{c.solucion}</p>
                   </div>
                 </div>
                 <div className="caso-impact">
                   <svg className="caso-impact-ico"><use href="/defs.svg#i-check"/></svg>
                   <div>
-                    <div className="caso-block-label" style={{marginBottom:"4px"}}>Impacto típico</div>
+                    <div className="caso-block-label" style={{marginBottom:"4px"}}>{t.impactoLabel}</div>
                     <p className="caso-impact-text">{c.impacto}</p>
                   </div>
                 </div>
@@ -288,15 +425,15 @@
     );
 
     /* ----------------------- CTA FINAL ----------------------- */
-    const CtaFinal = () => (
+    const CtaFinal = ({ t, lang }) => (
       <section className="section">
         <div className="wrap">
           <div className="cta-block">
-            <h2>¿Tu proceso se parece a <em>alguno de estos</em>?</h2>
-            <p>30 minutos sin compromiso. Te escuchamos, miramos tu caso y te decimos qué se puede automatizar primero — con tiempos y orden de magnitud de costo.</p>
+            <h2 dangerouslySetInnerHTML={{ __html: t.title }} />
+            <p>{t.desc}</p>
             <div className="ctas">
-              <a href={waLink()} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
-              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+              <a href={waLink(null, lang)} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>{t.ctaWA}</a>
+              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>{t.ctaAgendar}</a>
             </div>
           </div>
         </div>
@@ -304,34 +441,64 @@
     );
 
     /* ----------------------- FOOTER ----------------------- */
-    const Footer = () => (
+    const Footer = ({ t }) => (
       <footer className="site-footer">
-        <span>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
+        <span>© {new Date().getFullYear()} {CONFIG.marca} · {t.tagline} · {t.country} · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
         <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
       </footer>
     );
 
     /* ----------------------- Floating WhatsApp ----------------------- */
-    const FloatingWA = () => (
-      <a href={waLink()} target="_blank" aria-label="WhatsApp" className="floating-wa">
+    const FloatingWA = ({ lang }) => (
+      <a href={waLink(null, lang)} target="_blank" aria-label="WhatsApp" className="floating-wa">
         <Ico id="i-wa" w={22} h={22}/>
         <span className="floating-wa-text">WhatsApp</span>
       </a>
     );
 
     /* ----------------------- APP ----------------------- */
-    const App = () => (
-      <div>
-        <Nav/>
-        <main>
-          <PageHero/>
-          <Casos/>
-          <CtaFinal/>
-        </main>
-        <Footer/>
-        <FloatingWA/>
-      </div>
-    );
+    const App = () => {
+      const [lang, setLang] = useState(detectLanguage);
+      const t = TRANSLATIONS[lang];
+
+      React.useEffect(() => {
+        document.documentElement.lang = t.htmlLang;
+        document.title = t.meta.title;
+        const update = (sel, attr, val) => {
+          const el = document.querySelector(sel);
+          if (el) el.setAttribute(attr, val);
+        };
+        update('meta[name="description"]', 'content', t.meta.desc);
+        update('meta[property="og:title"]', 'content', t.meta.title);
+        update('meta[property="og:description"]', 'content', t.meta.desc);
+        update('meta[name="twitter:title"]', 'content', t.meta.title);
+        update('meta[name="twitter:description"]', 'content', t.meta.desc);
+      }, [lang]);
+
+      const setLanguage = (l) => {
+        setLang(l);
+        try { localStorage.setItem('orkesta-lang', l); } catch {}
+        try {
+          const url = new URL(window.location);
+          if (l === 'en') url.searchParams.set('lang', 'en');
+          else url.searchParams.delete('lang');
+          window.history.replaceState({}, '', url);
+        } catch {}
+      };
+
+      return (
+        <div>
+          <Nav lang={lang} setLanguage={setLanguage} t={t.nav} />
+          <main>
+            <PageHero t={t.hero} lang={lang} />
+            <Casos t={t.casos} />
+            <CtaFinal t={t.cta} lang={lang} />
+          </main>
+          <Footer t={t.footer} />
+          <FloatingWA lang={lang} />
+        </div>
+      );
+    };
 
     ReactDOM.createRoot(document.getElementById("root")).render(<App />);
   </script>
