@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agentes con IA y Claude — Orkesta | Asistentes para tu negocio</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="description" content="Diseño e implementación de agentes con Claude API para ventas, atención al cliente, procesamiento de documentos y automatización inteligente. Tool use real, no chatbots de reglas." />
+  <meta name="keywords" content="agentes IA Claude, Claude API México, chatbot inteligente LATAM, asistente IA empresas, agentes Anthropic, tool use Claude, automatización con IA" />
+  <meta name="author" content="Orkesta" />
+  <meta name="robots" content="index, follow" />
+  <meta name="geo.region" content="MX-CMX" />
+  <meta name="geo.placename" content="Ciudad de México" />
+  <link rel="canonical" href="https://orkestalo.com/agentes-ia-claude.html" />
+  <link rel="alternate" hreflang="es" href="https://orkestalo.com/agentes-ia-claude.html" />
+  <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/agentes-ia-claude.html" />
+
+  <meta property="og:title" content="Agentes con IA y Claude — Orkesta" />
+  <meta property="og:description" content="Asistentes con Claude para ventas, atención y operaciones. Tool use real, contexto de tu negocio, no chatbots de reglas." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://orkestalo.com/agentes-ia-claude.html" />
+  <meta property="og:image" content="https://orkestalo.com/og-image.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="es_MX" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Agentes con IA y Claude — Orkesta" />
+  <meta name="twitter:description" content="Asistentes con Claude para ventas, atención y operaciones. Tool use real, no chatbots de reglas." />
+  <meta name="twitter:image" content="https://orkestalo.com/og-image.svg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Agentes con IA y Claude",
+    "url": "https://orkestalo.com/agentes-ia-claude.html",
+    "serviceType": "AI Agent Development",
+    "provider": { "@type": "Organization", "name": "Orkesta", "url": "https://orkestalo.com" },
+    "areaServed": [
+      { "@type": "Country", "name": "Mexico" },
+      { "@type": "Place", "name": "Latin America" },
+      { "@type": "Country", "name": "United States" }
+    ],
+    "description": "Diseño e implementación de agentes con Claude API: asistentes conversacionales con contexto de tu negocio, agentes con tool use, procesamiento de documentos con razonamiento real."
+  }
+  </script>
+
+  <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preload" href="/defs.svg" as="image" type="image/svg+xml">
+</head>
+<body>
+  <div id="root">
+    <div class="ssr-fallback">
+      <header>
+        <a href="/"><strong>Orkesta</strong> · Agentes con Claude</a>
+        <nav>
+          <a href="/#soluciones">Soluciones</a>
+          <a href="/casos-de-uso.html">Casos</a>
+          <a href="/preguntas-frecuentes.html">FAQs</a>
+          <a href="/#contacto">Contacto</a>
+        </nav>
+      </header>
+      <main>
+        <section id="top">
+          <h1>Claude: agentes que razonan sobre tu negocio</h1>
+          <p>Implementamos asistentes conversacionales, agentes con tool use y procesamiento de documentos con razonamiento — todo sobre Claude API con context de tu negocio.</p>
+          <p><a href="https://wa.me/525587662865">WhatsApp +52 55 8766 2865</a> · <a href="/#contacto">Agendar diagnóstico</a></p>
+        </section>
+        <section><h2>Qué construimos con Claude</h2><ul>
+          <li>Asistentes conversacionales (WhatsApp, web, Slack) con contexto de tu CRM y catálogo.</li>
+          <li>Agentes con tool use: acceso a tus APIs internas, bases de datos, sistemas de tickets.</li>
+          <li>Procesamiento de documentos con razonamiento (no solo OCR): facturas, contratos, emails.</li>
+          <li>Clasificación, extracción y resumen de información no estructurada.</li>
+        </ul></section>
+      </main>
+    </div>
+  </div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState } = React;
+
+    const CONFIG = { marca: "Orkesta", whatsapp: "525587662865", email: "info@orkestalo.com" };
+    const waLink = (msg) =>
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || "Hola, quiero implementar un agente IA con Claude.")}`;
+    const Ico = ({ id, w = 18, h = 18 }) => (
+      <svg width={w} height={h} aria-hidden="true"><use href={`/defs.svg#${id}`}/></svg>
+    );
+
+    const Nav = () => {
+      const [open, setOpen] = useState(false);
+      const links = [
+        ["Soluciones", "/#soluciones"],
+        ["Servicios",  "/#servicios"],
+        ["Casos",      "/casos-de-uso.html"],
+        ["FAQs",       "/preguntas-frecuentes.html"],
+        ["Precios",    "/#precios"],
+        ["Contacto",   "/#contacto"],
+      ];
+      return (
+        <header className="nav-bar nav-bar--green">
+          <div className="nav-inner">
+            <a href="/" className="nav-logo">
+              <svg width="34" height="34"><use href="/defs.svg#mark"/></svg>
+              <span className="nav-wordmark">{CONFIG.marca}</span>
+            </a>
+            <nav className="nav-links">
+              {links.map(([t, h]) => <a key={h} href={h} className="nav-link">{t}</a>)}
+              <a href="/#contacto" className="btn btn-primary nav-cta">Agenda una charla</a>
+            </nav>
+            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label="Menú">
+              <span/><span/><span/>
+            </button>
+          </div>
+          {open && (
+            <div className="nav-mobile">
+              {links.map(([t, h]) => <a key={h} href={h} onClick={() => setOpen(false)}>{t}</a>)}
+            </div>
+          )}
+        </header>
+      );
+    };
+
+    const PageHero = () => (
+      <section id="top" className="page-hero">
+        <div className="wrap">
+          <span className="badge badge-green hero-kicker"><Ico id="i-modelo" w={13} h={13}/>Servicio · Agentes con Claude</span>
+          <h1><em>Claude</em>: agentes que razonan sobre tu negocio.</h1>
+          <p className="lead">
+            Implementamos asistentes con <b>Claude API</b> que entienden contexto de tu CRM, ejecutan acciones vía <b>tool use</b> y razonan sobre documentos. No chatbots de reglas — agentes reales que mejoran con cada conversación.
+          </p>
+          <div className="ctas">
+            <a href={waLink()} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
+            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+          </div>
+        </div>
+      </section>
+    );
+
+    const capabilities = [
+      { iconId: "i-agente",  t: "Asistentes conversacionales",          d: "WhatsApp, web o Slack con contexto de tu CRM y catálogo. Responden, califican, agendan, escalan a humano cuando hace falta." },
+      { iconId: "i-integra", t: "Agentes con tool use",                  d: "Acceso real a tus APIs internas, bases de datos, sistemas de tickets. El agente no solo conversa — ejecuta acciones." },
+      { iconId: "i-flujo",   t: "Procesamiento de documentos con razonamiento", d: "Facturas, contratos, emails. Claude no solo extrae datos: entiende layout, contexto y excepciones. Ver también: /procesamiento-documentos-ia.html" },
+      { iconId: "i-modelo",  t: "Clasificación y resumen",                d: "Categorizar tickets, resumir hilos de correo, priorizar leads, generar reportes ejecutivos a partir de datos crudos." },
+    ];
+
+    const Capabilities = () => (
+      <section id="capabilities" className="section">
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">Qué construimos con Claude</div>
+              <h2 className="sec-title">Cuatro tipos de agentes <em>que entregan ROI</em>.</h2>
+              <p className="sec-desc">No vendemos "IA" como concepto. Vendemos agentes con un trabajo concreto, métrica clara y dueño asignado en tu equipo.</p>
+            </div>
+          </div>
+          <div className="svc-grid">
+            {capabilities.map(c => (
+              <div key={c.t} className="svc-card">
+                <div className="svc-ico"><Ico id={c.iconId} w={26} h={26}/></div>
+                <div className="svc-title">{c.t}</div>
+                <p className="svc-desc">{c.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    const sinOrkesta = [
+      "Chatbots de reglas (Manychat, Landbot) que fallan en casos nuevos.",
+      "Scripts y plantillas: no entienden contexto ni adaptan tono.",
+      "Sin acceso a tus sistemas: el agente conversa pero no ejecuta.",
+      "Cada nuevo caso requiere agregar reglas manualmente.",
+    ];
+    const conOrkesta = [
+      "Razonamiento real: el agente entiende intención y contexto, no solo keywords.",
+      "Tool use: acceso a tus APIs, ejecuta acciones (agendar, consultar, actualizar).",
+      "Context window grande: lee todo el hilo, no solo el último mensaje.",
+      "Zero data retention configurado donde aplica — datos sensibles no se entrenan.",
+    ];
+
+    const Compare = () => (
+      <section id="compare" className="section" style={{background:"var(--paper-2)"}}>
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">Comparativa · Chatbots tradicionales vs agentes IA</div>
+              <h2 className="sec-title">Por qué Claude <em>vs.</em> bots de reglas.</h2>
+              <p className="sec-desc">La diferencia no es marketing — es la capacidad real del agente de manejar casos que no anticipaste.</p>
+            </div>
+          </div>
+          <div className="compare-grid">
+            <div className="compare-col">
+              <div className="compare-label">Chatbots de reglas</div>
+              <h3 className="compare-title">Manychat, Landbot, scripts</h3>
+              <ul className="compare-list">
+                {sinOrkesta.map(item => (
+                  <li key={item} className="compare-item">
+                    <svg className="compare-item-ico"><use href="/defs.svg#i-arrow"/></svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="compare-col compare-col--orkesta">
+              <div className="compare-label">Con Orkesta · Claude</div>
+              <h3 className="compare-title">Agentes que razonan y ejecutan</h3>
+              <ul className="compare-list">
+                {conOrkesta.map(item => (
+                  <li key={item} className="compare-item">
+                    <svg className="compare-item-ico"><use href="/defs.svg#i-check"/></svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    const CtaFinal = () => (
+      <section className="section">
+        <div className="wrap">
+          <div className="cta-block">
+            <h2>¿Tu equipo está <em>respondiendo lo mismo</em> 100 veces al día?</h2>
+            <p>30 minutos sin compromiso. Te decimos qué conversaciones puede tomar un agente con Claude, qué requiere quedarse con humanos, y cómo medir el impacto antes de invertir.</p>
+            <div className="ctas">
+              <a href={waLink()} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
+              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    const Footer = () => (
+      <footer className="site-footer">
+        <span>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
+        <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
+      </footer>
+    );
+
+    const FloatingWA = () => (
+      <a href={waLink()} target="_blank" aria-label="WhatsApp" className="floating-wa">
+        <Ico id="i-wa" w={22} h={22}/>
+        <span className="floating-wa-text">WhatsApp</span>
+      </a>
+    );
+
+    const App = () => (
+      <div>
+        <Nav/>
+        <main>
+          <PageHero/>
+          <Capabilities/>
+          <Compare/>
+          <CtaFinal/>
+        </main>
+        <Footer/>
+        <FloatingWA/>
+      </div>
+    );
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
