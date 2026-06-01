@@ -13,6 +13,7 @@
   <meta name="geo.placename" content="Ciudad de México" />
   <link rel="canonical" href="https://orkestalo.com/sobre-orkesta.html" />
   <link rel="alternate" hreflang="es" href="https://orkestalo.com/sobre-orkesta.html" />
+  <link rel="alternate" hreflang="en" href="https://orkestalo.com/sobre-orkesta.html?lang=en" />
   <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/sobre-orkesta.html" />
 
   <!-- Open Graph -->
@@ -133,24 +134,162 @@
       email: "info@orkestalo.com",
     };
 
-    const waLink = (msg) =>
-      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || "Hola, vi su página y quiero automatizar procesos en mi negocio.")}`;
+    const TRANSLATIONS = {
+      es: {
+        htmlLang: "es",
+        meta: {
+          title: "Sobre Orkesta — Automatización pragmática para PyMEs LATAM",
+          desc: "Consultora pequeña, técnica y enfocada en automatización pragmática con n8n, Claude API y Mercado Pago. Sin lock-in, ROI medible.",
+        },
+        waDefault: "Hola, vi su página y quiero automatizar procesos en mi negocio.",
+        nav: {
+          links: [
+            ["Soluciones", "/#soluciones"],
+            ["Servicios",  "/#servicios"],
+            ["Proceso",    "/#proceso"],
+            ["Precios",    "/#precios"],
+            ["FAQs",       "/#faqs"],
+            ["Contacto",   "/#contacto"],
+          ],
+          cta: "Agenda una charla",
+          menuLabel: "Menú",
+        },
+        hero: {
+          kicker: "Sobre Orkesta · Filosofía",
+          h1: 'Automatización <em>pragmática</em> para PyMEs que quieren resultados, no demos.',
+          lead: 'Somos una consultora pequeña, técnica y enfocada. Implementamos automatizaciones con <b>n8n</b>, agentes con <b>Claude</b> e integraciones a medida — con foco en <b>ROI medible</b> y sin lock-in.',
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Agendar diagnóstico",
+        },
+        manifiesto: {
+          kicker: "Manifiesto · Cómo trabajamos",
+          title: 'Tres <em>principios</em> que nos hacen distintos.',
+          desc: "Lo que nos diferencia no es el stack — es la disciplina con la que decidimos qué construir y qué no.",
+          items: [
+            { n: "Principio 01", t: "Pragmatismo sobre buzz.",    d: "Si Excel resuelve, no te vendemos un agente. Empezamos por lo más simple que entregue valor y crecemos sólo cuando hace falta." },
+            { n: "Principio 02", t: "ROI antes que tecnología.",  d: "Cada propuesta tiene una estimación clara de impacto: horas ahorradas, errores reducidos, throughput. Si no hay ROI, lo decimos." },
+            { n: "Principio 03", t: "Sin lock-in.",                d: "El código, los flujos y los accesos viven en tu infraestructura. Te entregamos documentación, handoff y autonomía operativa." },
+          ],
+        },
+        stack: {
+          kicker: "Stack · Tecnologías",
+          title: 'Lo que <em>usamos</em> a diario.',
+          desc: "Trabajamos sobre tu stack existente — no te forzamos a cambiar herramientas. Estas son las piezas centrales de nuestro día a día.",
+          items: [
+            { iconId: "i-auto",    t: "n8n",             d: "Orquestación de flujos: triggers, lógica condicional, retries, observabilidad. Self-hosted o cloud según tu caso." },
+            { iconId: "i-modelo",  t: "Claude API",      d: "Agentes y asistentes con razonamiento, tool use y procesamiento de documentos. Configuramos zero data retention donde aplica." },
+            { iconId: "i-integra", t: "Mercado Pago",    d: "Cobros online e in-store conectados a tu ERP/Sheet con conciliación automática y manejo de webhooks." },
+            { iconId: "i-tiempo",  t: "APIs y webhooks", d: "Integramos cualquier sistema que hable HTTP. Sin reinventar — usamos las APIs que ya existen." },
+          ],
+        },
+        donde: {
+          kicker: "Dónde estamos · Cobertura",
+          title: 'Basados en <em>Ciudad de México</em>, trabajamos con LATAM y USA.',
+          desc: "Operamos 100% remoto vía WhatsApp, email y videollamada. La distancia no es un problema — sí lo es la zona horaria, así que trabajamos en franjas de CDMX que cubren la mayoría de LATAM y EE. UU.",
+          waTitle: "WhatsApp directo",
+          waSub: "+52 55 8766 2865 · Respuesta rápida",
+          mailSub: "Correo · Respondemos en 24h",
+        },
+        cta: {
+          title: '<em>30 minutos</em>, sin compromiso, sin pitch.',
+          desc: "Te escuchamos, miramos tus procesos y te decimos qué se puede automatizar primero — con tiempos y orden de magnitud de costo. Si encaja, te mandamos propuesta. Si no, te decimos qué herramienta usar.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Agendar diagnóstico",
+        },
+        footer: {
+          tagline: "Automatización e IA",
+          country: "México",
+        },
+      },
+      en: {
+        htmlLang: "en",
+        meta: {
+          title: "About Orkesta — Pragmatic automation for LATAM SMBs",
+          desc: "A small, technical, focused consulting team. Pragmatic automation with n8n, Claude API and Mercado Pago. No lock-in, measurable ROI.",
+        },
+        waDefault: "Hi, I saw your page and want to automate processes in my business.",
+        nav: {
+          links: [
+            ["Solutions", "/#soluciones"],
+            ["Services",  "/#servicios"],
+            ["Process",   "/#proceso"],
+            ["Pricing",   "/#precios"],
+            ["FAQs",      "/#faqs"],
+            ["Contact",   "/#contacto"],
+          ],
+          cta: "Schedule a call",
+          menuLabel: "Menu",
+        },
+        hero: {
+          kicker: "About Orkesta · Philosophy",
+          h1: 'Pragmatic <em>automation</em> for SMBs that want results, not demos.',
+          lead: 'A small, technical, focused consulting team. We build automations with <b>n8n</b>, agents with <b>Claude</b> and custom integrations — with focus on <b>measurable ROI</b> and no lock-in.',
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Book a diagnostic",
+        },
+        manifiesto: {
+          kicker: "Manifesto · How we work",
+          title: 'Three <em>principles</em> that set us apart.',
+          desc: "What makes us different isn't the stack — it's the discipline with which we decide what to build and what not to.",
+          items: [
+            { n: "Principle 01", t: "Pragmatism over buzz.",          d: "If Excel solves it, we don't sell you an agent. We start with the simplest thing that delivers value and grow only when needed." },
+            { n: "Principle 02", t: "ROI before technology.",         d: "Every proposal includes a clear impact estimate: hours saved, errors reduced, throughput. If there's no ROI, we say so." },
+            { n: "Principle 03", t: "No lock-in.",                     d: "Code, workflows and access live in your infrastructure. We hand over documentation, handoff and operational autonomy." },
+          ],
+        },
+        stack: {
+          kicker: "Stack · Technologies",
+          title: 'What we <em>use</em> daily.',
+          desc: "We work on your existing stack — we don't force tool changes. These are the core pieces of our day-to-day.",
+          items: [
+            { iconId: "i-auto",    t: "n8n",             d: "Workflow orchestration: triggers, conditional logic, retries, observability. Self-hosted or cloud depending on your case." },
+            { iconId: "i-modelo",  t: "Claude API",      d: "Agents and assistants with reasoning, tool use and document processing. We configure zero data retention where applicable." },
+            { iconId: "i-integra", t: "Mercado Pago",    d: "Online and in-store payments connected to your ERP/Sheet with automatic reconciliation and webhook handling." },
+            { iconId: "i-tiempo",  t: "APIs & webhooks", d: "We integrate any system that speaks HTTP. No reinventing — we use the APIs that already exist." },
+          ],
+        },
+        donde: {
+          kicker: "Where we are · Coverage",
+          title: 'Based in <em>Mexico City</em>, working with LATAM & the USA.',
+          desc: "We operate 100% remote via WhatsApp, email and video call. Distance isn't a problem — time zone is, so we work in CDMX hours that overlap most of LATAM and the US.",
+          waTitle: "Direct WhatsApp",
+          waSub: "+52 55 8766 2865 · Quick reply",
+          mailSub: "Email · We respond within 24h",
+        },
+        cta: {
+          title: '<em>30 minutes</em>, no commitment, no pitch.',
+          desc: "We listen, look at your processes and tell you what can be automated first — with timing and order-of-magnitude cost. If it fits, we send a proposal. If not, we tell you which tool to use.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Book a diagnostic",
+        },
+        footer: {
+          tagline: "Automation & AI",
+          country: "Mexico",
+        },
+      },
+    };
+
+    function detectLanguage() {
+      try {
+        const param = new URLSearchParams(window.location.search).get('lang');
+        if (param === 'en' || param === 'es') return param;
+        const stored = localStorage.getItem('orkesta-lang');
+        if (stored === 'en' || stored === 'es') return stored;
+        const browser = (navigator.language || 'es').slice(0, 2);
+        return browser === 'en' ? 'en' : 'es';
+      } catch { return 'es'; }
+    }
+
+    const waLink = (msg, lang = 'es') =>
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || TRANSLATIONS[lang].waDefault)}`;
 
     const Ico = ({ id, w = 18, h = 18 }) => (
       <svg width={w} height={h} aria-hidden="true"><use href={`/defs.svg#${id}`}/></svg>
     );
 
-    /* ----------------------- NAV (sub-página, anchors van a /#...) ----------------------- */
-    const Nav = () => {
+    /* ----------------------- NAV ----------------------- */
+    const Nav = ({ lang, setLanguage, t }) => {
       const [open, setOpen] = useState(false);
-      const links = [
-        ["Soluciones", "/#soluciones"],
-        ["Servicios",  "/#servicios"],
-        ["Proceso",    "/#proceso"],
-        ["Precios",    "/#precios"],
-        ["FAQs",       "/#faqs"],
-        ["Contacto",   "/#contacto"],
-      ];
       return (
         <header className="nav-bar nav-bar--green">
           <div className="nav-inner">
@@ -159,19 +298,29 @@
               <span className="nav-wordmark">{CONFIG.marca}</span>
             </a>
             <nav className="nav-links">
-              {links.map(([t, h]) => (
-                <a key={h} href={h} className="nav-link">{t}</a>
+              {t.links.map(([label, href]) => (
+                <a key={href} href={href} className="nav-link">{label}</a>
               ))}
-              <a href="/#contacto" className="btn btn-primary nav-cta">Agenda una charla</a>
+              <div className="lang-toggle">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => setLanguage('es')}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => setLanguage('en')}>EN</button>
+              </div>
+              <a href="/#contacto" className="btn btn-primary nav-cta">{t.cta}</a>
             </nav>
-            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label="Menú">
+            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label={t.menuLabel}>
               <span/><span/><span/>
             </button>
           </div>
           {open && (
             <div className="nav-mobile">
-              {links.map(([t, h]) => (
-                <a key={h} href={h} onClick={() => setOpen(false)}>{t}</a>
+              <div className="lang-mobile">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => { setLanguage('es'); setOpen(false); }}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => { setLanguage('en'); setOpen(false); }}>EN</button>
+              </div>
+              {t.links.map(([label, href]) => (
+                <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>
               ))}
             </div>
           )}
@@ -180,53 +329,33 @@
     };
 
     /* ----------------------- HERO ----------------------- */
-    const PageHero = () => (
+    const PageHero = ({ t, lang }) => (
       <section id="top" className="page-hero">
         <div className="wrap">
-          <span className="badge badge-green hero-kicker"><Ico id="i-check" w={13} h={13}/>Sobre Orkesta · Filosofía</span>
-          <h1>Automatización <em>pragmática</em> para PyMEs que quieren resultados, no demos.</h1>
-          <p className="lead">
-            Somos una consultora pequeña, técnica y enfocada. Implementamos automatizaciones con <b>n8n</b>, agentes con <b>Claude</b> e integraciones a medida — con foco en <b>ROI medible</b> y sin lock-in.
-          </p>
+          <span className="badge badge-green hero-kicker"><Ico id="i-check" w={13} h={13}/>{t.kicker}</span>
+          <h1 dangerouslySetInnerHTML={{ __html: t.h1 }} />
+          <p className="lead" dangerouslySetInnerHTML={{ __html: t.lead }} />
           <div className="ctas">
-            <a href={waLink()} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
-            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+            <a href={waLink(null, lang)} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>{t.ctaWA}</a>
+            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>{t.ctaAgendar}</a>
           </div>
         </div>
       </section>
     );
 
     /* ----------------------- MANIFIESTO ----------------------- */
-    const principios = [
-      {
-        n: "Principio 01",
-        t: "Pragmatismo sobre buzz.",
-        d: "Si Excel resuelve, no te vendemos un agente. Empezamos por lo más simple que entregue valor y crecemos sólo cuando hace falta.",
-      },
-      {
-        n: "Principio 02",
-        t: "ROI antes que tecnología.",
-        d: "Cada propuesta tiene una estimación clara de impacto: horas ahorradas, errores reducidos, throughput. Si no hay ROI, lo decimos.",
-      },
-      {
-        n: "Principio 03",
-        t: "Sin lock-in.",
-        d: "El código, los flujos y los accesos viven en tu infraestructura. Te entregamos documentación, handoff y autonomía operativa.",
-      },
-    ];
-
-    const Manifiesto = () => (
+    const Manifiesto = ({ t }) => (
       <section id="manifiesto" className="section">
         <div className="wrap">
           <div className="sec-hdr sec-hdr--solo">
             <div>
-              <div className="sec-kicker">Manifiesto · Cómo trabajamos</div>
-              <h2 className="sec-title">Tres <em>principios</em> que nos hacen distintos.</h2>
-              <p className="sec-desc">Lo que nos diferencia no es el stack — es la disciplina con la que decidimos qué construir y qué no.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
           </div>
           <div className="pillars-grid">
-            {principios.map((p) => (
+            {t.items.map((p) => (
               <div key={p.t} className="pillar-card">
                 <div className="pillar-n">{p.n}</div>
                 <h3 className="pillar-title">{p.t}</h3>
@@ -239,25 +368,18 @@
     );
 
     /* ----------------------- STACK ----------------------- */
-    const stack = [
-      { iconId: "i-auto",    t: "n8n",            d: "Orquestación de flujos: triggers, lógica condicional, retries, observabilidad. Self-hosted o cloud según tu caso." },
-      { iconId: "i-modelo",  t: "Claude API",     d: "Agentes y asistentes con razonamiento, tool use y procesamiento de documentos. Configuramos zero data retention donde aplica." },
-      { iconId: "i-integra", t: "Mercado Pago",   d: "Cobros online e in-store conectados a tu ERP/Sheet con conciliación automática y manejo de webhooks." },
-      { iconId: "i-tiempo",  t: "APIs y webhooks", d: "Integramos cualquier sistema que hable HTTP. Sin reinventar — usamos las APIs que ya existen." },
-    ];
-
-    const Stack = () => (
+    const Stack = ({ t }) => (
       <section id="stack" className="section" style={{background:"var(--paper-2)"}}>
         <div className="wrap">
           <div className="sec-hdr sec-hdr--solo">
             <div>
-              <div className="sec-kicker">Stack · Tecnologías</div>
-              <h2 className="sec-title">Lo que <em>usamos</em> a diario.</h2>
-              <p className="sec-desc">Trabajamos sobre tu stack existente — no te forzamos a cambiar herramientas. Estas son las piezas centrales de nuestro día a día.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
           </div>
           <div className="svc-grid" style={{gridTemplateColumns:"repeat(2, 1fr)"}}>
-            {stack.map((s) => (
+            {t.items.map((s) => (
               <div key={s.t} className="svc-card">
                 <div className="svc-ico"><Ico id={s.iconId} w={26} h={26}/></div>
                 <div className="svc-title">{s.t}</div>
@@ -270,29 +392,29 @@
     );
 
     /* ----------------------- DÓNDE ESTAMOS ----------------------- */
-    const Donde = () => (
+    const Donde = ({ t, lang }) => (
       <section id="donde" className="section">
         <div className="wrap">
           <div className="sec-hdr sec-hdr--solo">
             <div>
-              <div className="sec-kicker">Dónde estamos · Cobertura</div>
-              <h2 className="sec-title">Basados en <em>Ciudad de México</em>, trabajamos con LATAM y USA.</h2>
-              <p className="sec-desc">Operamos 100% remoto vía WhatsApp, email y videollamada. La distancia no es un problema — sí lo es la zona horaria, así que trabajamos en franjas de CDMX que cubren la mayoría de LATAM y EE. UU.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
           </div>
           <div className="contact-links" style={{maxWidth:"600px"}}>
-            <a href={waLink()} target="_blank" className="contact-link">
+            <a href={waLink(null, lang)} target="_blank" className="contact-link">
               <div className="contact-link-ico"><Ico id="i-chat" w={20} h={20}/></div>
               <div>
-                <div className="contact-link-title">WhatsApp directo</div>
-                <div className="contact-link-sub">+52 55 8766 2865 · Respuesta rápida</div>
+                <div className="contact-link-title">{t.waTitle}</div>
+                <div className="contact-link-sub">{t.waSub}</div>
               </div>
             </a>
             <a href={`mailto:${CONFIG.email}`} className="contact-link">
               <div className="contact-link-ico"><Ico id="i-mail" w={20} h={20}/></div>
               <div>
                 <div className="contact-link-title">{CONFIG.email}</div>
-                <div className="contact-link-sub">Correo · Respondemos en 24h</div>
+                <div className="contact-link-sub">{t.mailSub}</div>
               </div>
             </a>
           </div>
@@ -301,15 +423,15 @@
     );
 
     /* ----------------------- CTA FINAL ----------------------- */
-    const CtaFinal = () => (
+    const CtaFinal = ({ t, lang }) => (
       <section className="section">
         <div className="wrap">
           <div className="cta-block">
-            <h2><em>30 minutos</em>, sin compromiso, sin pitch.</h2>
-            <p>Te escuchamos, miramos tus procesos y te decimos qué se puede automatizar primero — con tiempos y orden de magnitud de costo. Si encaja, te mandamos propuesta. Si no, te decimos qué herramienta usar.</p>
+            <h2 dangerouslySetInnerHTML={{ __html: t.title }} />
+            <p>{t.desc}</p>
             <div className="ctas">
-              <a href={waLink()} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
-              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+              <a href={waLink(null, lang)} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>{t.ctaWA}</a>
+              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>{t.ctaAgendar}</a>
             </div>
           </div>
         </div>
@@ -317,36 +439,66 @@
     );
 
     /* ----------------------- FOOTER ----------------------- */
-    const Footer = () => (
+    const Footer = ({ t }) => (
       <footer className="site-footer">
-        <span>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
+        <span>© {new Date().getFullYear()} {CONFIG.marca} · {t.tagline} · {t.country} · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
         <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
       </footer>
     );
 
     /* ----------------------- Floating WhatsApp ----------------------- */
-    const FloatingWA = () => (
-      <a href={waLink()} target="_blank" aria-label="WhatsApp" className="floating-wa">
+    const FloatingWA = ({ lang }) => (
+      <a href={waLink(null, lang)} target="_blank" aria-label="WhatsApp" className="floating-wa">
         <Ico id="i-wa" w={22} h={22}/>
         <span className="floating-wa-text">WhatsApp</span>
       </a>
     );
 
     /* ----------------------- APP ----------------------- */
-    const App = () => (
-      <div>
-        <Nav/>
-        <main>
-          <PageHero/>
-          <Manifiesto/>
-          <Stack/>
-          <Donde/>
-          <CtaFinal/>
-        </main>
-        <Footer/>
-        <FloatingWA/>
-      </div>
-    );
+    const App = () => {
+      const [lang, setLang] = useState(detectLanguage);
+      const t = TRANSLATIONS[lang];
+
+      React.useEffect(() => {
+        document.documentElement.lang = t.htmlLang;
+        document.title = t.meta.title;
+        const update = (sel, attr, val) => {
+          const el = document.querySelector(sel);
+          if (el) el.setAttribute(attr, val);
+        };
+        update('meta[name="description"]', 'content', t.meta.desc);
+        update('meta[property="og:title"]', 'content', t.meta.title);
+        update('meta[property="og:description"]', 'content', t.meta.desc);
+        update('meta[name="twitter:title"]', 'content', t.meta.title);
+        update('meta[name="twitter:description"]', 'content', t.meta.desc);
+      }, [lang]);
+
+      const setLanguage = (l) => {
+        setLang(l);
+        try { localStorage.setItem('orkesta-lang', l); } catch {}
+        try {
+          const url = new URL(window.location);
+          if (l === 'en') url.searchParams.set('lang', 'en');
+          else url.searchParams.delete('lang');
+          window.history.replaceState({}, '', url);
+        } catch {}
+      };
+
+      return (
+        <div>
+          <Nav lang={lang} setLanguage={setLanguage} t={t.nav} />
+          <main>
+            <PageHero t={t.hero} lang={lang} />
+            <Manifiesto t={t.manifiesto} />
+            <Stack t={t.stack} />
+            <Donde t={t.donde} lang={lang} />
+            <CtaFinal t={t.cta} lang={lang} />
+          </main>
+          <Footer t={t.footer} />
+          <FloatingWA lang={lang} />
+        </div>
+      );
+    };
 
     ReactDOM.createRoot(document.getElementById("root")).render(<App />);
   </script>
