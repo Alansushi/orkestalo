@@ -247,22 +247,312 @@
        ============================================================ */
     const CONFIG = {
       marca: "Orkesta",
-      tagline: "Automatización e IA que orquesta tu negocio",
-      whatsapp: "525587662865",           // <-- tu número con código de país, sin + ni espacios
-      email: "info@orkestalo.com",           // <-- correo general
-      calendly: "https://calendly.com/tu-usuario/charla-30min", // <-- tu link de agenda
-      formspree: ""                        // <-- pega tu endpoint de Formspree o deja vacío para mailto
+      whatsapp: "525587662865",
+      email: "info@orkestalo.com",
+      formspree: "",
     };
 
-    const waLink = (msg) =>
-      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || "Hola, vi su sitio y quiero automatizar procesos en mi negocio.")}`;
+    /* ============================================================
+       TRANSLATIONS — todo el texto user-facing en ES y EN
+       ============================================================ */
+    const TRANSLATIONS = {
+      es: {
+        htmlLang: "es",
+        meta: {
+          title: "Orkesta — Automatización e IA para tu negocio",
+          desc: "Consultoría en automatización con n8n, IA con Claude e integraciones a medida. Del discovery a producción, sin fricción.",
+        },
+        waDefault: "Hola, vi su sitio y quiero automatizar procesos en mi negocio.",
+        nav: {
+          links: [
+            ["Soluciones", "#soluciones"],
+            ["Servicios", "#servicios"],
+            ["Proceso", "#proceso"],
+            ["Precios", "#precios"],
+            ["FAQs", "#faqs"],
+            ["Contacto", "#contacto"],
+          ],
+          cta: "Agenda una charla",
+          menuLabel: "Menú",
+        },
+        hero: {
+          kicker: "Consultoría en automatización e IA aplicada",
+          h1: 'Automatización <em>pragmática</em> para que tu equipo deje de hacer trabajo manual.',
+          sub: 'Implementamos agentes con <b>Claude</b>, flujos en <b>n8n</b> e integraciones a medida. Discovery → producción en semanas, no meses. Foco en procesos con <b>ROI medible</b>.',
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Agendar diagnóstico",
+          trust: [
+            "Stack: Claude · n8n · Mercado Pago",
+            "Discovery → producción en semanas",
+            "CDMX · LATAM · USA",
+            "Primera llamada sin costo",
+          ],
+        },
+        paraQuien: {
+          kicker: "Para quién · Calificación",
+          title: '¿Es <em>para ti</em>?',
+          desc: "Trabajamos mejor con empresas que se reconocen en al menos dos de estos puntos.",
+          items: [
+            "Usan Excel para procesos repetitivos que ya no escalan.",
+            "Tienen tareas manuales que cruzan sistemas (CRM, correo, ERP, contabilidad).",
+            "Pierden horas capturando información a mano desde correos o documentos.",
+            "Atienden clientes por WhatsApp y el volumen ya no se sostiene manual.",
+            "Quieren IA pragmática sin contratar un equipo técnico in-house.",
+          ],
+        },
+        soluciones: {
+          kicker: "Soluciones",
+          title: 'Listas para <em>tu negocio</em>.',
+          desc: "Flujos que adaptamos a tu operación — implementación rápida, valor inmediato.",
+          items: [
+            { t: "Asistente de atención 24/7",       beneficio: "Atiende fuera de horario sin sumar headcount", d: "Agente con Claude que responde dudas, califica leads y agenda — en tu web o WhatsApp.",        tags: ["Claude", "WhatsApp", "Leads"] },
+            { t: "Conciliación de pagos automática", beneficio: "Elimina la captura manual de cobros",          d: "Integra Mercado Pago, registra ventas y concilia con tu hoja o ERP sin intervención manual.", tags: ["Mercado Pago", "n8n"] },
+            { t: "Lector inteligente de facturas",   beneficio: "Reduce horas de data entry de facturas",       d: "Recibe facturas por correo, extrae datos con IA y los carga a tu sistema.",                    tags: ["IA Docs", "n8n"] },
+            { t: "Orquestador de back-office",       beneficio: "Libera al equipo de tareas mecánicas",         d: "Automatiza alta de clientes, notificaciones y reportes recurrentes entre tus apps.",           tags: ["Integraciones", "n8n"] },
+          ],
+        },
+        servicios: {
+          kicker: "Servicios · Oferta",
+          title: 'Lo que <em>construimos</em> juntos.',
+          desc: "Soluciones que puedes contratar por proyecto.",
+          items: [
+            { iconId: "i-agente",  t: "Chatbots y agentes con IA",         d: "Asistentes con Claude para ventas, soporte y procesos internos, en web o WhatsApp." },
+            { iconId: "i-auto",    t: "Automatización con n8n",             d: "Conectamos tus apps (CRM, correo, hojas, facturación) y eliminamos el trabajo manual repetitivo." },
+            { iconId: "i-flujo",   t: "Procesamiento de documentos con IA", d: "Extracción y clasificación de facturas, correos y documentos con IA." },
+            { iconId: "i-modelo",  t: "Claude integrado a tu negocio",      d: "Optimización de procesos incorporando modelos de IA donde generan más valor." },
+            { iconId: "i-integra", t: "Integraciones de Mercado Pago",      d: "Cobros online e in-store conectados a tu operación y conciliación automática." },
+            { iconId: "i-tiempo",  t: "Integraciones a medida",             d: "Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable." },
+          ],
+        },
+        proceso: {
+          kicker: "Proceso · Método",
+          title: 'De la idea a producción, <em>sin fricción</em>.',
+          desc: "Un proceso probado, transparente en cada etapa.",
+          items: [
+            { n: "01", t: "Discovery",                    d: "Entendemos tu negocio, mapeamos procesos y detectamos las automatizaciones de mayor impacto." },
+            { n: "02", t: "Diseño",                        d: "Definimos la arquitectura de la solución, herramientas y alcance con entregables claros." },
+            { n: "03", t: "Implementación",                d: "Construimos los flujos, agentes e integraciones siguiendo buenas prácticas." },
+            { n: "04", t: "Testing",                       d: "Pruebas de extremo a extremo para asegurar que todo funciona en escenarios reales." },
+            { n: "05", t: "Checklist de buenas prácticas", d: "Seguridad, manejo de errores, logs y documentación antes de liberar." },
+            { n: "06", t: "Salida a producción",           d: "Despliegue, monitoreo y acompañamiento para que la solución viva sin sobresaltos." },
+          ],
+        },
+        precios: {
+          kicker: "Precios · Modelos",
+          title: 'Cada propuesta es <em>a la medida</em>.',
+          desc: "Empieza con una llamada sin costo para entender tu caso y diseñar la mejor solución.",
+          recBadge: "Recomendado",
+          footerText: "¿Listo para empezar? La primera llamada es gratis y sin compromiso.",
+          footerWA: "WhatsApp →",
+          items: [
+            { t: "Diagnóstico inicial",       precio: "Sin costo",       unidad: "primera llamada de 30 min",     d: "Conocemos tu negocio y detectamos oportunidades.", items: ["Entendemos tus procesos", "Identificamos qué automatizar primero", "Estimación de impacto", "Próximos pasos claros"], cta: "Agendar llamada" },
+            { t: "Diseño e implementación",   precio: "A tu medida",     unidad: "según alcance del proyecto",    d: "Construimos la solución de extremo a extremo.",     items: ["Discovery y diseño de la solución", "Implementación y testing", "Salida a producción"],                                              cta: "Solicitar propuesta", destacado: true },
+            { t: "Soporte continuo",          precio: "Plan a medida",   unidad: "acompañamiento mensual",        d: "Mejoramos y escalamos lo que ya funciona.",         items: ["Monitoreo y mantenimiento", "Ajustes y mejoras", "Nuevas automatizaciones", "Soporte prioritario"],                                  cta: "Conversemos" },
+          ],
+        },
+        faqs: {
+          kicker: "Preguntas frecuentes",
+          title: 'Lo que <em>preguntan</em> primero.',
+          desc: "Si tu duda no está acá, escribinos por WhatsApp o agenda el diagnóstico — respondemos rápido.",
+          more: "Ver todas las preguntas →",
+          items: [
+            { q: "¿Cuánto cuesta una automatización?",                       a: "Cada propuesta es a la medida según el alcance. Empezamos con un diagnóstico inicial sin costo (30 minutos) donde detectamos las oportunidades de mayor impacto y entregamos una propuesta concreta con tiempos y entregables." },
+            { q: "¿Cuánto tarda un proyecto típico?",                        a: "La mayoría de las automatizaciones puntuales viven entre 2 y 6 semanas, desde discovery hasta producción. Proyectos más complejos (integraciones múltiples o agentes con varios pasos) pueden extenderse a 8-12 semanas." },
+            { q: "¿Qué tecnologías usan?",                                   a: "n8n para orquestación de flujos, Claude API para agentes e IA aplicada, Mercado Pago para cobros, y APIs/webhooks para integrar cualquier sistema con HTTP. Trabajamos sobre tu stack existente — no te forzamos a cambiar herramientas." },
+            { q: "¿Dan soporte después de implementar?",                     a: "Sí. Ofrecemos un plan de soporte continuo mensual a medida que incluye monitoreo, mantenimiento, ajustes y nuevas automatizaciones. También dejamos documentación completa para que tu equipo pueda operar sin depender de nosotros." },
+            { q: "¿De quién es el código al final del proyecto?",            a: "Tuyo. Todo lo que construimos vive en tu infraestructura (tu n8n, tu cuenta de Claude, tu Mercado Pago). Te entregamos accesos completos, código, documentación y handoff sin lock-in." },
+          ],
+        },
+        contacto: {
+          kicker: "Contacto · Agenda",
+          title: 'Hablemos de <em>tu negocio</em>.',
+          desc: "En 30 minutos te decimos exactamente qué proceso de tu equipo puede automatizarse con IA esta semana.",
+          waTitle: "WhatsApp directo",
+          waSub: "Respuesta rápida",
+          mailSub: "Correo",
+          situacionLabel: "¿Qué describe mejor tu situación?",
+          situacionOps: ["No sé por dónde empezar", "Tengo un proceso específico", "Estoy comparando opciones", "Mi directivo me lo pidió"],
+          nameLabel: "Nombre",
+          namePh: "Tu nombre",
+          emailLabel: "Correo",
+          emailPh: "tu@empresa.com",
+          msgLabel: "¿Qué proceso quieres automatizar?",
+          msgPh: "Ej: facturas manuales, reportes, seguimiento de clientes, cotizaciones, atención al cliente...",
+          submit: "Agendar 30 minutos gratis",
+          successTitle: "¡Mensaje listo!",
+          successDesc: "Tu mensaje está en camino. Te responderé muy pronto.",
+          mailtoSubj: "Nuevo lead — ",
+          mailtoSit: "Situación",
+          mailtoSitDef: "(no especificada)",
+          mailtoName: "Nombre",
+          mailtoEmail: "Correo",
+        },
+        footer: {
+          tagline: "Automatización e IA",
+          country: "México",
+        },
+      },
+      en: {
+        htmlLang: "en",
+        meta: {
+          title: "Orkesta — Automation & AI for your business",
+          desc: "Consulting on automation with n8n, AI with Claude and custom integrations. From discovery to production, without friction.",
+        },
+        waDefault: "Hi, I saw your site and want to automate processes in my business.",
+        nav: {
+          links: [
+            ["Solutions", "#soluciones"],
+            ["Services", "#servicios"],
+            ["Process", "#proceso"],
+            ["Pricing", "#precios"],
+            ["FAQs", "#faqs"],
+            ["Contact", "#contacto"],
+          ],
+          cta: "Schedule a call",
+          menuLabel: "Menu",
+        },
+        hero: {
+          kicker: "Automation & applied AI consulting",
+          h1: 'Pragmatic <em>automation</em> so your team stops doing manual work.',
+          sub: 'We build agents with <b>Claude</b>, workflows in <b>n8n</b> and custom integrations. Discovery → production in weeks, not months. Focus on processes with <b>measurable ROI</b>.',
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Book a diagnostic",
+          trust: [
+            "Stack: Claude · n8n · Mercado Pago",
+            "Discovery → production in weeks",
+            "Mexico City · LATAM · USA",
+            "First call free",
+          ],
+        },
+        paraQuien: {
+          kicker: "Who it's for · Qualification",
+          title: 'Is it <em>for you</em>?',
+          desc: "We work best with companies that recognize themselves in at least two of these points.",
+          items: [
+            "Use Excel for repetitive processes that no longer scale.",
+            "Have manual tasks crossing systems (CRM, email, ERP, accounting).",
+            "Lose hours capturing information by hand from emails or documents.",
+            "Handle customers via WhatsApp and the volume is no longer manageable.",
+            "Want pragmatic AI without hiring an in-house tech team.",
+          ],
+        },
+        soluciones: {
+          kicker: "Solutions",
+          title: 'Ready for <em>your business</em>.',
+          desc: "Workflows we adapt to your operation — quick implementation, immediate value.",
+          items: [
+            { t: "24/7 support assistant",            beneficio: "Answers off-hours without adding headcount",     d: "A Claude agent that answers questions, qualifies leads and schedules — on your web or WhatsApp.",      tags: ["Claude", "WhatsApp", "Leads"] },
+            { t: "Automatic payment reconciliation",  beneficio: "Eliminates manual capture of payments",          d: "Connect Mercado Pago, log sales and reconcile with your sheet or ERP without manual work.",          tags: ["Mercado Pago", "n8n"] },
+            { t: "Smart invoice reader",              beneficio: "Reduces hours of invoice data entry",            d: "Receive invoices by email, extract data with AI and load them into your system.",                     tags: ["AI Docs", "n8n"] },
+            { t: "Back-office orchestrator",          beneficio: "Frees the team from recurring mechanical tasks", d: "Automate customer onboarding, notifications and recurring reports across your apps.",                 tags: ["Integrations", "n8n"] },
+          ],
+        },
+        servicios: {
+          kicker: "Services · Offering",
+          title: 'What we <em>build</em> together.',
+          desc: "Solutions you can hire per project.",
+          items: [
+            { iconId: "i-agente",  t: "Chatbots and AI agents",            d: "Assistants with Claude for sales, support and internal processes, on web or WhatsApp." },
+            { iconId: "i-auto",    t: "Automation with n8n",                d: "We connect your apps (CRM, email, sheets, billing) and remove repetitive manual work." },
+            { iconId: "i-flujo",   t: "AI document processing",             d: "Extraction and classification of invoices, emails and documents with AI." },
+            { iconId: "i-modelo",  t: "Claude integrated into your business", d: "Process optimization by incorporating AI models where they create the most value." },
+            { iconId: "i-integra", t: "Mercado Pago integrations",          d: "Online and in-store payments connected to your operation with automatic reconciliation." },
+            { iconId: "i-tiempo",  t: "Custom integrations",                d: "We connect systems that don't talk to each other via APIs and webhooks, reliably." },
+          ],
+        },
+        proceso: {
+          kicker: "Process · Method",
+          title: 'From idea to production, <em>without friction</em>.',
+          desc: "A proven process, transparent at every stage.",
+          items: [
+            { n: "01", t: "Discovery",                d: "We understand your business, map processes and detect the highest-impact automations." },
+            { n: "02", t: "Design",                   d: "We define the solution's architecture, tools and scope with clear deliverables." },
+            { n: "03", t: "Implementation",           d: "We build the workflows, agents and integrations following best practices." },
+            { n: "04", t: "Testing",                  d: "End-to-end testing to make sure everything works in real scenarios." },
+            { n: "05", t: "Best-practices checklist", d: "Security, error handling, logs and documentation before going live." },
+            { n: "06", t: "Production rollout",       d: "Deployment, monitoring and follow-up so the solution runs smoothly." },
+          ],
+        },
+        precios: {
+          kicker: "Pricing · Models",
+          title: 'Every proposal is <em>tailored</em>.',
+          desc: "Start with a free call to understand your case and design the best solution.",
+          recBadge: "Recommended",
+          footerText: "Ready to start? The first call is free and with no commitment.",
+          footerWA: "WhatsApp →",
+          items: [
+            { t: "Initial diagnostic",         precio: "Free",           unidad: "first 30-minute call",        d: "We get to know your business and detect opportunities.", items: ["We understand your processes", "We identify what to automate first", "Impact estimate", "Clear next steps"],          cta: "Book a call" },
+            { t: "Design & implementation",    precio: "Tailored",       unidad: "based on project scope",      d: "We build the solution end-to-end.",                      items: ["Discovery and solution design", "Implementation and testing", "Production rollout"],                                cta: "Request proposal", destacado: true },
+            { t: "Ongoing support",            precio: "Custom plan",    unidad: "monthly engagement",          d: "We improve and scale what's already working.",            items: ["Monitoring and maintenance", "Adjustments and improvements", "New automations", "Priority support"],                  cta: "Let's talk" },
+          ],
+        },
+        faqs: {
+          kicker: "Frequently asked questions",
+          title: 'What they <em>ask</em> first.',
+          desc: "If your question isn't here, write to us on WhatsApp or book a diagnostic — we respond fast.",
+          more: "See all questions →",
+          items: [
+            { q: "How much does an automation cost?",                a: "Each proposal is tailored to scope. We start with a free 30-minute diagnostic where we detect the highest-impact opportunities and deliver a concrete proposal with timing and deliverables." },
+            { q: "How long does a typical project take?",            a: "Most one-off automations live between 2 and 6 weeks, from discovery to production. More complex projects (multiple integrations or multi-step agents) can extend to 8-12 weeks." },
+            { q: "What technologies do you use?",                    a: "n8n for workflow orchestration, Claude API for agents and applied AI, Mercado Pago for payments, and APIs/webhooks to integrate any HTTP system. We work on your existing stack — we don't force tool changes." },
+            { q: "Do you provide support after implementation?",     a: "Yes. We offer a custom monthly ongoing-support plan that includes monitoring, maintenance, adjustments and new automations. We also leave full documentation so your team can operate without depending on us." },
+            { q: "Who owns the code at the end of the project?",     a: "You do. Everything we build lives in your infrastructure (your n8n, your Claude account, your Mercado Pago). We hand over full access, code, documentation and handoff with no lock-in." },
+          ],
+        },
+        contacto: {
+          kicker: "Contact · Schedule",
+          title: 'Let\'s talk about <em>your business</em>.',
+          desc: "In 30 minutes we tell you exactly which process in your team can be automated with AI this week.",
+          waTitle: "Direct WhatsApp",
+          waSub: "Quick reply",
+          mailSub: "Email",
+          situacionLabel: "Which best describes your situation?",
+          situacionOps: ["I don't know where to start", "I have a specific process", "I'm comparing options", "My exec asked me to look into this"],
+          nameLabel: "Name",
+          namePh: "Your name",
+          emailLabel: "Email",
+          emailPh: "you@company.com",
+          msgLabel: "What process do you want to automate?",
+          msgPh: "E.g. manual invoices, reports, customer follow-up, quotes, customer service...",
+          submit: "Book 30 minutes free",
+          successTitle: "Message ready!",
+          successDesc: "Your message is on its way. We'll get back to you very soon.",
+          mailtoSubj: "New lead — ",
+          mailtoSit: "Situation",
+          mailtoSitDef: "(not specified)",
+          mailtoName: "Name",
+          mailtoEmail: "Email",
+        },
+        footer: {
+          tagline: "Automation & AI",
+          country: "Mexico",
+        },
+      },
+    };
+
+    /* ============================================================
+       DETECCIÓN DE IDIOMA · Orden: ?lang= → localStorage → navigator → es
+       ============================================================ */
+    function detectLanguage() {
+      try {
+        const param = new URLSearchParams(window.location.search).get('lang');
+        if (param === 'en' || param === 'es') return param;
+        const stored = localStorage.getItem('orkesta-lang');
+        if (stored === 'en' || stored === 'es') return stored;
+        const browser = (navigator.language || 'es').slice(0, 2);
+        return browser === 'en' ? 'en' : 'es';
+      } catch { return 'es'; }
+    }
+
+    const waLink = (msg, lang = 'es') =>
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || TRANSLATIONS[lang].waDefault)}`;
 
     const Ico = ({ id, w = 18, h = 18 }) => (
       <svg width={w} height={h} aria-hidden="true"><use href={`/defs.svg#${id}`}/></svg>
     );
 
     /* ----------------------- NAV ----------------------- */
-    const Nav = () => {
+    const Nav = ({ lang, setLanguage, t }) => {
       const [open, setOpen] = useState(false);
       const [scrolled, setScrolled] = useState(false);
 
@@ -277,14 +567,6 @@
         return () => obs.disconnect();
       }, []);
 
-      const links = [
-        ["Soluciones", "#soluciones"],
-        ["Servicios", "#servicios"],
-        ["Proceso", "#proceso"],
-        ["Precios", "#precios"],
-        ["FAQs", "#faqs"],
-        ["Contacto", "#contacto"],
-      ];
       return (
         <header className={`nav-bar${scrolled ? " nav-bar--green" : ""}`}>
           <div className="nav-inner">
@@ -293,23 +575,33 @@
               <span className="nav-wordmark">{CONFIG.marca}</span>
             </a>
             <nav className="nav-links">
-              {links.map(([t, h]) => (
-                <a key={h} href={h} className="nav-link">{t}</a>
+              {t.links.map(([label, href]) => (
+                <a key={href} href={href} className="nav-link">{label}</a>
               ))}
-              <a href="#contacto" className="btn btn-primary nav-cta">Agenda una charla</a>
+              <div className="lang-toggle">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => setLanguage('es')}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => setLanguage('en')}>EN</button>
+              </div>
+              <a href="#contacto" className="btn btn-primary nav-cta">{t.cta}</a>
             </nav>
             <button
               onClick={() => setOpen(!open)}
               className="nav-toggle"
-              aria-label="Menú"
+              aria-label={t.menuLabel}
             >
               <span/><span/><span/>
             </button>
           </div>
           {open && (
             <div className="nav-mobile">
-              {links.map(([t, h]) => (
-                <a key={h} href={h} onClick={() => setOpen(false)}>{t}</a>
+              <div className="lang-mobile">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => { setLanguage('es'); setOpen(false); }}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => { setLanguage('en'); setOpen(false); }}>EN</button>
+              </div>
+              {t.links.map(([label, href]) => (
+                <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>
               ))}
             </div>
           )}
@@ -395,54 +687,39 @@
     }
 
     /* ----------------------- HERO ----------------------- */
-    const Hero = () => (
+    const Hero = ({ t, lang }) => (
       <section id="top" className="hero">
         <HeroBg />
         <div className="wrap">
           <div className="hero-kicker">
-            <span className="badge badge-green"><Ico id="i-check" w={13} h={13}/>Consultoría en automatización e IA aplicada</span>
+            <span className="badge badge-green"><Ico id="i-check" w={13} h={13}/>{t.kicker}</span>
           </div>
-          <h1 className="hero-headline">
-            Automatización <em>pragmática</em> para que tu equipo deje de hacer trabajo manual.
-          </h1>
-          <p className="hero-sub">
-            Implementamos agentes con <b>Claude</b>, flujos en <b>n8n</b> e integraciones a medida. Discovery → producción en semanas, no meses. Foco en procesos con <b>ROI medible</b>.
-          </p>
+          <h1 className="hero-headline" dangerouslySetInnerHTML={{ __html: t.h1 }} />
+          <p className="hero-sub" dangerouslySetInnerHTML={{ __html: t.sub }} />
           <div className="hero-ctas">
-            <a href={waLink()} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>WhatsApp</a>
-            <a href="#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>Agendar diagnóstico</a>
+            <a href={waLink(null, lang)} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>{t.ctaWA}</a>
+            <a href="#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>{t.ctaAgendar}</a>
           </div>
           <div className="hero-trust">
-            <span className="badge">Stack: Claude · n8n · Mercado Pago</span>
-            <span className="badge">Discovery → producción en semanas</span>
-            <span className="badge">CDMX · LATAM · USA</span>
-            <span className="badge">Primera llamada sin costo</span>
+            {t.trust.map(b => <span key={b} className="badge">{b}</span>)}
           </div>
         </div>
       </section>
     );
 
     /* ----------------------- ¿ES PARA TI? ----------------------- */
-    const paraQuien = [
-      "Usan Excel para procesos repetitivos que ya no escalan.",
-      "Tienen tareas manuales que cruzan sistemas (CRM, correo, ERP, contabilidad).",
-      "Pierden horas capturando información a mano desde correos o documentos.",
-      "Atienden clientes por WhatsApp y el volumen ya no se sostiene manual.",
-      "Quieren IA pragmática sin contratar un equipo técnico in-house.",
-    ];
-
-    const ParaQuien = () => (
+    const ParaQuien = ({ t }) => (
       <section id="para-quien" className="section" style={{background:"var(--paper-2)"}}>
         <div className="wrap">
           <div className="sec-hdr sec-hdr--solo">
             <div>
-              <div className="sec-kicker">Para quién · Calificación</div>
-              <h2 className="sec-title">¿Es <em>para ti</em>?</h2>
-              <p className="sec-desc">Trabajamos mejor con empresas que se reconocen en al menos dos de estos puntos.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
           </div>
           <div className="pq-grid">
-            {paraQuien.map((item) => (
+            {t.items.map((item) => (
               <div key={item} className="pq-item">
                 <div className="pq-ico"><Ico id="i-check" w={16} h={16}/></div>
                 <div className="pq-text">{item}</div>
@@ -454,28 +731,19 @@
     );
 
     /* ----------------------- SERVICIOS ----------------------- */
-    const servicios = [
-      { iconId: "i-agente",  t: "Chatbots y agentes con IA",           d: "Asistentes con Claude para ventas, soporte y procesos internos, en web o WhatsApp." },
-      { iconId: "i-auto",    t: "Automatización con n8n",               d: "Conectamos tus apps (CRM, correo, hojas, facturación) y eliminamos el trabajo manual repetitivo." },
-      { iconId: "i-flujo",   t: "Procesamiento de documentos con IA",   d: "Extracción y clasificación de facturas, correos y documentos con IA." },
-      { iconId: "i-modelo",  t: "Claude integrado a tu negocio",        d: "Optimización de procesos incorporando modelos de IA donde generan más valor." },
-      { iconId: "i-integra", t: "Integraciones de Mercado Pago",        d: "Cobros online e in-store conectados a tu operación y conciliación automática." },
-      { iconId: "i-tiempo",  t: "Integraciones a medida",               d: "Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable." },
-    ];
-
-    const Servicios = () => (
+    const Servicios = ({ t }) => (
       <section id="servicios" className="section">
         <div className="wrap">
           <div className="sec-hdr">
             <div className="sec-num">01</div>
             <div>
-              <div className="sec-kicker">Servicios · Oferta</div>
-              <h2 className="sec-title">Lo que <em>construimos</em> juntos.</h2>
-              <p className="sec-desc">Soluciones que puedes contratar por proyecto.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
           </div>
           <div className="svc-grid">
-            {servicios.map((s) => (
+            {t.items.map((s) => (
               <div key={s.t} className="svc-card">
                 <div className="svc-ico"><Ico id={s.iconId} w={26} h={26}/></div>
                 <div className="svc-title">{s.t}</div>
@@ -488,28 +756,19 @@
     );
 
     /* ----------------------- PROCESO ----------------------- */
-    const etapas = [
-      { n: "01", t: "Discovery",                   d: "Entendemos tu negocio, mapeamos procesos y detectamos las automatizaciones de mayor impacto." },
-      { n: "02", t: "Diseño",                       d: "Definimos la arquitectura de la solución, herramientas y alcance con entregables claros." },
-      { n: "03", t: "Implementación",               d: "Construimos los flujos, agentes e integraciones siguiendo buenas prácticas." },
-      { n: "04", t: "Testing",                      d: "Pruebas de extremo a extremo para asegurar que todo funciona en escenarios reales." },
-      { n: "05", t: "Checklist de buenas prácticas", d: "Seguridad, manejo de errores, logs y documentación antes de liberar." },
-      { n: "06", t: "Salida a producción",          d: "Despliegue, monitoreo y acompañamiento para que la solución viva sin sobresaltos." },
-    ];
-
-    const Proceso = () => (
+    const Proceso = ({ t }) => (
       <section id="proceso" className="section" style={{background:"var(--paper-2)"}}>
         <div className="wrap">
           <div className="sec-hdr">
             <div className="sec-num">02</div>
             <div>
-              <div className="sec-kicker">Proceso · Método</div>
-              <h2 className="sec-title">De la idea a producción, <em>sin fricción</em>.</h2>
-              <p className="sec-desc">Un proceso probado, transparente en cada etapa.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
           </div>
           <div className="proceso-grid">
-            {etapas.map((e) => (
+            {t.items.map((e) => (
               <div key={e.n} className="proceso-card">
                 <div className="proceso-n">{e.n}</div>
                 <div className="proceso-title">{e.t}</div>
@@ -522,24 +781,17 @@
     );
 
     /* ----------------------- SOLUCIONES ----------------------- */
-    const soluciones = [
-      { t: "Asistente de atención 24/7",       beneficio: "Atiende fuera de horario sin sumar headcount", d: "Agente con Claude que responde dudas, califica leads y agenda — en tu web o WhatsApp.",            tags: ["Claude", "WhatsApp", "Leads"] },
-      { t: "Conciliación de pagos automática", beneficio: "Elimina la captura manual de cobros",         d: "Integra Mercado Pago, registra ventas y concilia con tu hoja o ERP sin intervención manual.",     tags: ["Mercado Pago", "n8n"] },
-      { t: "Lector inteligente de facturas",   beneficio: "Reduce horas de data entry de facturas",      d: "Recibe facturas por correo, extrae datos con IA y los carga a tu sistema.",                       tags: ["IA Docs", "n8n"] },
-      { t: "Orquestador de back-office",       beneficio: "Libera al equipo de tareas mecánicas",        d: "Automatiza alta de clientes, notificaciones y reportes recurrentes entre tus apps.",              tags: ["Integraciones", "n8n"] },
-    ];
-
-    const Soluciones = () => (
+    const Soluciones = ({ t }) => (
       <section id="soluciones" className="section">
         <div className="wrap">
           <div className="soluciones-wrap">
             <div className="soluciones-hdr">
-              <div className="sec-kicker">Soluciones</div>
-              <h2 className="sec-title">Listas para <em>tu negocio</em>.</h2>
-              <p className="sec-desc">Flujos que adaptamos a tu operación — implementación rápida, valor inmediato.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
             <div className="soluciones-grid">
-              {soluciones.map((s) => (
+              {t.items.map((s) => (
                 <div key={s.t} className="sol-card">
                   <div className="sol-title">{s.t}</div>
                   <div className="sol-beneficio">{s.beneficio}</div>
@@ -558,44 +810,23 @@
     );
 
     /* ----------------------- PRECIOS ----------------------- */
-    const planes = [
-      {
-        t: "Diagnóstico inicial", precio: "Sin costo", unidad: "primera llamada de 30 min",
-        d: "Conocemos tu negocio y detectamos oportunidades.",
-        items: ["Entendemos tus procesos", "Identificamos qué automatizar primero", "Estimación de impacto", "Próximos pasos claros"],
-        cta: "Agendar llamada",
-      },
-      {
-        t: "Diseño e implementación", precio: "A tu medida", unidad: "según alcance del proyecto", destacado: true,
-        d: "Construimos la solución de extremo a extremo.",
-        items: ["Discovery y diseño de la solución", "Implementación y testing", "Salida a producción"],
-        cta: "Solicitar propuesta",
-      },
-      {
-        t: "Soporte continuo", precio: "Plan a medida", unidad: "acompañamiento mensual",
-        d: "Mejoramos y escalamos lo que ya funciona.",
-        items: ["Monitoreo y mantenimiento", "Ajustes y mejoras", "Nuevas automatizaciones", "Soporte prioritario"],
-        cta: "Conversemos",
-      },
-    ];
-
-    const Precios = () => (
+    const Precios = ({ t, lang }) => (
       <section id="precios" className="section" style={{background:"var(--paper-3)"}}>
         <div className="wrap">
           <div className="sec-hdr">
             <div className="sec-num">03</div>
             <div>
-              <div className="sec-kicker">Precios · Modelos</div>
-              <h2 className="sec-title">Cada propuesta es <em>a la medida</em>.</h2>
-              <p className="sec-desc">Empieza con una llamada sin costo para entender tu caso y diseñar la mejor solución.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
           </div>
           <div className="precios-grid">
-            {planes.map((p) => (
+            {t.items.map((p) => (
               <div key={p.t} className={`precio-card${p.destacado ? " precio-card--dest" : ""}`}>
                 {p.destacado && (
                   <div className="precio-rec">
-                    <span className="badge badge-green"><Ico id="i-check" w={13} h={13}/>Recomendado</span>
+                    <span className="badge badge-green"><Ico id="i-check" w={13} h={13}/>{t.recBadge}</span>
                   </div>
                 )}
                 <div className="precio-title">{p.t}</div>
@@ -615,49 +846,26 @@
             ))}
           </div>
           <p style={{marginTop:"20px", fontFamily:"var(--mono)", fontSize:"12px", letterSpacing:"0.04em", textTransform:"uppercase", color:"var(--ink-45)"}}>
-            ¿Listo para empezar? La primera llamada es gratis y sin compromiso. &nbsp;
-            <a href={waLink()} target="_blank" style={{color:"var(--green)", fontWeight:600}}>WhatsApp →</a>
+            {t.footerText} &nbsp;
+            <a href={waLink(null, lang)} target="_blank" style={{color:"var(--green)", fontWeight:600}}>{t.footerWA}</a>
           </p>
         </div>
       </section>
     );
 
     /* ----------------------- FAQS ----------------------- */
-    const faqs = [
-      {
-        q: "¿Cuánto cuesta una automatización?",
-        a: "Cada propuesta es a la medida según el alcance. Empezamos con un diagnóstico inicial sin costo (30 minutos) donde detectamos las oportunidades de mayor impacto y entregamos una propuesta concreta con tiempos y entregables.",
-      },
-      {
-        q: "¿Cuánto tarda un proyecto típico?",
-        a: "La mayoría de las automatizaciones puntuales viven entre 2 y 6 semanas, desde discovery hasta producción. Proyectos más complejos (integraciones múltiples o agentes con varios pasos) pueden extenderse a 8-12 semanas.",
-      },
-      {
-        q: "¿Qué tecnologías usan?",
-        a: "n8n para orquestación de flujos, Claude API para agentes e IA aplicada, Mercado Pago para cobros, y APIs/webhooks para integrar cualquier sistema con HTTP. Trabajamos sobre tu stack existente — no te forzamos a cambiar herramientas.",
-      },
-      {
-        q: "¿Dan soporte después de implementar?",
-        a: "Sí. Ofrecemos un plan de soporte continuo mensual a medida que incluye monitoreo, mantenimiento, ajustes y nuevas automatizaciones. También dejamos documentación completa para que tu equipo pueda operar sin depender de nosotros.",
-      },
-      {
-        q: "¿De quién es el código al final del proyecto?",
-        a: "Tuyo. Todo lo que construimos vive en tu infraestructura (tu n8n, tu cuenta de Claude, tu Mercado Pago). Te entregamos accesos completos, código, documentación y handoff sin lock-in.",
-      },
-    ];
-
-    const FAQs = () => (
+    const FAQs = ({ t }) => (
       <section id="faqs" className="section">
         <div className="wrap">
           <div className="sec-hdr sec-hdr--solo">
             <div>
-              <div className="sec-kicker">Preguntas frecuentes</div>
-              <h2 className="sec-title">Lo que <em>preguntan</em> primero.</h2>
-              <p className="sec-desc">Si tu duda no está acá, escribinos por WhatsApp o agenda el diagnóstico — respondemos rápido.</p>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
             </div>
           </div>
           <div className="faq-list">
-            {faqs.map((f) => (
+            {t.items.map((f) => (
               <details key={f.q} className="faq-item">
                 <summary>{f.q}</summary>
                 <div className="faq-body">{f.a}</div>
@@ -665,22 +873,23 @@
             ))}
           </div>
           <p className="faq-more">
-            {/* TODO Fase 2: /preguntas-frecuentes.html aún no existe */}
-            <a href="/preguntas-frecuentes.html">Ver todas las preguntas →</a>
+            <a href="/preguntas-frecuentes.html">{t.more}</a>
           </p>
         </div>
       </section>
     );
 
     /* ----------------------- CONTACTO ----------------------- */
-    const Contacto = () => {
+    const Contacto = ({ t, lang }) => {
       const [sent, setSent] = useState(false);
       const [situacion, setSituacion] = useState('');
+      const mailto = (n="", c="", m="") =>
+        `mailto:${CONFIG.email}?subject=${encodeURIComponent(t.mailtoSubj + n)}&body=${encodeURIComponent(`${t.mailtoSit}: ${situacion || t.mailtoSitDef}\n${t.mailtoName}: ${n}\n${t.mailtoEmail}: ${c}\n\n${m}`)}`;
       const handle = (e) => {
         e.preventDefault();
         const f = e.target;
         const nombre = f.nombre.value, correo = f.correo.value, mensaje = f.mensaje.value;
-        const payload = { nombre, correo, mensaje, situacion };
+        const payload = { nombre, correo, mensaje, situacion, lang };
         if (CONFIG.formspree) {
           fetch(CONFIG.formspree, {
             method: "POST",
@@ -692,8 +901,6 @@
           setSent(true);
         }
       };
-      const mailto = (n="", c="", m="") =>
-        `mailto:${CONFIG.email}?subject=${encodeURIComponent("Nuevo lead — " + n)}&body=${encodeURIComponent(`Situación: ${situacion || '(no especificada)'}\nNombre: ${n}\nCorreo: ${c}\n\n${m}`)}`;
 
       return (
         <section id="contacto" className="section">
@@ -701,26 +908,26 @@
             <div className="sec-hdr">
               <div className="sec-num">04</div>
               <div>
-                <div className="sec-kicker">Contacto · Agenda</div>
-                <h2 className="sec-title">Hablemos de <em>tu negocio</em>.</h2>
-                <p className="sec-desc">En 30 minutos te decimos exactamente qué proceso de tu equipo puede automatizarse con IA esta semana.</p>
+                <div className="sec-kicker">{t.kicker}</div>
+                <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+                <p className="sec-desc">{t.desc}</p>
               </div>
             </div>
             <div className="contacto-wrap">
               <div className="contacto-left">
                 <div className="contact-links">
-                  <a href={waLink()} target="_blank" className="contact-link">
+                  <a href={waLink(null, lang)} target="_blank" className="contact-link">
                     <div className="contact-link-ico"><Ico id="i-chat" w={20} h={20}/></div>
                     <div>
-                      <div className="contact-link-title">WhatsApp directo</div>
-                      <div className="contact-link-sub">Respuesta rápida</div>
+                      <div className="contact-link-title">{t.waTitle}</div>
+                      <div className="contact-link-sub">{t.waSub}</div>
                     </div>
                   </a>
                   <a href={`mailto:${CONFIG.email}`} className="contact-link">
                     <div className="contact-link-ico"><Ico id="i-mail" w={20} h={20}/></div>
                     <div>
                       <div className="contact-link-title">{CONFIG.email}</div>
-                      <div className="contact-link-sub">Correo</div>
+                      <div className="contact-link-sub">{t.mailSub}</div>
                     </div>
                   </a>
                 </div>
@@ -729,15 +936,15 @@
                 {sent ? (
                   <div className="form-success">
                     <svg className="form-success-ico" width="40" height="40"><use href="/defs.svg#i-check"/></svg>
-                    <h3>¡Mensaje listo!</h3>
-                    <p>Tu mensaje está en camino. Te responderé muy pronto.</p>
+                    <h3>{t.successTitle}</h3>
+                    <p>{t.successDesc}</p>
                   </div>
                 ) : (
                   <>
                     <div className="seg-wrap">
-                      <div className="field-label" style={{marginBottom:'10px'}}>¿Qué describe mejor tu situación?</div>
+                      <div className="field-label" style={{marginBottom:'10px'}}>{t.situacionLabel}</div>
                       <div className="seg-chips">
-                        {['No sé por dónde empezar','Tengo un proceso específico','Estoy comparando opciones','Mi directivo me lo pidió'].map(op => (
+                        {t.situacionOps.map(op => (
                           <button key={op} type="button"
                             className={`chip-btn${situacion === op ? ' chip-sel' : ''}`}
                             onClick={() => setSituacion(situacion === op ? '' : op)}>
@@ -748,19 +955,19 @@
                     </div>
                     <form onSubmit={handle}>
                       <div className="form-field">
-                        <label className="field-label">Nombre</label>
-                        <input name="nombre" required placeholder="Tu nombre" className="field" />
+                        <label className="field-label">{t.nameLabel}</label>
+                        <input name="nombre" required placeholder={t.namePh} className="field" />
                       </div>
                       <div className="form-field">
-                        <label className="field-label">Correo</label>
-                        <input name="correo" type="email" required placeholder="tu@empresa.com" className="field" />
+                        <label className="field-label">{t.emailLabel}</label>
+                        <input name="correo" type="email" required placeholder={t.emailPh} className="field" />
                       </div>
                       <div className="form-field">
-                        <label className="field-label">¿Qué proceso quieres automatizar?</label>
-                        <textarea name="mensaje" required rows="5" placeholder="Ej: facturas manuales, reportes, seguimiento de clientes, cotizaciones, atención al cliente..." className="field"></textarea>
+                        <label className="field-label">{t.msgLabel}</label>
+                        <textarea name="mensaje" required rows="5" placeholder={t.msgPh} className="field"></textarea>
                       </div>
                       <button type="submit" className="btn btn-green form-submit">
-                        <Ico id="i-arrow"/>Agendar 30 minutos gratis
+                        <Ico id="i-arrow"/>{t.submit}
                       </button>
                     </form>
                   </>
@@ -773,39 +980,69 @@
     };
 
     /* ----------------------- FOOTER ----------------------- */
-    const Footer = () => (
+    const Footer = ({ t }) => (
       <footer className="site-footer">
-        <span>© {new Date().getFullYear()} {CONFIG.marca} · Automatización e IA · México · <a href={`mailto:${CONFIG.email}`} className="hover:text-violet-400 transition-colors">{CONFIG.email}</a></span>
-        <a href={`mailto:${CONFIG.email}`} className="hover:text-violet-400 transition-colors">{CONFIG.email}</a>
+        <span>© {new Date().getFullYear()} {CONFIG.marca} · {t.tagline} · {t.country} · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
+        <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
       </footer>
     );
 
-    /* ----------------------- Botón flotante de WhatsApp ----------------------- */
-    const FloatingWA = () => (
-      <a href={waLink()} target="_blank" aria-label="WhatsApp" className="floating-wa">
+    /* ----------------------- Floating WhatsApp ----------------------- */
+    const FloatingWA = ({ lang }) => (
+      <a href={waLink(null, lang)} target="_blank" aria-label="WhatsApp" className="floating-wa">
         <Ico id="i-wa" w={22} h={22}/>
         <span className="floating-wa-text">WhatsApp</span>
       </a>
     );
 
     /* ----------------------- APP ----------------------- */
-    const App = () => (
-      <div>
-        <Nav/>
-        <main>
-          <Hero/>
-          <ParaQuien/>
-          <Soluciones/>
-          <Servicios/>
-          <Proceso/>
-          <Precios/>
-          <FAQs/>
-          <Contacto/>
-        </main>
-        <Footer/>
-        <FloatingWA/>
-      </div>
-    );
+    const App = () => {
+      const [lang, setLang] = useState(detectLanguage);
+      const t = TRANSLATIONS[lang];
+
+      React.useEffect(() => {
+        document.documentElement.lang = t.htmlLang;
+        document.title = t.meta.title;
+        const update = (sel, attr, val) => {
+          const el = document.querySelector(sel);
+          if (el) el.setAttribute(attr, val);
+        };
+        update('meta[name="description"]', 'content', t.meta.desc);
+        update('meta[property="og:title"]', 'content', t.meta.title);
+        update('meta[property="og:description"]', 'content', t.meta.desc);
+        update('meta[name="twitter:title"]', 'content', t.meta.title);
+        update('meta[name="twitter:description"]', 'content', t.meta.desc);
+      }, [lang]);
+
+      const setLanguage = (l) => {
+        setLang(l);
+        try { localStorage.setItem('orkesta-lang', l); } catch {}
+        try {
+          const url = new URL(window.location);
+          if (l === 'en') url.searchParams.set('lang', 'en');
+          else url.searchParams.delete('lang');
+          window.history.replaceState({}, '', url);
+        } catch {}
+      };
+
+      return (
+        <div>
+          <Nav lang={lang} setLanguage={setLanguage} t={t.nav} />
+          <main>
+            <Hero t={t.hero} lang={lang} />
+            <ParaQuien t={t.paraQuien} />
+            <Soluciones t={t.soluciones} />
+            <Servicios t={t.servicios} />
+            <Proceso t={t.proceso} />
+            <Precios t={t.precios} lang={lang} />
+            <FAQs t={t.faqs} />
+            <Contacto t={t.contacto} lang={lang} />
+          </main>
+          <Footer t={t.footer} />
+          <FloatingWA lang={lang} />
+        </div>
+      );
+    };
 
     ReactDOM.createRoot(document.getElementById("root")).render(<App />);
   </script>
