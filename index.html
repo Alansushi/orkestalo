@@ -332,6 +332,17 @@
             { iconId: "i-tiempo",  t: "Integraciones a medida",             d: "Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable." },
           ],
         },
+        porQueOrkesta: {
+          kicker: "¿Por qué nosotros?",
+          title: '4 razones por las que <em>funciona</em>.',
+          desc: "Respondemos las cuatro objeciones que más escuchamos antes de empezar.",
+          items: [
+            { pain: "«No sé programar»",           title: "Implementamos y documentamos todo",     d: "Tu equipo no toca código. Nosotros construimos, hacemos QA, entregamos accesos y dejamos documentación para que puedan operar sin depender de nosotros." },
+            { pain: "«Me han fallado antes»",       title: "Testing riguroso antes de producción",  d: "Cada entrega pasa por checklist de buenas prácticas: seguridad, manejo de errores, logs y pruebas de extremo a extremo. No sale nada sin que esté verificado." },
+            { pain: "«¿Cuánto me va a costar?»",   title: "Diagnóstico gratuito + alcance fijo",   d: "Empezamos con una llamada sin costo donde estimamos el impacto. La propuesta tiene alcance fijo — sin sorpresas, sin horas extra facturadas." },
+            { pain: "«¿Escalará cuando crezca?»",  title: "Open-source, sin vendor lock-in",       d: "Construimos sobre n8n open-source. El código y los flujos viven en tu infraestructura. Puedes cambiar de proveedor o seguir tú solo — siempre." },
+          ],
+        },
         proceso: {
           kicker: "Proceso · Método",
           title: 'De la idea a producción, <em>sin fricción</em>.',
@@ -476,6 +487,17 @@
             { iconId: "i-modelo",  t: "Claude integrated into your business", d: "Process optimization by incorporating AI models where they create the most value." },
             { iconId: "i-integra", t: "Mercado Pago integrations",          d: "Online and in-store payments connected to your operation with automatic reconciliation." },
             { iconId: "i-tiempo",  t: "Custom integrations",                d: "We connect systems that don't talk to each other via APIs and webhooks, reliably." },
+          ],
+        },
+        porQueOrkesta: {
+          kicker: "Why us?",
+          title: '4 reasons why it <em>works</em>.',
+          desc: "We answer the four objections we hear most often before starting.",
+          items: [
+            { pain: '"I can\'t code"',               title: "We implement and document everything",  d: "Your team doesn't touch code. We build, QA, hand over access, and leave documentation so they can operate without depending on us." },
+            { pain: '"We\'ve been let down before"', title: "Rigorous testing before production",    d: "Every delivery goes through a best-practices checklist: security, error handling, logs, and end-to-end tests. Nothing ships unverified." },
+            { pain: '"How much will it cost me?"',   title: "Free diagnostic + fixed scope",         d: "We start with a no-cost call where we estimate the impact. The proposal has fixed scope — no surprises, no extra hours billed." },
+            { pain: '"Will it scale as I grow?"',    title: "Open-source, no vendor lock-in",        d: "We build on open-source n8n. Code and workflows live in your infrastructure. You can switch providers or go solo — always." },
           ],
         },
         proceso: {
@@ -798,6 +820,30 @@
       </section>
     );
 
+    /* ----------------------- ¿POR QUÉ ORKESTA? ----------------------- */
+    const PorQueOrkesta = ({ t }) => (
+      <section id="por-que" className="section" style={{background:"var(--paper-2)"}}>
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
+            </div>
+          </div>
+          <div className="porque-grid">
+            {t.items.map((item) => (
+              <div key={item.title} className="porque-card">
+                <div className="porque-pain">{item.pain}</div>
+                <div className="porque-title">{item.title}</div>
+                <p className="porque-desc">{item.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
     /* ----------------------- PROCESO ----------------------- */
     const Proceso = ({ t }) => (
       <section id="proceso" className="section" style={{background:"var(--paper-2)"}}>
@@ -1077,6 +1123,7 @@
             <ParaQuien t={t.paraQuien} />
             <Soluciones t={t.soluciones} />
             <Servicios t={t.servicios} />
+            <PorQueOrkesta t={t.porQueOrkesta} />
             <Proceso t={t.proceso} />
             <Precios t={t.precios} lang={lang} />
             <FAQs t={t.faqs} />
