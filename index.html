@@ -286,7 +286,7 @@
         hero: {
           kicker: "Consultoría en automatización e IA aplicada",
           h1: 'Automatización <em>práctica</em> para que tu equipo deje de hacer trabajo manual.',
-          sub: 'Implementamos agentes con <b>Claude</b>, flujos en <b>n8n</b> e integraciones a medida. Discovery → producción en semanas, no meses. Foco en procesos con <b>ROI medible</b>.',
+          sub: 'Implementamos agentes con <b>Claude</b>, flujos en <b>n8n</b> e integraciones a medida. <b>Empieza con un proceso, valida el ROI, escala cuando estés listo.</b>',
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
           trust: [
@@ -354,6 +354,17 @@
             { n: "04", t: "Testing",                       d: "Pruebas de extremo a extremo para asegurar que todo funciona en escenarios reales." },
             { n: "05", t: "Checklist de buenas prácticas", d: "Seguridad, manejo de errores, logs y documentación antes de liberar." },
             { n: "06", t: "Salida a producción",           d: "Despliegue, monitoreo y acompañamiento para que la solución viva sin sobresaltos." },
+          ],
+        },
+        acompanamiento: {
+          kicker: "Soporte · Relación",
+          title: 'Más que un proyecto: <em>tu equipo extendido</em>.',
+          desc: "Lo que ocurre después de que la solución sale a producción.",
+          items: [
+            { t: "Humano disponible, no un bot",     d: "Canal directo vía WhatsApp con el especialista que implementó tu solución. Respuesta en el mismo día." },
+            { t: "Monitoreo y alertas",               d: "Revisamos que los flujos corran bien. Si algo falla, lo sabemos antes que tú y lo resolvemos." },
+            { t: "Mejoras continuas",                 d: "El plan de soporte incluye ajustes, optimizaciones y nuevas automatizaciones a medida que tu negocio crece." },
+            { t: "Documentación completa",            d: "Entregamos guías y runbooks para que tu equipo pueda operar sin depender de nosotros — si así lo prefieres." },
           ],
         },
         precios: {
@@ -443,7 +454,7 @@
         hero: {
           kicker: "Automation & applied AI consulting",
           h1: 'Practical <em>automation</em> so your team stops doing manual work.',
-          sub: 'We build agents with <b>Claude</b>, workflows in <b>n8n</b> and custom integrations. Discovery → production in weeks, not months. Focus on processes with <b>measurable ROI</b>.',
+          sub: 'We build agents with <b>Claude</b>, workflows in <b>n8n</b> and custom integrations. <b>Start with one process, validate the ROI, scale when you\'re ready.</b>',
           ctaWA: "WhatsApp",
           ctaAgendar: "Book a diagnostic",
           trust: [
@@ -511,6 +522,17 @@
             { n: "04", t: "Testing",                  d: "End-to-end testing to make sure everything works in real scenarios." },
             { n: "05", t: "Best-practices checklist", d: "Security, error handling, logs and documentation before going live." },
             { n: "06", t: "Production rollout",       d: "Deployment, monitoring and follow-up so the solution runs smoothly." },
+          ],
+        },
+        acompanamiento: {
+          kicker: "Support · Relationship",
+          title: 'More than a project: <em>your extended team</em>.',
+          desc: "What happens after the solution goes live.",
+          items: [
+            { t: "A human, not a bot",                d: "Direct WhatsApp channel with the specialist who implemented your solution. Same-day response." },
+            { t: "Monitoring and alerts",             d: "We keep an eye on your workflows. If something breaks, we know before you do and fix it." },
+            { t: "Continuous improvements",           d: "The support plan includes adjustments, optimizations and new automations as your business grows." },
+            { t: "Full documentation",                d: "We deliver guides and runbooks so your team can operate independently — if that's what you prefer." },
           ],
         },
         precios: {
@@ -898,6 +920,29 @@
       </section>
     );
 
+    /* ----------------------- ACOMPAÑAMIENTO ----------------------- */
+    const Acompanamiento = ({ t }) => (
+      <section id="acompanamiento" className="section">
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
+            </div>
+          </div>
+          <div className="acomp-grid">
+            {t.items.map((item) => (
+              <div key={item.t} className="acomp-card">
+                <div className="acomp-title">{item.t}</div>
+                <p className="acomp-desc">{item.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
     /* ----------------------- PRECIOS ----------------------- */
     const Precios = ({ t, lang }) => (
       <section id="precios" className="section" style={{background:"var(--paper-3)"}}>
@@ -1125,6 +1170,7 @@
             <Servicios t={t.servicios} />
             <PorQueOrkesta t={t.porQueOrkesta} />
             <Proceso t={t.proceso} />
+            <Acompanamiento t={t.acompanamiento} />
             <Precios t={t.precios} lang={lang} />
             <FAQs t={t.faqs} />
             <Contacto t={t.contacto} lang={lang} />

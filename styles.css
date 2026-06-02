@@ -1197,3 +1197,31 @@
 @media (max-width: 640px) {
   .porque-grid { grid-template-columns: 1fr; }
 }
+
+/* ── Acompañamiento ─────────────────────────── */
+.acomp-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px 40px;
+  margin-top: 48px;
+}
+.acomp-card {
+  border-left: 3px solid var(--green);
+  padding-left: 20px;
+}
+.acomp-title {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.acomp-desc {
+  font-size: 0.88rem;
+  color: var(--ink-70);
+  line-height: 1.6;
+  margin: 0;
+}
+@media (max-width: 640px) {
+  .acomp-grid { grid-template-columns: 1fr; }
+}
