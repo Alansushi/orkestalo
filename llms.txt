@@ -24,6 +24,22 @@ Orkesta diseña e implementa automatizaciones con n8n, agentes inteligentes con 
 - **Integraciones de Mercado Pago**: Cobros online (checkout, links, suscripciones) e in-store (Point) conectados a tu operación con conciliación automática.
 - **Integraciones a medida**: Conectamos sistemas que no se comunican entre sí vía APIs y webhooks, con retries y observabilidad de producción.
 
+## Estadísticas clave
+
+- +15 horas/semana ahorradas en promedio por cliente
+- Implementación en menos de 2 semanas para proyectos simples (discovery → producción)
+- +400 apps conectables vía n8n sin código adicional
+- Respuesta automática 24/7 con agentes de IA, sin costo por ticket
+
+## ¿Por qué Orkesta?
+
+Cuatro diferenciadores frente a las objeciones más comunes:
+
+1. **Implementamos y documentamos todo** — Tu equipo no toca código. Entregamos accesos, documentación y handoff completo.
+2. **Testing riguroso antes de producción** — Checklist de seguridad, manejo de errores, logs y pruebas de extremo a extremo.
+3. **Diagnóstico gratuito + alcance fijo** — Sin sorpresas: propuesta con alcance fijo y estimación de impacto antes de empezar.
+4. **Open-source, sin vendor lock-in** — Construido sobre n8n. El código vive en la infraestructura del cliente.
+
 ## Proceso de trabajo
 
 1. **Discovery** — Mapeamos procesos y detectamos automatizaciones de mayor impacto.
@@ -32,6 +48,15 @@ Orkesta diseña e implementa automatizaciones con n8n, agentes inteligentes con 
 4. **Testing** — Pruebas de extremo a extremo en escenarios reales.
 5. **Checklist de buenas prácticas** — Seguridad, manejo de errores, logs, documentación.
 6. **Salida a producción** — Despliegue, monitoreo y acompañamiento.
+
+## Acompañamiento post-entrega
+
+Más que un proyecto de consultoría, Orkesta funciona como equipo extendido:
+
+- **Humano disponible**: Canal directo vía WhatsApp con el especialista que implementó la solución.
+- **Monitoreo y alertas**: Seguimiento activo de los flujos con resolución proactiva.
+- **Mejoras continuas**: El plan de soporte incluye ajustes, optimizaciones y nuevas automatizaciones.
+- **Documentación completa**: Guías y runbooks para operación autónoma.
 
 ## Soluciones listas para implementar
 
@@ -71,6 +96,7 @@ Tres principios:
 1. **Pragmatismo sobre buzz**. Si Excel resuelve, no vendemos un agente. Empezamos por lo más simple que entregue valor.
 2. **ROI antes que tecnología**. Cada propuesta tiene una estimación clara de impacto. Si no hay ROI, lo decimos.
 3. **Sin lock-in**. El código y los flujos viven en la infraestructura del cliente. Entregamos accesos, documentación y handoff.
+4. **Empieza pequeño**. La mayoría de los clientes comienza con un solo proceso. Valida el ROI, luego escala. No hay mínimo de proyecto.
 
 ## Contacto
 
