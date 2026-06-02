@@ -1125,3 +1125,103 @@
       .faq-item summary { padding: 16px 18px; font-size: 14px; }
       .faq-body { padding: 0 18px 18px; font-size: 13.5px; }
     }
+
+/* ── Stats bar ─────────────────────────────── */
+.stats-bar {
+  background: var(--green);
+  padding: 40px 0;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+.stat-item {
+  padding: 8px 0;
+}
+.stat-n {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--paper);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-d {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: rgba(236,230,215,0.72);
+  line-height: 1.4;
+}
+@media (max-width: 640px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px 16px; }
+  .stat-n { font-size: 1.6rem; }
+}
+
+/* ── ¿Por qué Orkesta? ─────────────────────── */
+.porque-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+.porque-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 28px 24px;
+}
+.porque-pain {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--green);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.porque-title {
+  font-family: var(--serif);
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+.porque-desc {
+  font-size: 0.88rem;
+  color: var(--ink-70);
+  line-height: 1.6;
+  margin: 0;
+}
+@media (max-width: 640px) {
+  .porque-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Acompañamiento ─────────────────────────── */
+.acomp-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px 40px;
+  margin-top: 48px;
+}
+.acomp-card {
+  border-left: 3px solid var(--green);
+  padding-left: 20px;
+}
+.acomp-title {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.acomp-desc {
+  font-size: 0.88rem;
+  color: var(--ink-70);
+  line-height: 1.6;
+  margin: 0;
+}
+@media (max-width: 640px) {
+  .acomp-grid { grid-template-columns: 1fr; }
+}

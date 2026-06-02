@@ -42,6 +42,22 @@ Plantillas que se adaptan a la operación de cada cliente — implementación r�
 
 ---
 
+## Estadísticas clave
+
+- +15 horas/semana ahorradas en promedio por cliente
+- Implementación en menos de 2 semanas para proyectos simples (discovery → producción)
+- +400 apps conectables vía n8n sin código adicional
+- Respuesta automática 24/7 con agentes de IA, sin costo por ticket
+
+## ¿Por qué Orkesta?
+
+Cuatro diferenciadores frente a las objeciones más comunes:
+
+1. **Implementamos y documentamos todo** — Tu equipo no toca código. Entregamos accesos, documentación y handoff completo.
+2. **Testing riguroso antes de producción** — Checklist de seguridad, manejo de errores, logs y pruebas de extremo a extremo.
+3. **Diagnóstico gratuito + alcance fijo** — Sin sorpresas: propuesta con alcance fijo y estimación de impacto antes de empezar.
+4. **Open-source, sin vendor lock-in** — Construido sobre n8n. El código vive en la infraestructura del cliente.
+
 ## Servicios (lo que construimos juntos)
 
 1. **Chatbots y agentes con IA** — Asistentes con Claude para ventas, soporte y procesos internos, en web o WhatsApp.
@@ -63,6 +79,17 @@ De la idea a producción, sin fricción. Proceso probado, transparente en cada e
 4. **Testing** — Pruebas de extremo a extremo para asegurar que todo funciona en escenarios reales.
 5. **Checklist de buenas prácticas** — Seguridad, manejo de errores, logs y documentación antes de liberar.
 6. **Salida a producción** — Despliegue, monitoreo y acompañamiento para que la solución viva sin sobresaltos.
+
+---
+
+## Acompañamiento post-entrega
+
+Más que un proyecto de consultoría, Orkesta funciona como equipo extendido:
+
+- **Humano disponible**: Canal directo vía WhatsApp con el especialista que implementó la solución.
+- **Monitoreo y alertas**: Seguimiento activo de los flujos con resolución proactiva.
+- **Mejoras continuas**: El plan de soporte incluye ajustes, optimizaciones y nuevas automatizaciones.
+- **Documentación completa**: Guías y runbooks para operación autónoma.
 
 ---
 
@@ -112,6 +139,7 @@ Cada propuesta es a la medida. Empieza con una llamada sin costo para entender t
 1. **Pragmatismo sobre buzz.** Si Excel resuelve, no te vendemos un agente. Empezamos por lo más simple que entregue valor y crecemos sólo cuando hace falta.
 2. **ROI antes que tecnología.** Cada propuesta tiene una estimación clara de impacto: horas ahorradas, errores reducidos, throughput. Si no hay ROI, lo decimos.
 3. **Sin lock-in.** El código, los flujos y los accesos viven en tu infraestructura. Te entregamos documentación, handoff y autonomía operativa.
+4. **Empieza pequeño**. La mayoría de los clientes comienza con un solo proceso. Valida el ROI, luego escala. No hay mínimo de proyecto.
 
 ## Stack productivo
 
