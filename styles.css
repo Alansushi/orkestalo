@@ -1125,3 +1125,36 @@
       .faq-item summary { padding: 16px 18px; font-size: 14px; }
       .faq-body { padding: 0 18px 18px; font-size: 13.5px; }
     }
+
+/* ── Stats bar ─────────────────────────────── */
+.stats-bar {
+  background: var(--green);
+  padding: 40px 0;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+.stat-item {
+  padding: 8px 0;
+}
+.stat-n {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--paper);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-d {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: rgba(236,230,215,0.72);
+  line-height: 1.4;
+}
+@media (max-width: 640px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px 16px; }
+  .stat-n { font-size: 1.6rem; }
+}

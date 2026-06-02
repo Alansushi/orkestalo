@@ -391,6 +391,14 @@
           tagline: "Automatización e IA",
           country: "México",
         },
+        stats: {
+          items: [
+            { n: "+15 h/semana", d: "ahorradas en promedio por cliente" },
+            { n: "2 semanas",    d: "de discovery a producción en proyectos simples" },
+            { n: "+400 apps",    d: "conectadas vía n8n sin código adicional" },
+            { n: "24/7",         d: "respuesta automática, sin costo por ticket" },
+          ],
+        },
       },
       en: {
         htmlLang: "en",
@@ -525,6 +533,14 @@
         footer: {
           tagline: "Automation & AI",
           country: "Mexico",
+        },
+        stats: {
+          items: [
+            { n: "+15 h/week", d: "saved on average per client" },
+            { n: "2 weeks",    d: "from discovery to production on simple projects" },
+            { n: "+400 apps",  d: "connected via n8n with no extra code" },
+            { n: "24/7",       d: "automated responses, zero cost per ticket" },
+          ],
         },
       },
     };
@@ -701,6 +717,22 @@
           </div>
           <div className="hero-trust">
             {t.trust.map(b => <span key={b} className="badge">{b}</span>)}
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ----------------------- STATS ----------------------- */
+    const Stats = ({ t }) => (
+      <section className="stats-bar">
+        <div className="wrap">
+          <div className="stats-grid">
+            {t.items.map((s) => (
+              <div key={s.n} className="stat-item">
+                <div className="stat-n">{s.n}</div>
+                <div className="stat-d">{s.d}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -1029,6 +1061,7 @@
           <Nav lang={lang} setLanguage={setLanguage} t={t.nav} />
           <main>
             <Hero t={t.hero} lang={lang} />
+            <Stats t={t.stats} />
             <ParaQuien t={t.paraQuien} />
             <Soluciones t={t.soluciones} />
             <Servicios t={t.servicios} />
