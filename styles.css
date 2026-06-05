@@ -328,18 +328,17 @@
     /* ---- Servicios ---- */
     .svc-grid {
       border: 1px solid var(--ink);
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      background: var(--ink);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1px;
     }
     .svc-card {
+      flex: 1 1 300px;
       padding: 30px 26px 32px;
-      border-right: 1px solid var(--ink);
-      border-bottom: 1px solid var(--ink);
       background: var(--paper-2);
       transition: background .15s;
     }
-    .svc-card:nth-child(3n) { border-right: none; }
-    .svc-card:nth-last-child(-n+3) { border-bottom: none; }
     .svc-card:hover { background: var(--paper); }
     .svc-ico {
       width: 46px;
@@ -373,17 +372,16 @@
     /* ---- Proceso ---- */
     .proceso-grid {
       border: 1px solid var(--ink);
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      background: var(--ink);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1px;
     }
     .proceso-card {
+      flex: 1 1 300px;
       padding: 28px 26px 30px;
-      border-right: 1px solid var(--ink);
-      border-bottom: 1px solid var(--ink);
       background: var(--paper-2);
     }
-    .proceso-card:nth-child(3n) { border-right: none; }
-    .proceso-card:nth-last-child(-n+3) { border-bottom: none; }
     .proceso-n {
       font-family: var(--mono);
       font-size: 36px;
@@ -417,19 +415,18 @@
     }
     .soluciones-hdr .sec-title { margin-bottom: 10px; }
     .soluciones-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1px;
       border: 1px solid var(--ink);
+      background: var(--ink);
     }
     .sol-card {
+      flex: 1 1 360px;
       padding: 28px 26px 30px;
-      border-right: 1px solid var(--ink);
-      border-bottom: 1px solid var(--ink);
       background: var(--paper);
       transition: background .15s;
     }
-    .sol-card:nth-child(2n) { border-right: none; }
-    .sol-card:nth-last-child(-n+2) { border-bottom: none; }
     .sol-card:hover { background: var(--paper-2); }
     .sol-title { font-weight: 700; font-size: 16px; letter-spacing: -0.01em; margin-bottom: 8px; }
     .sol-desc { font-size: 13.5px; line-height: 1.6; color: var(--ink-70); margin-bottom: 16px; }
@@ -437,22 +434,22 @@
 
     /* ---- Precios ---- */
     .precios-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1px;
       border: 1px solid var(--ink);
+      background: var(--ink);
     }
     .precio-card {
+      flex: 1 1 300px;
       padding: 32px 28px 36px;
-      border-right: 1px solid var(--ink);
       background: var(--paper-2);
       display: flex;
       flex-direction: column;
     }
-    .precio-card:last-child { border-right: none; }
     .precio-card--dest {
       background: var(--paper);
-      border-left: 3px solid var(--green);
-      border-right: 1px solid var(--ink);
+      box-shadow: inset 3px 0 0 var(--green);
     }
     .precio-rec {
       margin-bottom: 16px;
@@ -699,16 +696,17 @@
     /* ---- Manifiesto / pillars grid (3 cards reutilizables) ---- */
     .pillars-grid {
       border: 1px solid var(--ink);
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      background: var(--ink);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1px;
     }
     .pillar-card {
+      flex: 1 1 300px;
       padding: 32px 28px;
-      border-right: 1px solid var(--ink);
       background: var(--paper-2);
       transition: background .15s;
     }
-    .pillar-card:last-child { border-right: none; }
     .pillar-card:hover { background: var(--paper); }
     .pillar-n {
       font-family: var(--mono);
@@ -731,11 +729,7 @@
       line-height: 1.6;
       color: var(--ink-70);
     }
-    @media (max-width: 960px) {
-      .pillars-grid { grid-template-columns: 1fr; }
-      .pillar-card { border-right: none; border-bottom: 1px solid var(--ink); }
-      .pillar-card:last-child { border-bottom: none; }
-    }
+    /* .pillars-grid responsive lo maneja flex-basis (3→2→1 col según ancho). */
 
     /* ---- CTA block (final de sub-páginas) ---- */
     .cta-block {
@@ -930,24 +924,19 @@
     /* ---- ¿Es para ti? (qualifier) ---- */
     .pq-grid {
       border: 1px solid var(--ink);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      background: var(--ink);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1px;
     }
     .pq-item {
+      flex: 1 1 360px;
       padding: 22px 24px;
-      border-right: 1px solid var(--ink);
-      border-bottom: 1px solid var(--ink);
       background: var(--paper);
       display: flex;
       gap: 16px;
       align-items: flex-start;
       transition: background .15s;
-    }
-    .pq-item:nth-child(2n) { border-right: none; }
-    .pq-item:nth-last-child(-n+2) { border-bottom: none; }
-    .pq-item:last-child:nth-child(odd) {
-      grid-column: 1 / -1;
-      border-right: none;
     }
     .pq-item:hover { background: var(--paper-2); }
     .pq-ico {
