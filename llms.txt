@@ -2,7 +2,7 @@
 
 > Consultoría en automatización de procesos e IA aplicada para PyMEs en CDMX, México y LATAM. Especialistas en n8n, Claude API, Mercado Pago e integraciones a medida.
 
-Orkesta diseña e implementa automatizaciones con n8n, agentes inteligentes con Claude, y soluciones de integración para empresas que quieren reducir trabajo manual y escalar sus operaciones. Posicionamiento: **automatización pragmática con ROI medible, sin lock-in, sin moda.** Del discovery a producción en semanas, no meses.
+Orkesta diseña e implementa automatizaciones con n8n, agentes inteligentes con Claude, **orquestación de agentes** (coordinar varios agentes y flujos para ejecutar procesos de extremo a extremo) y soluciones de integración para empresas que quieren reducir trabajo manual y escalar sus operaciones. Posicionamiento: **automatización pragmática con ROI medible, sin lock-in, sin moda.** Del discovery a producción en semanas, no meses.
 
 ## Páginas del sitio
 
@@ -12,12 +12,14 @@ Orkesta diseña e implementa automatizaciones con n8n, agentes inteligentes con 
 - [Preguntas frecuentes](https://orkestalo.com/preguntas-frecuentes.html) — 12 FAQs agrupadas en 4 temas: trabajo y proyecto, stack y soporte, logística, datos/propiedad/legal.
 - [Automatización con n8n](https://orkestalo.com/automatizacion-n8n.html) — Página de servicio: capabilities y comparativa vs Zapier/Make/custom code.
 - [Agentes con IA y Claude](https://orkestalo.com/agentes-ia-claude.html) — Página de servicio: capabilities (asistentes, tool use, documentos, clasificación) y comparativa vs chatbots tradicionales.
+- [Orquestación de agentes](https://orkestalo.com/orquestacion-agentes.html) — Página pilar: qué es la orquestación de agentes (y orquestación agéntica), en qué se diferencia de la orquestación de flujos, cómo Orkesta coordina agentes de Claude con n8n para procesos de extremo a extremo, y FAQ.
 - [Integraciones de Mercado Pago](https://orkestalo.com/integraciones-mercado-pago.html) — Página de servicio: checkout, Point, conciliación, notificaciones y reportes en tiempo real.
 - [Procesamiento de documentos con IA](https://orkestalo.com/procesamiento-documentos-ia.html) — Página de servicio: facturas, recibos, contratos, emails con Claude vision (vs OCR tradicional).
 
 ## Servicios
 
 - **Chatbots y agentes con IA**: Asistentes con Claude para ventas, soporte y procesos internos en web o WhatsApp. Tool use real, no chatbots de reglas.
+- **Orquestación de agentes** (orquestación agéntica): Coordinamos varios agentes de Claude con n8n para ejecutar procesos completos de extremo a extremo — no solo respuestas. Agentes especializados, tool use real, orquestación de pasos y datos, monitoreo y handoff a humano. Se diferencia de la orquestación de flujos (workflows en n8n) en que añade pasos que razonan.
 - **Automatización con n8n**: Conectamos CRM, correo, hojas de cálculo, facturación y APIs externas para eliminar trabajo manual repetitivo. Self-hosted o cloud.
 - **Procesamiento de documentos con IA**: Extracción y clasificación automática de facturas, recibos, contratos y emails con Claude vision. Entiende layout y contexto.
 - **Claude integrado a tu negocio**: Optimización de procesos incorporando modelos de IA donde generan más valor operativo.

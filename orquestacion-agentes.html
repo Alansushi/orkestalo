@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orquestación de agentes — Qué es y cómo se implementa | Orkesta</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="description" content="Orquestación de agentes: qué es, en qué se diferencia de la orquestación de flujos, y cómo Orkesta coordina agentes de Claude con n8n para automatizar procesos de extremo a extremo." />
+  <meta name="keywords" content="orquestación de agentes, orquestación agéntica, agentic orchestration, orquestación de IA, agentes Claude orquestados, orquestación n8n, automatización con agentes IA, sistemas multiagente México" />
+  <meta name="author" content="Orkesta" />
+  <meta name="robots" content="index, follow" />
+  <meta name="geo.region" content="MX-CMX" />
+  <meta name="geo.placename" content="Ciudad de México" />
+  <link rel="canonical" href="https://orkestalo.com/orquestacion-agentes.html" />
+  <link rel="alternate" hreflang="es" href="https://orkestalo.com/orquestacion-agentes.html" />
+  <link rel="alternate" hreflang="en" href="https://orkestalo.com/orquestacion-agentes.html?lang=en" />
+  <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/orquestacion-agentes.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="Contenido del sitio para LLMs" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Orquestación de agentes — Qué es y cómo se implementa | Orkesta" />
+  <meta property="og:description" content="Qué es la orquestación de agentes, en qué se diferencia de la orquestación de flujos, y cómo Orkesta coordina agentes de Claude con n8n para procesos de extremo a extremo." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://orkestalo.com/orquestacion-agentes.html" />
+  <meta property="og:image" content="https://orkestalo.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="es_MX" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Orquestación de agentes — Qué es y cómo se implementa | Orkesta" />
+  <meta name="twitter:description" content="Coordinar agentes de Claude con n8n para ejecutar procesos completos, no solo respuestas. Definición, diferencias y cómo se implementa." />
+  <meta name="twitter:image" content="https://orkestalo.com/og-image.png" />
+
+  <!-- Schema.org · Service -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": "https://orkestalo.com/orquestacion-agentes.html#service",
+    "name": "Orquestación de agentes de IA",
+    "url": "https://orkestalo.com/orquestacion-agentes.html",
+    "serviceType": "AI agent orchestration",
+    "provider": { "@id": "https://orkestalo.com/#org" },
+    "areaServed": [
+      { "@type": "Country", "name": "Mexico" },
+      { "@type": "Place", "name": "Latin America" },
+      { "@type": "Country", "name": "United States" }
+    ],
+    "description": "Coordinación de agentes de Claude con flujos de n8n para ejecutar procesos de negocio de extremo a extremo: agentes especializados, tool use real, orquestación de pasos y datos, monitoreo y handoff a humano."
+  }
+  </script>
+
+  <!-- Schema.org · BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://orkestalo.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Orquestación de agentes", "item": "https://orkestalo.com/orquestacion-agentes.html" }
+    ]
+  }
+  </script>
+
+  <!-- Schema.org · FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "¿Qué es la orquestación de agentes?",
+        "acceptedAnswer": { "@type": "Answer", "text": "La orquestación de agentes es la coordinación de varios agentes de IA —y de los sistemas que tocan— para ejecutar un proceso de negocio de principio a fin. En lugar de un solo chatbot que responde, hay agentes especializados (uno califica, otro consulta tu sistema, otro redacta, otro registra) coordinados para que el resultado sea una tarea terminada, no solo un mensaje." } },
+      { "@type": "Question", "name": "¿En qué se diferencia de la orquestación de flujos (workflows)?",
+        "acceptedAnswer": { "@type": "Answer", "text": "La orquestación de flujos encadena pasos fijos entre apps (lo que hace n8n: si pasa A, ejecuta B y C). La orquestación de agentes añade pasos que razonan: agentes de Claude que interpretan, deciden y manejan excepciones. Orkesta combina ambas — n8n orquesta el proceso y los agentes de Claude aportan el razonamiento." } },
+      { "@type": "Question", "name": "¿Es lo mismo que un sistema multiagente?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Un sistema multiagente coordina varios agentes que colaboran. Nuestra forma de orquestación usa agentes de Claude especializados coordinados con n8n, que actúa como director: define el orden, pasa el contexto entre agentes y maneja reintentos. El objetivo es el mismo: un proceso completo resuelto por agentes que se reparten el trabajo." } },
+      { "@type": "Question", "name": "¿Usan MCP, CrewAI o LangGraph?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Orquestamos con n8n y Claude, que cubre la mayoría de los casos de negocio. Para el acceso de los agentes a tus herramientas usamos APIs, webhooks y MCP (el estándar abierto de Anthropic) donde encaja. Si un framework de agentes aporta valor a tu caso, lo integramos — sin atarte a una tecnología concreta." } },
+      { "@type": "Question", "name": "¿Cuándo conviene orquestar agentes y no usar un solo agente?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Cuando el proceso cruza varios pasos, sistemas o decisiones: por ejemplo, atender una solicitud que requiere calificar al cliente, consultar inventario, generar un documento y registrar el resultado. Si es una sola pregunta-respuesta, basta un agente; si es un proceso, conviene orquestarlos." } },
+      { "@type": "Question", "name": "¿Cuánto tarda implementar una orquestación de agentes?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Empezamos con un proceso concreto y vamos de discovery a producción en semanas, no meses. Validamos el ROI de ese proceso antes de escalar a más agentes. No hay mínimo de proyecto." } }
+    ]
+  }
+  </script>
+
+  <!-- Vercel Web Analytics -->
+  <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preload" href="/defs.svg" as="image" type="image/svg+xml">
+  <style>
+    .prose-narrow { max-width: 760px; }
+    .def-callout { border-left: 3px solid var(--green, #1f6f3c); padding: 12px 18px; background: var(--paper-2, #f6f5f1); border-radius: 8px; margin: 18px 0; font-size: 1.08rem; }
+    .faq-list { display: grid; gap: 14px; max-width: 800px; }
+    .faq-item { border: 1px solid var(--line, #e7e5df); border-radius: 12px; padding: 18px 20px; background: var(--paper, #fff); }
+    .faq-q { font-weight: 600; margin: 0 0 6px; font-size: 1.05rem; }
+    .faq-a { margin: 0; color: var(--ink-2, #444); line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div class="ssr-fallback">
+      <header>
+        <a href="/"><strong>Orkesta</strong> · Orquestación de agentes</a>
+        <nav>
+          <a href="/#soluciones">Soluciones</a>
+          <a href="/agentes-ia-claude.html">Agentes con Claude</a>
+          <a href="/automatizacion-n8n.html">Automatización n8n</a>
+          <a href="/casos-de-uso.html">Casos</a>
+          <a href="/#contacto">Contacto</a>
+        </nav>
+      </header>
+      <main>
+        <section id="top">
+          <h1>Orquestación de agentes: varios agentes, un proceso de punta a punta</h1>
+          <p><strong>La orquestación de agentes es la coordinación de varios agentes de IA —y de los sistemas que tocan— para ejecutar un proceso de negocio de principio a fin.</strong> En lugar de un solo chatbot que responde, hay agentes especializados (uno califica, otro consulta tu sistema, otro redacta, otro registra) coordinados para que el resultado sea una tarea terminada, no solo un mensaje. En Orkesta lo implementamos con agentes de Claude orquestados sobre n8n.</p>
+          <p><a href="https://wa.me/525549713262">WhatsApp +52 55 4971 3262</a> · <a href="/#contacto">Agendar diagnóstico</a></p>
+        </section>
+
+        <section>
+          <h2>¿Qué es la orquestación de agentes?</h2>
+          <p>Es coordinar agentes de IA especializados para completar un proceso completo, no una sola respuesta. Cada agente tiene un trabajo concreto y el sistema decide qué se ejecuta, cuándo y con qué datos. El resultado es un proceso terminado de extremo a extremo.</p>
+          <h3>Orquestación de agentes vs. orquestación de flujos</h3>
+          <p>La orquestación de flujos encadena pasos fijos entre apps (lo que hace n8n: si pasa A, ejecuta B y C). La orquestación de agentes añade pasos que razonan: agentes de Claude que interpretan, deciden y manejan excepciones. Orkesta combina ambas: n8n orquesta el proceso y los agentes aportan el razonamiento.</p>
+        </section>
+
+        <section>
+          <h2>Cómo orquestamos agentes en Orkesta</h2>
+          <ul>
+            <li><strong>Agentes especializados con Claude:</strong> cada agente tiene un trabajo claro (calificar, consultar, redactar, registrar) y el contexto de tu negocio.</li>
+            <li><strong>Orquestación con n8n:</strong> n8n decide el orden, dispara cada agente, maneja reintentos y conecta tus apps (CRM, correo, ERP). Es el director de orquesta.</li>
+            <li><strong>Tool use e integraciones:</strong> los agentes ejecutan acciones reales sobre tus sistemas vía APIs, webhooks y MCP donde aplica — no solo conversan.</li>
+            <li><strong>Monitoreo y handoff a humano:</strong> observabilidad de cada paso, alertas y escalamiento a una persona cuando hace falta.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Un agente aislado vs. agentes orquestados</h2>
+          <ul>
+            <li>Un chatbot que responde pero no termina el proceso → agentes que se coordinan para terminar la tarea.</li>
+            <li>Automatizaciones sueltas que no se hablan → n8n orquesta orden, datos y reintentos entre apps.</li>
+            <li>Cada excepción rompe el flujo → tool use real: consultan y actualizan tus sistemas.</li>
+            <li>Sin visibilidad de qué pasó → monitoreo de cada paso y handoff a humano cuando conviene.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Preguntas frecuentes sobre orquestación de agentes</h2>
+          <dl>
+            <dt>¿Es lo mismo que un sistema multiagente?</dt>
+            <dd>Un sistema multiagente coordina varios agentes que colaboran. Nuestra orquestación usa agentes de Claude especializados coordinados con n8n, que actúa como director: define el orden, pasa el contexto entre agentes y maneja reintentos.</dd>
+            <dt>¿Usan MCP, CrewAI o LangGraph?</dt>
+            <dd>Orquestamos con n8n y Claude, que cubre la mayoría de los casos de negocio. Para el acceso a herramientas usamos APIs, webhooks y MCP (el estándar abierto de Anthropic) donde encaja. Si un framework aporta valor, lo integramos.</dd>
+            <dt>¿Cuándo conviene orquestar agentes?</dt>
+            <dd>Cuando el proceso cruza varios pasos, sistemas o decisiones. Si es una sola pregunta-respuesta, basta un agente; si es un proceso, conviene orquestarlos.</dd>
+            <dt>¿Cuánto tarda implementarlo?</dt>
+            <dd>Empezamos con un proceso concreto y vamos de discovery a producción en semanas. Validamos el ROI antes de escalar. No hay mínimo de proyecto.</dd>
+          </dl>
+          <p><a href="/preguntas-frecuentes.html">Ver todas las preguntas frecuentes</a></p>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState } = React;
+
+    const CONFIG = { marca: "Orkesta", whatsapp: "525549713262", email: "info@orkestalo.com" };
+
+    const TRANSLATIONS = {
+      es: {
+        htmlLang: "es",
+        meta: {
+          title: "Orquestación de agentes — Qué es y cómo se implementa | Orkesta",
+          desc: "Orquestación de agentes: qué es, en qué se diferencia de la orquestación de flujos, y cómo Orkesta coordina agentes de Claude con n8n para automatizar procesos de extremo a extremo.",
+        },
+        waDefault: "Hola, quiero orquestar agentes de IA para un proceso de mi negocio.",
+        nav: {
+          links: [
+            ["Soluciones", "/#soluciones"],
+            ["Agentes con Claude", "/agentes-ia-claude.html"],
+            ["Automatización n8n", "/automatizacion-n8n.html"],
+            ["Casos", "/casos-de-uso.html"],
+            ["FAQs", "/preguntas-frecuentes.html"],
+            ["Contacto", "/#contacto"],
+          ],
+          cta: "Agenda una charla",
+          menuLabel: "Menú",
+        },
+        hero: {
+          kicker: "Servicio · Orquestación de agentes",
+          h1: '<em>Orquestación de agentes</em>: varios agentes, un proceso de punta a punta.',
+          lead: 'La <b>orquestación de agentes</b> coordina agentes de IA y flujos automatizados para completar un proceso entero — no solo una respuesta. En Orkesta lo implementamos con <b>agentes de Claude</b> orquestados sobre <b>n8n</b>: cada agente tiene un trabajo, y el sistema decide qué se ejecuta, cuándo y con qué datos.',
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Agendar diagnóstico",
+        },
+        queEs: {
+          kicker: "Definición",
+          title: '¿Qué es la <em>orquestación de agentes</em>?',
+          def: 'La orquestación de agentes es la coordinación de varios agentes de IA —y de los sistemas que tocan— para ejecutar un proceso de negocio de principio a fin.',
+          p1: "En lugar de un solo chatbot que responde, hay agentes especializados: uno califica, otro consulta tu sistema, otro redacta, otro registra. Están coordinados para que el resultado sea una tarea terminada, no solo un mensaje.",
+          subtitle: "Orquestación de agentes vs. orquestación de flujos",
+          p2: "La orquestación de flujos encadena pasos fijos entre apps (lo que hace n8n: si pasa A, ejecuta B y C). La orquestación de agentes añade pasos que razonan: agentes de Claude que interpretan, deciden y manejan excepciones. Orkesta combina ambas — n8n orquesta el proceso y los agentes aportan el razonamiento.",
+        },
+        capabilities: {
+          kicker: "Cómo lo hacemos",
+          title: 'Cómo orquestamos agentes <em>de extremo a extremo</em>.',
+          desc: "No vendemos \"multiagente\" como concepto. Orquestamos agentes con un trabajo concreto, coordinados para terminar un proceso real de tu negocio.",
+          items: [
+            { iconId: "i-agente",  t: "Agentes especializados con Claude", d: "Cada agente tiene un trabajo claro (calificar, consultar, redactar, registrar) y el contexto de tu negocio. No un bot que lo hace todo a medias." },
+            { iconId: "i-flujo",   t: "Orquestación con n8n",              d: "n8n decide el orden, dispara cada agente, maneja reintentos y conecta tus apps (CRM, correo, ERP). Es el director de orquesta del proceso." },
+            { iconId: "i-integra", t: "Tool use e integraciones",         d: "Los agentes ejecutan acciones reales sobre tus sistemas vía APIs, webhooks y MCP donde aplica — consultan y actualizan, no solo conversan." },
+            { iconId: "i-modelo",  t: "Monitoreo y handoff a humano",     d: "Observabilidad de cada paso, alertas ante errores y escalamiento a una persona cuando el caso lo amerita." },
+          ],
+        },
+        compare: {
+          kicker: "Comparativa · Agente aislado vs. agentes orquestados",
+          title: 'Por qué orquestar <em>vs.</em> un bot suelto.',
+          desc: "La diferencia es si el sistema termina el proceso o solo responde y te deja el trabajo a ti.",
+          leftLabel: "Lo común",
+          leftTitle: "Un bot o scripts aislados",
+          rightLabel: "Con Orkesta · Claude + n8n",
+          rightTitle: "Agentes orquestados",
+          sin: [
+            "Un chatbot que responde pero no termina el proceso.",
+            "Automatizaciones sueltas que no se hablan entre sí.",
+            "Cada excepción rompe el flujo y vuelve a manos humanas.",
+            "Sin visibilidad de qué pasó en cada paso.",
+          ],
+          con: [
+            "Agentes especializados que se coordinan para terminar la tarea.",
+            "n8n orquesta el orden, los datos y los reintentos entre apps.",
+            "Tool use real: consultan y actualizan tus sistemas.",
+            "Monitoreo de cada paso y handoff a humano cuando conviene.",
+          ],
+        },
+        faq: {
+          kicker: "Preguntas frecuentes",
+          title: 'Orquestación de agentes, <em>en claro</em>.',
+          items: [
+            { q: "¿Es lo mismo que un sistema multiagente?", a: "Un sistema multiagente coordina varios agentes que colaboran. Nuestra orquestación usa agentes de Claude especializados coordinados con n8n, que actúa como director: define el orden, pasa el contexto entre agentes y maneja reintentos. El objetivo es el mismo: un proceso completo resuelto por agentes que se reparten el trabajo." },
+            { q: "¿Usan MCP, CrewAI o LangGraph?", a: "Orquestamos con n8n y Claude, que cubre la mayoría de los casos de negocio. Para el acceso de los agentes a tus herramientas usamos APIs, webhooks y MCP (el estándar abierto de Anthropic) donde encaja. Si un framework de agentes aporta valor a tu caso, lo integramos — sin atarte a una tecnología concreta." },
+            { q: "¿Cuándo conviene orquestar agentes y no usar un solo agente?", a: "Cuando el proceso cruza varios pasos, sistemas o decisiones: atender una solicitud que requiere calificar al cliente, consultar inventario, generar un documento y registrar el resultado. Si es una sola pregunta-respuesta, basta un agente; si es un proceso, conviene orquestarlos." },
+            { q: "¿Cuánto tarda implementar una orquestación de agentes?", a: "Empezamos con un proceso concreto y vamos de discovery a producción en semanas, no meses. Validamos el ROI de ese proceso antes de escalar a más agentes. No hay mínimo de proyecto." },
+          ],
+        },
+        cta: {
+          title: '¿Tienes un proceso que <em>cruza varios pasos y sistemas</em>?',
+          desc: "30 minutos sin compromiso. Te decimos si conviene orquestar agentes, qué agentes tendría tu proceso y cómo medir el impacto antes de invertir.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Agendar diagnóstico",
+        },
+        footer: { tagline: "Automatización e IA", country: "México" },
+      },
+      en: {
+        htmlLang: "en",
+        meta: {
+          title: "Agent orchestration — What it is and how to implement it | Orkesta",
+          desc: "Agent orchestration: what it is, how it differs from workflow orchestration, and how Orkesta coordinates Claude agents with n8n to automate end-to-end business processes.",
+        },
+        waDefault: "Hi, I want to orchestrate AI agents for one of my business processes.",
+        nav: {
+          links: [
+            ["Solutions", "/#soluciones"],
+            ["Agents with Claude", "/agentes-ia-claude.html"],
+            ["n8n automation", "/automatizacion-n8n.html"],
+            ["Cases", "/casos-de-uso.html"],
+            ["FAQs", "/preguntas-frecuentes.html"],
+            ["Contact", "/#contacto"],
+          ],
+          cta: "Schedule a call",
+          menuLabel: "Menu",
+        },
+        hero: {
+          kicker: "Service · Agent orchestration",
+          h1: '<em>Agent orchestration</em>: many agents, one end-to-end process.',
+          lead: '<b>Agent orchestration</b> coordinates AI agents and automated flows to complete a whole process — not just a reply. At Orkesta we implement it with <b>Claude agents</b> orchestrated on top of <b>n8n</b>: each agent has a job, and the system decides what runs, when, and with which data.',
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Book a diagnostic",
+        },
+        queEs: {
+          kicker: "Definition",
+          title: 'What is <em>agent orchestration</em>?',
+          def: 'Agent orchestration is the coordination of several AI agents —and the systems they touch— to run a business process from start to finish.',
+          p1: "Instead of a single chatbot that replies, there are specialized agents: one qualifies, another queries your system, another drafts, another records. They are coordinated so the outcome is a finished task, not just a message.",
+          subtitle: "Agent orchestration vs. workflow orchestration",
+          p2: "Workflow orchestration chains fixed steps between apps (what n8n does: if A happens, run B and C). Agent orchestration adds steps that reason: Claude agents that interpret, decide and handle exceptions. Orkesta combines both — n8n orchestrates the process and the agents provide the reasoning.",
+        },
+        capabilities: {
+          kicker: "How we do it",
+          title: 'How we orchestrate agents <em>end to end</em>.',
+          desc: "We don't sell \"multi-agent\" as a concept. We orchestrate agents with a concrete job, coordinated to finish a real process in your business.",
+          items: [
+            { iconId: "i-agente",  t: "Specialized Claude agents",     d: "Each agent has a clear job (qualify, query, draft, record) and your business context. Not one bot doing everything halfway." },
+            { iconId: "i-flujo",   t: "Orchestration with n8n",        d: "n8n decides the order, triggers each agent, handles retries and connects your apps (CRM, email, ERP). It's the conductor of the process." },
+            { iconId: "i-integra", t: "Tool use and integrations",     d: "Agents take real actions on your systems via APIs, webhooks and MCP where it fits — they query and update, not just chat." },
+            { iconId: "i-modelo",  t: "Monitoring and human handoff",  d: "Observability of every step, alerts on errors and escalation to a person when the case calls for it." },
+          ],
+        },
+        compare: {
+          kicker: "Comparison · Isolated agent vs. orchestrated agents",
+          title: 'Why orchestrate <em>vs.</em> a lone bot.',
+          desc: "The difference is whether the system finishes the process or just replies and leaves the work to you.",
+          leftLabel: "The usual",
+          leftTitle: "One bot or isolated scripts",
+          rightLabel: "With Orkesta · Claude + n8n",
+          rightTitle: "Orchestrated agents",
+          sin: [
+            "A chatbot that replies but doesn't finish the process.",
+            "Isolated automations that don't talk to each other.",
+            "Every exception breaks the flow and goes back to humans.",
+            "No visibility into what happened at each step.",
+          ],
+          con: [
+            "Specialized agents that coordinate to finish the task.",
+            "n8n orchestrates the order, data and retries across apps.",
+            "Real tool use: they query and update your systems.",
+            "Monitoring of each step and human handoff when it makes sense.",
+          ],
+        },
+        faq: {
+          kicker: "FAQ",
+          title: 'Agent orchestration, <em>made clear</em>.',
+          items: [
+            { q: "Is it the same as a multi-agent system?", a: "A multi-agent system coordinates several agents that collaborate. Our orchestration uses specialized Claude agents coordinated with n8n, which acts as the conductor: it sets the order, passes context between agents and handles retries. The goal is the same: a full process solved by agents that split the work." },
+            { q: "Do you use MCP, CrewAI or LangGraph?", a: "We orchestrate with n8n and Claude, which covers most business cases. For agents to access your tools we use APIs, webhooks and MCP (Anthropic's open standard) where it fits. If an agent framework adds value to your case, we integrate it — without locking you into a specific technology." },
+            { q: "When is orchestrating agents worth it vs. a single agent?", a: "When the process crosses several steps, systems or decisions: handling a request that requires qualifying the customer, checking inventory, generating a document and recording the result. If it's a single question-answer, one agent is enough; if it's a process, orchestrate them." },
+            { q: "How long does it take to implement agent orchestration?", a: "We start with one concrete process and go from discovery to production in weeks, not months. We validate that process's ROI before scaling to more agents. There's no project minimum." },
+          ],
+        },
+        cta: {
+          title: 'Do you have a process that <em>crosses several steps and systems</em>?',
+          desc: "30 minutes, no commitment. We tell you whether orchestrating agents makes sense, which agents your process would have, and how to measure impact before investing.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Book a diagnostic",
+        },
+        footer: { tagline: "Automation & AI", country: "Mexico" },
+      },
+    };
+
+    function detectLanguage() {
+      try {
+        const param = new URLSearchParams(window.location.search).get('lang');
+        if (param === 'en' || param === 'es') return param;
+        const stored = localStorage.getItem('orkesta-lang');
+        if (stored === 'en' || stored === 'es') return stored;
+        const browser = (navigator.language || 'es').slice(0, 2);
+        return browser === 'en' ? 'en' : 'es';
+      } catch { return 'es'; }
+    }
+
+    const waLink = (msg, lang = 'es') =>
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || TRANSLATIONS[lang].waDefault)}`;
+
+    const Ico = ({ id, w = 18, h = 18 }) => (
+      <svg width={w} height={h} aria-hidden="true"><use href={`/defs.svg#${id}`}/></svg>
+    );
+
+    const Nav = ({ lang, setLanguage, t }) => {
+      const [open, setOpen] = useState(false);
+      return (
+        <header className="nav-bar nav-bar--green">
+          <div className="nav-inner">
+            <a href="/" className="nav-logo">
+              <svg width="34" height="34"><use href="/defs.svg#mark"/></svg>
+              <span className="nav-wordmark">{CONFIG.marca}</span>
+            </a>
+            <nav className="nav-links">
+              {t.links.map(([label, href]) => <a key={href} href={href} className="nav-link">{label}</a>)}
+              <div className="lang-toggle">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => setLanguage('es')}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => setLanguage('en')}>EN</button>
+              </div>
+              <a href="/#contacto" className="btn btn-primary nav-cta">{t.cta}</a>
+            </nav>
+            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label={t.menuLabel}>
+              <span/><span/><span/>
+            </button>
+          </div>
+          {open && (
+            <div className="nav-mobile">
+              <div className="lang-mobile">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => { setLanguage('es'); setOpen(false); }}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => { setLanguage('en'); setOpen(false); }}>EN</button>
+              </div>
+              {t.links.map(([label, href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}
+            </div>
+          )}
+        </header>
+      );
+    };
+
+    const PageHero = ({ t, lang }) => (
+      <section id="top" className="page-hero">
+        <div className="wrap">
+          <span className="badge badge-green hero-kicker"><Ico id="i-modelo" w={13} h={13}/>{t.kicker}</span>
+          <h1 dangerouslySetInnerHTML={{ __html: t.h1 }} />
+          <p className="lead" dangerouslySetInnerHTML={{ __html: t.lead }} />
+          <div className="ctas">
+            <a href={waLink(null, lang)} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>{t.ctaWA}</a>
+            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>{t.ctaAgendar}</a>
+          </div>
+        </div>
+      </section>
+    );
+
+    const QueEs = ({ t }) => (
+      <section id="que-es" className="section">
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+            </div>
+          </div>
+          <div className="prose-narrow">
+            <p className="def-callout"><strong>{t.def}</strong></p>
+            <p className="sec-desc">{t.p1}</p>
+            <h3 className="compare-title" style={{marginTop:"1.5rem"}}>{t.subtitle}</h3>
+            <p className="sec-desc">{t.p2}</p>
+          </div>
+        </div>
+      </section>
+    );
+
+    const Capabilities = ({ t }) => (
+      <section id="capabilities" className="section" style={{background:"var(--paper-2)"}}>
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
+            </div>
+          </div>
+          <div className="svc-grid">
+            {t.items.map(c => (
+              <div key={c.t} className="svc-card">
+                <div className="svc-ico"><Ico id={c.iconId} w={26} h={26}/></div>
+                <div className="svc-title">{c.t}</div>
+                <p className="svc-desc">{c.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    const Compare = ({ t }) => (
+      <section id="compare" className="section">
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
+            </div>
+          </div>
+          <div className="compare-grid">
+            <div className="compare-col">
+              <div className="compare-label">{t.leftLabel}</div>
+              <h3 className="compare-title">{t.leftTitle}</h3>
+              <ul className="compare-list">
+                {t.sin.map(item => (
+                  <li key={item} className="compare-item">
+                    <svg className="compare-item-ico"><use href="/defs.svg#i-arrow"/></svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="compare-col compare-col--orkesta">
+              <div className="compare-label">{t.rightLabel}</div>
+              <h3 className="compare-title">{t.rightTitle}</h3>
+              <ul className="compare-list">
+                {t.con.map(item => (
+                  <li key={item} className="compare-item">
+                    <svg className="compare-item-ico"><use href="/defs.svg#i-check"/></svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    const Faq = ({ t }) => (
+      <section id="faq" className="section" style={{background:"var(--paper-2)"}}>
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+            </div>
+          </div>
+          <div className="faq-list">
+            {t.items.map(item => (
+              <div key={item.q} className="faq-item">
+                <h3 className="faq-q">{item.q}</h3>
+                <p className="faq-a">{item.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    const CtaFinal = ({ t, lang }) => (
+      <section className="section">
+        <div className="wrap">
+          <div className="cta-block">
+            <h2 dangerouslySetInnerHTML={{ __html: t.title }} />
+            <p>{t.desc}</p>
+            <div className="ctas">
+              <a href={waLink(null, lang)} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>{t.ctaWA}</a>
+              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>{t.ctaAgendar}</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    const Footer = ({ t }) => (
+      <footer className="site-footer">
+        <span>© {new Date().getFullYear()} {CONFIG.marca} · {t.tagline} · {t.country} · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
+        <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
+      </footer>
+    );
+
+    const FloatingWA = ({ lang }) => (
+      <a href={waLink(null, lang)} target="_blank" aria-label="WhatsApp" className="floating-wa">
+        <Ico id="i-wa" w={22} h={22}/>
+        <span className="floating-wa-text">WhatsApp</span>
+      </a>
+    );
+
+    const App = () => {
+      const [lang, setLang] = useState(detectLanguage);
+      const t = TRANSLATIONS[lang];
+
+      React.useEffect(() => {
+        document.documentElement.lang = t.htmlLang;
+        document.title = t.meta.title;
+        const update = (sel, attr, val) => {
+          const el = document.querySelector(sel);
+          if (el) el.setAttribute(attr, val);
+        };
+        update('meta[name="description"]', 'content', t.meta.desc);
+        update('meta[property="og:title"]', 'content', t.meta.title);
+        update('meta[property="og:description"]', 'content', t.meta.desc);
+        update('meta[name="twitter:title"]', 'content', t.meta.title);
+        update('meta[name="twitter:description"]', 'content', t.meta.desc);
+      }, [lang]);
+
+      const setLanguage = (l) => {
+        setLang(l);
+        try { localStorage.setItem('orkesta-lang', l); } catch {}
+        try {
+          const url = new URL(window.location);
+          if (l === 'en') url.searchParams.set('lang', 'en');
+          else url.searchParams.delete('lang');
+          window.history.replaceState({}, '', url);
+        } catch {}
+      };
+
+      return (
+        <div>
+          <Nav lang={lang} setLanguage={setLanguage} t={t.nav} />
+          <main>
+            <PageHero t={t.hero} lang={lang} />
+            <QueEs t={t.queEs} />
+            <Capabilities t={t.capabilities} />
+            <Compare t={t.compare} />
+            <Faq t={t.faq} />
+            <CtaFinal t={t.cta} lang={lang} />
+          </main>
+          <Footer t={t.footer} />
+          <FloatingWA lang={lang} />
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

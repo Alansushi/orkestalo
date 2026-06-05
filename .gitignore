@@ -20,3 +20,9 @@ design-system.html
 index-hero-bg.html
 hero-bg-desktop.png
 hero-bg-mobile.png
+
+# Reportes AEO (artefactos locales, no desplegar)
+aeo-report-*.md
+
+# Screenshots de verificación
+verify-*.png

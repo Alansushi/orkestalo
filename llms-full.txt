@@ -1,5 +1,5 @@
 # Orkesta — Contenido completo del sitio
-Última actualización: 2026-06-01
+Última actualización: 2026-06-04
 
 ---
 
@@ -7,9 +7,9 @@
 
 ## Hero
 
-**Titular:** Automatización pragmática para que tu equipo deje de hacer trabajo manual.
+**Titular:** Menos trabajo manual. Más resultados.
 
-**Subtítulo:** Implementamos agentes con Claude, flujos en n8n e integraciones a medida. Discovery → producción en semanas, no meses. Foco en procesos con ROI medible.
+**Subtítulo:** Implementamos agentes con Claude, flujos en n8n, orquestación de agentes e integraciones a medida. Empieza con un proceso, valida el ROI, escala cuando estés listo.
 
 **Badge:** Consultoría en automatización e IA aplicada
 
@@ -28,6 +28,7 @@ Sección de calificación. Trabajamos mejor con empresas que se reconocen en al 
 - Pierden horas capturando información a mano desde correos o documentos.
 - Atienden clientes por WhatsApp y el volumen ya no se sostiene manual.
 - Quieren IA pragmática sin contratar un equipo técnico in-house.
+- Necesitan optimizar sus procesos.
 
 ---
 
@@ -61,11 +62,12 @@ Cuatro diferenciadores frente a las objeciones más comunes:
 ## Servicios (lo que construimos juntos)
 
 1. **Chatbots y agentes con IA** — Asistentes con Claude para ventas, soporte y procesos internos, en web o WhatsApp.
-2. **Automatización con n8n** — Conectamos tus apps (CRM, correo, hojas, facturación) y eliminamos el trabajo manual repetitivo.
-3. **Procesamiento de documentos con IA** — Extracción y clasificación de facturas, correos y documentos con IA.
-4. **Claude integrado a tu negocio** — Optimización de procesos incorporando modelos de IA donde generan más valor.
-5. **Integraciones de Mercado Pago** — Cobros online e in-store conectados a tu operación y conciliación automática.
-6. **Integraciones a medida** — Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable.
+2. **Orquestación de agentes** — Coordinamos varios agentes de Claude con n8n para ejecutar procesos de extremo a extremo, no solo respuestas.
+3. **Automatización con n8n** — Conectamos tus apps (CRM, correo, hojas, facturación) y eliminamos el trabajo manual repetitivo.
+4. **Procesamiento de documentos con IA** — Extracción y clasificación de facturas, correos y documentos con IA.
+5. **Claude integrado a tu negocio** — Optimización de procesos incorporando modelos de IA donde generan más valor.
+6. **Integraciones de Mercado Pago** — Cobros online e in-store conectados a tu operación y conciliación automática.
+7. **Integraciones a medida** — Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable.
 
 ---
 
@@ -295,6 +297,31 @@ Basados en Ciudad de México. Trabajamos con empresas en México, LATAM y Estado
 ---
 ---
 
+# Orquestación de agentes — https://orkestalo.com/orquestacion-agentes.html
+
+**Hero:** Orquestación de agentes: varios agentes, un proceso de punta a punta.
+
+**Definición:** La orquestación de agentes es la coordinación de varios agentes de IA —y de los sistemas que tocan— para ejecutar un proceso de negocio de principio a fin. En lugar de un solo chatbot que responde, hay agentes especializados (uno califica, otro consulta, otro redacta, otro registra) coordinados para que el resultado sea una tarea terminada, no solo un mensaje. En Orkesta lo implementamos con agentes de Claude orquestados sobre n8n.
+
+**Orquestación de agentes vs. orquestación de flujos:** La orquestación de flujos encadena pasos fijos entre apps (lo que hace n8n: si pasa A, ejecuta B y C). La orquestación de agentes añade pasos que razonan: agentes de Claude que interpretan, deciden y manejan excepciones. Orkesta combina ambas.
+
+## Cómo orquestamos agentes
+
+1. **Agentes especializados con Claude** — Cada agente tiene un trabajo claro (calificar, consultar, redactar, registrar) y el contexto de tu negocio.
+2. **Orquestación con n8n** — n8n decide el orden, dispara cada agente, maneja reintentos y conecta tus apps. Es el director de orquesta.
+3. **Tool use e integraciones** — Los agentes ejecutan acciones reales vía APIs, webhooks y MCP donde aplica — no solo conversan.
+4. **Monitoreo y handoff a humano** — Observabilidad de cada paso, alertas y escalamiento a una persona cuando hace falta.
+
+## FAQ (orquestación de agentes)
+
+- **¿Es lo mismo que un sistema multiagente?** Un sistema multiagente coordina varios agentes que colaboran. Nuestra orquestación usa agentes de Claude especializados coordinados con n8n, que actúa como director.
+- **¿Usan MCP, CrewAI o LangGraph?** Orquestamos con n8n y Claude. Para el acceso a herramientas usamos APIs, webhooks y MCP (estándar abierto de Anthropic) donde encaja. Si un framework aporta valor, lo integramos.
+- **¿Cuándo conviene orquestar agentes?** Cuando el proceso cruza varios pasos, sistemas o decisiones. Si es una sola pregunta-respuesta, basta un agente.
+- **¿Cuánto tarda?** Empezamos con un proceso concreto: discovery a producción en semanas. Validamos ROI antes de escalar.
+
+---
+---
+
 # Integraciones de Mercado Pago — https://orkestalo.com/integraciones-mercado-pago.html
 
 **Hero:** Mercado Pago conectado a tu operación, sin captura manual.
@@ -354,4 +381,4 @@ Basados en Ciudad de México. Trabajamos con empresas en México, LATAM y Estado
 
 ## Generado / actualización
 
-Este archivo se actualiza manualmente cuando cambia el contenido visible del sitio. Última actualización: 2026-06-01.
+Este archivo se actualiza manualmente cuando cambia el contenido visible del sitio. Última actualización: 2026-06-04.

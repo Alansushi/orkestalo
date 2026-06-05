@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Orkesta — Automatización e IA para tu negocio</title>
+  <title>Orkesta — Automatización e IA: agentes y orquestación con n8n y Claude</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <meta name="description" content="Implementamos automatizaciones con n8n y agentes con Claude para que tu equipo deje de hacer trabajo repetitivo. Diagnóstico inicial gratis, sin compromiso." />
   <meta name="keywords" content="automatización IA CDMX, consultoría n8n México, chatbots IA empresas, integraciones Claude API, automatización negocios LATAM, agentes IA, n8n Mexico, AI automation consulting" />
@@ -13,6 +13,7 @@
   <meta name="geo.placename" content="Ciudad de México" />
   <link rel="canonical" href="https://orkestalo.com/" />
   <link rel="alternate" hreflang="es" href="https://orkestalo.com/" />
+  <link rel="alternate" hreflang="en" href="https://orkestalo.com/?lang=en" />
   <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/" />
 
   <!-- Open Graph -->
@@ -20,7 +21,7 @@
   <meta property="og:description" content="Implementamos automatizaciones con n8n y agentes con Claude para que tu equipo deje de hacer trabajo repetitivo. Diagnóstico inicial gratis, sin compromiso." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://orkestalo.com/" />
-  <meta property="og:image" content="https://orkestalo.com/og-image.svg" />
+  <meta property="og:image" content="https://orkestalo.com/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:locale" content="es_MX" />
@@ -29,19 +30,21 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Orkesta — Automatización e IA para tu negocio" />
   <meta name="twitter:description" content="Consultoría en automatización con n8n, IA con Claude e integraciones a medida. Del discovery a producción, sin fricción." />
-  <meta name="twitter:image" content="https://orkestalo.com/og-image.svg" />
+  <meta name="twitter:image" content="https://orkestalo.com/og-image.png" />
 
   <!-- Schema.org · Organization -->
+  <!-- TODO AEO (E-E-A-T): añadir "sameAs": ["https://www.linkedin.com/company/…","https://x.com/…","https://github.com/…"] con perfiles reales para reforzar la entidad. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": "https://orkestalo.com/#org",
     "name": "Orkesta",
     "alternateName": "Orkestalo",
     "url": "https://orkestalo.com",
     "logo": "https://orkestalo.com/favicon.svg",
-    "image": "https://orkestalo.com/og-image.svg",
-    "description": "Consultoría en automatización de procesos e IA aplicada. Especialistas en n8n, Claude API, Mercado Pago e integraciones a medida.",
+    "image": "https://orkestalo.com/og-image.png",
+    "description": "Consultoría en automatización de procesos, IA aplicada y orquestación de agentes. Especialistas en n8n, Claude API, Mercado Pago e integraciones a medida.",
     "email": "info@orkestalo.com",
     "telephone": "+52-55-4971-3262",
     "address": {
@@ -71,11 +74,12 @@
   {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
+    "@id": "https://orkestalo.com/#profservice",
     "name": "Orkesta",
     "url": "https://orkestalo.com",
-    "image": "https://orkestalo.com/og-image.svg",
+    "image": "https://orkestalo.com/og-image.png",
     "priceRange": "$$",
-    "description": "Diseñamos e implementamos automatizaciones con n8n, agentes con Claude e integraciones a medida. Del discovery a producción, sin fricción.",
+    "description": "Diseñamos e implementamos automatizaciones con n8n, agentes con Claude, orquestación de agentes e integraciones a medida. Del discovery a producción, sin fricción.",
     "serviceType": "Business Process Automation and AI Consulting",
     "provider": { "@type": "Organization", "name": "Orkesta", "url": "https://orkestalo.com" },
     "areaServed": [
@@ -87,6 +91,7 @@
       "@type": "OfferCatalog",
       "name": "Servicios de automatización e IA",
       "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Orquestación de agentes", "url": "https://orkestalo.com/orquestacion-agentes.html", "description": "Coordinamos agentes de Claude con n8n para ejecutar procesos de extremo a extremo: agentes especializados, tool use, monitoreo y handoff a humano." } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Chatbots y agentes con IA",          "description": "Asistentes con Claude para ventas, soporte y procesos internos, en web o WhatsApp." } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Automatización con n8n",             "description": "Conectamos tus apps (CRM, correo, hojas, facturación) y eliminamos el trabajo manual repetitivo." } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Procesamiento de documentos con IA", "description": "Extracción y clasificación de facturas, correos y documentos con IA." } },
@@ -95,6 +100,19 @@
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Integraciones a medida",             "description": "Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable." } }
       ]
     }
+  }
+  </script>
+
+  <!-- Schema.org · WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://orkestalo.com/#website",
+    "url": "https://orkestalo.com/",
+    "name": "Orkesta",
+    "inLanguage": ["es", "en"],
+    "publisher": { "@id": "https://orkestalo.com/#org" }
   }
   </script>
 
@@ -267,14 +285,15 @@
       es: {
         htmlLang: "es",
         meta: {
-          title: "Orkesta — Automatización e IA para tu negocio",
-          desc: "Implementamos automatizaciones con n8n y agentes con Claude para que tu equipo deje de hacer trabajo repetitivo. Diagnóstico inicial gratis, sin compromiso.",
+          title: "Orkesta — Automatización e IA: agentes y orquestación con n8n y Claude",
+          desc: "Implementamos automatizaciones con n8n, agentes con Claude y orquestación de agentes para que tu equipo deje de hacer trabajo repetitivo. Diagnóstico inicial gratis, sin compromiso.",
         },
         waDefault: "Hola, vi su sitio y quiero automatizar procesos en mi negocio.",
         nav: {
           links: [
             ["Soluciones", "#soluciones"],
             ["Servicios", "#servicios"],
+            ["Orquestación", "/orquestacion-agentes.html"],
             ["Proceso", "#proceso"],
             ["Precios", "#precios"],
             ["FAQs", "#faqs"],
@@ -286,7 +305,7 @@
         hero: {
           kicker: "Consultoría en automatización e IA aplicada",
           h1: 'Menos trabajo manual.<br/><em>Más resultados.</em>',
-          sub: 'Implementamos agentes con <b>Claude</b>, flujos en <b>n8n</b> e integraciones a medida. <b>Empieza con un proceso, valida el ROI, escala cuando estés listo.</b>',
+          sub: 'Implementamos agentes con <b>Claude</b>, flujos en <b>n8n</b>, <b>orquestación de agentes</b> e integraciones a medida. <b>Empieza con un proceso, valida el ROI, escala cuando estés listo.</b>',
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
           trust: [
@@ -325,6 +344,7 @@
           desc: "Soluciones que puedes contratar por proyecto.",
           items: [
             { iconId: "i-agente",  t: "Chatbots y agentes con IA",         d: "Asistentes con Claude para ventas, soporte y procesos internos, en web o WhatsApp." },
+            { iconId: "i-flujo",   t: "Orquestación de agentes",           d: "Coordinamos varios agentes de Claude con n8n para ejecutar procesos de extremo a extremo, no solo respuestas." },
             { iconId: "i-auto",    t: "Automatización con n8n",             d: "Conectamos tus apps (CRM, correo, hojas, facturación) y eliminamos el trabajo manual repetitivo." },
             { iconId: "i-flujo",   t: "Procesamiento de documentos con IA", d: "Extracción y clasificación de facturas, correos y documentos con IA." },
             { iconId: "i-modelo",  t: "Claude integrado a tu negocio",      d: "Optimización de procesos incorporando modelos de IA donde generan más valor." },
@@ -435,14 +455,15 @@
       en: {
         htmlLang: "en",
         meta: {
-          title: "Orkesta — Automation & AI for your business",
-          desc: "We implement n8n automations and Claude agents so your team stops doing repetitive work. Free initial diagnostic, no commitment.",
+          title: "Orkesta — Automation & AI: agents and orchestration with n8n & Claude",
+          desc: "We implement n8n automations, Claude agents and agent orchestration so your team stops doing repetitive work. Free initial diagnostic, no commitment.",
         },
         waDefault: "Hi, I saw your site and want to automate processes in my business.",
         nav: {
           links: [
             ["Solutions", "#soluciones"],
             ["Services", "#servicios"],
+            ["Orchestration", "/orquestacion-agentes.html"],
             ["Process", "#proceso"],
             ["Pricing", "#precios"],
             ["FAQs", "#faqs"],
@@ -454,7 +475,7 @@
         hero: {
           kicker: "Automation & applied AI consulting",
           h1: 'Less manual work.<br/><em>More results.</em>',
-          sub: 'We build agents with <b>Claude</b>, workflows in <b>n8n</b> and custom integrations. <b>Start with one process, validate the ROI, scale when you\'re ready.</b>',
+          sub: 'We build agents with <b>Claude</b>, workflows in <b>n8n</b>, <b>agent orchestration</b> and custom integrations. <b>Start with one process, validate the ROI, scale when you\'re ready.</b>',
           ctaWA: "WhatsApp",
           ctaAgendar: "Book a diagnostic",
           trust: [
@@ -493,6 +514,7 @@
           desc: "Solutions you can hire per project.",
           items: [
             { iconId: "i-agente",  t: "Chatbots and AI agents",            d: "Assistants with Claude for sales, support and internal processes, on web or WhatsApp." },
+            { iconId: "i-flujo",   t: "Agent orchestration",               d: "We coordinate several Claude agents with n8n to run end-to-end processes, not just replies." },
             { iconId: "i-auto",    t: "Automation with n8n",                d: "We connect your apps (CRM, email, sheets, billing) and remove repetitive manual work." },
             { iconId: "i-flujo",   t: "AI document processing",             d: "Extraction and classification of invoices, emails and documents with AI." },
             { iconId: "i-modelo",  t: "Claude integrated into your business", d: "Process optimization by incorporating AI models where they create the most value." },
