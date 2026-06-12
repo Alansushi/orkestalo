@@ -426,16 +426,15 @@
           situacionOps: ["No sé por dónde empezar", "Tengo un proceso específico", "Estoy comparando opciones", "Mi directivo me lo pidió"],
           nameLabel: "Nombre",
           namePh: "Tu nombre",
-          emailLabel: "Correo",
+          emailLabel: "Correo (opcional)",
           emailPh: "tu@empresa.com",
           msgLabel: "¿Qué proceso quieres automatizar?",
           msgPh: "Ej: facturas manuales, reportes, seguimiento de clientes, cotizaciones, atención al cliente...",
-          submit: "Agendar 30 minutos gratis",
-          successTitle: "¡Mensaje listo!",
-          successDesc: "Tu mensaje está en camino. Te responderé muy pronto.",
-          mailtoSubj: "Nuevo lead — ",
+          submit: "Enviar por WhatsApp",
+          successTitle: "¡Ya está listo!",
+          successDesc: "Tu mensaje está precompletado en WhatsApp. Solo toca Enviar en la app.",
+          waMsgIntro: "Hola Orkesta, te escribo desde orkestalo.com.",
           mailtoSit: "Situación",
-          mailtoSitDef: "(no especificada)",
           mailtoName: "Nombre",
           mailtoEmail: "Correo",
         },
@@ -595,16 +594,15 @@
           situacionOps: ["I don't know where to start", "I have a specific process", "I'm comparing options", "My exec asked me to look into this"],
           nameLabel: "Name",
           namePh: "Your name",
-          emailLabel: "Email",
+          emailLabel: "Email (optional)",
           emailPh: "you@company.com",
           msgLabel: "What process do you want to automate?",
           msgPh: "E.g. manual invoices, reports, customer follow-up, quotes, customer service...",
-          submit: "Book 30 minutes free",
-          successTitle: "Message ready!",
-          successDesc: "Your message is on its way. We'll get back to you very soon.",
-          mailtoSubj: "New lead — ",
+          submit: "Send via WhatsApp",
+          successTitle: "You're all set!",
+          successDesc: "Your message is pre-filled in WhatsApp. Just tap Send in the app.",
+          waMsgIntro: "Hi Orkesta, I'm reaching out from orkestalo.com.",
           mailtoSit: "Situation",
-          mailtoSitDef: "(not specified)",
           mailtoName: "Name",
           mailtoEmail: "Email",
         },
@@ -1039,23 +1037,20 @@
     const Contacto = ({ t, lang }) => {
       const [sent, setSent] = useState(false);
       const [situacion, setSituacion] = useState('');
-      const mailto = (n="", c="", m="") =>
-        `mailto:${CONFIG.email}?subject=${encodeURIComponent(t.mailtoSubj + n)}&body=${encodeURIComponent(`${t.mailtoSit}: ${situacion || t.mailtoSitDef}\n${t.mailtoName}: ${n}\n${t.mailtoEmail}: ${c}\n\n${m}`)}`;
+      const buildWAMsg = (nombre, correo, mensaje) => {
+        const lines = [t.waMsgIntro];
+        if (situacion) lines.push(`${t.mailtoSit}: ${situacion}`);
+        lines.push(`${t.mailtoName}: ${nombre}`);
+        if (correo) lines.push(`${t.mailtoEmail}: ${correo}`);
+        lines.push('', t.msgLabel, mensaje);
+        return lines.join('\n');
+      };
       const handle = (e) => {
         e.preventDefault();
         const f = e.target;
         const nombre = f.nombre.value, correo = f.correo.value, mensaje = f.mensaje.value;
-        const payload = { nombre, correo, mensaje, situacion, lang };
-        if (CONFIG.formspree) {
-          fetch(CONFIG.formspree, {
-            method: "POST",
-            headers: { "Accept": "application/json", "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          }).then(() => setSent(true)).catch(() => { window.location.href = mailto(nombre, correo, mensaje); });
-        } else {
-          window.location.href = mailto(nombre, correo, mensaje);
-          setSent(true);
-        }
+        window.open(waLink(buildWAMsg(nombre, correo, mensaje), lang), '_blank');
+        setSent(true);
       };
 
       return (
@@ -1116,7 +1111,7 @@
                       </div>
                       <div className="form-field">
                         <label className="field-label">{t.emailLabel}</label>
-                        <input name="correo" type="email" required placeholder={t.emailPh} className="field" />
+                        <input name="correo" type="email" placeholder={t.emailPh} className="field" />
                       </div>
                       <div className="form-field">
                         <label className="field-label">{t.msgLabel}</label>
