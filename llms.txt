@@ -15,6 +15,8 @@ Orkesta diseña e implementa automatizaciones con n8n, agentes inteligentes con 
 - [Orquestación de agentes](https://orkestalo.com/orquestacion-agentes.html) — Página pilar: qué es la orquestación de agentes (y orquestación agéntica), en qué se diferencia de la orquestación de flujos, cómo Orkesta coordina agentes de Claude con n8n para procesos de extremo a extremo, y FAQ.
 - [Integraciones de Mercado Pago](https://orkestalo.com/integraciones-mercado-pago.html) — Página de servicio: checkout, Point, conciliación, notificaciones y reportes en tiempo real.
 - [Procesamiento de documentos con IA](https://orkestalo.com/procesamiento-documentos-ia.html) — Página de servicio: facturas, recibos, contratos, emails con Claude vision (vs OCR tradicional).
+- [¿Por qué Orkesta?](https://orkestalo.com/por-que-orkesta.html) — Comparativa honesta: Orkesta vs freelancers técnicos, agencias generalistas y plataformas self-service (Zapier/Make). Incluye tabla de decisión y cuándo NO elegir Orkesta.
+- [Automatización con IA para PyMEs en LATAM — Guía 2026](https://orkestalo.com/automatizacion-ia-pymes-latam.html) — Guía editorial: qué es la automatización con IA vs RPA, cuándo usar n8n vs agentes Claude, cómo calcular el ROI, los 5 patrones más comunes en PyMEs de LATAM y señales de buen candidato a automatizar.
 
 ## Servicios
 
@@ -28,8 +30,8 @@ Orkesta diseña e implementa automatizaciones con n8n, agentes inteligentes con 
 
 ## Estadísticas clave
 
-- +15 horas/semana ahorradas en promedio por cliente
-- Implementación en menos de 2 semanas para proyectos simples (discovery → producción)
+- +15 horas/semana ahorradas en promedio por cliente (según diagnósticos Orkesta)
+- Implementación en menos de 2 semanas para proyectos simples (según proyectos completados)
 - +400 apps conectables vía n8n sin código adicional
 - Respuesta automática 24/7 con agentes de IA, sin costo por ticket
 
@@ -102,9 +104,9 @@ Tres principios:
 
 ## Contacto
 
+- **Canal principal:** WhatsApp +52 55 4971 3262 (respuesta en el mismo día)
+- Email: info@orkestalo.com (consultas formales o documentos)
 - Web: https://orkestalo.com
-- Email: info@orkestalo.com
-- WhatsApp: +52 55 4971 3262
 - Diagnóstico inicial sin costo (30 min): https://orkestalo.com/#contacto
 
 ## Área de servicio

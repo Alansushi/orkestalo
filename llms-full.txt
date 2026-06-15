@@ -1,5 +1,5 @@
 # Orkesta — Contenido completo del sitio
-Última actualización: 2026-06-04
+Última actualización: 2026-06-14
 
 ---
 
@@ -7,9 +7,10 @@
 
 ## Hero
 
-**Titular:** Menos trabajo manual. Más resultados.
+**Titular:** Automatización e IA que orquesta tu negocio
+**Subtítulo:** Menos trabajo manual. Más resultados.
 
-**Subtítulo:** Implementamos agentes con Claude, flujos en n8n, orquestación de agentes e integraciones a medida. Empieza con un proceso, valida el ROI, escala cuando estés listo.
+**Descripción:** Implementamos agentes con Claude, flujos en n8n, orquestación de agentes e integraciones a medida. Empieza con un proceso, valida el ROI, escala cuando estés listo.
 
 **Badge:** Consultoría en automatización e IA aplicada
 
@@ -45,8 +46,8 @@ Plantillas que se adaptan a la operación de cada cliente — implementación r�
 
 ## Estadísticas clave
 
-- +15 horas/semana ahorradas en promedio por cliente
-- Implementación en menos de 2 semanas para proyectos simples (discovery → producción)
+- +15 horas/semana ahorradas en promedio por cliente (según diagnósticos Orkesta)
+- Implementación en menos de 2 semanas para proyectos simples (según proyectos completados)
 - +400 apps conectables vía n8n sin código adicional
 - Respuesta automática 24/7 con agentes de IA, sin costo por ticket
 
@@ -378,7 +379,110 @@ Basados en Ciudad de México. Trabajamos con empresas en México, LATAM y Estado
 - Validación con reglas de negocio antes de pasar al sistema.
 
 ---
+---
+
+# ¿Por qué Orkesta? — https://orkestalo.com/por-que-orkesta.html
+
+**Hero:** Automatización con n8n y IA: ¿por qué Orkesta?
+
+**Lead:** Hay muchas formas de automatizar un negocio: plataformas self-service, freelancers técnicos, agencias generalistas. Esta página explica honestamente qué diferencia a Orkesta — y cuándo otra opción puede ser mejor.
+
+## Cuatro diferenciadores de Orkesta
+
+1. **Stack open-source, sin lock-in** — Construimos sobre n8n (open-source). El código y los flujos viven en tu infraestructura; no dependes de Orkesta para que sigan funcionando.
+2. **Automatización + IA en un equipo** — n8n orquesta los flujos; Claude API añade razonamiento. La mayoría de consultoras ofrece uno u otro, no ambos integrados.
+3. **Diagnóstico de proceso primero** — Antes de escribir código, mapeamos qué automatizar y cuál entrega más ROI. No vendemos implementaciones por el placer de implementar.
+4. **Soporte continuo incluido** — Entregamos accesos, documentación y handoff completo. El plan de soporte cubre monitoreo, ajustes y nuevas automatizaciones.
+
+## Comparativa: Orkesta vs alternativas
+
+| Aspecto | Orkesta | Freelancer técnico | Agencia generalista | Self-service (Zapier/Make) |
+|---|---|---|---|---|
+| Stack principal | n8n + Claude API (open-source) | n8n / Make (varía) | Cualquier stack | Zapier, Make, Airtable |
+| Lock-in | Sin lock-in — código tuyo | Depende del freelancer | Depende de contratos | Atado a la plataforma |
+| Agentes IA nativos | Sí — Claude API integrado | Raro; requiere subcontratar | Depende de la agencia | Básico o ausente |
+| Soporte continuo | Plan mensual incluido | Variable, limitado | SLA formal, mayor costo | Soporte de plataforma |
+| Foco en PyMEs LATAM | Sí — precios adaptados | Variable | Más orientado a enterprise | Sí, self-service |
+| Diagnóstico inicial | Gratuito, 30 min | Consulta pagada o gratis | Proceso largo de venta | Prueba gratuita |
+
+## ¿Cuándo NO elegir Orkesta?
+
+- Si quieres manejar la herramienta tú mismo: Zapier o Make son buenas opciones self-service sin consultora.
+- Si tienes un equipo técnico interno que maneja n8n: probablemente lo que necesitas es revisión de arquitectura, no un servicio administrado.
+- Si el proyecto es enterprise (+50 flujos, equipos de 100+): una agencia más grande con SLA formal puede ser más adecuada.
+- Si el presupuesto es muy ajustado: hay freelancers capaces con tarifas más bajas; podemos recomendarte alternativas.
+
+## FAQ (¿por qué Orkesta?)
+
+- **¿Por qué n8n y Claude juntos en lugar de solo n8n?** n8n orquesta flujos y conecta sistemas; Claude añade razonamiento. Los pasos que requieren decisión, interpretación de documentos o conversación natural necesitan un modelo de lenguaje. Juntos cubren tanto la automatización estructurada como los pasos que requieren IA.
+- **¿Qué diferencia a Orkesta de un freelancer de n8n?** Un freelancer técnico implementa lo que le pides. Orkesta empieza por el diagnóstico de proceso — qué automatizar primero, cuál entrega más ROI — y entrega con documentación, testing y soporte continuo.
+- **¿Trabajan solo en CDMX o también en LATAM y Estados Unidos?** Operamos 100% remoto. Atendemos clientes en CDMX, Guadalajara, Monterrey, Ciudad de Guatemala, Buenos Aires, Bogotá, Lima y Miami.
+- **¿Qué pasa con mi automatización si dejo de trabajar con Orkesta?** El código vive en tu infraestructura (tu instancia de n8n, tus credenciales de Claude API). Entregamos accesos, contraseñas y documentación. No dependes de nosotros para que siga funcionando.
+- **¿Cuánto tiempo tarda una implementación?** Los proyectos simples van de 1 a 2 semanas desde el diagnóstico hasta producción. Los más complejos suelen tomar 4 a 8 semanas.
+- **¿Pueden trabajar con el software que ya uso?** Sí. n8n conecta con más de 400 apps vía nodos nativos y cualquier sistema con API REST o webhooks.
+
+---
+---
+
+# Automatización con IA para PyMEs en LATAM — https://orkestalo.com/automatizacion-ia-pymes-latam.html
+
+**Hero:** Automatización con IA para PyMEs en LATAM — guía práctica 2026.
+
+**Lead:** Las PyMEs en México y América Latina tienen acceso hoy a herramientas de automatización e IA que antes eran territorio del enterprise. Esta guía explica qué automatizar, cuándo usar n8n vs agentes IA, cómo calcular el ROI y por dónde empezar.
+
+## ¿Qué es la automatización con IA vs RPA?
+
+La automatización tradicional (RPA) sigue reglas fijas: si pasa A, haz B. La automatización con IA añade razonamiento: el sistema interpreta contexto, toma decisiones y maneja excepciones. En la práctica: **n8n** cubre la parte estructurada (conectar apps, disparar flujos, manejar retries) y **Claude API** cubre los pasos que requieren comprensión de lenguaje natural, lectura de documentos o conversación.
+
+## ¿n8n, agentes IA, o ambos?
+
+| Situación | Herramienta | Ejemplo |
+|---|---|---|
+| Pasos predecibles, datos estructurados | n8n solo | Sincronizar formulario al CRM |
+| Interpretar documentos o lenguaje natural | Claude API | Leer facturas y extraer datos al ERP |
+| Conversación + acciones en sistemas | Agente Claude con tool use | Asistente de ventas en WhatsApp |
+| Proceso end-to-end con pasos mixtos | n8n + Claude integrados | Recibir pedido → leer correo → validar → notificar |
+
+## Cómo calcular el ROI de automatizar un proceso
+
+Fórmula básica: `(horas ahorradas/semana × costo por hora × 52) − costo total anual (implementación + soporte)`
+
+Ejemplo ilustrativo: Un proceso que toma 10 horas/semana a $150 MXN/hora genera un ahorro potencial de $78,000 MXN/año. Si la implementación cuesta $30,000 y el soporte mensual es $1,500 MXN ($18,000/año), el retorno neto en el primer año es $30,000 MXN — positivo desde el mes 8 aproximadamente. Los resultados reales varían según el proceso.
+
+## Los 5 patrones de automatización más comunes en PyMEs de LATAM
+
+1. **Procesamiento de facturas** — Recibir comprobantes por correo, extraer datos con IA y cargarlos al ERP o hoja. Elimina horas de data entry y errores de captura.
+2. **Alta de clientes y CRM** — Nuevo formulario o pago → crea contacto en CRM, envía bienvenida, agenda onboarding. Sin intervención manual.
+3. **Atención y leads por WhatsApp** — Agente con Claude que responde dudas, califica interés y agenda llamadas — fuera de horario, sin costo adicional por ticket.
+4. **Reportes recurrentes automáticos** — Reportes de ventas, inventario u operaciones generados solos y enviados al equipo cada lunes a las 8am.
+5. **Conciliación de pagos** — Mercado Pago u otra pasarela notifica cada cobro; el flujo registra el ingreso y marca el pedido como pagado automáticamente.
+
+## Señales de que un proceso es buen candidato para automatizar
+
+- Se repite más de 5 veces por semana.
+- Involucra copiar datos de un sistema a otro manualmente.
+- Genera errores humanos frecuentes (datos mal capturados, correos olvidados).
+- Tarda más de 30 minutos aunque los pasos son siempre los mismos.
+- Alguien en el equipo lo describe como "lo odio pero hay que hacerlo".
+
+## FAQ (automatización IA para PyMEs)
+
+- **¿Qué es la automatización con IA vs RPA?** RPA sigue reglas fijas; la IA añade razonamiento. n8n cubre la parte estructurada y Claude API los pasos que requieren comprensión de lenguaje o documentos.
+- **¿Cuándo conviene usar n8n vs agentes IA?** n8n para pasos predecibles; Claude para interpretar documentos, conversación o decisiones con contexto. La mayoría de PyMEs se beneficia de combinar ambos.
+- **¿Cómo calculo el ROI?** (horas ahorradas/semana × costo/hora × 52) − costo anual. El diagnóstico gratuito de Orkesta incluye una estimación antes de comprometerte.
+- **¿Por dónde empezar?** Por el proceso más doloroso que también sea predecible. El diagnóstico (30 min) identifica los 2-3 con mayor ROI potencial.
+- **¿Las PyMEs en LATAM pueden costearlo?** Sí. n8n (open-source) elimina las barreras de licencia. El costo real es implementación y soporte, no licencias. Payback típico: menos de 6 meses con el proceso correcto.
+- **¿Cuáles son los 5 patrones más comunes?** Procesamiento de facturas, alta de clientes/CRM, atención por WhatsApp, reportes automáticos y conciliación de pagos.
+
+## Topic cluster
+
+- [Automatización con n8n](/automatizacion-n8n.html)
+- [Agentes con Claude](/agentes-ia-claude.html)
+- [Orquestación de agentes](/orquestacion-agentes.html)
+- [Procesamiento de documentos con IA](/procesamiento-documentos-ia.html)
+
+---
 
 ## Generado / actualización
 
-Este archivo se actualiza manualmente cuando cambia el contenido visible del sitio. Última actualización: 2026-06-04.
+Este archivo se actualiza manualmente cuando cambia el contenido visible del sitio. Última actualización: 2026-06-14.

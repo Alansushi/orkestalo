@@ -15,6 +15,7 @@
   <link rel="alternate" hreflang="es" href="https://orkestalo.com/casos-de-uso.html" />
   <link rel="alternate" hreflang="en" href="https://orkestalo.com/casos-de-uso.html?lang=en" />
   <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/casos-de-uso.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="Contenido del sitio para LLMs" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Casos de uso — Automatizaciones por industria | Orkesta" />
@@ -45,13 +46,15 @@
     "mainEntity": {
       "@type": "ItemList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Captura automática de facturas para inmobiliarias PyME" },
-        { "@type": "ListItem", "position": 2, "name": "Conciliación de Mercado Pago para e-commerce" },
-        { "@type": "ListItem", "position": 3, "name": "Atención WhatsApp 24/7 para servicios B2C" },
-        { "@type": "ListItem", "position": 4, "name": "Reportes operativos diarios para manufactura" },
-        { "@type": "ListItem", "position": 5, "name": "Lead enrichment + outreach para SaaS B2B" }
+        { "@type": "ListItem", "position": 1, "name": "Captura automática de facturas para inmobiliarias PyME", "item": "https://orkestalo.com/casos-de-uso.html#caso-1" },
+        { "@type": "ListItem", "position": 2, "name": "Conciliación de Mercado Pago para e-commerce", "item": "https://orkestalo.com/casos-de-uso.html#caso-2" },
+        { "@type": "ListItem", "position": 3, "name": "Atención WhatsApp 24/7 para servicios B2C", "item": "https://orkestalo.com/casos-de-uso.html#caso-3" },
+        { "@type": "ListItem", "position": 4, "name": "Reportes operativos diarios para manufactura", "item": "https://orkestalo.com/casos-de-uso.html#caso-4" },
+        { "@type": "ListItem", "position": 5, "name": "Lead enrichment + outreach para SaaS B2B", "item": "https://orkestalo.com/casos-de-uso.html#caso-5" }
       ]
-    }
+    },
+    "datePublished": "2024-01-01",
+    "dateModified": "2026-06-14"
   }
   </script>
 
@@ -99,32 +102,36 @@
           <h1>Casos de uso — automatizaciones por industria</h1>
           <p>Estos son <strong>casos de uso descriptivos</strong>, no historias específicas de clientes. Cubren patrones que vemos repetirse en PyMEs LATAM.</p>
         </section>
-        <section>
+        <section id="caso-1">
           <h2>1. Inmobiliaria PyME — captura automática de facturas</h2>
           <p><strong>Problema:</strong> el equipo recibe 200+ facturas/mes en correo, captura datos a mano y los carga al ERP.</p>
           <p><strong>Solución:</strong> n8n + Claude vision extrae monto, RFC, fecha, concepto y los carga al ERP. Excepciones van a Slack.</p>
         </section>
-        <section>
+        <section id="caso-2">
           <h2>2. E-commerce LATAM — conciliación de Mercado Pago</h2>
           <p><strong>Problema:</strong> el lunes contabilidad cruza el extracto MP con ventas del ERP manualmente.</p>
           <p><strong>Solución:</strong> n8n consume webhooks de MP en tiempo real y concilia automáticamente. Las discrepancias se marcan al ocurrir.</p>
         </section>
-        <section>
+        <section id="caso-3">
           <h2>3. Servicios B2C — atención WhatsApp 24/7</h2>
           <p><strong>Problema:</strong> 80+ mensajes/día en WhatsApp que el equipo no alcanza a responder fuera de horario.</p>
           <p><strong>Solución:</strong> agente con Claude responde FAQ, consulta calendario para agendar y escala solo casos complejos.</p>
         </section>
-        <section>
+        <section id="caso-4">
           <h2>4. Manufactura PyME — reportes operativos diarios</h2>
           <p><strong>Problema:</strong> consolidar producción del día anterior cruzando 4 sistemas toma horas; el reporte sale tarde.</p>
           <p><strong>Solución:</strong> n8n ejecuta a las 6am, normaliza datos, calcula KPIs y publica el reporte en Slack con anomalías destacadas.</p>
         </section>
-        <section>
+        <section id="caso-5">
           <h2>5. SaaS B2B — lead enrichment + outreach</h2>
           <p><strong>Problema:</strong> 200-500 leads/mes sin enriquecer ni priorizar. Muchos se quedan sin tocar.</p>
           <p><strong>Solución:</strong> n8n enriquece datos, Claude clasifica fit, prioriza y redacta primer correo. Ventas revisa y aprueba.</p>
         </section>
       </main>
+      <footer>
+        <p><small>Ver también: <a href="/orquestacion-agentes.html">Orquestación de agentes</a> · <a href="/automatizacion-n8n.html">Automatización con n8n</a> · <a href="/agentes-ia-claude.html">Agentes con Claude</a></small></p>
+        <p><small>Última actualización: junio 2026</small></p>
+      </footer>
     </div>
   </div>
 

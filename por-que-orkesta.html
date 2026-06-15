@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¿Por qué Orkesta? — Automatización n8n y Claude en México vs alternativas</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="description" content="Compara Orkesta con freelancers, agencias generalistas y plataformas self-service para automatización con n8n y agentes IA en México y LATAM. Guía honesta para elegir." />
+  <meta name="keywords" content="por qué Orkesta, consultoría n8n México, automatización IA LATAM, n8n vs Zapier, agentes IA México, mejor consultoría automatización" />
+  <meta name="author" content="Orkesta" />
+  <meta name="robots" content="index, follow" />
+  <meta name="geo.region" content="MX-CMX" />
+  <meta name="geo.placename" content="Ciudad de México" />
+  <link rel="canonical" href="https://orkestalo.com/por-que-orkesta.html" />
+  <link rel="alternate" hreflang="es" href="https://orkestalo.com/por-que-orkesta.html" />
+  <link rel="alternate" hreflang="en" href="https://orkestalo.com/por-que-orkesta.html?lang=en" />
+  <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/por-que-orkesta.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="Contenido del sitio para LLMs" />
+
+  <meta property="og:title" content="¿Por qué Orkesta? — Comparativa de automatización en México" />
+  <meta property="og:description" content="Compara Orkesta con freelancers, agencias y plataformas self-service. Guía honesta para elegir la mejor opción para tu negocio." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://orkestalo.com/por-que-orkesta.html" />
+  <meta property="og:image" content="https://orkestalo.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="es_MX" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="¿Por qué Orkesta? — Comparativa de automatización en México" />
+  <meta name="twitter:description" content="Guía honesta para elegir entre Orkesta, freelancers, agencias y plataformas self-service." />
+  <meta name="twitter:image" content="https://orkestalo.com/og-image.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": "https://orkestalo.com/por-que-orkesta.html#service",
+    "name": "¿Por qué Orkesta? — Consultoría de automatización con n8n y Claude en México",
+    "url": "https://orkestalo.com/por-que-orkesta.html",
+    "serviceType": "Business Process Automation Consulting",
+    "provider": { "@id": "https://orkestalo.com/#org" },
+    "areaServed": [
+      { "@type": "Country", "name": "Mexico" },
+      { "@type": "Place", "name": "Latin America" },
+      { "@type": "Country", "name": "United States" }
+    ],
+    "description": "Comparativa honesta de Orkesta vs freelancers técnicos, agencias generalistas y plataformas self-service para automatización con n8n y agentes IA en México y LATAM.",
+    "datePublished": "2026-06-14",
+    "dateModified": "2026-06-14"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://orkestalo.com/" },
+      { "@type": "ListItem", "position": 2, "name": "¿Por qué Orkesta?", "item": "https://orkestalo.com/por-que-orkesta.html" }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "dateModified": "2026-06-14",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Por qué n8n y Claude juntos en lugar de solo n8n?",
+        "acceptedAnswer": { "@type": "Answer", "text": "n8n orquesta flujos y conecta sistemas; Claude añade razonamiento. Los pasos que requieren decisión, interpretación de documentos o conversación natural necesitan un modelo de lenguaje. Juntos cubren tanto la automatización estructurada como los pasos que requieren IA." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué diferencia a Orkesta de un freelancer de n8n?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Un freelancer técnico implementa lo que le pides. Orkesta empieza por el diagnóstico de proceso — qué automatizar primero, cuál entrega más ROI — y entrega con documentación, testing y soporte continuo. No solo construimos el flujo; aseguramos que funcione en producción." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Trabajan solo en CDMX o también en LATAM y Estados Unidos?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Operamos 100% remoto. Atendemos clientes en CDMX, Guadalajara, Monterrey, Ciudad de Guatemala, Buenos Aires, Bogotá, Lima y Miami. La zona horaria y el idioma no son obstáculo." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué pasa con mi automatización si dejo de trabajar con Orkesta?",
+        "acceptedAnswer": { "@type": "Answer", "text": "El código vive en tu infraestructura (tu instancia de n8n, tus credenciales de Claude API). Entregamos accesos, contraseñas y documentación. No dependes de nosotros para que siga funcionando." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cuánto tiempo tarda una implementación con Orkesta?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Los proyectos simples (un flujo, una integración) van de 1 a 2 semanas desde el diagnóstico hasta producción. Los proyectos más complejos (agentes con múltiples herramientas, integraciones multi-sistema) suelen tomar 4 a 8 semanas." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Pueden trabajar con el software que ya uso?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Sí. n8n conecta con más de 400 apps vía nodos nativos y cualquier sistema con API REST o webhooks. Si ya usas HubSpot, Salesforce, Zoho, SAP, sistemas propietarios o APIs internas, podemos integrarlos." }
+      }
+    ]
+  }
+  </script>
+
+  <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preload" href="/defs.svg" as="image" type="image/svg+xml">
+
+  <style>
+    .why-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 2rem; }
+    .why-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .why-table th, .why-table td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--ink-3); vertical-align: top; }
+    .why-table th { font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); background: var(--paper-2); white-space: nowrap; }
+    .why-table th.col-highlight, .why-table td.col-highlight { background: rgba(31,90,58,0.06); font-weight: 600; }
+    .why-table th.col-highlight { color: var(--green-deep); }
+    .why-table td:first-child { font-weight: 500; color: var(--ink-2); white-space: nowrap; }
+    .why-table tr:last-child td { border-bottom: none; }
+    .when-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 2rem; }
+    @media (max-width: 640px) { .when-grid { grid-template-columns: 1fr; } }
+    .when-card { border: 1px solid var(--ink-3); border-radius: 8px; padding: 1.25rem 1.5rem; }
+    .when-card-title { font-weight: 600; margin-bottom: 0.4rem; }
+    .when-card-desc { font-size: 0.9rem; color: var(--ink-2); margin: 0; }
+    .faq-list { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+    .faq-item { border: 1px solid var(--ink-3); border-radius: 8px; padding: 1.25rem 1.5rem; }
+    .faq-q { font-weight: 600; margin-bottom: 0.5rem; }
+    .faq-a { font-size: 0.9rem; color: var(--ink-2); margin: 0; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div class="ssr-fallback">
+      <header>
+        <a href="/"><strong>Orkesta</strong> · ¿Por qué Orkesta?</a>
+        <nav>
+          <a href="/#soluciones">Soluciones</a>
+          <a href="/casos-de-uso.html">Casos</a>
+          <a href="/preguntas-frecuentes.html">FAQs</a>
+          <a href="/#contacto">Contacto</a>
+        </nav>
+      </header>
+      <main>
+        <section id="top">
+          <h1>¿Por qué Orkesta para automatización con n8n y Claude en México?</h1>
+          <p>Hay muchas formas de automatizar un negocio: plataformas self-service como Zapier o Make, freelancers técnicos, agencias generalistas o consultoras especializadas. Esta página explica honestamente qué diferencia a Orkesta — y cuándo otra opción puede ser mejor para ti.</p>
+
+          <h2>Cuatro diferenciadores de Orkesta</h2>
+          <ol>
+            <li><strong>Stack n8n + Claude API, sin lock-in:</strong> construimos sobre open-source. El código y los flujos viven en tu infraestructura; no dependes de Orkesta para que sigan funcionando.</li>
+            <li><strong>Automatización + IA en un mismo equipo:</strong> n8n orquesta los flujos; Claude API añade razonamiento. La mayoría de consultoras ofrece uno u otro, no ambos integrados.</li>
+            <li><strong>Diagnóstico de proceso primero:</strong> antes de escribir una línea de código, mapeamos qué automatizar y cuál entrega más ROI. No vendemos implementaciones por el placer de implementar.</li>
+            <li><strong>Soporte continuo incluido:</strong> entregamos accesos, documentación y handoff completo; el plan de soporte cubre monitoreo, ajustes y nuevas automatizaciones.</li>
+          </ol>
+
+          <h2>Comparativa: Orkesta vs alternativas</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Aspecto</th>
+                <th><strong>Orkesta</strong></th>
+                <th>Freelancer técnico</th>
+                <th>Agencia generalista</th>
+                <th>Self-service (Zapier/Make)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Stack principal</td><td><strong>n8n + Claude API (open-source)</strong></td><td>n8n / Make (varía)</td><td>Cualquier stack</td><td>Zapier, Make, Airtable</td></tr>
+              <tr><td>Lock-in</td><td><strong>Sin lock-in — código tuyo</strong></td><td>Depende del freelancer</td><td>Depende de contratos</td><td>Atado a la plataforma</td></tr>
+              <tr><td>Agentes IA nativos</td><td><strong>Sí — Claude API integrado</strong></td><td>Raro; requiere subcontratar</td><td>Depende de la agencia</td><td>Básico o ausente</td></tr>
+              <tr><td>Soporte continuo</td><td><strong>Plan mensual incluido</strong></td><td>Variable, disponibilidad limitada</td><td>SLA formal, mayor costo</td><td>Soporte de plataforma</td></tr>
+              <tr><td>Foco en PyMEs LATAM</td><td><strong>Sí — propuesta y precios adaptados</strong></td><td>Variable</td><td>Más orientado a enterprise</td><td>Sí, self-service</td></tr>
+              <tr><td>Diagnóstico inicial</td><td><strong>Gratuito, 30 min</strong></td><td>Consulta pagada o gratis</td><td>Proceso largo de venta</td><td>Prueba gratuita</td></tr>
+            </tbody>
+          </table>
+
+          <h2>¿Cuándo NO elegir Orkesta?</h2>
+          <ul>
+            <li><strong>Si quieres manejar la herramienta tú mismo:</strong> Zapier o Make son buenas opciones self-service que no requieren consultoría.</li>
+            <li><strong>Si tienes un equipo técnico interno:</strong> si ya tienes ingenieros que manejan n8n, probablemente lo que necesitas es revisión de arquitectura, no un servicio administrado.</li>
+            <li><strong>Si el proyecto es enterprise (+50 flujos, equipos de 100+):</strong> una agencia más grande con SLA formal puede ser más adecuada para ese volumen.</li>
+            <li><strong>Si el presupuesto es muy ajustado:</strong> hay freelancers técnicos capaces con tarifas más bajas; podemos recomendarte alternativas si no somos la opción correcta.</li>
+          </ul>
+
+          <h2>Preguntas frecuentes sobre por qué elegir Orkesta</h2>
+
+          <h3>¿Por qué n8n y Claude juntos en lugar de solo n8n?</h3>
+          <p>n8n orquesta flujos y conecta sistemas; Claude añade razonamiento. Los pasos que requieren decisión, interpretación de documentos o conversación natural necesitan un modelo de lenguaje. Juntos cubren tanto la automatización estructurada como los pasos que requieren IA.</p>
+
+          <h3>¿Qué diferencia a Orkesta de un freelancer de n8n?</h3>
+          <p>Un freelancer técnico implementa lo que le pides. Orkesta empieza por el diagnóstico de proceso — qué automatizar primero, cuál entrega más ROI — y entrega con documentación, testing y soporte continuo. No solo construimos el flujo; aseguramos que funcione en producción.</p>
+
+          <h3>¿Trabajan solo en CDMX o también en LATAM y Estados Unidos?</h3>
+          <p>Operamos 100% remoto. Atendemos clientes en CDMX, Guadalajara, Monterrey, Ciudad de Guatemala, Buenos Aires, Bogotá, Lima y Miami. La zona horaria y el idioma no son obstáculo.</p>
+
+          <h3>¿Qué pasa con mi automatización si dejo de trabajar con Orkesta?</h3>
+          <p>El código vive en tu infraestructura (tu instancia de n8n, tus credenciales de Claude API). Entregamos accesos, contraseñas y documentación. No dependes de nosotros para que siga funcionando.</p>
+
+          <h3>¿Cuánto tiempo tarda una implementación?</h3>
+          <p>Los proyectos simples (un flujo, una integración) van de 1 a 2 semanas desde el diagnóstico hasta producción. Los proyectos más complejos (agentes con múltiples herramientas, integraciones multi-sistema) suelen tomar 4 a 8 semanas.</p>
+
+          <h3>¿Pueden trabajar con el software que ya uso?</h3>
+          <p>Sí. n8n conecta con más de 400 apps vía nodos nativos y cualquier sistema con API REST o webhooks. Si ya usas HubSpot, Salesforce, Zoho, SAP, sistemas propietarios o APIs internas, podemos integrarlos.</p>
+
+          <p><a href="https://wa.me/525549713262">WhatsApp +52 55 4971 3262</a> · <a href="/#contacto">Agendar diagnóstico gratuito</a></p>
+        </section>
+      </main>
+      <footer>
+        <p><small>Ver también: <a href="/orquestacion-agentes.html">Orquestación de agentes</a> · <a href="/automatizacion-n8n.html">Automatización con n8n</a> · <a href="/agentes-ia-claude.html">Agentes con Claude</a></small></p>
+        <p><small>Última actualización: junio 2026</small></p>
+      </footer>
+    </div>
+  </div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState } = React;
+
+    const CONFIG = { marca: "Orkesta", whatsapp: "525549713262", email: "info@orkestalo.com" };
+
+    const TRANSLATIONS = {
+      es: {
+        htmlLang: "es",
+        meta: {
+          title: "¿Por qué Orkesta? — Automatización n8n y Claude en México vs alternativas",
+          desc: "Compara Orkesta con freelancers, agencias generalistas y plataformas self-service para automatización con n8n y agentes IA en México y LATAM.",
+        },
+        waDefault: "Hola, quiero saber si Orkesta es la opción correcta para mi negocio.",
+        nav: {
+          links: [
+            ["Soluciones", "/#soluciones"],
+            ["Servicios",  "/#servicios"],
+            ["Casos",      "/casos-de-uso.html"],
+            ["FAQs",       "/preguntas-frecuentes.html"],
+            ["Precios",    "/#precios"],
+            ["Contacto",   "/#contacto"],
+          ],
+          cta: "Agenda una charla",
+          menuLabel: "Menú",
+        },
+        hero: {
+          kicker: "Comparativa · ¿Por qué Orkesta?",
+          h1: 'Automatización con n8n y IA: <em>¿por qué Orkesta?</em>',
+          lead: 'Hay muchas formas de automatizar un negocio: plataformas self-service, freelancers técnicos, agencias generalistas. Esta página explica honestamente qué diferencia a Orkesta — y cuándo otra opción puede ser mejor.',
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Agendar diagnóstico",
+        },
+        differentiators: {
+          kicker: "Cuatro diferenciadores",
+          title: 'Lo que nos distingue <em>de las demás opciones</em>.',
+          items: [
+            { iconId: "i-flujo",   t: "Stack open-source, sin lock-in",        d: "Construimos sobre n8n (open-source). El código y los flujos viven en tu infraestructura; no dependes de Orkesta para que sigan funcionando." },
+            { iconId: "i-agente",  t: "Automatización + IA en un equipo",       d: "n8n orquesta los flujos; Claude API añade razonamiento. La mayoría de consultoras ofrece uno u otro, no ambos integrados." },
+            { iconId: "i-modelo",  t: "Diagnóstico de proceso primero",         d: "Antes de escribir código, mapeamos qué automatizar y cuál entrega más ROI. No vendemos implementaciones por el placer de implementar." },
+            { iconId: "i-integra", t: "Soporte continuo incluido",              d: "Entregamos accesos, documentación y handoff completo. El plan de soporte cubre monitoreo, ajustes y nuevas automatizaciones." },
+          ],
+        },
+        compare: {
+          kicker: "Comparativa · 4 opciones comunes",
+          title: 'Elige la opción que mejor <em>encaja con tu negocio</em>.',
+          desc: "No hay una respuesta universal. Aquí está nuestra visión honesta de cada opción — incluyendo cuándo nosotros no somos la mejor elección.",
+          headers: ["Aspecto", "Orkesta", "Freelancer técnico", "Agencia generalista", "Self-service (Zapier/Make)"],
+          rows: [
+            { label: "Stack principal",       values: ["n8n + Claude API (open-source)", "n8n / Make (varía)", "Cualquier stack", "Zapier, Make, Airtable"] },
+            { label: "Lock-in",               values: ["Sin lock-in — código tuyo", "Depende del freelancer", "Depende de contratos", "Atado a la plataforma"] },
+            { label: "Agentes IA nativos",    values: ["Sí — Claude API integrado", "Raro; requiere subcontratar", "Depende de la agencia", "Básico o ausente"] },
+            { label: "Soporte continuo",      values: ["Plan mensual incluido", "Variable, disponibilidad limitada", "SLA formal, mayor costo", "Soporte de plataforma"] },
+            { label: "Foco en PyMEs LATAM",   values: ["Sí — precios adaptados", "Variable", "Más orientado a enterprise", "Sí, self-service"] },
+            { label: "Diagnóstico inicial",   values: ["Gratuito, 30 min", "Consulta pagada o gratis", "Proceso largo de venta", "Prueba gratuita"] },
+          ],
+        },
+        when: {
+          kicker: "Honestidad ante todo",
+          title: '¿Cuándo <em>no</em> elegir Orkesta?',
+          desc: "Creemos en la claridad. Hay casos en los que otra opción es mejor para ti:",
+          items: [
+            { t: "Si quieres manejar la herramienta tú mismo",   d: "Zapier o Make son buenas opciones self-service. No necesitas consultora si tienes tiempo de aprender y los flujos son simples." },
+            { t: "Si tienes un equipo técnico interno",           d: "Si ya tienes ingenieros que manejan n8n, probablemente lo que necesitas es revisión de arquitectura, no un servicio administrado." },
+            { t: "Si el proyecto es enterprise (+50 flujos)",     d: "Para implementaciones de gran escala con equipos de 100+, una agencia más grande con SLA formal puede ser más adecuada." },
+            { t: "Si el presupuesto es muy ajustado",             d: "Hay freelancers técnicos capaces con tarifas más bajas. Si no somos la opción correcta para tu presupuesto, te lo decimos." },
+          ],
+        },
+        faqs: {
+          kicker: "Preguntas frecuentes",
+          title: 'Dudas comunes antes de <em>elegir consultora</em>.',
+          items: [
+            { q: "¿Por qué n8n y Claude juntos en lugar de solo n8n?", a: "n8n orquesta flujos y conecta sistemas; Claude añade razonamiento. Los pasos que requieren decisión, interpretación de documentos o conversación natural necesitan un modelo de lenguaje. Juntos cubren tanto la automatización estructurada como los pasos que requieren IA." },
+            { q: "¿Qué diferencia a Orkesta de un freelancer de n8n?", a: "Un freelancer técnico implementa lo que le pides. Orkesta empieza por el diagnóstico de proceso — qué automatizar primero, cuál entrega más ROI — y entrega con documentación, testing y soporte continuo. No solo construimos el flujo; aseguramos que funcione en producción." },
+            { q: "¿Trabajan solo en CDMX o también en LATAM y Estados Unidos?", a: "Operamos 100% remoto. Atendemos clientes en CDMX, Guadalajara, Monterrey, Ciudad de Guatemala, Buenos Aires, Bogotá, Lima y Miami. La zona horaria y el idioma no son obstáculo." },
+            { q: "¿Qué pasa con mi automatización si dejo de trabajar con Orkesta?", a: "El código vive en tu infraestructura (tu instancia de n8n, tus credenciales de Claude API). Entregamos accesos, contraseñas y documentación. No dependes de nosotros para que siga funcionando." },
+            { q: "¿Cuánto tiempo tarda una implementación?", a: "Los proyectos simples (un flujo, una integración) van de 1 a 2 semanas desde el diagnóstico hasta producción. Los más complejos (agentes con múltiples herramientas, integraciones multi-sistema) suelen tomar 4 a 8 semanas." },
+            { q: "¿Pueden trabajar con el software que ya uso?", a: "Sí. n8n conecta con más de 400 apps vía nodos nativos y cualquier sistema con API REST o webhooks. Si ya usas HubSpot, Salesforce, Zoho, SAP, sistemas propietarios o APIs internas, podemos integrarlos." },
+          ],
+        },
+        cta: {
+          title: '¿Listo para comparar <em>con tu caso real</em>?',
+          desc: "30 minutos sin compromiso. Te mostramos qué automatizaciones tienen más ROI para tu negocio y qué opción encaja mejor con tu situación — aunque no seamos nosotros.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Agendar diagnóstico",
+        },
+        footer: { tagline: "Automatización e IA", country: "México" },
+      },
+      en: {
+        htmlLang: "en",
+        meta: {
+          title: "Why Orkesta? — n8n and Claude automation in Mexico vs alternatives",
+          desc: "Compare Orkesta with freelancers, generalist agencies and self-service platforms for n8n and AI agent automation in Mexico and LATAM.",
+        },
+        waDefault: "Hi, I want to know if Orkesta is the right choice for my business.",
+        nav: {
+          links: [
+            ["Solutions", "/#soluciones"],
+            ["Services",  "/#servicios"],
+            ["Cases",     "/casos-de-uso.html"],
+            ["FAQs",      "/preguntas-frecuentes.html"],
+            ["Pricing",   "/#precios"],
+            ["Contact",   "/#contacto"],
+          ],
+          cta: "Schedule a call",
+          menuLabel: "Menu",
+        },
+        hero: {
+          kicker: "Comparison · Why Orkesta?",
+          h1: "n8n and AI automation: <em>why Orkesta?</em>",
+          lead: "There are many ways to automate a business: self-service platforms, technical freelancers, generalist agencies. This page honestly explains what sets Orkesta apart — and when another option might serve you better.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Book a diagnostic",
+        },
+        differentiators: {
+          kicker: "Four differentiators",
+          title: "What sets us apart <em>from the alternatives</em>.",
+          items: [
+            { iconId: "i-flujo",   t: "Open-source stack, no lock-in",        d: "We build on n8n (open-source). The code and flows live in your infrastructure; you don't depend on Orkesta for them to keep running." },
+            { iconId: "i-agente",  t: "Automation + AI in one team",           d: "n8n orchestrates the flows; Claude API adds reasoning. Most consultancies offer one or the other, not both integrated." },
+            { iconId: "i-modelo",  t: "Process diagnosis first",               d: "Before writing code, we map what to automate and what delivers the most ROI. We don't sell implementations for the sake of it." },
+            { iconId: "i-integra", t: "Ongoing support included",              d: "We deliver access, documentation and full handoff. The support plan covers monitoring, adjustments and new automations." },
+          ],
+        },
+        compare: {
+          kicker: "Comparison · 4 common options",
+          title: "Choose the option that best <em>fits your business</em>.",
+          desc: "There's no universal answer. Here's our honest take on each option — including when we're not the best choice.",
+          headers: ["Aspect", "Orkesta", "Technical freelancer", "Generalist agency", "Self-service (Zapier/Make)"],
+          rows: [
+            { label: "Main stack",        values: ["n8n + Claude API (open-source)", "n8n / Make (varies)", "Any stack", "Zapier, Make, Airtable"] },
+            { label: "Lock-in",           values: ["No lock-in — your code", "Depends on freelancer", "Depends on contracts", "Tied to the platform"] },
+            { label: "Native AI agents",  values: ["Yes — Claude API integrated", "Rare; requires subcontracting", "Depends on agency", "Basic or absent"] },
+            { label: "Ongoing support",   values: ["Monthly plan included", "Variable, limited availability", "Formal SLA, higher cost", "Platform support"] },
+            { label: "LATAM SME focus",   values: ["Yes — adapted pricing", "Variable", "More enterprise-oriented", "Yes, self-service"] },
+            { label: "Initial diagnostic",values: ["Free, 30 min", "Paid or free consultation", "Long sales process", "Free trial"] },
+          ],
+        },
+        when: {
+          kicker: "Honesty first",
+          title: "When should you <em>not</em> choose Orkesta?",
+          desc: "We believe in clarity. There are cases where another option is better for you:",
+          items: [
+            { t: "If you want to run the tool yourself",        d: "Zapier or Make are good self-service options. You don't need a consultant if you have time to learn and the flows are simple." },
+            { t: "If you have an internal technical team",       d: "If you already have engineers managing n8n, what you probably need is architecture review, not a managed service." },
+            { t: "If the project is enterprise (50+ flows)",     d: "For large-scale implementations with teams of 100+, a larger agency with formal SLA may be more appropriate." },
+            { t: "If the budget is very tight",                  d: "There are capable technical freelancers with lower rates. If we're not the right fit for your budget, we'll tell you." },
+          ],
+        },
+        faqs: {
+          kicker: "Frequently asked questions",
+          title: "Common questions before <em>choosing a consultancy</em>.",
+          items: [
+            { q: "Why n8n and Claude together instead of just n8n?", a: "n8n orchestrates flows and connects systems; Claude adds reasoning. Steps that require decision-making, document interpretation or natural conversation need a language model. Together they cover both structured automation and steps that require AI." },
+            { q: "What sets Orkesta apart from an n8n freelancer?", a: "A technical freelancer implements what you ask for. Orkesta starts with process diagnosis — what to automate first, which delivers the most ROI — and delivers with documentation, testing and ongoing support. We don't just build the flow; we ensure it works in production." },
+            { q: "Do you only work in CDMX or also in LATAM and the US?", a: "We operate 100% remotely. We serve clients in CDMX, Guadalajara, Monterrey, Guatemala City, Buenos Aires, Bogotá, Lima and Miami. Time zone and language are not a barrier." },
+            { q: "What happens to my automation if I stop working with Orkesta?", a: "The code lives in your infrastructure (your n8n instance, your Claude API credentials). We deliver access, passwords and documentation. You don't depend on us for it to keep working." },
+            { q: "How long does an implementation take?", a: "Simple projects (one flow, one integration) run from 1 to 2 weeks from diagnostic to production. More complex projects (agents with multiple tools, multi-system integrations) typically take 4 to 8 weeks." },
+            { q: "Can you work with the software I already use?", a: "Yes. n8n connects with 400+ apps via native nodes and any system with a REST API or webhooks. If you already use HubSpot, Salesforce, Zoho, SAP, proprietary systems or internal APIs, we can integrate them." },
+          ],
+        },
+        cta: {
+          title: "Ready to compare <em>with your real case</em>?",
+          desc: "30 minutes no commitment. We show you which automations have the most ROI for your business and which option best fits your situation — even if it's not us.",
+          ctaWA: "WhatsApp",
+          ctaAgendar: "Book a diagnostic",
+        },
+        footer: { tagline: "Automation & AI", country: "Mexico" },
+      },
+    };
+
+    function detectLanguage() {
+      try {
+        const param = new URLSearchParams(window.location.search).get('lang');
+        if (param === 'en' || param === 'es') return param;
+        const stored = localStorage.getItem('orkesta-lang');
+        if (stored === 'en' || stored === 'es') return stored;
+        const browser = (navigator.language || 'es').slice(0, 2);
+        return browser === 'en' ? 'en' : 'es';
+      } catch { return 'es'; }
+    }
+
+    const waLink = (msg, lang = 'es') =>
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || TRANSLATIONS[lang].waDefault)}`;
+
+    const Ico = ({ id, w = 18, h = 18 }) => (
+      <svg width={w} height={h} aria-hidden="true"><use href={`/defs.svg#${id}`}/></svg>
+    );
+
+    const Nav = ({ lang, setLanguage, t }) => {
+      const [open, setOpen] = useState(false);
+      return (
+        <header className="nav-bar nav-bar--green">
+          <div className="nav-inner">
+            <a href="/" className="nav-logo">
+              <svg width="34" height="34"><use href="/defs.svg#mark"/></svg>
+              <span className="nav-wordmark">{CONFIG.marca}</span>
+            </a>
+            <nav className="nav-links">
+              {t.links.map(([label, href]) => <a key={href} href={href} className="nav-link">{label}</a>)}
+              <div className="lang-toggle">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => setLanguage('es')}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => setLanguage('en')}>EN</button>
+              </div>
+              <a href="/#contacto" className="btn btn-primary nav-cta">{t.cta}</a>
+            </nav>
+            <button onClick={() => setOpen(!open)} className="nav-toggle" aria-label={t.menuLabel}>
+              <span/><span/><span/>
+            </button>
+          </div>
+          {open && (
+            <div className="nav-mobile">
+              <div className="lang-mobile">
+                <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => { setLanguage('es'); setOpen(false); }}>ES</button>
+                <span className="lang-sep">/</span>
+                <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => { setLanguage('en'); setOpen(false); }}>EN</button>
+              </div>
+              {t.links.map(([label, href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}
+            </div>
+          )}
+        </header>
+      );
+    };
+
+    const PageHero = ({ t, lang }) => (
+      <section id="top" className="page-hero">
+        <div className="wrap">
+          <span className="badge badge-green hero-kicker"><Ico id="i-modelo" w={13} h={13}/>{t.kicker}</span>
+          <h1 dangerouslySetInnerHTML={{ __html: t.h1 }} />
+          <p className="lead" dangerouslySetInnerHTML={{ __html: t.lead }} />
+          <div className="ctas">
+            <a href={waLink(null, lang)} target="_blank" className="btn btn-green"><Ico id="i-wa" w={20} h={20}/>{t.ctaWA}</a>
+            <a href="/#contacto" className="btn btn-primary"><Ico id="i-cal" w={18} h={18}/>{t.ctaAgendar}</a>
+          </div>
+        </div>
+      </section>
+    );
+
+    const Differentiators = ({ t }) => (
+      <section id="differentiators" className="section">
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+            </div>
+          </div>
+          <div className="svc-grid">
+            {t.items.map(c => (
+              <div key={c.t} className="svc-card">
+                <div className="svc-ico"><Ico id={c.iconId} w={26} h={26}/></div>
+                <div className="svc-title">{c.t}</div>
+                <p className="svc-desc">{c.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    const CompareTable = ({ t }) => (
+      <section id="compare" className="section" style={{background:"var(--paper-2)"}}>
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
+            </div>
+          </div>
+          <div className="why-table-wrap">
+            <table className="why-table">
+              <thead>
+                <tr>
+                  {t.headers.map((h, i) => (
+                    <th key={h} className={i === 1 ? 'col-highlight' : ''}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {t.rows.map(row => (
+                  <tr key={row.label}>
+                    <td>{row.label}</td>
+                    {row.values.map((v, i) => (
+                      <td key={i} className={i === 0 ? 'col-highlight' : ''}>{v}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    );
+
+    const WhenNot = ({ t }) => (
+      <section id="when-not" className="section">
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+              <p className="sec-desc">{t.desc}</p>
+            </div>
+          </div>
+          <div className="when-grid">
+            {t.items.map(item => (
+              <div key={item.t} className="when-card">
+                <div className="when-card-title">{item.t}</div>
+                <p className="when-card-desc">{item.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    const FAQSection = ({ t }) => (
+      <section id="faqs" className="section" style={{background:"var(--paper-2)"}}>
+        <div className="wrap">
+          <div className="sec-hdr sec-hdr--solo">
+            <div>
+              <div className="sec-kicker">{t.kicker}</div>
+              <h2 className="sec-title" dangerouslySetInnerHTML={{ __html: t.title }} />
+            </div>
+          </div>
+          <div className="faq-list">
+            {t.items.map(item => (
+              <div key={item.q} className="faq-item">
+                <div className="faq-q">{item.q}</div>
+                <p className="faq-a">{item.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    const CtaFinal = ({ t, lang }) => (
+      <section className="section">
+        <div className="wrap">
+          <div className="cta-block">
+            <h2 dangerouslySetInnerHTML={{ __html: t.title }} />
+            <p>{t.desc}</p>
+            <div className="ctas">
+              <a href={waLink(null, lang)} target="_blank" className="btn"><Ico id="i-wa" w={20} h={20}/>{t.ctaWA}</a>
+              <a href="/#contacto" className="btn btn-ghost"><Ico id="i-cal" w={18} h={18}/>{t.ctaAgendar}</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    const Footer = ({ t }) => (
+      <footer className="site-footer">
+        <span>© {new Date().getFullYear()} {CONFIG.marca} · {t.tagline} · {t.country} · <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></span>
+        <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
+      </footer>
+    );
+
+    const FloatingWA = ({ lang }) => (
+      <a href={waLink(null, lang)} target="_blank" aria-label="WhatsApp" className="floating-wa">
+        <Ico id="i-wa" w={22} h={22}/>
+        <span className="floating-wa-text">WhatsApp</span>
+      </a>
+    );
+
+    const App = () => {
+      const [lang, setLang] = useState(detectLanguage);
+      const t = TRANSLATIONS[lang];
+
+      React.useEffect(() => {
+        document.documentElement.lang = t.htmlLang;
+        document.title = t.meta.title;
+        const update = (sel, attr, val) => {
+          const el = document.querySelector(sel);
+          if (el) el.setAttribute(attr, val);
+        };
+        update('meta[name="description"]', 'content', t.meta.desc);
+        update('meta[property="og:title"]', 'content', t.meta.title);
+        update('meta[property="og:description"]', 'content', t.meta.desc);
+        update('meta[name="twitter:title"]', 'content', t.meta.title);
+        update('meta[name="twitter:description"]', 'content', t.meta.desc);
+      }, [lang]);
+
+      const setLanguage = (l) => {
+        setLang(l);
+        try { localStorage.setItem('orkesta-lang', l); } catch {}
+        try {
+          const url = new URL(window.location);
+          if (l === 'en') url.searchParams.set('lang', 'en');
+          else url.searchParams.delete('lang');
+          window.history.replaceState({}, '', url);
+        } catch {}
+      };
+
+      return (
+        <div>
+          <Nav lang={lang} setLanguage={setLanguage} t={t.nav} />
+          <main>
+            <PageHero t={t.hero} lang={lang} />
+            <Differentiators t={t.differentiators} />
+            <CompareTable t={t.compare} />
+            <WhenNot t={t.when} />
+            <FAQSection t={t.faqs} />
+            <CtaFinal t={t.cta} lang={lang} />
+          </main>
+          <Footer t={t.footer} />
+          <FloatingWA lang={lang} />
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

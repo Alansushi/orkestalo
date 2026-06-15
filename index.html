@@ -15,6 +15,7 @@
   <link rel="alternate" hreflang="es" href="https://orkestalo.com/" />
   <link rel="alternate" hreflang="en" href="https://orkestalo.com/?lang=en" />
   <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="Contenido del sitio para LLMs" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Orkesta — Automatización e IA para tu negocio" />
@@ -81,7 +82,7 @@
     "priceRange": "$$",
     "description": "Diseñamos e implementamos automatizaciones con n8n, agentes con Claude, orquestación de agentes e integraciones a medida. Del discovery a producción, sin fricción.",
     "serviceType": "Business Process Automation and AI Consulting",
-    "provider": { "@type": "Organization", "name": "Orkesta", "url": "https://orkestalo.com" },
+    "provider": { "@id": "https://orkestalo.com/#org" },
     "areaServed": [
       { "@type": "Country", "name": "Mexico" },
       { "@type": "Place", "name": "Latin America" },
@@ -170,7 +171,9 @@
         "name": "¿Sirve si mi equipo no es técnico?",
         "acceptedAnswer": { "@type": "Answer", "text": "Sí. Nosotros implementamos, documentamos y hacemos handoff completo. Tu equipo no necesita saber programar para operar lo que construimos — dejamos guías paso a paso y soporte para las primeras semanas." }
       }
-    ]
+    ],
+    "datePublished": "2024-01-01",
+    "dateModified": "2026-06-14"
   }
   </script>
 
@@ -217,11 +220,12 @@
         <section id="servicios">
           <h2>Servicios</h2>
           <ul>
+            <li><strong><a href="/orquestacion-agentes.html">Orquestación de agentes</a></strong> — Coordinamos varios agentes de Claude con n8n para ejecutar procesos de extremo a extremo, no solo respuestas.</li>
             <li><strong>Chatbots y agentes con IA</strong> — Asistentes con Claude para ventas, soporte y procesos internos, en web o WhatsApp.</li>
-            <li><strong>Automatización con n8n</strong> — Conectamos tus apps (CRM, correo, hojas, facturación) y eliminamos el trabajo manual repetitivo.</li>
-            <li><strong>Procesamiento de documentos con IA</strong> — Extracción y clasificación de facturas, correos y documentos con IA.</li>
-            <li><strong>Claude integrado a tu negocio</strong> — Optimización de procesos incorporando modelos de IA donde generan más valor.</li>
-            <li><strong>Integraciones de Mercado Pago</strong> — Cobros online e in-store conectados a tu operación y conciliación automática.</li>
+            <li><strong><a href="/automatizacion-n8n.html">Automatización con n8n</a></strong> — Conectamos tus apps (CRM, correo, hojas, facturación) y eliminamos el trabajo manual repetitivo.</li>
+            <li><strong><a href="/procesamiento-documentos-ia.html">Procesamiento de documentos con IA</a></strong> — Extracción y clasificación de facturas, correos y documentos con IA.</li>
+            <li><strong><a href="/agentes-ia-claude.html">Agentes con Claude</a></strong> — Optimización de procesos incorporando modelos de IA donde generan más valor.</li>
+            <li><strong><a href="/integraciones-mercado-pago.html">Integraciones de Mercado Pago</a></strong> — Cobros online e in-store conectados a tu operación y conciliación automática.</li>
             <li><strong>Integraciones a medida</strong> — Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable.</li>
           </ul>
         </section>
@@ -256,12 +260,15 @@
         <section id="contacto">
           <h2>Contacto</h2>
           <p>
-            <a href="https://wa.me/525549713262">WhatsApp +52 55 4971 3262</a> ·
+            <strong>Canal principal:</strong> <a href="https://wa.me/525549713262">WhatsApp +52 55 4971 3262</a> (respuesta en el mismo día) ·
             <a href="mailto:info@orkestalo.com">info@orkestalo.com</a>
           </p>
           <p>Ciudad de México · México · LATAM · Estados Unidos</p>
         </section>
       </main>
+      <footer>
+        <p><small>Última actualización: junio 2026</small></p>
+      </footer>
     </div>
   </div>
 
@@ -444,8 +451,8 @@
         },
         stats: {
           items: [
-            { n: "+15 h/semana", d: "ahorradas en promedio por cliente" },
-            { n: "2 semanas",    d: "de discovery a producción en proyectos simples" },
+            { n: "+15 h/semana", d: "ahorradas en promedio por cliente (según diagnósticos Orkesta)" },
+            { n: "2 semanas",    d: "de discovery a producción en proyectos simples (según proyectos completados)" },
             { n: "+400 apps",    d: "conectadas vía n8n sin código adicional" },
             { n: "24/7",         d: "respuesta automática, sin costo por ticket" },
           ],
@@ -612,8 +619,8 @@
         },
         stats: {
           items: [
-            { n: "+15 h/week", d: "saved on average per client" },
-            { n: "2 weeks",    d: "from discovery to production on simple projects" },
+            { n: "+15 h/week", d: "saved on average per client (based on Orkesta diagnostics)" },
+            { n: "2 weeks",    d: "from discovery to production on simple projects (based on completed projects)" },
             { n: "+400 apps",  d: "connected via n8n with no extra code" },
             { n: "24/7",       d: "automated responses, zero cost per ticket" },
           ],
