@@ -98,7 +98,9 @@
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Procesamiento de documentos con IA", "description": "Extracción y clasificación de facturas, correos y documentos con IA." } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Claude integrado a tu negocio",      "description": "Optimización de procesos incorporando modelos de IA donde generan más valor." } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Integraciones de Mercado Pago",      "description": "Cobros online e in-store conectados a tu operación y conciliación automática." } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Integraciones a medida",             "description": "Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable." } }
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Integraciones a medida",             "description": "Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable." } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Presencia web: dominio y sitio",     "description": "Administramos tu dominio, renovamos tu sitio y embebemos widgets (agenda, pagos) para que recibas y atiendas clientes en línea." } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Agenda de citas automatizada",       "description": "Tu agente consulta disponibilidad y reserva citas vía API (Booksy, Calendly y similares), desde WhatsApp o un widget en tu sitio." } }
       ]
     }
   }
@@ -170,10 +172,14 @@
         "@type": "Question",
         "name": "¿Sirve si mi equipo no es técnico?",
         "acceptedAnswer": { "@type": "Answer", "text": "Sí. Nosotros implementamos, documentamos y hacemos handoff completo. Tu equipo no necesita saber programar para operar lo que construimos — dejamos guías paso a paso y soporte para las primeras semanas." }
+      },{
+        "@type": "Question",
+        "name": "¿También hacen sitios web y administran el dominio?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Sí. Administramos tu dominio, renovamos o construimos tu sitio y embebemos widgets (agenda de citas, pagos). Lo combinamos con un agente en WhatsApp que responde dudas y reserva citas vía API (Booksy, Calendly y similares) — funciona para cualquier negocio con cita previa, sin importar el giro." }
       }
     ],
     "datePublished": "2024-01-01",
-    "dateModified": "2026-06-14"
+    "dateModified": "2026-06-17"
   }
   </script>
 
@@ -227,6 +233,7 @@
             <li><strong><a href="/agentes-ia-claude.html">Agentes con Claude</a></strong> — Optimización de procesos incorporando modelos de IA donde generan más valor.</li>
             <li><strong><a href="/integraciones-mercado-pago.html">Integraciones de Mercado Pago</a></strong> — Cobros online e in-store conectados a tu operación y conciliación automática.</li>
             <li><strong>Integraciones a medida</strong> — Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable.</li>
+            <li><strong>Presencia web: dominio y sitio</strong> — Administramos tu dominio, renovamos tu sitio y embebemos widgets (agenda, pagos) para que recibas y atiendas clientes en línea.</li>
           </ul>
         </section>
 
@@ -249,6 +256,7 @@
             <li><strong>Conciliación de pagos automática</strong> — Integra Mercado Pago, registra ventas y concilia con tu hoja o ERP.</li>
             <li><strong>Lector inteligente de facturas</strong> — Recibe facturas por correo, extrae datos con IA y los carga a tu sistema.</li>
             <li><strong>Orquestador de back-office</strong> — Automatiza alta de clientes, notificaciones y reportes recurrentes entre apps.</li>
+            <li><strong>Agenda de citas automatizada</strong> — Tu agente consulta disponibilidad y reserva citas vía API (Booksy, Calendly y similares) desde WhatsApp o un widget en tu sitio.</li>
           </ul>
         </section>
 
@@ -343,6 +351,7 @@
             { t: "Conciliación de pagos automática", beneficio: "Elimina la captura manual de cobros",          d: "Integra Mercado Pago, registra ventas y concilia con tu hoja o ERP sin intervención manual.", tags: ["Mercado Pago", "n8n"] },
             { t: "Lector inteligente de facturas",   beneficio: "Reduce horas de data entry de facturas",       d: "Recibe facturas por correo, extrae datos con IA y los carga a tu sistema.",                    tags: ["IA Docs", "n8n"] },
             { t: "Orquestador de back-office",       beneficio: "Libera al equipo de tareas mecánicas",         d: "Automatiza alta de clientes, notificaciones y reportes recurrentes entre tus apps.",           tags: ["Integraciones", "n8n"] },
+            { t: "Agenda de citas automatizada",     beneficio: "Reserva por WhatsApp y web sin llamadas",      d: "Tu agente consulta disponibilidad y reserva citas vía API (Booksy, Calendly y similares) — desde WhatsApp o un widget en tu sitio.", tags: ["WhatsApp", "Booksy", "Agenda"] },
           ],
         },
         servicios: {
@@ -357,6 +366,7 @@
             { iconId: "i-modelo",  t: "Claude integrado a tu negocio",      d: "Optimización de procesos incorporando modelos de IA donde generan más valor." },
             { iconId: "i-integra", t: "Integraciones de Mercado Pago",      d: "Cobros online e in-store conectados a tu operación y conciliación automática." },
             { iconId: "i-tiempo",  t: "Integraciones a medida",             d: "Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable." },
+            { iconId: "i-web",     t: "Presencia web: dominio y sitio",     d: "Administramos tu dominio, renovamos tu sitio y embebemos widgets (agenda, pagos) para que recibas y atiendas clientes en línea." },
           ],
         },
         porQueOrkesta: {
@@ -420,6 +430,7 @@
             { q: "¿De quién es el código al final del proyecto?",            a: "Tuyo. Todo lo que construimos vive en tu infraestructura (tu n8n, tu cuenta de Claude, tu Mercado Pago). Te entregamos accesos completos, código, documentación y handoff sin lock-in." },
             { q: "¿Puedo empezar con un solo proceso?",      a: "Sí, de hecho lo recomendamos. La mayoría de nuestros clientes empieza con la automatización que más les duele — puede ser facturación, seguimiento de clientes o reportes manuales. Una vez que ven el ROI, escalan. No hay mínimo de proyecto." },
             { q: "¿Sirve si mi equipo no es técnico?",        a: "Sí. Nosotros implementamos, documentamos y hacemos handoff completo. Tu equipo no necesita saber programar para operar lo que construimos — dejamos guías paso a paso y soporte para las primeras semanas." },
+            { q: "¿También hacen sitios web y administran el dominio?", a: "Sí. Administramos tu dominio, renovamos o construimos tu sitio y embebemos widgets (agenda de citas, pagos). Lo combinamos con un agente en WhatsApp que responde dudas y reserva citas vía API (Booksy, Calendly y similares) — funciona para cualquier negocio con cita previa, sin importar el giro." },
           ],
         },
         contacto: {
@@ -512,6 +523,7 @@
             { t: "Automatic payment reconciliation",  beneficio: "Eliminates manual capture of payments",          d: "Connect Mercado Pago, log sales and reconcile with your sheet or ERP without manual work.",          tags: ["Mercado Pago", "n8n"] },
             { t: "Smart invoice reader",              beneficio: "Reduces hours of invoice data entry",            d: "Receive invoices by email, extract data with AI and load them into your system.",                     tags: ["AI Docs", "n8n"] },
             { t: "Back-office orchestrator",          beneficio: "Frees the team from recurring mechanical tasks", d: "Automate customer onboarding, notifications and recurring reports across your apps.",                 tags: ["Integrations", "n8n"] },
+            { t: "Automated appointment booking",     beneficio: "Booking via WhatsApp and web, no phone calls",   d: "Your agent checks availability and books appointments via API (Booksy, Calendly and similar) — from WhatsApp or a widget on your site.", tags: ["WhatsApp", "Booksy", "Booking"] },
           ],
         },
         servicios: {
@@ -526,6 +538,7 @@
             { iconId: "i-modelo",  t: "Claude integrated into your business", d: "Process optimization by incorporating AI models where they create the most value." },
             { iconId: "i-integra", t: "Mercado Pago integrations",          d: "Online and in-store payments connected to your operation with automatic reconciliation." },
             { iconId: "i-tiempo",  t: "Custom integrations",                d: "We connect systems that don't talk to each other via APIs and webhooks, reliably." },
+            { iconId: "i-web",     t: "Web presence: domain and site",      d: "We manage your domain, refresh your site and embed widgets (booking, payments) so you can attract and serve customers online." },
           ],
         },
         porQueOrkesta: {
@@ -588,6 +601,7 @@
             { q: "Who owns the code at the end of the project?",     a: "You do. Everything we build lives in your infrastructure (your n8n, your Claude account, your Mercado Pago). We hand over full access, code, documentation and handoff with no lock-in." },
             { q: "Can I start with just one process?",        a: "Yes, in fact we recommend it. Most of our clients start with the automation that hurts them most — billing, customer follow-up or manual reports. Once they see the ROI, they scale. There's no project minimum." },
             { q: "Does it work if my team isn't technical?",  a: "Yes. We implement, document and do full handoff. Your team doesn't need to know how to code to operate what we build — we leave step-by-step guides and support for the first few weeks." },
+            { q: "Do you also build websites and manage the domain?", a: "Yes. We manage your domain, refresh or build your site and embed widgets (appointment booking, payments). We pair it with a WhatsApp agent that answers questions and books appointments via API (Booksy, Calendly and similar) — it works for any business that takes appointments, whatever the industry." },
           ],
         },
         contacto: {

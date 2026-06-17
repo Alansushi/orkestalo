@@ -41,7 +41,7 @@
     "name": "Casos de uso de automatización",
     "url": "https://orkestalo.com/casos-de-uso.html",
     "inLanguage": "es",
-    "description": "Cinco casos de uso descriptivos de automatizaciones con n8n, Claude API y Mercado Pago por industria.",
+    "description": "Seis casos de uso descriptivos de automatizaciones con n8n, Claude API, Mercado Pago y agenda de citas (Booksy) por industria.",
     "isPartOf": { "@type": "WebSite", "name": "Orkesta", "url": "https://orkestalo.com" },
     "mainEntity": {
       "@type": "ItemList",
@@ -50,11 +50,12 @@
         { "@type": "ListItem", "position": 2, "name": "Conciliación de Mercado Pago para e-commerce", "item": "https://orkestalo.com/casos-de-uso.html#caso-2" },
         { "@type": "ListItem", "position": 3, "name": "Atención WhatsApp 24/7 para servicios B2C", "item": "https://orkestalo.com/casos-de-uso.html#caso-3" },
         { "@type": "ListItem", "position": 4, "name": "Reportes operativos diarios para manufactura", "item": "https://orkestalo.com/casos-de-uso.html#caso-4" },
-        { "@type": "ListItem", "position": 5, "name": "Lead enrichment + outreach para SaaS B2B", "item": "https://orkestalo.com/casos-de-uso.html#caso-5" }
+        { "@type": "ListItem", "position": 5, "name": "Lead enrichment + outreach para SaaS B2B", "item": "https://orkestalo.com/casos-de-uso.html#caso-5" },
+        { "@type": "ListItem", "position": 6, "name": "Agente de WhatsApp + agenda de citas (Booksy) para negocios con cita previa", "item": "https://orkestalo.com/casos-de-uso.html#caso-6" }
       ]
     },
     "datePublished": "2024-01-01",
-    "dateModified": "2026-06-14"
+    "dateModified": "2026-06-17"
   }
   </script>
 
@@ -127,6 +128,11 @@
           <p><strong>Problema:</strong> 200-500 leads/mes sin enriquecer ni priorizar. Muchos se quedan sin tocar.</p>
           <p><strong>Solución:</strong> n8n enriquece datos, Claude clasifica fit, prioriza y redacta primer correo. Ventas revisa y aprueba.</p>
         </section>
+        <section id="caso-6">
+          <h2>6. Negocios con cita previa — agente de WhatsApp + agenda de citas (Booksy)</h2>
+          <p><strong>Problema:</strong> clientes preguntan precios y horarios y piden cita por WhatsApp y teléfono mientras el equipo atiende; el sitio está desactualizado y nadie controla el dominio.</p>
+          <p><strong>Solución:</strong> agente con Claude responde las FAQs 24/7 y reserva citas vía API de la plataforma de agenda (p. ej. Booksy) por servicio y por profesional; renovamos el sitio con widget de reserva y administramos el dominio. Aplica a cualquier giro con agenda.</p>
+        </section>
       </main>
       <footer>
         <p><small>Ver también: <a href="/orquestacion-agentes.html">Orquestación de agentes</a> · <a href="/automatizacion-n8n.html">Automatización con n8n</a> · <a href="/agentes-ia-claude.html">Agentes con Claude</a></small></p>
@@ -149,7 +155,7 @@
         htmlLang: "es",
         meta: {
           title: "Casos de uso — Automatizaciones por industria | Orkesta",
-          desc: "Casos de uso descriptivos de automatizaciones por industria: inmobiliaria, e-commerce, servicios B2C, manufactura y SaaS B2B. Stack, problema y solución concreta.",
+          desc: "Casos de uso descriptivos de automatizaciones por industria: inmobiliaria, e-commerce, servicios B2C, manufactura, SaaS B2B y negocios con cita previa (agente de WhatsApp + agenda Booksy). Stack, problema y solución concreta.",
         },
         waDefault: "Hola, vi sus casos de uso y quiero hablar de mi proceso.",
         nav: {
@@ -166,13 +172,13 @@
         },
         hero: {
           kicker: "Casos de uso · Por industria",
-          h1: 'Cinco automatizaciones <em>concretas</em> que reemplazan trabajo manual.',
-          lead: 'Estos son <b>casos de uso descriptivos</b> (no historias específicas de clientes). Cubren patrones que vemos repetirse en PyMEs LATAM en inmobiliaria, e-commerce, servicios, manufactura y SaaS. Si tu proceso se parece a alguno, escribinos — probablemente lo podemos resolver con el mismo stack.',
+          h1: 'Seis automatizaciones <em>concretas</em> que reemplazan trabajo manual.',
+          lead: 'Estos son <b>casos de uso descriptivos</b> (no historias específicas de clientes). Cubren patrones que vemos repetirse en PyMEs LATAM en inmobiliaria, e-commerce, servicios, manufactura, SaaS y negocios con cita previa. Si tu proceso se parece a alguno, escribinos — probablemente lo podemos resolver con el mismo stack.',
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
         },
         casos: {
-          kicker: "Cinco patrones · Cinco industrias",
+          kicker: "Seis patrones · Seis industrias",
           title: 'Casos que <em>se repiten</em> en PyMEs LATAM.',
           desc: "Cada uno con su problema, solución concreta y stack. Si tu situación se parece, el camino al MVP suele ser similar.",
           problemaLabel: "Problema",
@@ -224,6 +230,15 @@
               solucion: "n8n procesa cada lead nuevo: enriquece con datos de empresa (tamaño, industria, stack), Claude clasifica el fit (ICP score), prioriza, y redacta un primer correo personalizado con contexto del negocio. Ventas revisa y aprueba antes de enviar.",
               impacto: "Cero leads sin tocar. El equipo de ventas pasa de investigar a hablar con prospects pre-calificados.",
             },
+            {
+              industria: "Negocios con cita previa",
+              tamano: "Barberías, clínicas, spas, estudios, consultorios",
+              stack: ["WhatsApp Business API", "Claude API", "Booksy API", "Sitio + dominio"],
+              titulo: 'Citas y dudas atascadas en <em>llamadas y mensajes</em> durante el servicio.',
+              problema: "Los clientes preguntan precios y horarios y piden cita por WhatsApp y teléfono mientras el equipo está atendiendo. El sitio está desactualizado y nadie controla el dominio.",
+              solucion: "Un agente con Claude en WhatsApp responde las FAQs del negocio 24/7 y agenda reservando vía API de la plataforma de citas (p. ej. Booksy), consultando disponibilidad por servicio y por profesional. Renovamos el sitio con un widget de reserva embebido y administramos el dominio. El mismo patrón aplica a cualquier giro con agenda.",
+              impacto: "Respuestas inmediatas sin frenar el servicio, reservas confirmadas sin ida y vuelta, y presencia web profesional bajo tu propio dominio.",
+            },
           ],
         },
         cta: {
@@ -238,7 +253,7 @@
         htmlLang: "en",
         meta: {
           title: "Use cases — Automation by industry | Orkesta",
-          desc: "Descriptive automation use cases by industry: real estate, e-commerce, B2C services, manufacturing and B2B SaaS. Stack, problem and concrete solution.",
+          desc: "Descriptive automation use cases by industry: real estate, e-commerce, B2C services, manufacturing, B2B SaaS and appointment-based businesses (WhatsApp agent + Booksy booking). Stack, problem and concrete solution.",
         },
         waDefault: "Hi, I saw your use cases and want to talk about my process.",
         nav: {
@@ -255,13 +270,13 @@
         },
         hero: {
           kicker: "Use cases · By industry",
-          h1: 'Five <em>concrete</em> automations that replace manual work.',
-          lead: 'These are <b>descriptive use cases</b> (not specific client stories). They cover patterns we see repeat in LATAM SMBs across real estate, e-commerce, services, manufacturing and SaaS. If your process looks like one of these, write to us — we can probably solve it with the same stack.',
+          h1: 'Six <em>concrete</em> automations that replace manual work.',
+          lead: 'These are <b>descriptive use cases</b> (not specific client stories). They cover patterns we see repeat in LATAM SMBs across real estate, e-commerce, services, manufacturing, SaaS and appointment-based businesses. If your process looks like one of these, write to us — we can probably solve it with the same stack.',
           ctaWA: "WhatsApp",
           ctaAgendar: "Book a diagnostic",
         },
         casos: {
-          kicker: "Five patterns · Five industries",
+          kicker: "Six patterns · Six industries",
           title: 'Cases that <em>repeat</em> in LATAM SMBs.',
           desc: "Each one with its problem, concrete solution and stack. If your situation looks similar, the path to MVP is usually similar.",
           problemaLabel: "Problem",
@@ -312,6 +327,15 @@
               problema: "Marketing delivers 200-500 leads/month to sales in an Excel: name, company, email. Sales has to research company by company, decide which to prioritize, write the first email. Many leads stay untouched.",
               solucion: "n8n processes each new lead: enriches with company data (size, industry, stack), Claude classifies fit (ICP score), prioritizes, and drafts a personalized first email with business context. Sales reviews and approves before sending.",
               impacto: "Zero untouched leads. The sales team goes from researching to talking to pre-qualified prospects.",
+            },
+            {
+              industria: "Appointment-based businesses",
+              tamano: "Barbershops, clinics, spas, studios, practices",
+              stack: ["WhatsApp Business API", "Claude API", "Booksy API", "Site + domain"],
+              titulo: 'Appointments and questions stuck in <em>calls and messages</em> during service.',
+              problema: "Customers ask about prices and hours and request appointments via WhatsApp and phone while the team is busy serving clients. The website is outdated and no one controls the domain.",
+              solucion: "A Claude agent on WhatsApp answers the business's FAQs 24/7 and books appointments via the booking platform's API (e.g. Booksy), checking availability by service and by staff member. We refresh the site with an embedded booking widget and manage the domain. The same pattern applies to any business that takes appointments.",
+              impacto: "Immediate replies without interrupting service, appointments confirmed without back-and-forth, and a professional web presence under your own domain.",
             },
           ],
         },
