@@ -8,10 +8,10 @@ Orkesta diseña e implementa automatizaciones con n8n, agentes inteligentes con 
 
 - [Home](https://orkestalo.com/) — Landing principal con servicios, proceso, soluciones, precios, FAQs y formulario de contacto.
 - [Sobre Orkesta](https://orkestalo.com/sobre-orkesta.html) — Quiénes somos, manifiesto de 3 principios (pragmatismo, ROI, sin lock-in), stack productivo y cobertura geográfica.
-- [Casos de uso](https://orkestalo.com/casos-de-uso.html) — 5 casos descriptivos por industria (inmobiliaria, e-commerce, servicios B2C, manufactura, SaaS B2B) con problema, solución y stack.
+- [Casos de uso](https://orkestalo.com/casos-de-uso.html) — 6 casos descriptivos por industria (inmobiliaria, e-commerce, servicios B2C, manufactura, SaaS B2B y negocios con cita previa: agente de WhatsApp + agenda Booksy) con problema, solución y stack.
 - [Preguntas frecuentes](https://orkestalo.com/preguntas-frecuentes.html) — 12 FAQs agrupadas en 4 temas: trabajo y proyecto, stack y soporte, logística, datos/propiedad/legal.
 - [Automatización con n8n](https://orkestalo.com/automatizacion-n8n.html) — Página de servicio: capabilities y comparativa vs Zapier/Make/custom code.
-- [Agentes con IA y Claude](https://orkestalo.com/agentes-ia-claude.html) — Página de servicio: capabilities (asistentes, tool use, documentos, clasificación) y comparativa vs chatbots tradicionales.
+- [Agentes con IA y Claude](https://orkestalo.com/agentes-ia-claude.html) — Página de servicio: capabilities (asistentes, agenda y reservas por API, tool use, documentos, clasificación) y comparativa vs chatbots tradicionales.
 - [Orquestación de agentes](https://orkestalo.com/orquestacion-agentes.html) — Página pilar: qué es la orquestación de agentes (y orquestación agéntica), en qué se diferencia de la orquestación de flujos, cómo Orkesta coordina agentes de Claude con n8n para procesos de extremo a extremo, y FAQ.
 - [Integraciones de Mercado Pago](https://orkestalo.com/integraciones-mercado-pago.html) — Página de servicio: checkout, Point, conciliación, notificaciones y reportes en tiempo real.
 - [Procesamiento de documentos con IA](https://orkestalo.com/procesamiento-documentos-ia.html) — Página de servicio: facturas, recibos, contratos, emails con Claude vision (vs OCR tradicional).
@@ -27,6 +27,8 @@ Orkesta diseña e implementa automatizaciones con n8n, agentes inteligentes con 
 - **Claude integrado a tu negocio**: Optimización de procesos incorporando modelos de IA donde generan más valor operativo.
 - **Integraciones de Mercado Pago**: Cobros online (checkout, links, suscripciones) e in-store (Point) conectados a tu operación con conciliación automática.
 - **Integraciones a medida**: Conectamos sistemas que no se comunican entre sí vía APIs y webhooks, con retries y observabilidad de producción.
+- **Presencia web: dominio y sitio**: Administramos tu dominio, renovamos o construimos tu sitio y embebemos widgets (agenda de citas, pagos) para que recibas y atiendas clientes en línea.
+- **Agenda de citas automatizada**: El agente consulta disponibilidad por servicio y por profesional y reserva citas vía API (Booksy, Calendly y similares), desde WhatsApp o un widget en tu sitio. Para cualquier negocio con cita previa.
 
 ## Estadísticas clave
 
@@ -68,6 +70,7 @@ Más que un proyecto de consultoría, Orkesta funciona como equipo extendido:
 - **Conciliación automática de pagos**: Integra Mercado Pago, registra ventas y concilia con hoja o ERP sin intervención manual. Beneficio: elimina la captura manual de cobros.
 - **Lector inteligente de facturas**: Recibe facturas por correo, extrae datos con IA y los carga al sistema. Beneficio: reduce horas de data entry.
 - **Orquestador de back-office**: Automatiza alta de clientes, notificaciones y reportes recurrentes entre apps. Beneficio: libera al equipo de tareas mecánicas recurrentes.
+- **Agenda de citas automatizada**: Tu agente consulta disponibilidad y reserva citas vía API (Booksy, Calendly y similares) desde WhatsApp o un widget en tu sitio. Beneficio: reserva por WhatsApp y web sin llamadas.
 
 ## ¿Es para ti?
 

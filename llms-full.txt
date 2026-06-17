@@ -1,5 +1,5 @@
 # Orkesta — Contenido completo del sitio
-Última actualización: 2026-06-14
+Última actualización: 2026-06-17
 
 ---
 
@@ -41,6 +41,7 @@ Plantillas que se adaptan a la operación de cada cliente — implementación r�
 2. **Conciliación de pagos automática** — Beneficio: elimina la captura manual de cobros. Integra Mercado Pago, registra ventas y concilia con hoja o ERP sin intervención manual. Tags: Mercado Pago, n8n.
 3. **Lector inteligente de facturas** — Beneficio: reduce horas de data entry de facturas y recibos. Recibe facturas por correo, extrae datos con IA y los carga al sistema. Tags: IA Docs, n8n.
 4. **Orquestador de back-office** — Beneficio: libera al equipo de tareas mecánicas. Automatiza alta de clientes, notificaciones y reportes recurrentes entre apps. Tags: Integraciones, n8n.
+5. **Agenda de citas automatizada** — Beneficio: reserva por WhatsApp y web sin llamadas. El agente consulta disponibilidad y reserva citas vía API (Booksy, Calendly y similares) — desde WhatsApp o un widget en tu sitio. Tags: WhatsApp, Booksy, Agenda.
 
 ---
 
@@ -69,6 +70,7 @@ Cuatro diferenciadores frente a las objeciones más comunes:
 5. **Claude integrado a tu negocio** — Optimización de procesos incorporando modelos de IA donde generan más valor.
 6. **Integraciones de Mercado Pago** — Cobros online e in-store conectados a tu operación y conciliación automática.
 7. **Integraciones a medida** — Conectamos sistemas que no hablan entre sí vía APIs y webhooks, de forma confiable.
+8. **Presencia web: dominio y sitio** — Administramos tu dominio, renovamos tu sitio y embebemos widgets (agenda, pagos) para que recibas y atiendas clientes en línea.
 
 ---
 
@@ -106,13 +108,14 @@ Cada propuesta es a la medida. Empieza con una llamada sin costo para entender t
 
 ---
 
-## FAQs (home — subset de 5; ver /preguntas-frecuentes.html para las 12)
+## FAQs (home — subset de 6; ver /preguntas-frecuentes.html para las 12)
 
 1. **¿Cuánto cuesta una automatización?** Cada propuesta es a la medida. Empezamos con un diagnóstico inicial sin costo (30 min) y entregamos propuesta concreta.
 2. **¿Cuánto tarda un proyecto típico?** 2 a 6 semanas para automatizaciones puntuales; 8 a 12 semanas para proyectos complejos.
 3. **¿Qué tecnologías usan?** n8n, Claude API, Mercado Pago, APIs y webhooks. Trabajamos sobre tu stack existente.
 4. **¿Dan soporte después de implementar?** Sí. Plan mensual a medida con monitoreo, mantenimiento, ajustes y nuevas automatizaciones.
 5. **¿De quién es el código al final?** Tuyo. Todo vive en tu infraestructura. Sin lock-in.
+6. **¿También hacen sitios web y administran el dominio?** Sí. Administramos tu dominio, renovamos o construimos tu sitio y embebemos widgets (agenda de citas, pagos), combinado con un agente en WhatsApp que reserva citas vía API (Booksy, Calendly y similares). Funciona para cualquier negocio con cita previa, sin importar el giro.
 
 ---
 
@@ -160,7 +163,7 @@ Basados en Ciudad de México. Trabajamos con empresas en México, LATAM y Estado
 
 # Casos de uso — https://orkestalo.com/casos-de-uso.html
 
-**Hero:** Cinco automatizaciones concretas que reemplazan trabajo manual.
+**Hero:** Seis automatizaciones concretas que reemplazan trabajo manual.
 
 **Nota:** Casos de uso descriptivos (no historias específicas de clientes). Cubren patrones repetidos en PyMEs LATAM.
 
@@ -203,6 +206,14 @@ Basados en Ciudad de México. Trabajamos con empresas en México, LATAM y Estado
 - **Problema:** 200-500 leads/mes sin enriquecer ni priorizar. Muchos se quedan sin tocar.
 - **Solución:** n8n enriquece datos, Claude clasifica fit (ICP score), prioriza y redacta primer correo personalizado.
 - **Impacto típico:** Cero leads sin tocar; ventas pasa de investigar a hablar con prospects pre-calificados.
+
+## Caso 6 — Negocios con cita previa
+
+- **Industria:** Negocios con cita previa (barberías, clínicas, spas, estudios, consultorios)
+- **Stack:** WhatsApp Business API + Claude API + Booksy API + Sitio + dominio
+- **Problema:** Clientes preguntan precios y horarios y piden cita por WhatsApp y teléfono mientras el equipo atiende; el sitio está desactualizado y nadie controla el dominio.
+- **Solución:** Agente con Claude en WhatsApp responde las FAQs 24/7 y reserva citas vía API de la plataforma de agenda (p. ej. Booksy) por servicio y por profesional; renovamos el sitio con widget de reserva embebido y administramos el dominio. El mismo patrón aplica a cualquier giro con agenda.
+- **Impacto típico:** Respuestas inmediatas sin frenar el servicio, reservas confirmadas sin ida y vuelta, y presencia web profesional bajo tu propio dominio.
 
 ---
 ---
@@ -277,9 +288,10 @@ Basados en Ciudad de México. Trabajamos con empresas en México, LATAM y Estado
 ## Capabilities
 
 1. **Asistentes conversacionales** — WhatsApp, web o Slack con contexto de tu CRM y catálogo.
-2. **Agentes con tool use** — Acceso real a tus APIs internas, bases de datos, sistemas de tickets.
-3. **Procesamiento de documentos con razonamiento** — Facturas, contratos, emails. Entiende layout, contexto y excepciones.
-4. **Clasificación y resumen** — Categorizar tickets, resumir hilos de correo, priorizar leads, generar reportes ejecutivos.
+2. **Agenda y reservas por API** — El agente consulta disponibilidad por servicio y por profesional y confirma la cita vía API de tu plataforma de agenda (Booksy, Calendly, Google Calendar) — sin que el cliente salga de WhatsApp.
+3. **Agentes con tool use** — Acceso real a tus APIs internas, bases de datos, sistemas de tickets.
+4. **Procesamiento de documentos con razonamiento** — Facturas, contratos, emails. Entiende layout, contexto y excepciones.
+5. **Clasificación y resumen** — Categorizar tickets, resumir hilos de correo, priorizar leads, generar reportes ejecutivos.
 
 ## Comparativa
 
@@ -485,4 +497,4 @@ Ejemplo ilustrativo: Un proceso que toma 10 horas/semana a $150 MXN/hora genera 
 
 ## Generado / actualización
 
-Este archivo se actualiza manualmente cuando cambia el contenido visible del sitio. Última actualización: 2026-06-14.
+Este archivo se actualiza manualmente cuando cambia el contenido visible del sitio. Última actualización: 2026-06-17.
