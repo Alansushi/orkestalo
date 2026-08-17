@@ -9,6 +9,7 @@
 .superpowers/
 .worktrees/
 node_modules/
+public/
 
 # Screenshots de desarrollo
 orkesta-es.png

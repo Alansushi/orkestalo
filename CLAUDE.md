@@ -23,7 +23,7 @@ Run `npm test` for the acceptance suite or `npm run check` for build + tests.
 
 ## Architecture
 
-Commercial pages are semantic HTML enhanced by `src/site.js` for language switching, navigation, Flowboard states and guided WhatsApp contact. Legacy pages keep their React structure in `src/generated/*.jsx`; `scripts/build.mjs` bundles them with React into `assets/*.js`. Shared styling remains in `styles.css` (custom CSS, not Tailwind).
+Commercial pages are semantic HTML enhanced by `src/site.js` for language switching, navigation, Flowboard states and guided WhatsApp contact. Legacy pages keep their React structure in `src/generated/*.jsx`; `scripts/build.mjs` bundles them with React into `assets/*.js` and assembles the deployable site in `public/` for Vercel. Shared styling remains in `styles.css` (custom CSS, not Tailwind).
 
 **Content pattern:** All user-facing text lives in a `TRANSLATIONS = { es: {...}, en: {...} }` object near the top of each page's script; components consume `TRANSLATIONS[lang]`. Language is chosen by `?lang=en` / `localStorage` / browser and toggled by the ES/EN switch in the nav. Keep ES and EN in parity — run `/sync-translations` after content edits.
 

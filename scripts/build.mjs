@@ -1,5 +1,5 @@
 import { build } from 'esbuild';
-import { access, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
+import { access, cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { basename, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -49,3 +49,15 @@ for (const file of (await readdir(root)).filter((name) => name.endsWith('.html')
     await writeFile(path, html);
   }
 }
+
+const publicDir = new URL('../public/', import.meta.url);
+await rm(publicDir, { recursive: true, force: true });
+await mkdir(publicDir, { recursive: true });
+
+const deployableExtensions = new Set(['.html', '.css', '.svg', '.png', '.txt', '.xml']);
+for (const file of await readdir(root)) {
+  const extension = file.includes('.') ? `.${file.split('.').pop()}` : '';
+  if (!deployableExtensions.has(extension)) continue;
+  await cp(new URL(`../${file}`, import.meta.url), new URL(`../public/${file}`, import.meta.url));
+}
+await cp(assets, new URL('../public/assets/', import.meta.url), { recursive: true });

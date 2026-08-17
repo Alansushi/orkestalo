@@ -69,3 +69,11 @@ test('every guided contact CTA uses one stable label and the floating CTA is acc
     assert.match(html, /class="[^"]*floating-wa[^"]*"[^>]*aria-label=/);
   }
 });
+
+test('the build assembles the public output expected by Vercel', async () => {
+  const publicIndex = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
+  const publicBundle = await readFile(new URL('../public/assets/site.js', import.meta.url), 'utf8');
+  assert.match(publicIndex, /<title>Automatización de procesos con IA/);
+  assert.match(publicIndex, /<script defer src="\/assets\/site\.js"><\/script>/);
+  assert.ok(publicBundle.length > 100);
+});
