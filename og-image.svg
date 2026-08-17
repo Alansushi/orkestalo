@@ -48,5 +48,5 @@
 
   <!-- Badge -->
   <rect x="900" y="508" width="184" height="40" fill="none" stroke="#1A1712" stroke-width="1.5"/>
-  <text x="992" y="534" font-family="'Courier New', monospace" font-size="13" fill="#1A1712" opacity="0.5" letter-spacing="2" text-anchor="middle">CDMX · LATAM · USA</text>
+  <text x="992" y="534" font-family="'Courier New', monospace" font-size="13" fill="#1A1712" opacity="0.5" letter-spacing="2" text-anchor="middle">PROCESOS · IA</text>
 </svg>

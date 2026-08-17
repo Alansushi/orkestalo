@@ -2,7 +2,7 @@
 
 Actualizado y validado contra las páginas públicas: 2026-08-16.
 
-## Automatización de procesos con IA para PyMEs en México y LATAM
+## Automatización de procesos con IA para que tu equipo avance
 
 Orkesta conecta tareas que hoy viven entre WhatsApp, correo, hojas de cálculo, CRM, ERP y herramientas internas. Orkesta mapea el proceso, diseña el flujo, prueba sus excepciones y lo entrega en la infraestructura del cliente.
 
@@ -16,7 +16,7 @@ Las siguientes son demostraciones recreadas con datos ficticios, no resultados a
 - Documentos: correo o factura → extracción → validación → registro estructurado.
 - Back-office: evento → n8n → decisión del agente → actualización de CRM → notificación.
 
-## Consultoría n8n en México para automatizar procesos
+## Consultoría n8n para automatizar procesos
 
 n8n se usa para conectar eventos, aplicaciones y reglas de negocio en workflows observables. Orkesta entrega mapa del proceso, workflow, manejo de errores, pruebas y documentación.
 
@@ -30,7 +30,7 @@ Un workflow representativo recibe un evento, extrae y valida datos, decide una r
 
 La herramienta se recomienda después de validar el proceso; Orkesta no prescribe n8n cuando una alternativa más simple resuelve mejor el caso.
 
-## Agentes de IA para PyMEs
+## Agentes de IA para empresas y equipos
 
 Un agente de IA útil identifica una intención, consulta contexto autorizado, elige una herramienta permitida, ejecuta una acción y escala el caso cuando sale de sus límites. Un agente requiere un trabajo definido, datos autorizados, herramientas explícitas y reglas de escalamiento.
 
@@ -89,9 +89,9 @@ Preguntas frecuentes, calificación, disponibilidad, citas, seguimiento y regist
 
 No necesariamente. Se diseña para resolver tareas definidas y entregar a una persona quejas, excepciones, decisiones sensibles o casos fuera de alcance.
 
-### ¿Trabajan fuera de México?
+### ¿Podemos trabajar de forma remota?
 
-Sí. Orkesta trabaja de forma remota con empresas de México, Latinoamérica y Estados Unidos, en español e inglés.
+Sí. Colaboramos por WhatsApp, correo y videollamada, con comunicación clara durante cada etapa del proyecto.
 
 ## Contacto
 

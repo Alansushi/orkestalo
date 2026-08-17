@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 const root = new URL('../', import.meta.url);
 const assets = new URL('../assets/', import.meta.url);
 const generated = new URL('../src/generated/', import.meta.url);
+const devOnlyFiles = new Set(['design-system.html', 'index-hero-bg.html']);
 await mkdir(assets, { recursive: true });
 await mkdir(generated, { recursive: true });
 
@@ -18,7 +19,7 @@ await build({
   outfile: fileURLToPath(new URL('../assets/site.js', import.meta.url)),
 });
 
-for (const file of (await readdir(root)).filter((name) => name.endsWith('.html'))) {
+for (const file of (await readdir(root)).filter((name) => name.endsWith('.html') && !devOnlyFiles.has(name))) {
   const path = new URL(`../${file}`, import.meta.url);
   let html = await readFile(path, 'utf8');
   const match = html.match(/<script type="text\/babel"[^>]*>([\s\S]*?)<\/script>/);
@@ -56,6 +57,7 @@ await mkdir(publicDir, { recursive: true });
 
 const deployableExtensions = new Set(['.html', '.css', '.svg', '.png', '.txt', '.xml']);
 for (const file of await readdir(root)) {
+  if (devOnlyFiles.has(file)) continue;
   const extension = file.includes('.') ? `.${file.split('.').pop()}` : '';
   if (!deployableExtensions.has(extension)) continue;
   await cp(new URL(`../${file}`, import.meta.url), new URL(`../public/${file}`, import.meta.url));
