@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/automatizacion-ia-pymes-latam.html",
+      "destination": "/automatizacion-ia-para-empresas.html",
+      "permanent": true
+    }
+  ]
+}

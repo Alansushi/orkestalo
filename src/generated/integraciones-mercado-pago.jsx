@@ -28,13 +28,13 @@ import * as ReactDOM from 'react-dom/client';
         hero: {
           kicker: "Servicio · Integraciones de Mercado Pago",
           h1: '<em>Mercado Pago</em> conectado a tu operación, sin captura manual.',
-          lead: 'Integramos <b>checkout</b>, <b>links de pago</b>, <b>Point</b> y <b>suscripciones</b> de Mercado Pago con tu ERP, hoja o CRM. Cada venta queda registrada y conciliada en tiempo real — cero data entry, cero discrepancias el lunes en la mañana.',
+          lead: 'Integramos <b>checkout</b>, <b>links de pago</b>, <b>Point</b> y <b>suscripciones</b> de Mercado Pago con tu ERP, hoja o CRM. Cada venta queda registrada y conciliada en tiempo real — cero captura manual, cero discrepancias el lunes por la mañana.',
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
         },
         capabilities: {
           kicker: "Qué integramos",
-          title: 'Toda la operación de pagos, <em>end-to-end</em>.',
+          title: 'Toda la operación de pagos, <em>de principio a fin</em>.',
           desc: "Desde el momento del cobro hasta la conciliación contable. Sin cajas negras ni \"magia\": cada paso queda documentado y trazable.",
           items: [
             { iconId: "i-integra", t: "Checkout, links y suscripciones",      d: "Checkout web embebido o redirect, links de pago dinámicos para WhatsApp/correo, y suscripciones recurrentes con manejo de fallos de cobro." },
@@ -70,7 +70,7 @@ import * as ReactDOM from 'react-dom/client';
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
         },
-        footer: { tagline: "Automatización e IA", country: "México" },
+        footer: { tagline: "Automatización e IA", country: "Trabajo remoto" },
       },
       en: {
         htmlLang: "en",
@@ -136,7 +136,7 @@ import * as ReactDOM from 'react-dom/client';
           ctaWA: "WhatsApp",
           ctaAgendar: "Book a diagnostic",
         },
-        footer: { tagline: "Automation & AI", country: "Mexico" },
+        footer: { tagline: "Automation & AI", country: "Remote collaboration" },
       },
     };
 

@@ -13,7 +13,7 @@ import * as ReactDOM from 'react-dom/client';
       es: {
         htmlLang: "es",
         meta: {
-          title: "Sobre Orkesta — Automatización pragmática para PyMEs LATAM",
+          title: "Sobre Orkesta — Automatización pragmática para equipos",
           desc: "Consultora pequeña, técnica y enfocada en automatización pragmática con n8n, Claude API y Mercado Pago. Sin lock-in, ROI medible.",
         },
         waDefault: "Hola, vi su página y quiero automatizar procesos en mi negocio.",
@@ -31,7 +31,7 @@ import * as ReactDOM from 'react-dom/client';
         },
         hero: {
           kicker: "Sobre Orkesta · Filosofía",
-          h1: 'Automatización <em>pragmática</em> para PyMEs que quieren resultados, no demos.',
+          h1: 'Automatización <em>pragmática</em> para equipos que quieren resultados, no demos.',
           lead: 'Somos una consultora pequeña, técnica y enfocada. Implementamos automatizaciones con <b>n8n</b>, agentes con <b>Claude</b> e integraciones a medida — con foco en <b>ROI medible</b> y sin lock-in.',
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
@@ -51,35 +51,35 @@ import * as ReactDOM from 'react-dom/client';
           title: 'Lo que <em>usamos</em> a diario.',
           desc: "Trabajamos sobre tu stack existente — no te forzamos a cambiar herramientas. Estas son las piezas centrales de nuestro día a día.",
           items: [
-            { iconId: "i-auto",    t: "n8n",             d: "Orquestación de flujos: triggers, lógica condicional, retries, observabilidad. Self-hosted o cloud según tu caso." },
+            { iconId: "i-auto",    t: "n8n",             d: "Orquestación de flujos: disparadores, lógica condicional, reintentos y observabilidad. Alojado por tu cuenta o en la nube, según tu caso." },
             { iconId: "i-modelo",  t: "Claude API",      d: "Agentes y asistentes con razonamiento, tool use y procesamiento de documentos. Configuramos zero data retention donde aplica." },
             { iconId: "i-integra", t: "Mercado Pago",    d: "Cobros online e in-store conectados a tu ERP/Sheet con conciliación automática y manejo de webhooks." },
             { iconId: "i-tiempo",  t: "APIs y webhooks", d: "Integramos cualquier sistema que hable HTTP. Sin reinventar — usamos las APIs que ya existen." },
           ],
         },
         donde: {
-          kicker: "Dónde estamos · Cobertura",
-          title: 'Basados en <em>Ciudad de México</em>, trabajamos con LATAM y USA.',
-          desc: "Operamos 100% remoto vía WhatsApp, email y videollamada. La distancia no es un problema — sí lo es la zona horaria, así que trabajamos en franjas de CDMX que cubren la mayoría de LATAM y EE. UU.",
+          kicker: "Colaboración · Trabajo remoto",
+          title: 'Colaboramos de forma <em>remota</em> con tu equipo.',
+          desc: "Trabajamos por WhatsApp, correo y videollamada, con acuerdos claros de horarios, entregables y seguimiento.",
           waTitle: "WhatsApp directo",
           waSub: "+52 55 4971 3262 · Respuesta rápida",
           mailSub: "Correo · Respondemos en 24h",
         },
         cta: {
           title: '<em>30 minutos</em>, sin compromiso, sin pitch.',
-          desc: "Te escuchamos, miramos tus procesos y te decimos qué se puede automatizar primero — con tiempos y orden de magnitud de costo. Si encaja, te mandamos propuesta. Si no, te decimos qué herramienta usar.",
+          desc: "Te escuchamos, miramos tus procesos y te decimos qué se puede automatizar primero — con tiempos y orden de magnitud de costo. Si encaja, te enviamos una propuesta. Si no, te decimos qué herramienta usar.",
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
         },
         footer: {
           tagline: "Automatización e IA",
-          country: "México",
+          country: "Trabajo remoto",
         },
       },
       en: {
         htmlLang: "en",
         meta: {
-          title: "About Orkesta — Pragmatic automation for LATAM SMBs",
+          title: "About Orkesta — Pragmatic automation for teams",
           desc: "A small, technical, focused consulting team. Pragmatic automation with n8n, Claude API and Mercado Pago. No lock-in, measurable ROI.",
         },
         waDefault: "Hi, I saw your page and want to automate processes in my business.",
@@ -97,7 +97,7 @@ import * as ReactDOM from 'react-dom/client';
         },
         hero: {
           kicker: "About Orkesta · Philosophy",
-          h1: 'Pragmatic <em>automation</em> for SMBs that want results, not demos.',
+          h1: 'Pragmatic <em>automation</em> for teams that want results, not demos.',
           lead: 'A small, technical, focused consulting team. We build automations with <b>n8n</b>, agents with <b>Claude</b> and custom integrations — with focus on <b>measurable ROI</b> and no lock-in.',
           ctaWA: "WhatsApp",
           ctaAgendar: "Book a diagnostic",
@@ -124,9 +124,9 @@ import * as ReactDOM from 'react-dom/client';
           ],
         },
         donde: {
-          kicker: "Where we are · Coverage",
-          title: 'Based in <em>Mexico City</em>, working with LATAM & the USA.',
-          desc: "We operate 100% remote via WhatsApp, email and video call. Distance isn't a problem — time zone is, so we work in CDMX hours that overlap most of LATAM and the US.",
+          kicker: "Collaboration · Remote work",
+          title: 'We collaborate <em>remotely</em> with your team.',
+          desc: "We work through WhatsApp, email and video calls, with clear agreements on schedules, deliverables and follow-up.",
           waTitle: "Direct WhatsApp",
           waSub: "+52 55 4971 3262 · Quick reply",
           mailSub: "Email · We respond within 24h",
@@ -139,7 +139,7 @@ import * as ReactDOM from 'react-dom/client';
         },
         footer: {
           tagline: "Automation & AI",
-          country: "Mexico",
+          country: "Remote collaboration",
         },
       },
     };

@@ -88,7 +88,7 @@ import * as ReactDOM from 'react-dom/client';
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
         },
-        footer: { tagline: "Automatización e IA", country: "México" },
+        footer: { tagline: "Automatización e IA", country: "Trabajo remoto" },
       },
       en: {
         htmlLang: "en",
@@ -172,7 +172,7 @@ import * as ReactDOM from 'react-dom/client';
           ctaWA: "WhatsApp",
           ctaAgendar: "Book a diagnostic",
         },
-        footer: { tagline: "Automation & AI", country: "Mexico" },
+        footer: { tagline: "Automation & AI", country: "Remote collaboration" },
       },
     };
 

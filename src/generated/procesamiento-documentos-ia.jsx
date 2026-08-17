@@ -37,7 +37,7 @@ import * as ReactDOM from 'react-dom/client';
           title: 'Cuatro tipos de documentos <em>que generan el 80% del trabajo</em>.',
           desc: "Si tu equipo pasa horas leyendo y capturando información desde papel/PDF/correo, probablemente sea uno de estos cuatro patrones.",
           items: [
-            { iconId: "i-flujo",   t: "Facturas y CFDI",                    d: "PDFs, imágenes o XML CFDI: extraemos emisor, receptor, monto, IVA, fecha, concepto y partidas. Validamos contra reglas (RFC válido, montos coherentes, fechas en rango)." },
+            { iconId: "i-flujo",   t: "Facturas y documentos fiscales",     d: "Desde PDF, imagen o XML extraemos emisor, receptor, identificador fiscal, total, impuestos, fecha, concepto y partidas. Validamos montos, formatos y fechas." },
             { iconId: "i-modelo",  t: "Recibos y comprobantes",             d: "Reembolsos, gastos de viaje, propinas. Manejamos múltiples idiomas y monedas, conversión automática y categorización contable." },
             { iconId: "i-agente",  t: "Contratos con campos clave",         d: "Identificamos partes, fechas clave (firma, inicio, vencimiento, renovación), montos, cláusulas críticas (rescisión, exclusividad) y los exportamos estructurados." },
             { iconId: "i-mail",    t: "Emails: clasificación y extracción", d: "Detectamos tipo (queja, cotización, factura adjunta), extraemos campos relevantes y enrutamos al equipo o sistema correcto automáticamente." },
@@ -70,7 +70,7 @@ import * as ReactDOM from 'react-dom/client';
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
         },
-        footer: { tagline: "Automatización e IA", country: "México" },
+        footer: { tagline: "Automatización e IA", country: "Trabajo remoto" },
       },
       en: {
         htmlLang: "en",
@@ -103,7 +103,7 @@ import * as ReactDOM from 'react-dom/client';
           title: "Four document types <em>that generate 80% of the work</em>.",
           desc: "If your team spends hours reading and capturing information from paper/PDF/email, it's probably one of these four patterns.",
           items: [
-            { iconId: "i-flujo",   t: "Invoices and CFDI",                  d: "PDFs, images or CFDI XML: we extract issuer, receiver, amount, tax, date, concept and line items. We validate against rules (valid tax ID, consistent amounts, dates in range)." },
+            { iconId: "i-flujo",   t: "Invoices and tax documents",         d: "From PDF, image or XML we extract issuer, recipient, tax identifier, total, taxes, date, concept and line items. We validate amounts, formats and dates." },
             { iconId: "i-modelo",  t: "Receipts and proofs of payment",     d: "Reimbursements, travel expenses, tips. We handle multiple languages and currencies, automatic conversion and accounting categorization." },
             { iconId: "i-agente",  t: "Contracts with key fields",          d: "We identify parties, key dates (signing, start, expiration, renewal), amounts, critical clauses (termination, exclusivity) and export them structured." },
             { iconId: "i-mail",    t: "Emails: classification & extraction", d: "We detect type (complaint, quote, attached invoice), extract relevant fields and automatically route to the right team or system." },
@@ -136,7 +136,7 @@ import * as ReactDOM from 'react-dom/client';
           ctaWA: "WhatsApp",
           ctaAgendar: "Book a diagnostic",
         },
-        footer: { tagline: "Automation & AI", country: "Mexico" },
+        footer: { tagline: "Automation & AI", country: "Remote collaboration" },
       },
     };
 
@@ -345,4 +345,3 @@ import * as ReactDOM from 'react-dom/client';
     };
 
     ReactDOM.createRoot(document.getElementById("root")).render(<App />);
-  

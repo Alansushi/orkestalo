@@ -9,8 +9,8 @@ import * as ReactDOM from 'react-dom/client';
       es: {
         htmlLang: "es",
         meta: {
-          title: "¿Por qué Orkesta? — Automatización n8n y Claude en México vs alternativas",
-          desc: "Compara Orkesta con freelancers, agencias generalistas y plataformas self-service para automatización con n8n y agentes IA en México y LATAM.",
+          title: "¿Por qué Orkesta? — Automatización n8n y Claude frente a alternativas",
+          desc: "Compara Orkesta con freelancers, agencias generalistas y plataformas self-service para proyectos de automatización con n8n y agentes de IA.",
         },
         waDefault: "Hola, quiero saber si Orkesta es la opción correcta para mi negocio.",
         nav: {
@@ -52,7 +52,7 @@ import * as ReactDOM from 'react-dom/client';
             { label: "Lock-in",               values: ["Sin lock-in — código tuyo", "Depende del freelancer", "Depende de contratos", "Atado a la plataforma"] },
             { label: "Agentes IA",            values: ["Integrados cuando el proceso lo requiere", "Confirmar experiencia y alcance", "Confirmar experiencia y alcance", "Funciones según la plataforma"] },
             { label: "Soporte continuo",      values: ["Plan mensual incluido", "Variable, disponibilidad limitada", "SLA formal, mayor costo", "Soporte de plataforma"] },
-            { label: "Foco en PyMEs LATAM",   values: ["Sí — precios adaptados", "Variable", "Más orientado a enterprise", "Sí, self-service"] },
+            { label: "Acompañamiento cercano",   values: ["Sí — trabajo directo y claro", "Variable", "Más orientado a grandes organizaciones", "Sí, self-service"] },
             { label: "Diagnóstico inicial",   values: ["Gratuito, 30 min", "Consulta pagada o gratis", "Proceso largo de venta", "Prueba gratuita"] },
           ],
         },
@@ -63,7 +63,7 @@ import * as ReactDOM from 'react-dom/client';
           items: [
             { t: "Si quieres manejar la herramienta tú mismo",   d: "Zapier o Make son buenas opciones self-service. No necesitas consultora si tienes tiempo de aprender y los flujos son simples." },
             { t: "Si tienes un equipo técnico interno",           d: "Si ya tienes ingenieros que manejan n8n, probablemente lo que necesitas es revisión de arquitectura, no un servicio administrado." },
-            { t: "Si el proyecto es enterprise (+50 flujos)",     d: "Para implementaciones de gran escala con equipos de 100+, una agencia más grande con SLA formal puede ser más adecuada." },
+            { t: "Si el proyecto es de gran escala (+50 flujos)",     d: "Para implementaciones de gran escala con equipos de 100+, una agencia más grande con SLA formal puede ser más adecuada." },
             { t: "Si el presupuesto es muy ajustado",             d: "Hay freelancers técnicos capaces con tarifas más bajas. Si no somos la opción correcta para tu presupuesto, te lo decimos." },
           ],
         },
@@ -73,7 +73,7 @@ import * as ReactDOM from 'react-dom/client';
           items: [
             { q: "¿Por qué n8n y Claude juntos en lugar de solo n8n?", a: "n8n orquesta flujos y conecta sistemas; Claude añade razonamiento. Los pasos que requieren decisión, interpretación de documentos o conversación natural necesitan un modelo de lenguaje. Juntos cubren tanto la automatización estructurada como los pasos que requieren IA." },
             { q: "¿Qué diferencia a Orkesta de un freelancer de n8n?", a: "Un freelancer técnico implementa lo que le pides. Orkesta empieza por el diagnóstico de proceso — qué automatizar primero, cuál entrega más ROI — y entrega con documentación, testing y soporte continuo. No solo construimos el flujo; aseguramos que funcione en producción." },
-            { q: "¿Trabajan solo en CDMX o también en LATAM y Estados Unidos?", a: "Operamos 100% remoto y ofrecemos cobertura en México, Latinoamérica y Estados Unidos, en español e inglés." },
+            { q: "¿Podemos trabajar de forma remota?", a: "Sí. Colaboramos de forma remota por WhatsApp, correo y videollamada, con seguimiento claro en cada etapa." },
             { q: "¿Qué pasa con mi automatización si dejo de trabajar con Orkesta?", a: "El código vive en tu infraestructura (tu instancia de n8n, tus credenciales de Claude API). Entregamos accesos, contraseñas y documentación. No dependes de nosotros para que siga funcionando." },
             { q: "¿Cuánto tiempo tarda una implementación?", a: "El tiempo se define después del diagnóstico, según sistemas, excepciones y controles requeridos. La propuesta incluye un calendario concreto antes de iniciar." },
             { q: "¿Pueden trabajar con el software que ya uso?", a: "Sí. n8n conecta con más de 400 apps vía nodos nativos y cualquier sistema con API REST o webhooks. Si ya usas HubSpot, Salesforce, Zoho, SAP, sistemas propietarios o APIs internas, podemos integrarlos." },
@@ -85,13 +85,13 @@ import * as ReactDOM from 'react-dom/client';
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
         },
-        footer: { tagline: "Automatización e IA", country: "México" },
+        footer: { tagline: "Automatización e IA", country: "Trabajo remoto" },
       },
       en: {
         htmlLang: "en",
         meta: {
-          title: "Why Orkesta? — n8n and Claude automation in Mexico vs alternatives",
-          desc: "Compare Orkesta with freelancers, generalist agencies and self-service platforms for n8n and AI agent automation in Mexico and LATAM.",
+          title: "Why Orkesta? — n8n and Claude automation compared",
+          desc: "Compare Orkesta with freelancers, generalist agencies and self-service platforms for n8n and AI agent automation projects.",
         },
         waDefault: "Hi, I want to know if Orkesta is the right choice for my business.",
         nav: {
@@ -133,7 +133,7 @@ import * as ReactDOM from 'react-dom/client';
             { label: "Lock-in",           values: ["No lock-in — your code", "Depends on freelancer", "Depends on contracts", "Tied to the platform"] },
             { label: "AI agents",         values: ["Integrated when the process requires them", "Confirm experience and scope", "Confirm experience and scope", "Features vary by platform"] },
             { label: "Ongoing support",   values: ["Monthly plan included", "Variable, limited availability", "Formal SLA, higher cost", "Platform support"] },
-            { label: "LATAM SME focus",   values: ["Yes — adapted pricing", "Variable", "More enterprise-oriented", "Yes, self-service"] },
+            { label: "Close collaboration",   values: ["Yes — direct, clear work", "Variable", "More enterprise-oriented", "Yes, self-service"] },
             { label: "Initial diagnostic",values: ["Free, 30 min", "Paid or free consultation", "Long sales process", "Free trial"] },
           ],
         },
@@ -154,7 +154,7 @@ import * as ReactDOM from 'react-dom/client';
           items: [
             { q: "Why n8n and Claude together instead of just n8n?", a: "n8n orchestrates flows and connects systems; Claude adds reasoning. Steps that require decision-making, document interpretation or natural conversation need a language model. Together they cover both structured automation and steps that require AI." },
             { q: "What sets Orkesta apart from an n8n freelancer?", a: "A technical freelancer implements what you ask for. Orkesta starts with process diagnosis — what to automate first, which delivers the most ROI — and delivers with documentation, testing and ongoing support. We don't just build the flow; we ensure it works in production." },
-            { q: "Do you only work in CDMX or also in LATAM and the US?", a: "We operate 100% remotely and cover Mexico, Latin America and the United States, in Spanish and English." },
+            { q: "Can we work remotely?", a: "Yes. We collaborate remotely through WhatsApp, email and video calls, with clear follow-up at every stage." },
             { q: "What happens to my automation if I stop working with Orkesta?", a: "The code lives in your infrastructure (your n8n instance, your Claude API credentials). We deliver access, passwords and documentation. You don't depend on us for it to keep working." },
             { q: "How long does an implementation take?", a: "Timing is defined after the diagnostic, based on systems, exceptions and required controls. The proposal includes a concrete schedule before work begins." },
             { q: "Can you work with the software I already use?", a: "Yes. n8n connects with 400+ apps via native nodes and any system with a REST API or webhooks. If you already use HubSpot, Salesforce, Zoho, SAP, proprietary systems or internal APIs, we can integrate them." },
@@ -166,7 +166,7 @@ import * as ReactDOM from 'react-dom/client';
           ctaWA: "WhatsApp",
           ctaAgendar: "Book a diagnostic",
         },
-        footer: { tagline: "Automation & AI", country: "Mexico" },
+        footer: { tagline: "Automation & AI", country: "Remote collaboration" },
       },
     };
 
