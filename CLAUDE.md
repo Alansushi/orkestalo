@@ -4,24 +4,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Static, multi-page marketing site for **Orkesta**, an automation and AI consulting business (n8n, Claude, agent orchestration, Mercado Pago). No build step, no package manager, no framework CLI — each page is a standalone HTML file with React 18 + Babel-standalone from CDN and shared styling in `styles.css`.
+Static, multi-page marketing site for **Orkesta**, an automation and AI consulting business (n8n, AI agents, WhatsApp, agent orchestration, Mercado Pago). The five commercial pages use semantic HTML plus the shared local `assets/site.js`; legacy React pages are precompiled with esbuild into local bundles. No page runs Babel in the browser.
 
 Pages: `index.html` (home) plus topic/cluster pages — `orquestacion-agentes.html` (pillar), `agentes-ia-claude.html`, `automatizacion-n8n.html`, `integraciones-mercado-pago.html`, `procesamiento-documentos-ia.html`, `casos-de-uso.html`, `sobre-orkesta.html`, `preguntas-frecuentes.html`. (`design-system.html` and `index-hero-bg.html` are dev-only and gitignored.)
 
 ## Running the Site
 
-Open `index.html` directly in a browser, or serve it locally:
+Install, build and serve locally:
 
 ```bash
+npm install
+npm run build
 python3 -m http.server 8080
 # then visit http://localhost:8080
 ```
 
-There are no build, lint, or test commands.
+Run `npm test` for the acceptance suite or `npm run check` for build + tests.
 
 ## Architecture
 
-Each page is a self-contained React app inside a single `<script type="text/babel">` block, with React 18 + ReactDOM + Babel-standalone from CDN and shared styling in `styles.css` (custom CSS, **not** Tailwind). Icons come from the `defs.svg` sprite via `<use href="/defs.svg#id">`.
+Commercial pages are semantic HTML enhanced by `src/site.js` for language switching, navigation, Flowboard states and guided WhatsApp contact. Legacy pages keep their React structure in `src/generated/*.jsx`; `scripts/build.mjs` bundles them with React into `assets/*.js`. Shared styling remains in `styles.css` (custom CSS, not Tailwind).
 
 **Content pattern:** All user-facing text lives in a `TRANSLATIONS = { es: {...}, en: {...} }` object near the top of each page's script; components consume `TRANSLATIONS[lang]`. Language is chosen by `?lang=en` / `localStorage` / browser and toggled by the ES/EN switch in the nav. Keep ES and EN in parity — run `/sync-translations` after content edits.
 

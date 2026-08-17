@@ -1,121 +1,49 @@
 # Orkesta
 
-> Consultoría en automatización de procesos e IA aplicada para PyMEs en CDMX, México y LATAM. Especialistas en n8n, Claude API, Mercado Pago e integraciones a medida.
+> Automatización de procesos con IA para PyMEs en México y Latinoamérica. Orkesta diseña flujos con n8n, agentes de IA y WhatsApp conectados a la operación del cliente.
 
-Orkesta diseña e implementa automatizaciones con n8n, agentes inteligentes con Claude, **orquestación de agentes** (coordinar varios agentes y flujos para ejecutar procesos de extremo a extremo) y soluciones de integración para empresas que quieren reducir trabajo manual y escalar sus operaciones. Posicionamiento: **automatización pragmática con ROI medible, sin lock-in, sin moda.** Del discovery a producción en semanas, no meses.
+Actualizado: 2026-08-16. Sincronizado con el contenido público del sitio en esa fecha.
 
-## Páginas del sitio
+## Oferta principal
 
-- [Home](https://orkestalo.com/) — Landing principal con servicios, proceso, soluciones, precios, FAQs y formulario de contacto.
-- [Sobre Orkesta](https://orkestalo.com/sobre-orkesta.html) — Quiénes somos, manifiesto de 3 principios (pragmatismo, ROI, sin lock-in), stack productivo y cobertura geográfica.
-- [Casos de uso](https://orkestalo.com/casos-de-uso.html) — 6 casos descriptivos por industria (inmobiliaria, e-commerce, servicios B2C, manufactura, SaaS B2B y negocios con cita previa: agente de WhatsApp + agenda Booksy) con problema, solución y stack.
-- [Preguntas frecuentes](https://orkestalo.com/preguntas-frecuentes.html) — 12 FAQs agrupadas en 4 temas: trabajo y proyecto, stack y soporte, logística, datos/propiedad/legal.
-- [Automatización con n8n](https://orkestalo.com/automatizacion-n8n.html) — Página de servicio: capabilities y comparativa vs Zapier/Make/custom code.
-- [Agentes con IA y Claude](https://orkestalo.com/agentes-ia-claude.html) — Página de servicio: capabilities (asistentes, agenda y reservas por API, tool use, documentos, clasificación) y comparativa vs chatbots tradicionales.
-- [Orquestación de agentes](https://orkestalo.com/orquestacion-agentes.html) — Página pilar: qué es la orquestación de agentes (y orquestación agéntica), en qué se diferencia de la orquestación de flujos, cómo Orkesta coordina agentes de Claude con n8n para procesos de extremo a extremo, y FAQ.
-- [Integraciones de Mercado Pago](https://orkestalo.com/integraciones-mercado-pago.html) — Página de servicio: checkout, Point, conciliación, notificaciones y reportes en tiempo real.
-- [Procesamiento de documentos con IA](https://orkestalo.com/procesamiento-documentos-ia.html) — Página de servicio: facturas, recibos, contratos, emails con Claude vision (vs OCR tradicional).
-- [¿Por qué Orkesta?](https://orkestalo.com/por-que-orkesta.html) — Comparativa honesta: Orkesta vs freelancers técnicos, agencias generalistas y plataformas self-service (Zapier/Make). Incluye tabla de decisión y cuándo NO elegir Orkesta.
-- [Automatización con IA para PyMEs en LATAM — Guía 2026](https://orkestalo.com/automatizacion-ia-pymes-latam.html) — Guía editorial: qué es la automatización con IA vs RPA, cuándo usar n8n vs agentes Claude, cómo calcular el ROI, los 5 patrones más comunes en PyMEs de LATAM y señales de buen candidato a automatizar.
+Orkesta ayuda a equipos que copian datos entre sistemas, responden solicitudes repetitivas, procesan documentos manualmente o pierden visibilidad entre WhatsApp, correo, hojas de cálculo y CRM. La oferta se organiza en tres servicios:
 
-## Servicios
+- **Automatización con n8n:** diseño e implementación de workflows, integraciones, manejo de errores, QA y documentación.
+- **Agentes de IA para PyMEs:** agentes con contexto, herramientas autorizadas, límites explícitos y escalamiento humano.
+- **Automatización de WhatsApp, documentos y operaciones:** conversaciones o archivos convertidos en acciones registradas en agenda, CRM, ERP u otros sistemas.
 
-- **Chatbots y agentes con IA**: Asistentes con Claude para ventas, soporte y procesos internos en web o WhatsApp. Tool use real, no chatbots de reglas.
-- **Orquestación de agentes** (orquestación agéntica): Coordinamos varios agentes de Claude con n8n para ejecutar procesos completos de extremo a extremo — no solo respuestas. Agentes especializados, tool use real, orquestación de pasos y datos, monitoreo y handoff a humano. Se diferencia de la orquestación de flujos (workflows en n8n) en que añade pasos que razonan.
-- **Automatización con n8n**: Conectamos CRM, correo, hojas de cálculo, facturación y APIs externas para eliminar trabajo manual repetitivo. Self-hosted o cloud.
-- **Procesamiento de documentos con IA**: Extracción y clasificación automática de facturas, recibos, contratos y emails con Claude vision. Entiende layout y contexto.
-- **Claude integrado a tu negocio**: Optimización de procesos incorporando modelos de IA donde generan más valor operativo.
-- **Integraciones de Mercado Pago**: Cobros online (checkout, links, suscripciones) e in-store (Point) conectados a tu operación con conciliación automática.
-- **Integraciones a medida**: Conectamos sistemas que no se comunican entre sí vía APIs y webhooks, con retries y observabilidad de producción.
-- **Presencia web: dominio y sitio**: Administramos tu dominio, renovamos o construimos tu sitio y embebemos widgets (agenda de citas, pagos) para que recibas y atiendas clientes en línea.
-- **Agenda de citas automatizada**: El agente consulta disponibilidad por servicio y por profesional y reserva citas vía API (Booksy, Calendly y similares), desde WhatsApp o un widget en tu sitio. Para cualquier negocio con cita previa.
+## Páginas prioritarias
 
-## Estadísticas clave
+- [Home — Automatización de procesos con IA](https://orkestalo.com/): propuesta, Flowboard, demostraciones, método, confianza, alcance, FAQ y contacto guiado.
+- [Consultoría n8n en México](https://orkestalo.com/automatizacion-n8n.html): workflow visual y comparación n8n vs. Make, Zapier y código a medida.
+- [Agentes de IA para PyMEs](https://orkestalo.com/agentes-ia-claude.html): demo conversacional y comparación entre chatbot de reglas y agente con IA.
+- [Automatización de WhatsApp para negocios](https://orkestalo.com/automatizacion-whatsapp-negocios.html): demo, arquitectura, casos por giro, FAQ y contacto guiado.
+- [Casos de uso](https://orkestalo.com/casos-de-uso.html): fichas descriptivas de problema, proceso y resultado operativo.
+- [Procesamiento de documentos con IA](https://orkestalo.com/procesamiento-documentos-ia.html): extracción, validación y registro de documentos.
+- [Orquestación de agentes](https://orkestalo.com/orquestacion-agentes.html): diferencias entre workflows y pasos con razonamiento.
+- [Preguntas frecuentes](https://orkestalo.com/preguntas-frecuentes.html): proyecto, soporte, propiedad, seguridad y cobertura.
+- [Sobre Orkesta](https://orkestalo.com/sobre-orkesta.html): enfoque, stack y cobertura geográfica.
 
-- +15 horas/semana ahorradas en promedio por cliente (según diagnósticos Orkesta)
-- Implementación en menos de 2 semanas para proyectos simples (según proyectos completados)
-- +400 apps conectables vía n8n sin código adicional
-- Respuesta automática 24/7 con agentes de IA, sin costo por ticket
+## Método y confianza
 
-## ¿Por qué Orkesta?
+1. Diagnóstico inicial sin costo para mapear pasos, excepciones, responsables y sistemas.
+2. Diseño de alcance, datos, controles y criterios de aceptación.
+3. Implementación y QA con pruebas de éxito, error y recuperación.
+4. Entrega en la infraestructura del cliente, documentación, transferencia de propiedad y soporte.
 
-Cuatro diferenciadores frente a las objeciones más comunes:
+El código y los flujos pertenecen al cliente. Orkesta entrega accesos y documentación; no publica métricas, testimonios ni resultados de clientes sin respaldo verificable. Las piezas visuales del sitio están marcadas como demostraciones recreadas con datos ficticios.
 
-1. **Implementamos y documentamos todo** — Tu equipo no toca código. Entregamos accesos, documentación y handoff completo.
-2. **Testing riguroso antes de producción** — Checklist de seguridad, manejo de errores, logs y pruebas de extremo a extremo.
-3. **Diagnóstico gratuito + alcance fijo** — Sin sorpresas: propuesta con alcance fijo y estimación de impacto antes de empezar.
-4. **Open-source, sin vendor lock-in** — Construido sobre n8n. El código vive en la infraestructura del cliente.
+## Alcance y tiempos
 
-## Proceso de trabajo
+Cada propuesta se cotiza según el proceso, los sistemas involucrados, las excepciones y los controles necesarios. El diagnóstico inicial no tiene costo. El calendario concreto se define en la propuesta antes de iniciar; el sitio no promete un plazo universal.
 
-1. **Discovery** — Mapeamos procesos y detectamos automatizaciones de mayor impacto.
-2. **Diseño** — Arquitectura de la solución con entregables claros y estimación de ROI.
-3. **Implementación** — Flujos, agentes e integraciones siguiendo buenas prácticas.
-4. **Testing** — Pruebas de extremo a extremo en escenarios reales.
-5. **Checklist de buenas prácticas** — Seguridad, manejo de errores, logs, documentación.
-6. **Salida a producción** — Despliegue, monitoreo y acompañamiento.
+## Cobertura y contacto
 
-## Acompañamiento post-entrega
-
-Más que un proyecto de consultoría, Orkesta funciona como equipo extendido:
-
-- **Humano disponible**: Canal directo vía WhatsApp con el especialista que implementó la solución.
-- **Monitoreo y alertas**: Seguimiento activo de los flujos con resolución proactiva.
-- **Mejoras continuas**: El plan de soporte incluye ajustes, optimizaciones y nuevas automatizaciones.
-- **Documentación completa**: Guías y runbooks para operación autónoma.
-
-## Soluciones listas para implementar
-
-- **Asistente de atención 24/7**: Agente con Claude que responde dudas, califica leads y agenda — en web o WhatsApp. Beneficio: atiende fuera de horario sin sumar headcount.
-- **Conciliación automática de pagos**: Integra Mercado Pago, registra ventas y concilia con hoja o ERP sin intervención manual. Beneficio: elimina la captura manual de cobros.
-- **Lector inteligente de facturas**: Recibe facturas por correo, extrae datos con IA y los carga al sistema. Beneficio: reduce horas de data entry.
-- **Orquestador de back-office**: Automatiza alta de clientes, notificaciones y reportes recurrentes entre apps. Beneficio: libera al equipo de tareas mecánicas recurrentes.
-- **Agenda de citas automatizada**: Tu agente consulta disponibilidad y reserva citas vía API (Booksy, Calendly y similares) desde WhatsApp o un widget en tu sitio. Beneficio: reserva por WhatsApp y web sin llamadas.
-
-## ¿Es para ti?
-
-Trabajamos mejor con empresas que:
-
-- Usan Excel para procesos repetitivos que ya no escalan.
-- Tienen tareas manuales que cruzan sistemas (CRM, correo, ERP, contabilidad).
-- Pierden horas capturando información a mano desde correos o documentos.
-- Atienden clientes por WhatsApp y el volumen ya no se sostiene manual.
-- Quieren IA pragmática sin contratar un equipo técnico in-house.
-
-## Precios
-
-- **Diagnóstico inicial**: Sin costo, primera llamada de 30 minutos — entendemos tu negocio y entregamos próximos pasos claros.
-- **Diseño e implementación**: Propuesta a medida según alcance del proyecto — solución de extremo a extremo (discovery → producción).
-- **Soporte continuo**: Plan mensual a medida — monitoreo, ajustes, mejoras y nuevas automatizaciones.
-
-## Stack productivo
-
-- **n8n** para orquestación de flujos (self-hosted o cloud, según el caso).
-- **Claude API** (Anthropic) para agentes, asistentes y procesamiento de documentos con razonamiento.
-- **Mercado Pago** para cobros online e in-store con conciliación automática.
-- **APIs y webhooks** para integrar cualquier sistema con HTTP.
-- Trabajamos sobre el stack existente del cliente — no forzamos migraciones.
-
-## Filosofía / posicionamiento
-
-Tres principios:
-
-1. **Pragmatismo sobre buzz**. Si Excel resuelve, no vendemos un agente. Empezamos por lo más simple que entregue valor.
-2. **ROI antes que tecnología**. Cada propuesta tiene una estimación clara de impacto. Si no hay ROI, lo decimos.
-3. **Sin lock-in**. El código y los flujos viven en la infraestructura del cliente. Entregamos accesos, documentación y handoff.
-4. **Empieza pequeño**. La mayoría de los clientes comienza con un solo proceso. Valida el ROI, luego escala. No hay mínimo de proyecto.
-
-## Contacto
-
-- **Canal principal:** WhatsApp +52 55 4971 3262 (respuesta en el mismo día)
-- Email: info@orkestalo.com (consultas formales o documentos)
-- Web: https://orkestalo.com
-- Diagnóstico inicial sin costo (30 min): https://orkestalo.com/#contacto
-
-## Área de servicio
-
-Ciudad de México (CDMX) · México · LATAM · Estados Unidos. Operación 100% remota vía WhatsApp, correo y videollamada.
+- Cobertura: Ciudad de México, México, Latinoamérica y Estados Unidos; operación remota en español e inglés.
+- Canal principal: [WhatsApp +52 55 4971 3262](https://wa.me/525549713262).
+- Alternativa: info@orkestalo.com.
+- Contacto guiado: https://orkestalo.com/#contacto
 
 ## Contenido completo
 
-Para el texto completo de todas las secciones del sitio, ver: https://orkestalo.com/llms-full.txt
+Texto consolidado y notas de sincronización: https://orkestalo.com/llms-full.txt
