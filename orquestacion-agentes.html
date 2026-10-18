@@ -8,18 +8,15 @@
   <meta name="description" content="Orquestación de agentes: qué es, en qué se diferencia de la orquestación de flujos, y cómo Orkesta coordina agentes de Claude con n8n para automatizar procesos de extremo a extremo." />
   <meta name="author" content="Orkesta" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://orkestalo.com/orquestacion-agentes.html" />
-  <link rel="alternate" hreflang="es" href="https://orkestalo.com/orquestacion-agentes.html" />
-  <link rel="alternate" hreflang="en" href="https://orkestalo.com/orquestacion-agentes.html?lang=en" />
-  <link rel="alternate" hreflang="x-default" href="https://orkestalo.com/orquestacion-agentes.html" />
+  <link rel="canonical" href="https://www.orkestalo.com/orquestacion-agentes.html" />
   <link rel="alternate" type="text/plain" href="/llms.txt" title="Contenido del sitio para LLMs" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Orquestación de agentes — Qué es y cómo se implementa | Orkesta" />
   <meta property="og:description" content="Qué es la orquestación de agentes, en qué se diferencia de la orquestación de flujos, y cómo Orkesta coordina agentes de Claude con n8n para procesos de extremo a extremo." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://orkestalo.com/orquestacion-agentes.html" />
-  <meta property="og:image" content="https://orkestalo.com/og-image.png" />
+  <meta property="og:url" content="https://www.orkestalo.com/orquestacion-agentes.html" />
+  <meta property="og:image" content="https://www.orkestalo.com/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
@@ -27,22 +24,19 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Orquestación de agentes — Qué es y cómo se implementa | Orkesta" />
   <meta name="twitter:description" content="Coordinar agentes de Claude con n8n para ejecutar procesos completos, no solo respuestas. Definición, diferencias y cómo se implementa." />
-  <meta name="twitter:image" content="https://orkestalo.com/og-image.png" />
+  <meta name="twitter:image" content="https://www.orkestalo.com/og-image.png" />
 
   <!-- Schema.org · Service -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Service",
-    "@id": "https://orkestalo.com/orquestacion-agentes.html#service",
+    "@id": "https://www.orkestalo.com/orquestacion-agentes.html#service",
     "name": "Orquestación de agentes de IA",
-    "url": "https://orkestalo.com/orquestacion-agentes.html",
+    "url": "https://www.orkestalo.com/orquestacion-agentes.html",
     "serviceType": "AI agent orchestration",
-    "provider": { "@id": "https://orkestalo.com/#org" },
-    "description": "Coordinación de agentes de Claude con flujos de n8n para ejecutar procesos de negocio de extremo a extremo: agentes especializados, tool use real, orquestación de pasos y datos, monitoreo y handoff a humano.",
-    "datePublished": "2026-06-04",
-    "dateModified": "2026-08-16"
-  }
+    "provider": { "@id": "https://www.orkestalo.com/#org" },
+    "description": "Coordinación de agentes de Claude con flujos de n8n para ejecutar procesos de negocio de extremo a extremo: agentes especializados, tool use real, orquestación de pasos y datos, monitoreo y handoff a humano."}
   </script>
 
   <!-- Schema.org · BreadcrumbList -->
@@ -51,33 +45,13 @@
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://orkestalo.com/" },
-      { "@type": "ListItem", "position": 2, "name": "Orquestación de agentes", "item": "https://orkestalo.com/orquestacion-agentes.html" }
+      { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.orkestalo.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Orquestación de agentes", "item": "https://www.orkestalo.com/orquestacion-agentes.html" }
     ]
   }
   </script>
 
   <!-- Schema.org · FAQPage -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      { "@type": "Question", "name": "¿Qué es la orquestación de agentes?",
-        "acceptedAnswer": { "@type": "Answer", "text": "La orquestación de agentes es la coordinación de varios agentes de IA —y de los sistemas que tocan— para ejecutar un proceso de negocio de principio a fin. En lugar de un solo chatbot que responde, hay agentes especializados (uno califica, otro consulta tu sistema, otro redacta, otro registra) coordinados para que el resultado sea una tarea terminada, no solo un mensaje." } },
-      { "@type": "Question", "name": "¿En qué se diferencia de la orquestación de flujos (workflows)?",
-        "acceptedAnswer": { "@type": "Answer", "text": "La orquestación de flujos encadena pasos fijos entre apps (lo que hace n8n: si pasa A, ejecuta B y C). La orquestación de agentes añade pasos que razonan: agentes de Claude que interpretan, deciden y manejan excepciones. Orkesta combina ambas — n8n orquesta el proceso y los agentes de Claude aportan el razonamiento." } },
-      { "@type": "Question", "name": "¿Es lo mismo que un sistema multiagente?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Un sistema multiagente coordina varios agentes que colaboran. Nuestra forma de orquestación usa agentes de Claude especializados coordinados con n8n, que actúa como director: define el orden, pasa el contexto entre agentes y maneja reintentos. El objetivo es el mismo: un proceso completo resuelto por agentes que se reparten el trabajo." } },
-      { "@type": "Question", "name": "¿Usan MCP, CrewAI o LangGraph?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Orquestamos con n8n y Claude, que cubre la mayoría de los casos de negocio. Para el acceso de los agentes a tus herramientas usamos APIs, webhooks y MCP (el estándar abierto de Anthropic) donde encaja. Si un framework de agentes aporta valor a tu caso, lo integramos — sin atarte a una tecnología concreta." } },
-      { "@type": "Question", "name": "¿Cuándo conviene orquestar agentes y no usar un solo agente?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Cuando el proceso cruza varios pasos, sistemas o decisiones: por ejemplo, atender una solicitud que requiere calificar al cliente, consultar inventario, generar un documento y registrar el resultado. Si es una sola pregunta-respuesta, basta un agente; si es un proceso, conviene orquestarlos." } },
-      { "@type": "Question", "name": "¿Cuánto tarda implementar una orquestación de agentes?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Empezamos con un proceso concreto y vamos de discovery a producción en semanas, no meses. Validamos el ROI de ese proceso antes de escalar a más agentes. No hay mínimo de proyecto." } }
-    ]
-  }
-  </script>
 
   <!-- Vercel Web Analytics -->
   <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
@@ -95,6 +69,7 @@
     .faq-q { font-weight: 600; margin: 0 0 6px; font-size: 1.05rem; }
     .faq-a { margin: 0; color: var(--ink-2, #444); line-height: 1.6; }
   </style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "@id": "https://www.orkestalo.com/#org", "name": "Orkesta", "url": "https://www.orkestalo.com/", "logo": "https://www.orkestalo.com/logo-orkesta.svg", "email": "info@orkestalo.com", "telephone": "+52-55-4971-3262"}</script>
 </head>
 <body>
   <div id="root">
@@ -153,7 +128,7 @@
             <dt>¿Cuándo conviene orquestar agentes?</dt>
             <dd>Cuando el proceso cruza varios pasos, sistemas o decisiones. Si es una sola pregunta-respuesta, basta un agente; si es un proceso, conviene orquestarlos.</dd>
             <dt>¿Cuánto tarda implementarlo?</dt>
-            <dd>Empezamos con un proceso concreto y vamos de discovery a producción en semanas. Validamos el ROI antes de escalar. No hay mínimo de proyecto.</dd>
+            <dd>Empezamos con un proceso concreto y vamos de la definición del alcance a una implementación con calendario acordado. Definimos cómo evaluar el impacto antes de ampliar el alcance. No hay mínimo de proyecto.</dd>
           </dl>
           <p><a href="/preguntas-frecuentes.html">Ver todas las preguntas frecuentes</a></p>
         </section>

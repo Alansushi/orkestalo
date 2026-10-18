@@ -1,112 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://orkestalo.com/</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://orkestalo.com/?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/"/>
-    <lastmod>2026-08-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+    <loc>https://www.orkestalo.com/</loc>
   </url>
   <url>
-    <loc>https://orkestalo.com/orquestacion-agentes.html</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/orquestacion-agentes.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://orkestalo.com/orquestacion-agentes.html?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/orquestacion-agentes.html"/>
-    <lastmod>2026-08-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.orkestalo.com/orquestacion-agentes.html</loc>
   </url>
   <url>
-    <loc>https://orkestalo.com/sobre-orkesta.html</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/sobre-orkesta.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://orkestalo.com/sobre-orkesta.html?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/sobre-orkesta.html"/>
-    <lastmod>2026-08-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://www.orkestalo.com/sobre-orkesta.html</loc>
   </url>
   <url>
-    <loc>https://orkestalo.com/casos-de-uso.html</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/casos-de-uso.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://orkestalo.com/casos-de-uso.html?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/casos-de-uso.html"/>
-    <lastmod>2026-08-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.orkestalo.com/casos-de-uso.html</loc>
   </url>
   <url>
-    <loc>https://orkestalo.com/preguntas-frecuentes.html</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/preguntas-frecuentes.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://orkestalo.com/preguntas-frecuentes.html?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/preguntas-frecuentes.html"/>
-    <lastmod>2026-08-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://www.orkestalo.com/preguntas-frecuentes.html</loc>
   </url>
   <url>
-    <loc>https://orkestalo.com/automatizacion-n8n.html</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/automatizacion-n8n.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://orkestalo.com/automatizacion-n8n.html?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/automatizacion-n8n.html"/>
-    <lastmod>2026-08-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.orkestalo.com/automatizacion-n8n.html</loc>
   </url>
   <url>
-    <loc>https://orkestalo.com/agentes-ia-claude.html</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/agentes-ia-claude.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://orkestalo.com/agentes-ia-claude.html?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/agentes-ia-claude.html"/>
-    <lastmod>2026-08-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.orkestalo.com/agentes-ia-claude.html</loc>
   </url>
   <url>
-    <loc>https://orkestalo.com/integraciones-mercado-pago.html</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/integraciones-mercado-pago.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://orkestalo.com/integraciones-mercado-pago.html?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/integraciones-mercado-pago.html"/>
-    <lastmod>2026-08-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.orkestalo.com/integraciones-mercado-pago.html</loc>
   </url>
   <url>
-    <loc>https://orkestalo.com/procesamiento-documentos-ia.html</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/procesamiento-documentos-ia.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://orkestalo.com/procesamiento-documentos-ia.html?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/procesamiento-documentos-ia.html"/>
-    <lastmod>2026-08-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.orkestalo.com/procesamiento-documentos-ia.html</loc>
   </url>
   <url>
-    <loc>https://orkestalo.com/por-que-orkesta.html</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/por-que-orkesta.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://orkestalo.com/por-que-orkesta.html?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/por-que-orkesta.html"/>
-    <lastmod>2026-08-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://www.orkestalo.com/por-que-orkesta.html</loc>
   </url>
   <url>
-    <loc>https://orkestalo.com/automatizacion-ia-para-empresas.html</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/automatizacion-ia-para-empresas.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://orkestalo.com/automatizacion-ia-para-empresas.html?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/automatizacion-ia-para-empresas.html"/>
-    <lastmod>2026-08-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://www.orkestalo.com/automatizacion-ia-para-empresas.html</loc>
   </url>
   <url>
-    <loc>https://orkestalo.com/automatizacion-whatsapp-negocios.html</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://orkestalo.com/automatizacion-whatsapp-negocios.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://orkestalo.com/automatizacion-whatsapp-negocios.html?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://orkestalo.com/automatizacion-whatsapp-negocios.html"/>
-    <lastmod>2026-08-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.orkestalo.com/automatizacion-whatsapp-negocios.html</loc>
   </url>
 </urlset>

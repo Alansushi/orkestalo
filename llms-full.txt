@@ -25,7 +25,7 @@ La ruta /contacto/ ofrece un formulario con nombre, correo, tipo de proyecto y d
 
 Orkesta conecta tareas que hoy viven entre WhatsApp, correo, hojas de cálculo, CRM, ERP y herramientas internas. Orkesta mapea el proceso, diseña el flujo, prueba sus excepciones y lo entrega en la infraestructura del cliente.
 
-La propuesta comercial tiene tres entradas: automatización con n8n; agentes de IA; y automatización de WhatsApp, documentos y operaciones. El diagnóstico inicial no tiene costo. El código, los flujos y las credenciales quedan bajo control del cliente, acompañados de documentación y soporte.
+La propuesta comercial tiene tres entradas: automatización con n8n; agentes de IA; y automatización de WhatsApp, documentos y operaciones. El alcance del diagnóstico se acuerda en la primera conversación. El código, los flujos y las credenciales quedan bajo control del cliente, acompañados de documentación y soporte.
 
 ### Automatizaciones demostradas en el sitio
 
@@ -88,13 +88,13 @@ Las fichas de casos de uso muestran patrones, no resultados de clientes:
 
 ## Alcance, precio y tiempo
 
-El diagnóstico inicial no tiene costo. Cada propuesta define entregables, dependencias, calendario y soporte según el proceso. Orkesta no promete un plazo universal ni publica paquetes genéricos porque el esfuerzo depende de sistemas, excepciones y controles.
+El alcance del diagnóstico se acuerda en la primera conversación. Cada propuesta define entregables, dependencias, calendario y soporte según el proceso. Orkesta no promete un plazo universal ni publica paquetes genéricos porque el esfuerzo depende de sistemas, excepciones y controles.
 
 ## Preguntas frecuentes
 
 ### ¿Cómo empieza un proyecto?
 
-Orkesta comienza con un diagnóstico sin costo para entender un proceso, sus excepciones y los sistemas involucrados. Después entrega alcance, calendario y entregables concretos.
+Orkesta comienza con una conversación inicial para entender un proceso, sus excepciones y los sistemas involucrados. Después entrega alcance, calendario y entregables concretos.
 
 ### ¿De quién son los flujos y el código?
 

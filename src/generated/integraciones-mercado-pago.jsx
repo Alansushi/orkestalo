@@ -66,7 +66,7 @@ import * as ReactDOM from 'react-dom/client';
         },
         cta: {
           title: '¿Tu equipo <em>concilia Mercado Pago</em> el lunes en la mañana?',
-          desc: "30 minutos sin compromiso. Te decimos qué partes de tu flujo MP se pueden automatizar primero, qué requiere webhooks vs reconciliación batch, y cuánto se demora la implementación.",
+          desc: "Conversemos sobre el proceso. Te decimos qué partes de tu flujo MP se pueden automatizar primero, qué requiere webhooks vs reconciliación batch, y cuánto se demora la implementación.",
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
         },
@@ -132,7 +132,7 @@ import * as ReactDOM from 'react-dom/client';
         },
         cta: {
           title: "Does your team <em>reconcile Mercado Pago</em> on Monday morning?",
-          desc: "30 minutes no commitment. We tell you which parts of your MP flow can be automated first, what needs webhooks vs batch reconciliation, and how long implementation takes.",
+          desc: "Let’s discuss the process. We tell you which parts of your MP flow can be automated first, what needs webhooks vs batch reconciliation, and how long implementation takes.",
           ctaWA: "WhatsApp",
           ctaAgendar: "Book a diagnostic",
         },

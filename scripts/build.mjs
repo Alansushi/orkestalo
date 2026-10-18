@@ -86,8 +86,8 @@ const newRoutes = await renderRoutePages(publicDir);
 const sitemapPath = new URL('../public/sitemap.xml', import.meta.url);
 let sitemap = await readFile(sitemapPath, 'utf8');
 const newEntries = newRoutes.map((path) => {
-  const absolute = `https://orkestalo.com${path}`;
-  return `  <url><loc>${absolute}</loc><xhtml:link rel="alternate" hreflang="es" href="${absolute}"/><xhtml:link rel="alternate" hreflang="en" href="${absolute}?lang=en"/><xhtml:link rel="alternate" hreflang="x-default" href="${absolute}"/></url>`;
+  const absolute = `https://www.orkestalo.com${path}`;
+  return `  <url><loc>${absolute}</loc></url>`;
 }).join('\n');
 sitemap = sitemap.replace('</urlset>', `${newEntries}\n</urlset>`);
 await writeFile(sitemapPath, sitemap);

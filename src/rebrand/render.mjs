@@ -2,7 +2,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { projects, services } from './data.mjs';
 
-const origin = 'https://orkestalo.com';
+const origin = 'https://www.orkestalo.com';
 const e = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const t = (es, en = es) => `<span data-es="${e(es)}" data-en="${e(en)}">${e(es)}</span>`;
 const href = (path) => `${origin}${path}`;
@@ -12,13 +12,13 @@ function layout({ path, title, description, content, type = 'WebPage' }) {
   const canonical = href(path);
   const structured = { '@context': 'https://schema.org', '@graph': [
     { '@type': 'Organization', '@id': `${origin}/#org`, name: 'Orkesta', url: `${origin}/`, logo: `${origin}/logo-orkesta.svg`, email: 'info@orkestalo.com', telephone: '+52-55-4971-3262' },
-    { '@type': type, name: title, url: canonical, inLanguage: ['es', 'en'], publisher: { '@id': `${origin}/#org` } },
+    { '@type': type, name: title, url: canonical, inLanguage: 'es', ...(type === 'Service' ? { provider: { '@id': `${origin}/#org` } } : { publisher: { '@id': `${origin}/#org` } }) },
   ] };
   const robots = path === '/aviso-de-privacidad/' ? '<meta name="robots" content="noindex,follow">' : '';
   return `<!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${e(title)} | Orkesta</title><meta name="description" content="${e(description)}">${robots}
-<link rel="canonical" href="${canonical}"><link rel="alternate" hreflang="es" href="${canonical}"><link rel="alternate" hreflang="en" href="${canonical}${path.includes('?') ? '&' : '?'}lang=en"><link rel="alternate" hreflang="x-default" href="${canonical}">
+<link rel="canonical" href="${canonical}">
 <meta property="og:type" content="website"><meta property="og:title" content="${e(title)} | Orkesta"><meta property="og:description" content="${e(description)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="${origin}/media/orkesta-2/assets/social/orkesta-open-graph.webp"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon-orkesta-2.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/rebrand.css"><script type="application/ld+json">${JSON.stringify(structured)}</script><script defer src="/assets/site.js"></script><script defer src="/assets/rebrand.js"></script></head>
 <body class="studio-page"><a class="skip-link" href="#contenido">${t('Saltar al contenido', 'Skip to content')}</a>
@@ -62,7 +62,7 @@ function projectPage(project) {
 
 function servicePage(service) {
   const path = `/servicios/${service.slug}/`;
-  return layout({ path, type: 'Service', title: service.name.es, description: service.summary.es, content: `<section class="studio-page-hero"><div class="studio-wrap"><span class="studio-index">SERVICIO / ${service.number}</span><h1>${t(service.name.es, service.name.en)}</h1><p>${t(service.summary.es, service.summary.en)}</p><a class="studio-button" href="/contacto/?referencia=${encodeURIComponent(service.slug)}">${t('Hablemos de tu proyecto ↗', 'Let’s discuss your project ↗')}</a></div></section><section class="studio-section studio-section--paper"><div class="studio-wrap service-detail"><div><span class="studio-index">EN QUÉ CONSISTE</span><h2>${t('Un proceso claro de inicio a entrega.', 'A clear process from start to handoff.')}</h2><p>${t(service.summary.es, service.summary.en)}</p><p>${t('Definimos objetivos y restricciones contigo, mostramos avances y probamos lo que construimos antes de entregar.', 'We define goals and constraints together, share progress and test what we build before handoff.')}</p></div><div><h3>${t('Qué podemos incluir', 'What we can include')}</h3><ul>${service.deliverables.es.map((item, index) => `<li>${t(item, service.deliverables.en[index])}</li>`).join('')}</ul></div></div></section><section class="studio-section studio-end-cta"><div class="studio-wrap"><h2>${t('Empecemos por entender tu idea.', 'Let’s start by understanding your idea.')}</h2><a class="studio-button" href="/contacto/?referencia=${encodeURIComponent(service.slug)}">${t('Iniciar conversación ↗', 'Start a conversation ↗')}</a></div></section>` });
+  return layout({ path, type: 'Service', title: service.name.es, description: service.summary.es, content: `<section class="studio-page-hero"><div class="studio-wrap"><span class="studio-index">SERVICIO / ${service.number}</span><h1>${t(service.name.es, service.name.en)}</h1><p>${t(service.summary.es, service.summary.en)}</p><a class="studio-button" href="/contacto/?referencia=${encodeURIComponent(service.slug)}">${t('Hablemos de tu proyecto ↗', 'Let’s discuss your project ↗')}</a></div></section><section class="studio-section studio-section--paper"><div class="studio-wrap service-detail"><div><span class="studio-index">EN QUÉ CONSISTE</span><h2>${t('Un proceso claro de inicio a entrega.', 'A clear process from start to handoff.')}</h2><p>${t(service.scope.es, service.scope.en)}</p><p>${t('Definimos objetivos y restricciones contigo, mostramos avances y probamos lo que construimos antes de entregar.', 'We define goals and constraints together, share progress and test what we build before handoff.')}</p><h3>${t('Qué define el alcance', 'What shapes the scope')}</h3><p>${t(service.conditions.es, service.conditions.en)}</p></div><div><h3>${t('Qué podemos incluir', 'What we can include')}</h3><ul>${service.deliverables.es.map((item, index) => `<li>${t(item, service.deliverables.en[index])}</li>`).join('')}</ul></div></div></section><section class="studio-section studio-end-cta"><div class="studio-wrap"><h2>${t('Empecemos por entender tu idea.', 'Let’s start by understanding your idea.')}</h2><a class="studio-button" href="/contacto/?referencia=${encodeURIComponent(service.slug)}">${t('Iniciar conversación ↗', 'Start a conversation ↗')}</a></div></section>` });
 }
 
 function contact() {

@@ -8,28 +8,28 @@ Actualizado: 2026-10-18. Las páginas anteriores de automatización siguen dispo
 
 La oferta comercial se organiza en tres servicios:
 
-- [Diseño y desarrollo web](https://orkestalo.com/servicios/diseno-desarrollo-web/): contenido, diseño adaptable, implementación y entrega.
-- [Experiencias digitales](https://orkestalo.com/servicios/experiencias-digitales/): micrositios e invitaciones interactivas.
-- [Automatización e IA](https://orkestalo.com/servicios/automatizacion-ia/): diagnóstico, prototipos y flujos conectados.
+- [Diseño y desarrollo web](https://www.orkestalo.com/servicios/diseno-desarrollo-web/): contenido, diseño adaptable, implementación y entrega.
+- [Experiencias digitales](https://www.orkestalo.com/servicios/experiencias-digitales/): micrositios e invitaciones interactivas.
+- [Automatización e IA](https://www.orkestalo.com/servicios/automatizacion-ia/): diagnóstico, prototipos y flujos conectados.
 
 ## Páginas prioritarias
 
-- [Inicio — Ideas extraordinarias. Experiencias digitales reales.](https://orkestalo.com/): propuesta del estudio, servicios, proyectos verificables, demos locales, método y contacto.
-- [Proyectos](https://orkestalo.com/proyectos/): seis fichas públicas de GRAFIK, Dra. Ana Mora, Diego & Giselle, Dra. Fernanda Suaste, Expression Gráfica y Aranza & Mateo. Sello no se enlaza porque su URL pública está pendiente.
-- [Contacto](https://orkestalo.com/contacto/): formulario con alternativa de WhatsApp. El envío por correo depende de la configuración de Resend.
-- [Consultoría n8n](https://orkestalo.com/automatizacion-n8n.html): workflow visual y comparación n8n vs. Make, Zapier y código a medida.
-- [Agentes de IA para empresas y equipos](https://orkestalo.com/agentes-ia-claude.html): demo conversacional y comparación entre chatbot de reglas y agente con IA.
-- [Automatización de WhatsApp para negocios](https://orkestalo.com/automatizacion-whatsapp-negocios.html): demo, arquitectura, casos por giro, FAQ y contacto guiado.
-- [Casos de uso](https://orkestalo.com/casos-de-uso.html): fichas descriptivas de problema, proceso y resultado operativo.
-- [Procesamiento de documentos con IA](https://orkestalo.com/procesamiento-documentos-ia.html): extracción, validación y registro de documentos.
-- [Orquestación de agentes](https://orkestalo.com/orquestacion-agentes.html): diferencias entre workflows y pasos con razonamiento.
-- [Guía de automatización con IA para empresas](https://orkestalo.com/automatizacion-ia-para-empresas.html): criterios para elegir herramientas, estimar el impacto y priorizar procesos.
-- [Preguntas frecuentes](https://orkestalo.com/preguntas-frecuentes.html): proyecto, soporte, propiedad, seguridad y cobertura.
-- [Sobre Orkesta](https://orkestalo.com/sobre-orkesta.html): enfoque, forma de trabajo y stack tecnológico.
+- [Inicio — Ideas extraordinarias. Experiencias digitales reales.](https://www.orkestalo.com/): propuesta del estudio, servicios, proyectos verificables, demos locales, método y contacto.
+- [Proyectos](https://www.orkestalo.com/proyectos/): seis fichas públicas de GRAFIK, Dra. Ana Mora, Diego & Giselle, Dra. Fernanda Suaste, Expression Gráfica y Aranza & Mateo. Sello no se enlaza porque su URL pública está pendiente.
+- [Contacto](https://www.orkestalo.com/contacto/): formulario con alternativa de WhatsApp. El envío por correo depende de la configuración de Resend.
+- [Consultoría n8n](https://www.orkestalo.com/automatizacion-n8n.html): workflow visual y comparación n8n vs. Make, Zapier y código a medida.
+- [Agentes de IA para empresas y equipos](https://www.orkestalo.com/agentes-ia-claude.html): demo conversacional y comparación entre chatbot de reglas y agente con IA.
+- [Automatización de WhatsApp para negocios](https://www.orkestalo.com/automatizacion-whatsapp-negocios.html): demo, arquitectura, casos por giro, FAQ y contacto guiado.
+- [Casos de uso](https://www.orkestalo.com/casos-de-uso.html): fichas descriptivas de problema, proceso y resultado operativo.
+- [Procesamiento de documentos con IA](https://www.orkestalo.com/procesamiento-documentos-ia.html): extracción, validación y registro de documentos.
+- [Orquestación de agentes](https://www.orkestalo.com/orquestacion-agentes.html): diferencias entre workflows y pasos con razonamiento.
+- [Guía de automatización con IA para empresas](https://www.orkestalo.com/automatizacion-ia-para-empresas.html): criterios para elegir herramientas, estimar el impacto y priorizar procesos.
+- [Preguntas frecuentes](https://www.orkestalo.com/preguntas-frecuentes.html): proyecto, soporte, propiedad, seguridad y cobertura.
+- [Sobre Orkesta](https://www.orkestalo.com/sobre-orkesta.html): enfoque, forma de trabajo y stack tecnológico.
 
 ## Método y confianza
 
-1. Diagnóstico inicial sin costo para mapear pasos, excepciones, responsables y sistemas.
+1. Conversación inicial para mapear pasos, excepciones, responsables y sistemas.
 2. Diseño de alcance, datos, controles y criterios de aceptación.
 3. Implementación y QA con pruebas de éxito, error y recuperación.
 4. Entrega en la infraestructura del cliente, documentación, transferencia de propiedad y soporte.
@@ -38,15 +38,15 @@ En las páginas de automatización, el código y los flujos pertenecen al client
 
 ## Alcance y tiempos
 
-Cada propuesta se cotiza según el proceso, los sistemas involucrados, las excepciones y los controles necesarios. El diagnóstico inicial no tiene costo. El calendario concreto se define en la propuesta antes de iniciar; el sitio no promete un plazo universal.
+Cada propuesta se cotiza según el proceso, los sistemas involucrados, las excepciones y los controles necesarios. El alcance del diagnóstico se acuerda en la primera conversación. El calendario concreto se define en la propuesta antes de iniciar; el sitio no promete un plazo universal.
 
 ## Cobertura y contacto
 
 - Colaboración remota por WhatsApp, correo y videollamada, en español e inglés.
 - Canal principal: [WhatsApp +52 55 4971 3262](https://wa.me/525549713262).
 - Alternativa: info@orkestalo.com.
-- Contacto: https://orkestalo.com/contacto/
+- Contacto: https://www.orkestalo.com/contacto/
 
 ## Contenido completo
 
-Texto consolidado y notas de sincronización: https://orkestalo.com/llms-full.txt
+Texto consolidado y notas de sincronización: https://www.orkestalo.com/llms-full.txt

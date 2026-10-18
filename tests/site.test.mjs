@@ -48,7 +48,7 @@ test('commercial pages expose the promised buyer-facing content in Spanish and E
     'automatizacion-n8n.html': ['Consultoría n8n para automatizar procesos', 'n8n consulting to automate processes', 'n8n vs. Make, Zapier y código a medida'],
     'agentes-ia-claude.html': ['Agentes de IA para empresas y equipos', 'AI agents for businesses and teams', 'Chatbot de reglas'],
     'casos-de-uso.html': ['Problema', 'Proceso', 'Resultado operativo', 'Descriptive use cases'],
-    'automatizacion-whatsapp-negocios.html': ['Automatización de WhatsApp para negocios', 'WhatsApp automation for businesses', 'FAQPage'],
+    'automatizacion-whatsapp-negocios.html': ['Automatización de WhatsApp para negocios', 'WhatsApp automation for businesses', 'Preguntas frecuentes'],
   };
 
   for (const [file, phrases] of Object.entries(expectations)) {
@@ -80,8 +80,8 @@ test('the neutral automation guide replaces the regional URL', async () => {
 
   assert.match(guide, /Automatización con IA para empresas/);
   assert.match(guide, /\$8 USD\/hora/);
-  assert.match(guide, /El diagnóstico gratuito de Orkesta \(30 minutos\)/);
-  assert.match(guide, /https:\/\/orkestalo\.com\/automatizacion-ia-para-empresas\.html/);
+  assert.match(guide, /La conversación inicial con Orkesta/);
+  assert.match(guide, /https:\/\/www\.orkestalo\.com\/automatizacion-ia-para-empresas\.html/);
   assert.match(sitemap, /automatizacion-ia-para-empresas\.html/);
   assert.doesNotMatch(sitemap, /automatizacion-ia-pymes-latam\.html/);
 });

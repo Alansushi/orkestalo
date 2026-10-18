@@ -39,7 +39,7 @@ import * as ReactDOM from 'react-dom/client';
             { iconId: "i-flujo",   t: "Stack open-source, sin lock-in",        d: "Construimos sobre n8n (open-source). El código y los flujos viven en tu infraestructura; no dependes de Orkesta para que sigan funcionando." },
             { iconId: "i-agente",  t: "Automatización + IA en un equipo",       d: "n8n orquesta los flujos y los modelos de IA añaden razonamiento cuando el proceso lo requiere." },
             { iconId: "i-modelo",  t: "Diagnóstico de proceso primero",         d: "Antes de escribir código, mapeamos qué automatizar y cuál entrega más ROI. No vendemos implementaciones por el placer de implementar." },
-            { iconId: "i-integra", t: "Soporte continuo incluido",              d: "Entregamos accesos, documentación y handoff completo. El plan de soporte cubre monitoreo, ajustes y nuevas automatizaciones." },
+            { iconId: "i-integra", t: "Soporte según propuesta",              d: "Entregamos accesos, documentación y handoff completo. El soporte posterior se define en cada propuesta." },
           ],
         },
         compare: {
@@ -51,9 +51,9 @@ import * as ReactDOM from 'react-dom/client';
             { label: "Stack principal",       values: ["n8n + Claude API (open-source)", "n8n / Make (varía)", "Cualquier stack", "Zapier, Make, Airtable"] },
             { label: "Lock-in",               values: ["Sin lock-in — código tuyo", "Depende del freelancer", "Depende de contratos", "Atado a la plataforma"] },
             { label: "Agentes IA",            values: ["Integrados cuando el proceso lo requiere", "Confirmar experiencia y alcance", "Confirmar experiencia y alcance", "Funciones según la plataforma"] },
-            { label: "Soporte continuo",      values: ["Plan mensual incluido", "Variable, disponibilidad limitada", "SLA formal, mayor costo", "Soporte de plataforma"] },
+            { label: "Soporte continuo",      values: ["Alcance por propuesta", "Variable, disponibilidad limitada", "SLA formal, mayor costo", "Soporte de plataforma"] },
             { label: "Acompañamiento cercano",   values: ["Sí — trabajo directo y claro", "Variable", "Más orientado a grandes organizaciones", "Sí, self-service"] },
-            { label: "Diagnóstico inicial",   values: ["Gratuito, 30 min", "Consulta pagada o gratis", "Proceso largo de venta", "Prueba gratuita"] },
+            { label: "Diagnóstico inicial",   values: ["Alcance por acordar", "Consulta pagada o gratis", "Proceso largo de venta", "Prueba gratuita"] },
           ],
         },
         when: {
@@ -72,7 +72,7 @@ import * as ReactDOM from 'react-dom/client';
           title: 'Dudas comunes antes de <em>elegir consultora</em>.',
           items: [
             { q: "¿Por qué n8n y Claude juntos en lugar de solo n8n?", a: "n8n orquesta flujos y conecta sistemas; Claude añade razonamiento. Los pasos que requieren decisión, interpretación de documentos o conversación natural necesitan un modelo de lenguaje. Juntos cubren tanto la automatización estructurada como los pasos que requieren IA." },
-            { q: "¿Qué diferencia a Orkesta de un freelancer de n8n?", a: "Un freelancer técnico implementa lo que le pides. Orkesta empieza por el diagnóstico de proceso — qué automatizar primero, cuál entrega más ROI — y entrega con documentación, testing y soporte continuo. No solo construimos el flujo; aseguramos que funcione en producción." },
+            { q: "¿Qué diferencia a Orkesta de un freelancer de n8n?", a: "Un freelancer técnico implementa lo que le pides. Orkesta empieza por el diagnóstico de proceso — qué automatizar primero, cuál entrega más ROI — y entrega con documentación, testing y soporte según la propuesta. No solo construimos el flujo; probamos el flujo antes de la entrega." },
             { q: "¿Podemos trabajar de forma remota?", a: "Sí. Colaboramos de forma remota por WhatsApp, correo y videollamada, con seguimiento claro en cada etapa." },
             { q: "¿Qué pasa con mi automatización si dejo de trabajar con Orkesta?", a: "El código vive en tu infraestructura (tu instancia de n8n, tus credenciales de Claude API). Entregamos accesos, contraseñas y documentación. No dependes de nosotros para que siga funcionando." },
             { q: "¿Cuánto tiempo tarda una implementación?", a: "El tiempo se define después del diagnóstico, según sistemas, excepciones y controles requeridos. La propuesta incluye un calendario concreto antes de iniciar." },
@@ -81,7 +81,7 @@ import * as ReactDOM from 'react-dom/client';
         },
         cta: {
           title: '¿Listo para comparar <em>con tu caso real</em>?',
-          desc: "30 minutos sin compromiso. Te mostramos qué automatizaciones tienen más ROI para tu negocio y qué opción encaja mejor con tu situación — aunque no seamos nosotros.",
+          desc: "Conversemos sobre el proceso. Te mostramos qué automatizaciones tienen más ROI para tu negocio y qué opción encaja mejor con tu situación — aunque no seamos nosotros.",
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
         },
@@ -120,7 +120,7 @@ import * as ReactDOM from 'react-dom/client';
             { iconId: "i-flujo",   t: "Open-source stack, no lock-in",        d: "We build on n8n (open-source). The code and flows live in your infrastructure; you don't depend on Orkesta for them to keep running." },
             { iconId: "i-agente",  t: "Automation + AI in one team",           d: "n8n orchestrates the flows; Claude API adds reasoning. Most consultancies offer one or the other, not both integrated." },
             { iconId: "i-modelo",  t: "Process diagnosis first",               d: "Before writing code, we map what to automate and what delivers the most ROI. We don't sell implementations for the sake of it." },
-            { iconId: "i-integra", t: "Ongoing support included",              d: "We deliver access, documentation and full handoff. The support plan covers monitoring, adjustments and new automations." },
+            { iconId: "i-integra", t: "Support by proposal",              d: "We deliver access, documentation and full handoff. Post-launch support is defined in each proposal." },
           ],
         },
         compare: {
@@ -132,9 +132,9 @@ import * as ReactDOM from 'react-dom/client';
             { label: "Main stack",        values: ["n8n + Claude API (open-source)", "n8n / Make (varies)", "Any stack", "Zapier, Make, Airtable"] },
             { label: "Lock-in",           values: ["No lock-in — your code", "Depends on freelancer", "Depends on contracts", "Tied to the platform"] },
             { label: "AI agents",         values: ["Integrated when the process requires them", "Confirm experience and scope", "Confirm experience and scope", "Features vary by platform"] },
-            { label: "Ongoing support",   values: ["Monthly plan included", "Variable, limited availability", "Formal SLA, higher cost", "Platform support"] },
+            { label: "Ongoing support",   values: ["Scope by proposal", "Variable, limited availability", "Formal SLA, higher cost", "Platform support"] },
             { label: "Close collaboration",   values: ["Yes — direct, clear work", "Variable", "More enterprise-oriented", "Yes, self-service"] },
-            { label: "Initial diagnostic",values: ["Free, 30 min", "Paid or free consultation", "Long sales process", "Free trial"] },
+            { label: "Initial diagnostic",values: ["Scope to agree", "Paid or free consultation", "Long sales process", "Free trial"] },
           ],
         },
         when: {
@@ -153,7 +153,7 @@ import * as ReactDOM from 'react-dom/client';
           title: "Common questions before <em>choosing a consultancy</em>.",
           items: [
             { q: "Why n8n and Claude together instead of just n8n?", a: "n8n orchestrates flows and connects systems; Claude adds reasoning. Steps that require decision-making, document interpretation or natural conversation need a language model. Together they cover both structured automation and steps that require AI." },
-            { q: "What sets Orkesta apart from an n8n freelancer?", a: "A technical freelancer implements what you ask for. Orkesta starts with process diagnosis — what to automate first, which delivers the most ROI — and delivers with documentation, testing and ongoing support. We don't just build the flow; we ensure it works in production." },
+            { q: "What sets Orkesta apart from an n8n freelancer?", a: "A technical freelancer implements what you ask for. Orkesta starts with process diagnosis — what to automate first, which delivers the most ROI — and delivers with documentation, testing and support as agreed in the proposal. We don't just build the flow; we test the flow before handoff." },
             { q: "Can we work remotely?", a: "Yes. We collaborate remotely through WhatsApp, email and video calls, with clear follow-up at every stage." },
             { q: "What happens to my automation if I stop working with Orkesta?", a: "The code lives in your infrastructure (your n8n instance, your Claude API credentials). We deliver access, passwords and documentation. You don't depend on us for it to keep working." },
             { q: "How long does an implementation take?", a: "Timing is defined after the diagnostic, based on systems, exceptions and required controls. The proposal includes a concrete schedule before work begins." },
@@ -162,7 +162,7 @@ import * as ReactDOM from 'react-dom/client';
         },
         cta: {
           title: "Ready to compare <em>with your real case</em>?",
-          desc: "30 minutes no commitment. We show you which automations have the most ROI for your business and which option best fits your situation — even if it's not us.",
+          desc: "Let’s discuss the process. We show you which automations have the most ROI for your business and which option best fits your situation — even if it's not us.",
           ctaWA: "WhatsApp",
           ctaAgendar: "Book a diagnostic",
         },
