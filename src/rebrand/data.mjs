@@ -1,0 +1,77 @@
+export const services = [
+  {
+    slug: 'diseno-desarrollo-web', type: 'sitio-web', number: '01',
+    visual: '/media/orkesta-2/assets/services/servicio-desarrollo-web.webp',
+    name: { es: 'Diseño y desarrollo web', en: 'Web design and development' },
+    summary: { es: 'Sitios claros, rápidos y fáciles de mantener. Del mensaje y la estructura al código y la publicación.', en: 'Clear, fast websites that are easy to maintain. From message and structure to code and launch.' },
+    deliverables: { es: ['Estrategia y arquitectura de contenidos', 'Diseño adaptable y accesible', 'Desarrollo, SEO técnico y entrega'], en: ['Content strategy and information architecture', 'Responsive and accessible design', 'Development, technical SEO and handoff'] },
+  },
+  {
+    slug: 'experiencias-digitales', type: 'experiencia-digital', number: '02',
+    visual: '/media/orkesta-2/assets/services/servicio-experiencias-digitales.webp',
+    name: { es: 'Experiencias digitales', en: 'Digital experiences' },
+    summary: { es: 'Micrositios, invitaciones y recorridos interactivos pensados para una ocasión y sus personas.', en: 'Microsites, invitations and interactive journeys designed for an occasion and its people.' },
+    deliverables: { es: ['Concepto y recorrido', 'Interacciones y contenido', 'Pruebas en dispositivos y lanzamiento'], en: ['Concept and journey', 'Interactions and content', 'Device testing and launch'] },
+  },
+  {
+    slug: 'automatizacion-ia', type: 'automatizacion-ia', number: '03',
+    visual: '/media/orkesta-2/assets/services/servicio-automatizacion-ia.webp',
+    name: { es: 'Automatización e IA', en: 'Automation and AI' },
+    summary: { es: 'Flujos que conectan conversaciones, documentos y sistemas para reducir trabajo repetitivo.', en: 'Flows connecting conversations, documents and systems to reduce repetitive work.' },
+    deliverables: { es: ['Diagnóstico del proceso', 'Prototipo y validación', 'Implementación y documentación'], en: ['Process discovery', 'Prototype and validation', 'Implementation and documentation'] },
+  },
+];
+
+// Add a project only when its public URL and Orkesta attribution have been verified.
+// Never capture personal RSVP, gift, banking or guest data in portfolio media.
+export const projects = [
+  {
+    slug: 'grafik', category: 'sitios', name: { es: 'GRAFIK', en: 'GRAFIK' },
+    summary: { es: 'Un sitio para explorar trabajos y servicios de impresión con una dirección visual directa.', en: 'A website for exploring print work and services through a direct visual language.' },
+    detail: { es: 'La portada presenta trabajos reales, materiales y rutas claras para cotizar. El contraste visual deja que los impresos ocupen el centro de la experiencia.', en: 'The homepage presents real work, materials and clear paths to request a quote. Its visual contrast puts print work at the center.' },
+    url: 'https://www.grafik.mx/', scope: { es: 'Sitio web · imprenta', en: 'Website · print studio' },
+    note: { es: 'Sitio público de GRAFIK. La captura muestra solo la portada.', en: 'GRAFIK public website. The capture shows the homepage only.' },
+    image: '/media/projects/grafik-desktop.webp', mobileImage: '/media/projects/grafik-mobile.webp',
+  },
+  {
+    slug: 'dra-ana-mora', category: 'sitios', name: { es: 'Dra. Ana Mora', en: 'Dr. Ana Mora' },
+    summary: { es: 'Presencia web para servicios de odontología y ortodoncia, con acceso visible a consulta y tratamientos.', en: 'A website for dentistry and orthodontics with clear access to consultation and treatments.' },
+    detail: { es: 'La portada organiza especialidades, credenciales y una vía de contacto. La información clínica visible se atribuye al sitio de la doctora, sin prometer resultados médicos.', en: 'The homepage organizes specialties, credentials and a contact path. Clinical information belongs to the doctor’s site; no medical outcomes are claimed.' },
+    url: 'https://www.draanamora.com.mx/', scope: { es: 'Sitio web · odontología', en: 'Website · dentistry' },
+    note: { es: 'Sitio público de la Dra. Ana Lizette Badillo Mora. La captura muestra solo la portada.', en: 'Public website of Dr. Ana Lizette Badillo Mora. The capture shows the homepage only.' },
+    image: '/media/projects/dra-ana-mora-desktop.webp', mobileImage: '/media/projects/dra-ana-mora-mobile.webp',
+  },
+  {
+    slug: 'diego-y-giselle', category: 'experiencias', name: { es: 'Diego & Giselle', en: 'Diego & Giselle' },
+    summary: { es: 'Una invitación digital que organiza la historia, los momentos y la información del evento en un recorrido móvil.', en: 'A digital invitation that brings the story, key moments and event information into one mobile journey.' },
+    detail: { es: 'La portada presenta a la pareja y guía hacia la historia y los detalles de la celebración. Solo mostramos la vista inicial, sin datos de invitados o regalos.', en: 'The homepage introduces the couple and guides visitors to their story and event details. Only the first view is shown, without guest or gift data.' },
+    url: 'https://www.diegoygiselle.com/',
+    scope: { es: 'Experiencia digital · invitación', en: 'Digital experience · invitation' },
+    note: { es: 'Evento concluido. La vista pública se muestra solo como referencia; no se enviarán confirmaciones.', en: 'Past event. The public site is shown for reference only; no RSVPs will be sent.' },
+    image: '/media/projects/diego-y-giselle-desktop.webp', mobileImage: '/media/projects/diego-y-giselle-mobile.webp',
+  },
+  {
+    slug: 'dra-fernanda-suaste', category: 'sitios', name: { es: 'Dra. Fernanda Suaste', en: 'Dr. Fernanda Suaste' },
+    summary: { es: 'Un sitio odontológico que explica el cuidado del diente natural y ordena el camino hacia una valoración.', en: 'A dental website explaining natural tooth care and guiding visitors toward an assessment.' },
+    detail: { es: 'La página da protagonismo a una ilustración anatómica y estructura el contenido en tratamientos, perfil profesional y proceso de atención.', en: 'An anatomical illustration anchors the page, with content organized around treatments, the doctor and the care process.' },
+    url: 'https://sitio-dra-fernanda-suaste.vercel.app/', scope: { es: 'Sitio web · salud dental', en: 'Website · dental care' },
+    note: { es: 'Sitio público de la Dra. Fernanda Suaste. La captura muestra solo la portada.', en: 'Public website of Dr. Fernanda Suaste. The capture shows the homepage only.' },
+    image: '/media/projects/dra-fernanda-suaste-desktop.webp', mobileImage: '/media/projects/dra-fernanda-suaste-mobile.webp',
+  },
+  {
+    slug: 'expression-grafica', category: 'sitios', name: { es: 'Expression Gráfica', en: 'Expression Gráfica' },
+    summary: { es: 'Un catálogo web para servicios de impresión offset y digital, con fotografía del trabajo en taller.', en: 'A website catalog for offset and digital print services with workshop photography.' },
+    detail: { es: 'La portada muestra producción real y separa servicios, trabajos, proceso y contacto. La marca pública usa el nombre Expression Gráfica.', en: 'The homepage shows real production and separates services, work, process and contact. The public brand is Expression Gráfica.' },
+    url: 'https://expresiongrafica.vercel.app/', scope: { es: 'Sitio web · imprenta', en: 'Website · print shop' },
+    note: { es: 'Sitio público de Expression Gráfica. La captura muestra solo la portada.', en: 'Expression Gráfica public website. The capture shows the homepage only.' },
+    image: '/media/projects/expression-grafica-desktop.webp', mobileImage: '/media/projects/expression-grafica-mobile.webp',
+  },
+  {
+    slug: 'aranza-y-mateo', category: 'experiencias', name: { es: 'Aranza & Mateo', en: 'Aranza & Mateo' },
+    summary: { es: 'Una invitación digital de cumpleaños con una portada lúdica y un recorrido temático.', en: 'A birthday invitation with a playful homepage and a themed digital journey.' },
+    detail: { es: 'La portada reúne la fecha, el motivo de la celebración y el acceso a los detalles. La experiencia pública es una referencia visual de un evento ya concluido.', en: 'The homepage brings together the date, celebration theme and access to details. The public experience is a visual reference to a past event.' },
+    url: 'https://aranza-mateo.vercel.app/', scope: { es: 'Experiencia digital · invitación', en: 'Digital experience · invitation' },
+    note: { es: 'Evento concluido. No se enviarán respuestas ni confirmaciones.', en: 'Past event. No responses or RSVPs will be sent.' },
+    image: '/media/projects/aranza-y-mateo-desktop.webp', mobileImage: '/media/projects/aranza-y-mateo-mobile.webp',
+  },
+];

@@ -44,7 +44,7 @@ test('all production pages use deferred local bundles and no browser Babel', asy
 
 test('commercial pages expose the promised buyer-facing content in Spanish and English', async () => {
   const expectations = {
-    'index.html': ['Automatización de procesos con IA para que tu equipo avance', 'AI process automation that keeps your team moving', 'Orkesta Flowboard'],
+    'index.html': ['Ideas extraordinarias. Experiencias digitales reales.', 'Extraordinary ideas. Real digital experiences.', 'Lo que hemos construido'],
     'automatizacion-n8n.html': ['Consultoría n8n para automatizar procesos', 'n8n consulting to automate processes', 'n8n vs. Make, Zapier y código a medida'],
     'agentes-ia-claude.html': ['Agentes de IA para empresas y equipos', 'AI agents for businesses and teams', 'Chatbot de reglas'],
     'casos-de-uso.html': ['Problema', 'Proceso', 'Resultado operativo', 'Descriptive use cases'],
@@ -54,7 +54,7 @@ test('commercial pages expose the promised buyer-facing content in Spanish and E
   for (const [file, phrases] of Object.entries(expectations)) {
     const html = await read(file);
     for (const phrase of phrases) assert.match(html, new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), `${file}: ${phrase}`);
-    assert.match(html, /Demostración recreada con datos ficticios|Recreated demonstration using fictional data/);
+    if (file !== 'index.html') assert.match(html, /Demostración recreada con datos ficticios|Recreated demonstration using fictional data/);
   }
 });
 
@@ -127,8 +127,8 @@ test('JSON-LD is valid and the WhatsApp landing is indexed', async () => {
   assert.doesNotMatch(llms, /\+15 horas|menos de 2 semanas/i);
 });
 
-test('every guided contact CTA uses one stable label and the floating CTA is accessible', async () => {
-  for (const file of ['index.html', 'automatizacion-n8n.html', 'agentes-ia-claude.html', 'casos-de-uso.html', 'automatizacion-whatsapp-negocios.html']) {
+test('existing automation pages keep their guided WhatsApp CTA and floating link', async () => {
+  for (const file of ['automatizacion-n8n.html', 'agentes-ia-claude.html', 'casos-de-uso.html', 'automatizacion-whatsapp-negocios.html']) {
     const html = await read(file);
     assert.match(html, /Cuéntanos tu proceso por WhatsApp/);
     assert.match(html, /Tell us about your process on WhatsApp/);
@@ -139,7 +139,7 @@ test('every guided contact CTA uses one stable label and the floating CTA is acc
 test('the build assembles the public output expected by Vercel', async () => {
   const publicIndex = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
   const publicBundle = await readFile(new URL('../public/assets/site.js', import.meta.url), 'utf8');
-  assert.match(publicIndex, /<title>Automatización de procesos con IA/);
+  assert.match(publicIndex, /<title>Ideas extraordinarias\. Experiencias digitales reales\./);
   assert.match(publicIndex, /<script defer src="\/assets\/site\.js"><\/script>/);
   assert.ok(publicBundle.length > 100);
   await assert.rejects(access(new URL('../public/design-system.html', import.meta.url)));

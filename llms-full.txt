@@ -1,6 +1,25 @@
 # Orkesta — contenido consolidado
 
-Actualizado y validado contra las páginas públicas: 2026-08-16.
+Actualizado para la propuesta Orkesta 2.0: 2026-10-18. El contenido de automatización anterior se conserva debajo.
+
+## Ideas extraordinarias. Experiencias digitales reales.
+
+Orkesta es un estudio de soluciones y experiencias digitales. Su oferta reúne diseño y desarrollo web, experiencias digitales y automatización e IA. La landing presenta seis proyectos con URLs públicas, tres simulaciones locales, el método de trabajo y rutas a contacto por formulario, WhatsApp y correo.
+
+### Proyectos públicos
+
+- GRAFIK: https://www.grafik.mx/
+- Dra. Ana Mora: https://www.draanamora.com.mx/ — odontología y ortodoncia.
+- Diego & Giselle: https://www.diegoygiselle.com/ — invitación digital de un evento concluido; no enviar RSVP.
+- Dra. Fernanda Suaste: https://sitio-dra-fernanda-suaste.vercel.app/
+- Expression Gráfica: https://expresiongrafica.vercel.app/ — nombre de marca pública.
+- Aranza & Mateo: https://aranza-mateo.vercel.app/ — invitación de un evento concluido; no enviar respuestas.
+
+Sello queda fuera del portafolio enlazado hasta contar con una URL pública verificable. Las capturas utilizadas muestran el primer viewport de cada sitio y omiten información de invitados y datos bancarios. No hay testimonios ni métricas de clientes sin respaldo.
+
+### Contacto
+
+La ruta /contacto/ ofrece un formulario con nombre, correo, tipo de proyecto y descripción; presupuesto y fecha son opcionales. El servidor valida y limita la entrada. El envío usa Resend solo cuando existe una clave y un remitente verificado. Si no está disponible, la interfaz dirige a WhatsApp. El aviso de privacidad está marcado como borrador para revisión.
 
 ## Automatización de procesos con IA para que tu equipo avance
 

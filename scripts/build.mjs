@@ -2,6 +2,7 @@ import { build } from 'esbuild';
 import { access, cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { basename, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { renderRootHome, renderRoutePages } from '../src/rebrand/render.mjs';
 
 const root = new URL('../', import.meta.url);
 const assets = new URL('../assets/', import.meta.url);
@@ -9,6 +10,7 @@ const generated = new URL('../src/generated/', import.meta.url);
 const devOnlyFiles = new Set(['design-system.html', 'index-hero-bg.html']);
 await mkdir(assets, { recursive: true });
 await mkdir(generated, { recursive: true });
+await renderRootHome();
 
 await build({
   entryPoints: [fileURLToPath(new URL('../src/site.js', import.meta.url))],
@@ -17,6 +19,21 @@ await build({
   format: 'iife',
   target: ['es2020'],
   outfile: fileURLToPath(new URL('../assets/site.js', import.meta.url)),
+});
+
+await build({
+  entryPoints: [fileURLToPath(new URL('../src/rebrand/site.js', import.meta.url))],
+  bundle: true,
+  minify: true,
+  format: 'iife',
+  target: ['es2020'],
+  outfile: fileURLToPath(new URL('../assets/rebrand.js', import.meta.url)),
+});
+
+await build({
+  entryPoints: [fileURLToPath(new URL('../rebrand.css', import.meta.url))],
+  minify: true,
+  outfile: fileURLToPath(new URL('../assets/rebrand.css', import.meta.url)),
 });
 
 for (const file of (await readdir(root)).filter((name) => name.endsWith('.html') && !devOnlyFiles.has(name))) {
@@ -55,7 +72,7 @@ const publicDir = new URL('../public/', import.meta.url);
 await rm(publicDir, { recursive: true, force: true });
 await mkdir(publicDir, { recursive: true });
 
-const deployableExtensions = new Set(['.html', '.css', '.svg', '.png', '.txt', '.xml']);
+const deployableExtensions = new Set(['.html', '.css', '.svg', '.png', '.webp', '.jpg', '.jpeg', '.txt', '.xml']);
 for (const file of await readdir(root)) {
   if (devOnlyFiles.has(file)) continue;
   const extension = file.includes('.') ? `.${file.split('.').pop()}` : '';
@@ -63,3 +80,14 @@ for (const file of await readdir(root)) {
   await cp(new URL(`../${file}`, import.meta.url), new URL(`../public/${file}`, import.meta.url));
 }
 await cp(assets, new URL('../public/assets/', import.meta.url), { recursive: true });
+const mediaDir = new URL('../media/', import.meta.url);
+try { await access(mediaDir); await cp(mediaDir, new URL('../public/media/', import.meta.url), { recursive: true }); } catch {}
+const newRoutes = await renderRoutePages(publicDir);
+const sitemapPath = new URL('../public/sitemap.xml', import.meta.url);
+let sitemap = await readFile(sitemapPath, 'utf8');
+const newEntries = newRoutes.map((path) => {
+  const absolute = `https://orkestalo.com${path}`;
+  return `  <url><loc>${absolute}</loc><xhtml:link rel="alternate" hreflang="es" href="${absolute}"/><xhtml:link rel="alternate" hreflang="en" href="${absolute}?lang=en"/><xhtml:link rel="alternate" hreflang="x-default" href="${absolute}"/></url>`;
+}).join('\n');
+sitemap = sitemap.replace('</urlset>', `${newEntries}\n</urlset>`);
+await writeFile(sitemapPath, sitemap);
