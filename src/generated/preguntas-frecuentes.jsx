@@ -32,7 +32,7 @@ import * as ReactDOM from 'react-dom/client';
         hero: {
           kicker: "Preguntas frecuentes",
           h1: 'Todo lo que necesitas <em>saber</em> antes de empezar.',
-          lead: "Precios, tiempos, stack, soporte, seguridad, propiedad del código, facturación. Si tu duda no está aquí, escríbenos por WhatsApp — respondemos rápido.",
+          lead: "Precios, tiempos, stack, soporte, seguridad, propiedad del código, facturación. Si tu duda no está aquí, escríbenos por WhatsApp — respondemos por el canal acordado.",
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
         },
@@ -44,7 +44,7 @@ import * as ReactDOM from 'react-dom/client';
             {
               titulo: "Trabajo y proyecto",
               items: [
-                { q: "¿Cuánto cuesta una automatización con Orkesta?", a: "Cada propuesta es a la medida según el alcance. Empezamos con un diagnóstico inicial sin costo (30 minutos) donde detectamos las oportunidades de mayor impacto y entregamos una propuesta concreta con tiempos y entregables." },
+                { q: "¿Cuánto cuesta una automatización con Orkesta?", a: "Cada propuesta es a la medida según el alcance. Conversamos sobre el proceso y sus dependencias; después proponemos alcance, calendario y entregables." },
                 { q: "¿Cuánto tarda un proyecto típico?", a: "El tiempo se define después del diagnóstico, según sistemas, excepciones y controles requeridos. La propuesta incluye un calendario concreto antes de iniciar." },
                 { q: "¿Cómo facturan?", a: "Emitimos facturas en MXN con CFDI 4.0 cuando el proyecto requiere facturación local." },
               ],
@@ -55,7 +55,7 @@ import * as ReactDOM from 'react-dom/client';
                 { q: "¿Qué tecnologías usan?", a: "n8n para orquestación de flujos, Claude API para agentes e IA aplicada, Mercado Pago para cobros, y APIs/webhooks para integrar cualquier sistema con HTTP. Trabajamos sobre tu stack existente — no te obligamos a cambiar herramientas." },
                 { q: "¿Necesito tener n8n o lo proveen ustedes?", a: "Las dos opciones. Si ya tienes n8n self-hosted o cloud, construimos sobre tu instancia. Si no, te ayudamos a decidir entre n8n cloud (más simple) o self-hosted (más control) y lo dejamos configurado a tu nombre antes de implementar." },
                 { q: "¿Pueden trabajar con mi stack actual o tenemos que migrar?", a: "Trabajamos sobre tu stack existente — no te forzamos a migrar. Nos conectamos con tu CRM, ERP, hojas de cálculo, correo y cualquier sistema con API o webhook. Si aparece una incompatibilidad real, la detectamos en el diagnóstico inicial y te proponemos la ruta más simple." },
-                { q: "¿Dan soporte después de implementar?", a: "Sí. Ofrecemos un plan de soporte continuo mensual a medida que incluye monitoreo, mantenimiento, ajustes y nuevas automatizaciones. También dejamos documentación completa para que tu equipo pueda operar sin depender de nosotros." },
+                { q: "¿Dan soporte después de implementar?", a: "Documentamos la entrega. El soporte posterior, su alcance y su duración se acuerdan en cada propuesta." },
               ],
             },
             {
@@ -63,15 +63,15 @@ import * as ReactDOM from 'react-dom/client';
               items: [
                 { q: "¿Cómo colaboran de forma remota?", a: "Trabajamos de forma remota por WhatsApp, correo y videollamada, con acuerdos claros de horarios y seguimiento." },
                 { q: "¿Trabajan con empresas que no son técnicas?", a: "Sí, es nuestro caso típico. Trabajamos con empresas y equipos sin desarrollo interno. Hablamos de procesos y resultados, sin jerga técnica." },
-                { q: "¿Puedo empezar con un solo proceso?",      a: "Sí, de hecho lo recomendamos. La mayoría de nuestros clientes empieza con la automatización que más les duele — puede ser facturación, seguimiento de clientes o reportes manuales. Una vez que ven el ROI, escalan. No hay mínimo de proyecto." },
-                { q: "¿Sirve si mi equipo no es técnico?",        a: "Sí. Nosotros implementamos, documentamos y hacemos handoff completo. Tu equipo no necesita saber programar para operar lo que construimos — dejamos guías paso a paso y soporte para las primeras semanas." },
+                { q: "¿Puedo empezar con un solo proceso?",      a: "Sí, de hecho lo recomendamos. La mayoría de nuestros clientes empieza con la automatización que más les duele — puede ser facturación, seguimiento de clientes o reportes manuales. Si el primer proceso funciona, pueden evaluar ampliar el alcance. No hay mínimo de proyecto." },
+                { q: "¿Sirve si mi equipo no es técnico?",        a: "Sí. Nosotros implementamos, documentamos y hacemos handoff completo. Tu equipo no necesita saber programar para operar lo que construimos — dejamos guías paso a paso y el soporte acordado en la propuesta." },
               ],
             },
             {
               titulo: "Datos, propiedad y legal",
               items: [
-                { q: "¿Cómo manejan la seguridad de los datos?", a: "Las credenciales viven en tu propia instancia de n8n o en gestores de secretos (1Password, Vault, AWS Secrets Manager). Nunca almacenamos llaves en código. Para Claude y otros LLMs configuramos zero data retention donde el proveedor lo permite." },
-                { q: "¿Firman NDA?", a: "Sí, sin problema. Firmamos NDA mutuo antes del diagnóstico inicial si hay información sensible en juego. Tenemos un template estándar que podemos compartir o trabajamos sobre el tuyo." },
+                { q: "¿Cómo manejan la seguridad de los datos?", a: "Las credenciales viven en tu propia instancia de n8n o en gestores de secretos (1Password, Vault, AWS Secrets Manager). Nunca almacenamos llaves en código. La retención de datos depende del proveedor y la configuración acordada para el proyecto." },
+                { q: "¿Firman NDA?", a: "Si hay información sensible, podemos revisar contigo los acuerdos y controles necesarios antes de compartirla." },
                 { q: "¿De quién es el código y los flujos al final del proyecto?", a: "Tuyo. Todo lo que construimos vive en tu infraestructura (tu n8n, tu cuenta de Claude, tu Mercado Pago). Te entregamos accesos completos, código, documentación y handoff sin lock-in." },
               ],
             },
@@ -79,7 +79,7 @@ import * as ReactDOM from 'react-dom/client';
         },
         cta: {
           title: '¿Tu pregunta no está <em>en la lista</em>?',
-          desc: "Escríbenos por WhatsApp o agenda la llamada de 30 minutos. Te respondemos rápido y sin pitch.",
+          desc: "Escríbenos por WhatsApp o cuéntanos tu caso. Te respondemos por el canal acordado y sin pitch.",
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
         },
@@ -107,7 +107,7 @@ import * as ReactDOM from 'react-dom/client';
         hero: {
           kicker: "Frequently asked questions",
           h1: "Everything you <em>need to know</em> before starting.",
-          lead: "Pricing, timelines, stack, support, security, code ownership, billing. If your question isn't here, write to us on WhatsApp — we respond fast.",
+          lead: "Pricing, timelines, stack, support, security, code ownership, billing. If your question isn't here, write to us on WhatsApp — we respond through the agreed channel.",
           ctaWA: "WhatsApp",
           ctaAgendar: "Book a diagnostic",
         },
@@ -119,7 +119,7 @@ import * as ReactDOM from 'react-dom/client';
             {
               titulo: "Work & project",
               items: [
-                { q: "How much does an automation cost?", a: "Each proposal is tailored to scope. We start with a free 30-minute diagnostic where we detect the highest-impact opportunities and deliver a concrete proposal with timing and deliverables." },
+                { q: "How much does an automation cost?", a: "Each proposal is tailored to scope. We discuss the process and its dependencies, then propose scope, schedule and deliverables." },
                 { q: "How long does a typical project take?", a: "Timing is defined after the diagnostic, based on systems, exceptions and required controls. The proposal includes a concrete schedule before work begins." },
                 { q: "How do you bill?", a: "We issue invoices in MXN with CFDI 4.0 when a project requires local invoicing." },
               ],
@@ -130,7 +130,7 @@ import * as ReactDOM from 'react-dom/client';
                 { q: "What technologies do you use?", a: "n8n for workflow orchestration, Claude API for agents and applied AI, Mercado Pago for payments, and APIs/webhooks to integrate any HTTP system. We work on your existing stack — we don't force tool changes." },
                 { q: "Do I need to have n8n or do you provide it?", a: "Both options. If you already have n8n self-hosted or cloud, we build on your instance. If not, we help you decide between n8n cloud (simpler) or self-hosted (more control) and set it up under your name before implementing." },
                 { q: "Can you work with my current stack or do we have to migrate?", a: "We work on what you already have." },
-                { q: "Do you provide support after implementation?", a: "Yes. We offer a custom monthly ongoing-support plan that includes monitoring, maintenance, adjustments and new automations. We also leave full documentation so your team can operate without depending on us." },
+                { q: "Do you provide support after implementation?", a: "We document the handoff. Post-launch support, its scope and duration are agreed in each proposal." },
               ],
             },
             {
@@ -138,15 +138,15 @@ import * as ReactDOM from 'react-dom/client';
               items: [
                 { q: "How do you collaborate remotely?", a: "We work remotely through WhatsApp, email and video calls, with clear agreements on schedules and follow-up." },
                 { q: "Do you work with non-technical companies?", a: "Yes, it's our typical case. We work with businesses and teams without in-house developers. We talk about processes and results, without technical jargon." },
-                { q: "Can I start with just one process?",        a: "Yes, in fact we recommend it. Most of our clients start with the automation that hurts them most — billing, customer follow-up or manual reports. Once they see the ROI, they scale. There's no project minimum." },
-                { q: "Does it work if my team isn't technical?",  a: "Yes. We implement, document and do full handoff. Your team doesn't need to know how to code to operate what we build — we leave step-by-step guides and support for the first few weeks." },
+                { q: "Can I start with just one process?",        a: "Yes, in fact we recommend it. Most of our clients start with the automation that hurts them most — billing, customer follow-up or manual reports. If the first process works, they can consider expanding the scope. There's no project minimum." },
+                { q: "Does it work if my team isn't technical?",  a: "Yes. We implement, document and do full handoff. Your team doesn't need to know how to code to operate what we build — we leave step-by-step guides and support agreed in the proposal." },
               ],
             },
             {
               titulo: "Data, ownership & legal",
               items: [
-                { q: "How do you handle data security?", a: "Credentials live in your own n8n instance or in secret managers (1Password, Vault, AWS Secrets Manager). We never store keys in code. For Claude and other LLMs we configure zero data retention where the provider allows it." },
-                { q: "Do you sign NDAs?", a: "Yes, no problem. We sign a mutual NDA before the initial diagnostic if sensitive information is involved. We have a standard template we can share or we work on yours." },
+                { q: "How do you handle data security?", a: "Credentials live in your own n8n instance or in secret managers (1Password, Vault, AWS Secrets Manager). We never store keys in code. Data retention depends on the provider and the configuration agreed for the project." },
+                { q: "Do you sign NDAs?", a: "If sensitive information is involved, we can review the necessary agreements and controls before it is shared." },
                 { q: "Who owns the code and workflows at the end of the project?", a: "You do. Everything we build lives in your infrastructure (your n8n, your Claude account, your Mercado Pago). We hand over full access, code, documentation and handoff with no lock-in." },
               ],
             },

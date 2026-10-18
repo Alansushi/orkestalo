@@ -5,6 +5,8 @@ export const services = [
     name: { es: 'Diseño y desarrollo web', en: 'Web design and development' },
     summary: { es: 'Sitios claros, rápidos y fáciles de mantener. Del mensaje y la estructura al código y la publicación.', en: 'Clear, fast websites that are easy to maintain. From message and structure to code and launch.' },
     deliverables: { es: ['Estrategia y arquitectura de contenidos', 'Diseño adaptable y accesible', 'Desarrollo, SEO técnico y entrega'], en: ['Content strategy and information architecture', 'Responsive and accessible design', 'Development, technical SEO and handoff'] },
+    scope: { es: 'Partimos del mensaje, las páginas necesarias y las acciones que debe poder realizar quien visita el sitio.', en: 'We start with the message, the pages needed and the actions visitors should be able to take.' },
+    conditions: { es: 'El contenido, las integraciones y la fecha de publicación se acuerdan según el alcance y los materiales disponibles.', en: 'Content, integrations and launch date are agreed based on scope and available materials.' },
   },
   {
     slug: 'experiencias-digitales', type: 'experiencia-digital', number: '02',
@@ -12,6 +14,8 @@ export const services = [
     name: { es: 'Experiencias digitales', en: 'Digital experiences' },
     summary: { es: 'Micrositios, invitaciones y recorridos interactivos pensados para una ocasión y sus personas.', en: 'Microsites, invitations and interactive journeys designed for an occasion and its people.' },
     deliverables: { es: ['Concepto y recorrido', 'Interacciones y contenido', 'Pruebas en dispositivos y lanzamiento'], en: ['Concept and journey', 'Interactions and content', 'Device testing and launch'] },
+    scope: { es: 'Diseñamos el recorrido para una ocasión concreta y organizamos la información que las personas necesitan consultar.', en: 'We design the journey for a specific occasion and organize the information people need to find.' },
+    conditions: { es: 'Las funciones como confirmaciones, mapas o formularios se definen con los datos y permisos del proyecto.', en: 'Features such as RSVPs, maps or forms depend on the project’s data and permissions.' },
   },
   {
     slug: 'automatizacion-ia', type: 'automatizacion-ia', number: '03',
@@ -19,6 +23,8 @@ export const services = [
     name: { es: 'Automatización e IA', en: 'Automation and AI' },
     summary: { es: 'Flujos que conectan conversaciones, documentos y sistemas para reducir trabajo repetitivo.', en: 'Flows connecting conversations, documents and systems to reduce repetitive work.' },
     deliverables: { es: ['Diagnóstico del proceso', 'Prototipo y validación', 'Implementación y documentación'], en: ['Process discovery', 'Prototype and validation', 'Implementation and documentation'] },
+    scope: { es: 'Mapeamos tareas repetitivas, sistemas, excepciones y decisiones que deben seguir bajo control humano.', en: 'We map repetitive tasks, systems, exceptions and decisions that must stay under human control.' },
+    conditions: { es: 'La viabilidad y el calendario dependen de las APIs, permisos, datos y controles disponibles; se definen antes de implementar.', en: 'Feasibility and timing depend on available APIs, permissions, data and controls; they are defined before implementation.' },
   },
 ];
 

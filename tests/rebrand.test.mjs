@@ -58,13 +58,13 @@ test('the new site generates semantic landing and readable route files', async (
   for (const route of ['proyectos', 'contacto', 'servicios/diseno-desarrollo-web', 'servicios/experiencias-digitales', 'servicios/automatizacion-ia']) {
     const html = await read(`public/${route}/index.html`);
     assert.match(html, /<main id="contenido">/);
-    assert.match(html, /hreflang="en"/);
+    assert.doesNotMatch(html, /hreflang=/);
   }
   const { projects } = await import('../src/rebrand/data.mjs');
   for (const project of projects) assert.match(await read(`public/proyectos/${project.slug}/index.html`), new RegExp(project.url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   const sitemap = await read('public/sitemap.xml');
-  for (const project of projects) assert.ok(sitemap.includes(`https://orkestalo.com/proyectos/${project.slug}/`));
-  assert.ok(!sitemap.includes('https://orkestalo.com/aviso-de-privacidad/'));
+  for (const project of projects) assert.ok(sitemap.includes(`https://www.orkestalo.com/proyectos/${project.slug}/`));
+  assert.ok(!sitemap.includes('https://www.orkestalo.com/aviso-de-privacidad/'));
   assert.match(await read('public/aviso-de-privacidad/index.html'), /name="robots" content="noindex,follow"/);
 });
 

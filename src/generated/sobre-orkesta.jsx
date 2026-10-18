@@ -14,7 +14,7 @@ import * as ReactDOM from 'react-dom/client';
         htmlLang: "es",
         meta: {
           title: "Sobre Orkesta — Automatización pragmática para equipos",
-          desc: "Consultora pequeña, técnica y enfocada en automatización pragmática con n8n, Claude API y Mercado Pago. Sin lock-in, ROI medible.",
+          desc: "Consultora pequeña, técnica y enfocada en automatización pragmática con n8n, Claude API y Mercado Pago. Sin lock-in, impacto medible cuando hay datos disponibles.",
         },
         waDefault: "Hola, vi su página y quiero automatizar procesos en mi negocio.",
         nav: {
@@ -32,7 +32,7 @@ import * as ReactDOM from 'react-dom/client';
         hero: {
           kicker: "Sobre Orkesta · Filosofía",
           h1: 'Automatización <em>pragmática</em> para equipos que quieren resultados, no demos.',
-          lead: 'Somos una consultora pequeña, técnica y enfocada. Implementamos automatizaciones con <b>n8n</b>, agentes con <b>Claude</b> e integraciones a medida — con foco en <b>ROI medible</b> y sin lock-in.',
+          lead: 'Somos una consultora pequeña, técnica y enfocada. Implementamos automatizaciones con <b>n8n</b>, agentes con <b>Claude</b> e integraciones a medida — con foco en <b>impacto medible cuando hay datos disponibles</b> y sin lock-in.',
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
         },
@@ -42,7 +42,7 @@ import * as ReactDOM from 'react-dom/client';
           desc: "Lo que nos diferencia no es el stack — es la disciplina con la que decidimos qué construir y qué no.",
           items: [
             { n: "Principio 01", t: "Pragmatismo sobre buzz.",    d: "Si Excel resuelve, no te vendemos un agente. Empezamos por lo más simple que entregue valor y crecemos sólo cuando hace falta." },
-            { n: "Principio 02", t: "ROI antes que tecnología.",  d: "Cada propuesta tiene una estimación clara de impacto: horas ahorradas, errores reducidos, throughput. Si no hay ROI, lo decimos." },
+            { n: "Principio 02", t: "ROI antes que tecnología.",  d: "Definimos qué datos permitirían evaluar el impacto; las cifras dependen del proceso y de una línea base." },
             { n: "Principio 03", t: "Sin lock-in.",                d: "El código, los flujos y los accesos viven en tu infraestructura. Te entregamos documentación, handoff y autonomía operativa." },
           ],
         },
@@ -52,7 +52,7 @@ import * as ReactDOM from 'react-dom/client';
           desc: "Trabajamos sobre tu stack existente — no te forzamos a cambiar herramientas. Estas son las piezas centrales de nuestro día a día.",
           items: [
             { iconId: "i-auto",    t: "n8n",             d: "Orquestación de flujos: disparadores, lógica condicional, reintentos y observabilidad. Alojado por tu cuenta o en la nube, según tu caso." },
-            { iconId: "i-modelo",  t: "Claude API",      d: "Agentes y asistentes con razonamiento, tool use y procesamiento de documentos. Configuramos zero data retention donde aplica." },
+            { iconId: "i-modelo",  t: "Claude API",      d: "Agentes y asistentes con razonamiento, tool use y procesamiento de documentos. Revisamos las opciones de retención según el proveedor y el proyecto." },
             { iconId: "i-integra", t: "Mercado Pago",    d: "Cobros online e in-store conectados a tu ERP/Sheet con conciliación automática y manejo de webhooks." },
             { iconId: "i-tiempo",  t: "APIs y webhooks", d: "Integramos cualquier sistema que hable HTTP. Sin reinventar — usamos las APIs que ya existen." },
           ],
@@ -66,7 +66,7 @@ import * as ReactDOM from 'react-dom/client';
           mailSub: "Correo · Respondemos en 24h",
         },
         cta: {
-          title: '<em>30 minutos</em>, sin compromiso, sin pitch.',
+          title: 'Una <em>conversación inicial</em> para entender tu proceso.',
           desc: "Te escuchamos, miramos tus procesos y te decimos qué se puede automatizar primero — con tiempos y orden de magnitud de costo. Si encaja, te enviamos una propuesta. Si no, te decimos qué herramienta usar.",
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
@@ -80,7 +80,7 @@ import * as ReactDOM from 'react-dom/client';
         htmlLang: "en",
         meta: {
           title: "About Orkesta — Pragmatic automation for teams",
-          desc: "A small, technical, focused consulting team. Pragmatic automation with n8n, Claude API and Mercado Pago. No lock-in, measurable ROI.",
+          desc: "A small, technical, focused consulting team. Pragmatic automation with n8n, Claude API and Mercado Pago. No lock-in, measurable impact when data is available.",
         },
         waDefault: "Hi, I saw your page and want to automate processes in my business.",
         nav: {
@@ -98,7 +98,7 @@ import * as ReactDOM from 'react-dom/client';
         hero: {
           kicker: "About Orkesta · Philosophy",
           h1: 'Pragmatic <em>automation</em> for teams that want results, not demos.',
-          lead: 'A small, technical, focused consulting team. We build automations with <b>n8n</b>, agents with <b>Claude</b> and custom integrations — with focus on <b>measurable ROI</b> and no lock-in.',
+          lead: 'A small, technical, focused consulting team. We build automations with <b>n8n</b>, agents with <b>Claude</b> and custom integrations — with focus on <b>measurable impact when data is available</b> and no lock-in.',
           ctaWA: "WhatsApp",
           ctaAgendar: "Book a diagnostic",
         },
@@ -108,7 +108,7 @@ import * as ReactDOM from 'react-dom/client';
           desc: "What makes us different isn't the stack — it's the discipline with which we decide what to build and what not to.",
           items: [
             { n: "Principle 01", t: "Pragmatism over buzz.",          d: "If Excel solves it, we don't sell you an agent. We start with the simplest thing that delivers value and grow only when needed." },
-            { n: "Principle 02", t: "ROI before technology.",         d: "Every proposal includes a clear impact estimate: hours saved, errors reduced, throughput. If there's no ROI, we say so." },
+            { n: "Principle 02", t: "ROI before technology.",         d: "We define which data could measure impact; estimates depend on the process and a baseline." },
             { n: "Principle 03", t: "No lock-in.",                     d: "Code, workflows and access live in your infrastructure. We hand over documentation, handoff and operational autonomy." },
           ],
         },
@@ -118,7 +118,7 @@ import * as ReactDOM from 'react-dom/client';
           desc: "We work on your existing stack — we don't force tool changes. These are the core pieces of our day-to-day.",
           items: [
             { iconId: "i-auto",    t: "n8n",             d: "Workflow orchestration: triggers, conditional logic, retries, observability. Self-hosted or cloud depending on your case." },
-            { iconId: "i-modelo",  t: "Claude API",      d: "Agents and assistants with reasoning, tool use and document processing. We configure zero data retention where applicable." },
+            { iconId: "i-modelo",  t: "Claude API",      d: "Agents and assistants with reasoning, tool use and document processing. We review retention options for the provider and project." },
             { iconId: "i-integra", t: "Mercado Pago",    d: "Online and in-store payments connected to your ERP/Sheet with automatic reconciliation and webhook handling." },
             { iconId: "i-tiempo",  t: "APIs & webhooks", d: "We integrate any system that speaks HTTP. No reinventing — we use the APIs that already exist." },
           ],
@@ -132,7 +132,7 @@ import * as ReactDOM from 'react-dom/client';
           mailSub: "Email · We respond within 24h",
         },
         cta: {
-          title: '<em>30 minutes</em>, no commitment, no pitch.',
+          title: 'An <em>initial conversation</em> to understand your process.',
           desc: "We listen, look at your processes and tell you what can be automated first — with timing and order-of-magnitude cost. If it fits, we send a proposal. If not, we tell you which tool to use.",
           ctaWA: "WhatsApp",
           ctaAgendar: "Book a diagnostic",

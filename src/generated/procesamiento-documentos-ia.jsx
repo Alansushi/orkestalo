@@ -66,7 +66,7 @@ import * as ReactDOM from 'react-dom/client';
         },
         cta: {
           title: '¿Tu equipo está <em>capturando datos a mano</em> desde PDFs?',
-          desc: "30 minutos sin compromiso. Te decimos qué documentos vale automatizar primero (alto volumen + bajo valor agregado), cómo medir precisión, y qué excepciones requieren humano en el loop.",
+          desc: "Conversemos sobre el proceso. Te decimos qué documentos vale automatizar primero (alto volumen + bajo valor agregado), cómo medir precisión, y qué excepciones requieren humano en el loop.",
           ctaWA: "WhatsApp",
           ctaAgendar: "Agendar diagnóstico",
         },
@@ -132,7 +132,7 @@ import * as ReactDOM from 'react-dom/client';
         },
         cta: {
           title: "Is your team <em>capturing data by hand</em> from PDFs?",
-          desc: "30 minutes no commitment. We tell you which documents are worth automating first (high volume + low added value), how to measure precision, and what exceptions need human-in-the-loop.",
+          desc: "Let’s discuss the process. We tell you which documents are worth automating first (high volume + low added value), how to measure precision, and what exceptions need human-in-the-loop.",
           ctaWA: "WhatsApp",
           ctaAgendar: "Book a diagnostic",
         },
