@@ -29,4 +29,6 @@ Para establecer una línea base, verificar la propiedad `www` en Search Console 
 
 ## Verificación
 
-`npm test` compila y comprueba rutas, enlaces internos de las páginas nuevas, canonical por página, sitemap, JSON-LD parseable, fechas y alternates ausentes, servicio/proveedor y FAQ visible. Las comprobaciones HTTP públicas se hicieron con `curl -sSIL` el 18 de octubre de 2026. Las rutas del preview Git deben revisarse cuando el PR publique su preview; la verificación local no prueba indexación ni resultados de búsqueda.
+`npm test`: 19/19 pruebas correctas. Compila y comprueba rutas, enlaces internos de las páginas nuevas, canonical por página, sitemap, JSON-LD parseable, fechas y alternates ausentes, servicio/proveedor y FAQ visible. `node scripts/qa-rebrand.mjs`: QA local correcta en cinco tamaños de pantalla, menú, idioma, filtros y formulario simulado. Las comprobaciones HTTP públicas se hicieron con `curl -sSIL` el 18 de octubre de 2026.
+
+El preview protegido generado por la integración Git para el PR #16 quedó en estado **Ready**. Con `vercel curl` autenticado respondieron 200 la portada, `/proyectos/index.html`, `/servicios/automatizacion-ia/index.html` y `/sitemap.xml`; las rutas con barra final se comprobaron siguiendo la redirección. El HTML del preview conserva canonical propio con `www`, sin `hreflang`, y el sitemap incluye `/proyectos/` sin fechas. La protección del preview añade `X-Robots-Tag: noindex`, esperado para ese entorno. Esto prueba el artefacto de preview, no indexación ni resultados de búsqueda.
