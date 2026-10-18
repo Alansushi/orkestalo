@@ -1,20 +1,22 @@
 # Orkesta
 
-> Automatización de procesos con IA para empresas y equipos. Orkesta diseña flujos con n8n, agentes de IA y WhatsApp conectados a la operación del cliente.
+> Estudio de soluciones y experiencias digitales. Orkesta diseña sitios web, experiencias interactivas y automatizaciones.
 
-Actualizado: 2026-08-16. Sincronizado con el contenido público del sitio en esa fecha.
+Actualizado: 2026-10-18. Las páginas anteriores de automatización siguen disponibles.
 
 ## Oferta principal
 
-Orkesta ayuda a equipos que copian datos entre sistemas, responden solicitudes repetitivas, procesan documentos manualmente o pierden visibilidad entre WhatsApp, correo, hojas de cálculo y CRM. La oferta se organiza en tres servicios:
+La oferta comercial se organiza en tres servicios:
 
-- **Automatización con n8n:** diseño e implementación de workflows, integraciones, manejo de errores, QA y documentación.
-- **Agentes de IA para empresas y equipos:** agentes con contexto, herramientas autorizadas, límites explícitos y escalamiento humano.
-- **Automatización de WhatsApp, documentos y operaciones:** conversaciones o archivos convertidos en acciones registradas en agenda, CRM, ERP u otros sistemas.
+- [Diseño y desarrollo web](https://orkestalo.com/servicios/diseno-desarrollo-web/): contenido, diseño adaptable, implementación y entrega.
+- [Experiencias digitales](https://orkestalo.com/servicios/experiencias-digitales/): micrositios e invitaciones interactivas.
+- [Automatización e IA](https://orkestalo.com/servicios/automatizacion-ia/): diagnóstico, prototipos y flujos conectados.
 
 ## Páginas prioritarias
 
-- [Home — Automatización de procesos con IA](https://orkestalo.com/): propuesta, Flowboard, demostraciones, método, confianza, alcance, FAQ y contacto guiado.
+- [Inicio — Ideas extraordinarias. Experiencias digitales reales.](https://orkestalo.com/): propuesta del estudio, servicios, proyectos verificables, demos locales, método y contacto.
+- [Proyectos](https://orkestalo.com/proyectos/): seis fichas públicas de GRAFIK, Dra. Ana Mora, Diego & Giselle, Dra. Fernanda Suaste, Expression Gráfica y Aranza & Mateo. Sello no se enlaza porque su URL pública está pendiente.
+- [Contacto](https://orkestalo.com/contacto/): formulario con alternativa de WhatsApp. El envío por correo depende de la configuración de Resend.
 - [Consultoría n8n](https://orkestalo.com/automatizacion-n8n.html): workflow visual y comparación n8n vs. Make, Zapier y código a medida.
 - [Agentes de IA para empresas y equipos](https://orkestalo.com/agentes-ia-claude.html): demo conversacional y comparación entre chatbot de reglas y agente con IA.
 - [Automatización de WhatsApp para negocios](https://orkestalo.com/automatizacion-whatsapp-negocios.html): demo, arquitectura, casos por giro, FAQ y contacto guiado.
@@ -32,7 +34,7 @@ Orkesta ayuda a equipos que copian datos entre sistemas, responden solicitudes r
 3. Implementación y QA con pruebas de éxito, error y recuperación.
 4. Entrega en la infraestructura del cliente, documentación, transferencia de propiedad y soporte.
 
-El código y los flujos pertenecen al cliente. Orkesta entrega accesos y documentación; no publica métricas, testimonios ni resultados de clientes sin respaldo verificable. Las piezas visuales del sitio están marcadas como demostraciones recreadas con datos ficticios.
+En las páginas de automatización, el código y los flujos pertenecen al cliente. Orkesta entrega accesos y documentación; no publica métricas, testimonios ni resultados de clientes sin respaldo verificable. Las tres demos interactivas de la nueva landing son simulaciones locales: no envían reservas, RSVP ni mensajes productivos.
 
 ## Alcance y tiempos
 
@@ -43,7 +45,7 @@ Cada propuesta se cotiza según el proceso, los sistemas involucrados, las excep
 - Colaboración remota por WhatsApp, correo y videollamada, en español e inglés.
 - Canal principal: [WhatsApp +52 55 4971 3262](https://wa.me/525549713262).
 - Alternativa: info@orkestalo.com.
-- Contacto guiado: https://orkestalo.com/#contacto
+- Contacto: https://orkestalo.com/contacto/
 
 ## Contenido completo
 

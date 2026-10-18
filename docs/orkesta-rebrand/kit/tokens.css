@@ -1,0 +1,15 @@
+/* Tokens propuestos de Orkesta 2.0 (sin dependencia de fuentes empaquetadas) */
+:root {
+ --ok-ink:#17181C; --ok-surface:#F7F6F2; --ok-blue:#555CFF;
+ --ok-blue-deep:#343DF0; --ok-lavender:#D9D5FF; --ok-lime:#DBFF77;
+ --ok-gray:#E8E8E5; --ok-pink:#FF91C9; --ok-white:#FFFFFF;
+ --ok-font-display:'Space Grotesk','Inter Display',system-ui,sans-serif;
+ --ok-font-body:'DM Sans','Inter',system-ui,sans-serif;
+ --ok-font-mono:'IBM Plex Mono',ui-monospace,monospace;
+ --ok-radius-card:24px; --ok-radius-pill:999px;
+ --ok-max-content:1280px; --ok-gutter:clamp(20px,5vw,76px);
+ --ok-shadow:0 12px 42px rgba(30,30,65,.10);
+}
+.ok-image { display:block; width:100%; height:auto; }
+.ok-grid-bg { background-image:url('/media/orkesta-2/assets/backgrounds/grid-editorial-64.svg'); background-size: 800px 450px; }
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration:.01ms!important;transition-duration:.01ms!important; } }
