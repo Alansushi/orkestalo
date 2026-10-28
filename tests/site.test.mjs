@@ -13,7 +13,7 @@ const productionPages = [
 test('the guided WhatsApp URL preserves source, situation, name and process', async () => {
   const { makeWhatsAppUrl } = await import('../src/contact.js');
   const url = makeWhatsAppUrl({
-    source: '/automatizacion-n8n.html',
+    source: '/servicios/automatizacion-ia/',
     situation: 'Quiero dejar de capturar datos a mano',
     name: 'María José',
     process: 'Recibir facturas\n y registrarlas en el ERP',
@@ -21,7 +21,7 @@ test('the guided WhatsApp URL preserves source, situation, name and process', as
 
   assert.equal(
     decodeURIComponent(url),
-    'https://wa.me/525549713262?text=Página de origen: /automatizacion-n8n.html\nSituación: Quiero dejar de capturar datos a mano\nNombre: María José\nProceso: Recibir facturas y registrarlas en el ERP',
+    'https://wa.me/525549713262?text=Página de origen: /servicios/automatizacion-ia/\nSituación: Quiero dejar de capturar datos a mano\nNombre: María José\nProceso: Recibir facturas y registrarlas en el ERP',
   );
 });
 

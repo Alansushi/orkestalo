@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { renderRootHome, renderRoutePages } from '../src/rebrand/render.mjs';
 
 const assets = new URL('../assets/', import.meta.url);
+await rm(assets, { recursive: true, force: true });
 await mkdir(assets, { recursive: true });
 await renderRootHome();
 

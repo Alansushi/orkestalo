@@ -39,38 +39,6 @@ function initLanguage() {
   }));
 }
 
-function initMenu() {
-  const button = document.querySelector('[data-menu-button]');
-  const menu = document.querySelector('[data-menu]');
-  if (!button || !menu) return;
-  button.addEventListener('click', () => {
-    const open = button.getAttribute('aria-expanded') !== 'true';
-    button.setAttribute('aria-expanded', String(open));
-    menu.hidden = !open;
-  });
-}
-
-function initContact() {
-  const form = document.querySelector('[data-wa-form]');
-  if (!form) return;
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const data = new FormData(form);
-    const source = form.dataset.source || location.pathname;
-    const lang = document.documentElement.lang;
-    const situation = data.get('situation');
-    const name = data.get('name');
-    const process = data.get('process');
-    const url = makeWhatsAppUrl({
-      source,
-      situation: lang === 'en' ? `English: ${situation}` : situation,
-      name,
-      process,
-    });
-    window.open(url, '_blank', 'noopener,noreferrer');
-  });
-}
-
 function initDirectLinks() {
   document.querySelectorAll('[data-wa-link]').forEach((link) => {
     link.href = makeWhatsAppUrl({
@@ -80,19 +48,5 @@ function initDirectLinks() {
   });
 }
 
-function initFlowboard() {
-  const board = document.querySelector('[data-flowboard]');
-  if (!board || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const nodes = [...board.querySelectorAll('[data-flow-node]')];
-  let active = 0;
-  window.setInterval(() => {
-    nodes.forEach((node, index) => node.classList.toggle('is-active', index === active));
-    active = (active + 1) % nodes.length;
-  }, 1800);
-}
-
 initLanguage();
-initMenu();
-initContact();
 initDirectLinks();
-initFlowboard();

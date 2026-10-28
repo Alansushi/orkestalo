@@ -68,13 +68,23 @@ test('new pages only link to files and routes generated in public output', async
 });
 
 test('production serves only the new site and redirects retired pages', async () => {
-  const retired = (await readdir(new URL('../', import.meta.url)))
+  const retired = [
+    'agentes-ia-claude.html', 'automatizacion-ia-para-empresas.html', 'automatizacion-n8n.html',
+    'automatizacion-whatsapp-negocios.html', 'casos-de-uso.html', 'integraciones-mercado-pago.html',
+    'orquestacion-agentes.html', 'por-que-orkesta.html', 'preguntas-frecuentes.html',
+    'procesamiento-documentos-ia.html', 'sobre-orkesta.html',
+  ];
+  const rootHtml = (await readdir(new URL('../', import.meta.url)))
     .filter((name) => name.endsWith('.html') && !['index.html', 'design-system.html', 'index-hero-bg.html'].includes(name));
+  assert.deepEqual(rootHtml, []);
   const publicHtml = (await readdir(new URL('../public/', import.meta.url))).filter((name) => name.endsWith('.html'));
   assert.deepEqual(publicHtml, ['index.html']);
 
   const assets = await readdir(new URL('../public/assets/', import.meta.url));
   assert.deepEqual(new Set(assets), new Set(['site.js', 'rebrand.js', 'rebrand.css']));
+  const buildAssets = await readdir(new URL('../assets/', import.meta.url));
+  assert.deepEqual(new Set(buildAssets), new Set(['site.js', 'rebrand.js', 'rebrand.css']));
+  await assert.rejects(access(new URL('../src/generated/', import.meta.url)));
 
   const config = JSON.parse(await read('vercel.json'));
   const destinations = new Set(['/', '/proyectos/', '/servicios/automatizacion-ia/']);
