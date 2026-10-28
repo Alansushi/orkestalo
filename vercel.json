@@ -2,8 +2,19 @@
   "redirects": [
     {
       "source": "/automatizacion-ia-pymes-latam.html",
-      "destination": "/automatizacion-ia-para-empresas.html",
+      "destination": "/servicios/automatizacion-ia/",
       "permanent": true
-    }
+    },
+    { "source": "/agentes-ia-claude.html", "destination": "/servicios/automatizacion-ia/", "permanent": true },
+    { "source": "/automatizacion-ia-para-empresas.html", "destination": "/servicios/automatizacion-ia/", "permanent": true },
+    { "source": "/automatizacion-n8n.html", "destination": "/servicios/automatizacion-ia/", "permanent": true },
+    { "source": "/automatizacion-whatsapp-negocios.html", "destination": "/servicios/automatizacion-ia/", "permanent": true },
+    { "source": "/casos-de-uso.html", "destination": "/proyectos/", "permanent": true },
+    { "source": "/integraciones-mercado-pago.html", "destination": "/servicios/automatizacion-ia/", "permanent": true },
+    { "source": "/orquestacion-agentes.html", "destination": "/servicios/automatizacion-ia/", "permanent": true },
+    { "source": "/por-que-orkesta.html", "destination": "/", "permanent": true },
+    { "source": "/preguntas-frecuentes.html", "destination": "/", "permanent": true },
+    { "source": "/procesamiento-documentos-ia.html", "destination": "/servicios/automatizacion-ia/", "permanent": true },
+    { "source": "/sobre-orkesta.html", "destination": "/", "permanent": true }
   ]
 }
