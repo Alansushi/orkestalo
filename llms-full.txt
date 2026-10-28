@@ -19,7 +19,7 @@ Sello queda fuera del portafolio enlazado hasta contar con una URL pública veri
 
 ### Contacto
 
-La ruta /contacto/ ofrece un formulario con nombre, correo, tipo de proyecto y descripción; presupuesto y fecha son opcionales. El servidor valida y limita la entrada. El envío usa Resend solo cuando existe una clave y un remitente verificado. Si no está disponible, la interfaz dirige a WhatsApp. El aviso de privacidad está marcado como borrador para revisión.
+La ruta /contacto/ ofrece un formulario con nombre, tipo de proyecto y descripción obligatorios; correo, teléfono, presupuesto y fecha son opcionales. El navegador puede ofrecer autorrelleno para nombre, correo y teléfono. El formulario prepara un mensaje en español o inglés y abre WhatsApp; el visitante decide si lo envía. Orkesta no guarda los datos del formulario para visitas futuras. El aviso de privacidad está marcado como borrador para revisión.
 
 ## Automatización de procesos con IA para que tu equipo avance
 
