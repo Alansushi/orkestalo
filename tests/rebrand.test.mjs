@@ -16,37 +16,22 @@ test('portfolio only contains unique published projects with live HTTPS referenc
   }
 });
 
-test('contact validation limits fields and rejects malformed input', async () => {
-  const { validateContact } = await import('../api/contact.js');
-  const valid = { name: 'Ana', email: 'ana@example.com', type: 'sitio-web', description: 'Quiero renovar el sitio de mi estudio.' };
-  assert.equal(validateContact(valid).ok, true);
-  assert.equal(validateContact({ ...valid, email: 'x' }).ok, false);
-  assert.equal(validateContact({ ...valid, description: 'x'.repeat(4001) }).ok, false);
-  assert.equal(validateContact({ ...valid, website: 'bot' }).spam, true);
-});
-
-test('contact API never reports delivery when email is unconfigured or fails', async () => {
-  const { submitContact } = await import('../api/contact.js');
-  const input = { name: 'Ana', email: 'ana@example.com', type: 'sitio-web', description: 'Quiero renovar el sitio de mi estudio.' };
-  const missing = await submitContact(input, { env: {}, fetcher: async () => { throw Error('unexpected'); } });
-  assert.equal(missing.status, 503);
-  const failed = await submitContact(input, { env: { RESEND_API_KEY: 'test', RESEND_FROM_EMAIL: 'hola@orkestalo.com' }, fetcher: async () => ({ ok: false }) });
-  assert.equal(failed.status, 502);
-});
-
-test('contact API sends a valid inquiry only to the Orkesta mailbox', async () => {
-  const { submitContact } = await import('../api/contact.js');
-  let request;
-  const result = await submitContact({ name: 'Ana', email: 'ana@example.com', type: 'sitio-web', description: 'Quiero renovar el sitio de mi estudio.', reference: 'grafik' }, {
-    env: { RESEND_API_KEY: 'test', RESEND_FROM_EMAIL: 'hola@orkestalo.com' },
-    fetcher: async (url, options) => { request = { url, options }; return { ok: true }; },
-  });
-  assert.equal(result.status, 200);
-  assert.equal(request.url, 'https://api.resend.com/emails');
-  const body = JSON.parse(request.options.body);
-  assert.deepEqual(body.to, ['info@orkestalo.com']);
-  assert.equal(body.reply_to, 'ana@example.com');
-  assert.match(body.text, /Referencia: grafik/);
+test('contact page offers native autofill and one WhatsApp completion action', async () => {
+  const home = await read('public/index.html');
+  const contact = await read('public/contacto/index.html');
+  const homeContact = home.match(/<section id="contacto"[\s\S]*?<\/section>/)?.[0] || '';
+  assert.equal((homeContact.match(/class="studio-button studio-button--light"/g) || []).length, 1);
+  assert.match(homeContact, /href="\/contacto\/"/);
+  assert.doesNotMatch(homeContact, /data-wa-link/);
+  assert.match(contact, /name="name" autocomplete="name" required/);
+  assert.match(contact, /name="email" type="email" autocomplete="email"/);
+  assert.match(contact, /name="phone" type="tel" autocomplete="tel"/);
+  assert.doesNotMatch(contact, /name="email"[^>]*required/);
+  assert.match(contact, /name="type" required/);
+  assert.match(contact, /name="description"[^>]*required/);
+  assert.equal((contact.match(/<button class="studio-button" type="submit"/g) || []).length, 1);
+  assert.match(contact, /Continuar en WhatsApp/);
+  assert.doesNotMatch(contact, /studio-form__fallback|Prefiero escribir por WhatsApp|Formulario no disponible/);
 });
 
 test('the new site generates semantic landing and readable route files', async () => {

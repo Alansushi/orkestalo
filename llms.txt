@@ -16,7 +16,7 @@ La oferta comercial se organiza en tres servicios:
 
 - [Inicio — Ideas extraordinarias. Experiencias digitales reales.](https://www.orkestalo.com/): propuesta del estudio, servicios, proyectos verificables, demos locales, método y contacto.
 - [Proyectos](https://www.orkestalo.com/proyectos/): seis fichas públicas de GRAFIK, Dra. Ana Mora, Diego & Giselle, Dra. Fernanda Suaste, Expression Gráfica y Aranza & Mateo. Sello no se enlaza porque su URL pública está pendiente.
-- [Contacto](https://www.orkestalo.com/contacto/): formulario con alternativa de WhatsApp. El envío por correo depende de la configuración de Resend.
+- [Contacto](https://www.orkestalo.com/contacto/): formulario que prepara un mensaje para continuar en WhatsApp; el visitante decide si lo envía.
 - [Consultoría n8n](https://www.orkestalo.com/automatizacion-n8n.html): workflow visual y comparación n8n vs. Make, Zapier y código a medida.
 - [Agentes de IA para empresas y equipos](https://www.orkestalo.com/agentes-ia-claude.html): demo conversacional y comparación entre chatbot de reglas y agente con IA.
 - [Automatización de WhatsApp para negocios](https://www.orkestalo.com/automatizacion-whatsapp-negocios.html): demo, arquitectura, casos por giro, FAQ y contacto guiado.

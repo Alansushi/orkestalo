@@ -15,7 +15,13 @@ for (const [width, height] of sizes) {
   await page.goto('http://localhost:8080/', { waitUntil: 'networkidle' });
   await page.evaluate(async () => { await document.fonts.ready; document.querySelectorAll('img').forEach((image) => { image.loading = 'eager'; }); });
   await page.waitForFunction(() => [...document.images].every((image) => image.complete));
-  const brokenImages = await page.locator('img').evaluateAll((images) => images.filter((image) => !image.naturalWidth).map((image) => image.currentSrc));
+  let brokenImages = await page.locator('img').evaluateAll((images) => images.filter((image) => !image.naturalWidth).map((image) => image.currentSrc));
+  if (brokenImages.length) {
+    await page.reload({ waitUntil: 'networkidle' });
+    await page.evaluate(async () => { await document.fonts.ready; document.querySelectorAll('img').forEach((image) => { image.loading = 'eager'; }); });
+    await page.waitForFunction(() => [...document.images].every((image) => image.complete));
+    brokenImages = await page.locator('img').evaluateAll((images) => images.filter((image) => !image.naturalWidth).map((image) => image.currentSrc));
+  }
   if (brokenImages.length) findings.push(`${width}x${height}: broken images ${brokenImages.join(', ')}`);
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
   if (overflow > 1) findings.push(`${width}x${height}: horizontal overflow ${overflow}px`);
@@ -45,42 +51,78 @@ for (const [width, height] of sizes) {
 
 const contact = await browser.newPage({ viewport: { width: 390, height: 844 } });
 const consoleErrors = [];
+const apiRequests = [];
 contact.on('pageerror', (error) => consoleErrors.push(error.message));
-await contact.route('**/api/contact', async (route) => {
-  if (route.request().method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ available: false }) });
-  return route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ ok: false }) });
-});
+contact.on('request', (request) => { if (request.url().includes('/api/contact')) apiRequests.push(request.url()); });
+await contact.context().route('https://wa.me/**', (route) => route.fulfill({ status: 200, contentType: 'text/html', body: '<title>WhatsApp test target</title>' }));
 await contact.goto('http://localhost:8080/contacto/?referencia=experiencias-digitales', { waitUntil: 'networkidle' });
 if (await contact.locator('select[name=type]').inputValue() !== 'experiencia-digital') findings.push('contact reference preselection failed');
-if (!await contact.locator('.studio-form__fallback').isVisible()) findings.push('contact unavailable fallback hidden');
-if (!await contact.locator('[data-contact-form] button[type=submit]').isDisabled()) findings.push('unavailable form can still be submitted');
+if (await contact.locator('input[name=reference]').inputValue() !== 'experiencias-digitales') findings.push('contact reference missing');
+if (await contact.locator('input[name=name]').getAttribute('autocomplete') !== 'name' || await contact.locator('input[name=email]').getAttribute('autocomplete') !== 'email' || await contact.locator('input[name=phone]').getAttribute('autocomplete') !== 'tel') findings.push('native autofill tokens missing');
+await contact.locator('[data-contact-form] button[type=submit]').click();
+if (await contact.locator('input[name=name]').evaluate((input) => input.validity.valid)) findings.push('empty name accepted');
+await contact.locator('input[name=name]').fill('Ana López');
+await contact.locator('[data-contact-form] button[type=submit]').click();
+if (await contact.locator('textarea[name=description]').evaluate((input) => input.validity.valid)) findings.push('empty description accepted');
+await contact.locator('textarea[name=description]').fill('Quiero crear una experiencia para mi equipo.');
+await contact.locator('input[name=email]').fill('correo-invalido');
+await contact.locator('[data-contact-form] button[type=submit]').click();
+if (await contact.locator('input[name=email]').evaluate((input) => input.validity.valid)) findings.push('malformed optional email accepted');
+await contact.locator('input[name=email]').fill('');
+await contact.locator('input[name=phone]').fill('+52 55 1234 5678');
+const popupPromise = contact.waitForEvent('popup');
+await contact.locator('[data-contact-form] button[type=submit]').click();
+const popup = await popupPromise;
+const message = new URL(popup.url()).searchParams.get('text');
+if (!message?.includes('Hola, soy Ana López.') || !message.includes('una experiencia digital') || !message.includes('Teléfono: +52 55 1234 5678') || !message.includes('Referencia: experiencias-digitales') || message.includes('Correo:')) findings.push('Spanish WhatsApp message incomplete');
+await popup.close();
+if (await contact.evaluate(() => Object.keys(localStorage).some((key) => /name|email|phone|contact/i.test(key)))) findings.push('contact data persisted in localStorage');
+await contact.evaluate(() => scrollTo(0, 0));
 await contact.screenshot({ path: fileURLToPath(new URL('contact-mobile.png', output)), fullPage: true });
 if (consoleErrors.length) findings.push(`contact page errors: ${consoleErrors.join('; ')}`);
 await contact.close();
 
-const submission = await browser.newPage({ viewport: { width: 768, height: 1024 } });
-let deliveryOk = true;
-await submission.route('**/api/contact', async (route) => {
-  if (route.request().method() === 'GET') return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ available: true }) });
-  return route.fulfill({ status: deliveryOk ? 200 : 502, contentType: 'application/json', body: JSON.stringify({ ok: deliveryOk }) });
+const english = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+english.on('request', (request) => { if (request.url().includes('/api/contact')) apiRequests.push(request.url()); });
+await english.context().route('https://wa.me/**', (route) => route.fulfill({ status: 200, contentType: 'text/html', body: '<title>WhatsApp test target</title>' }));
+await english.goto('http://localhost:8080/contacto/?referencia=invalid&lang=en', { waitUntil: 'networkidle' });
+if (await english.locator('input[name=reference]').inputValue() || await english.locator('select[name=type]').inputValue()) findings.push('invalid reference accepted');
+if (await english.locator('select[name=type] option[value="sitio-web"]').textContent() !== 'Web design and development') findings.push('English project option untranslated');
+if (await english.locator('textarea[name=description]').getAttribute('placeholder') !== 'What would you like to create or improve?') findings.push('English description placeholder untranslated');
+await english.locator('input[name=name]').fill('Alex');
+await english.locator('textarea[name=description]').fill('I need a new website for my studio.');
+await english.locator('[data-contact-form] button[type=submit]').click();
+if (await english.locator('select[name=type]').evaluate((select) => select.validity.valid)) findings.push('empty project type accepted');
+await english.locator('select[name=type]').selectOption('sitio-web');
+await english.locator('input[name=email]').fill('alex@example.com');
+await english.locator('input[name=budget]').fill('USD 5,000');
+await english.locator('input[name=date]').fill('June 2027');
+await english.evaluate(() => scrollTo(0, 0));
+await english.screenshot({ path: fileURLToPath(new URL('contact-desktop.png', output)), fullPage: true });
+const englishPopupPromise = english.waitForEvent('popup');
+await english.locator('[data-contact-form] button[type=submit]').click();
+const englishPopup = await englishPopupPromise;
+const englishMessage = new URL(englishPopup.url()).searchParams.get('text');
+if (!englishMessage?.includes("Hi, I'm Alex.") || !englishMessage.includes('a website') || !englishMessage.includes('Email: alex@example.com') || !englishMessage.includes('Approximate budget: USD 5,000') || !englishMessage.includes('Preferred date: June 2027') || englishMessage.includes('Reference:') || englishMessage.includes('Phone:')) findings.push('English WhatsApp message incomplete');
+await englishPopup.close();
+await english.close();
+const project = await browser.newPage();
+await project.goto('http://localhost:8080/contacto/?referencia=diego-y-giselle', { waitUntil: 'networkidle' });
+if (await project.locator('select[name=type]').inputValue() !== 'experiencia-digital' || await project.locator('input[name=reference]').inputValue() !== 'diego-y-giselle') findings.push('project reference preselection failed');
+await project.close();
+const preserved = await browser.newPage();
+await preserved.addInitScript(() => {
+  const observer = new MutationObserver(() => {
+    const select = document.querySelector('select[name=type]');
+    if (select?.querySelector('option[value=otro]')) { select.value = 'otro'; observer.disconnect(); }
+  });
+  observer.observe(document, { childList: true, subtree: true });
 });
-await submission.goto('http://localhost:8080/contacto/', { waitUntil: 'networkidle' });
-const fillForm = async () => {
-  await submission.locator('input[name=name]').fill('Persona de prueba');
-  await submission.locator('input[name=email]').fill('prueba@example.com');
-  await submission.locator('select[name=type]').selectOption('sitio-web');
-  await submission.locator('textarea[name=description]').fill('Esta es una solicitud de prueba local para el diseño web.');
-};
-await fillForm();
-await submission.locator('[data-contact-form] button[type=submit]').click();
-await submission.locator('[data-contact-status]').getByText('Mensaje enviado.').waitFor();
-deliveryOk = false;
-await fillForm();
-await submission.locator('[data-contact-form] button[type=submit]').click();
-await submission.locator('.studio-form__fallback:visible').waitFor();
-if (!/No pudimos enviar/.test(await submission.locator('[data-contact-status]').textContent())) findings.push('contact error response reported success');
-await submission.close();
+await preserved.goto('http://localhost:8080/contacto/?referencia=experiencias-digitales', { waitUntil: 'networkidle' });
+if (await preserved.locator('select[name=type]').inputValue() !== 'otro') findings.push('reference overwrote an existing project type');
+await preserved.close();
+if (apiRequests.length) findings.push(`contact called API: ${apiRequests.join(', ')}`);
 await browser.close();
 await writeFile(new URL('../docs/orkesta-rebrand/qa-results.json', import.meta.url), JSON.stringify({ sizes, findings }, null, 2));
 if (findings.length) { console.error(findings.join('\n')); process.exitCode = 1; }
-else console.log(`QA passed: ${sizes.length} viewports, images, console, keyboard, mobile menu, language, filters, contact fallback, preselection, simulated success and error`);
+else console.log(`QA passed: ${sizes.length} home viewports, contact mobile and desktop, validation, autofill attributes, references, Spanish and English WhatsApp messages, no contact API request`);

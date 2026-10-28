@@ -1,4 +1,5 @@
 import { projects, services } from './data.mjs';
+import { makeProjectWhatsAppUrl } from '../contact.js';
 
 const demoSequences = {
   web: {
@@ -59,37 +60,18 @@ if (contactForm) {
     contactForm.elements.reference.value = reference;
     const matchedService = services.find(({ slug }) => slug === reference);
     const matchedProject = projects.find(({ slug }) => slug === reference);
-    if (matchedService) contactForm.elements.type.value = matchedService.type;
-    else if (matchedProject) contactForm.elements.type.value = matchedProject.category === 'experiencias' ? 'experiencia-digital' : matchedProject.category === 'automatizacion' ? 'automatizacion-ia' : 'sitio-web';
+    if (!contactForm.elements.type.value) {
+      if (matchedService) contactForm.elements.type.value = matchedService.type;
+      else if (matchedProject) contactForm.elements.type.value = matchedProject.category === 'experiencias' ? 'experiencia-digital' : matchedProject.category === 'automatizacion' ? 'automatizacion-ia' : 'sitio-web';
+    }
   }
-  const status = contactForm.querySelector('[data-contact-status]');
-  const fallback = contactForm.querySelector('.studio-form__fallback');
-  const submitButton = contactForm.querySelector('[type=submit]');
-  const setStatus = (message, showFallback = false, unavailable = false) => {
-    status.textContent = message;
-    fallback.hidden = !showFallback;
-    if (unavailable) submitButton.disabled = true;
-  };
-  fetch('/api/contact').then((response) => response.ok ? response.json() : { available: false }).then(({ available }) => {
-    if (!available) setStatus(document.documentElement.lang === 'en' ? 'The form is currently unavailable. Please use WhatsApp.' : 'El formulario no está disponible por ahora. Escríbenos por WhatsApp.', true, true);
-  }).catch(() => setStatus(document.documentElement.lang === 'en' ? 'The form is currently unavailable. Please use WhatsApp.' : 'El formulario no está disponible por ahora. Escríbenos por WhatsApp.', true, true));
-  contactForm.addEventListener('submit', async (event) => {
+  contactForm.addEventListener('submit', (event) => {
     event.preventDefault();
     if (!contactForm.reportValidity()) return;
-    submitButton.disabled = true;
-    setStatus(document.documentElement.lang === 'en' ? 'Sending…' : 'Enviando…');
+    const data = Object.fromEntries(new FormData(contactForm));
+    const url = makeProjectWhatsAppUrl(data, document.documentElement.lang);
     window.orkestaTrack?.('contact_submit', { type: contactForm.elements.type.value, reference: contactForm.elements.reference.value });
-    try {
-      const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.fromEntries(new FormData(contactForm))) });
-      const result = await response.json();
-      if (!response.ok || !result.ok) throw new Error(result.message || 'Error de envío');
-      setStatus(document.documentElement.lang === 'en' ? 'Message sent. We will reply by email.' : 'Mensaje enviado. Te responderemos por correo.');
-      window.orkestaTrack?.('contact_success', { type: contactForm.elements.type.value });
-      contactForm.reset();
-    } catch {
-      setStatus(document.documentElement.lang === 'en' ? 'We could not send your message. Please use WhatsApp.' : 'No pudimos enviar tu mensaje. Escríbenos por WhatsApp.', true);
-      window.orkestaTrack?.('contact_error', { type: contactForm.elements.type.value });
-    } finally { submitButton.disabled = false; }
+    window.open(url, '_blank', 'noopener,noreferrer');
   });
 }
 
