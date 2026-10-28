@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { access, readFile } from 'node:fs/promises';
+import { access, readFile, readdir } from 'node:fs/promises';
 import test from 'node:test';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
@@ -65,4 +65,28 @@ test('new pages only link to files and routes generated in public output', async
       await assert.doesNotReject(access(new URL(`../${target}`, import.meta.url)), `${page} → ${raw}`);
     }
   }
+});
+
+test('production serves only the new site and redirects retired pages', async () => {
+  const retired = (await readdir(new URL('../', import.meta.url)))
+    .filter((name) => name.endsWith('.html') && !['index.html', 'design-system.html', 'index-hero-bg.html'].includes(name));
+  const publicHtml = (await readdir(new URL('../public/', import.meta.url))).filter((name) => name.endsWith('.html'));
+  assert.deepEqual(publicHtml, ['index.html']);
+
+  const assets = await readdir(new URL('../public/assets/', import.meta.url));
+  assert.deepEqual(new Set(assets), new Set(['site.js', 'rebrand.js', 'rebrand.css']));
+
+  const config = JSON.parse(await read('vercel.json'));
+  const destinations = new Set(['/', '/proyectos/', '/servicios/automatizacion-ia/']);
+  for (const name of [...retired, 'automatizacion-ia-pymes-latam.html']) {
+    const redirect = config.redirects.find(({ source }) => source === `/${name}`);
+    assert.ok(redirect, `missing redirect for ${name}`);
+    assert.equal(redirect.permanent, true);
+    assert.ok(destinations.has(redirect.destination), `${name} redirects outside the new site`);
+  }
+
+  const publishedText = `${await read('public/sitemap.xml')}\n${await read('public/llms.txt')}`;
+  for (const name of retired) assert.ok(!publishedText.includes(name), `${name} is still advertised`);
+  assert.ok(!publishedText.includes('llms-full.txt'));
+  await assert.rejects(access(new URL('../public/llms-full.txt', import.meta.url)));
 });

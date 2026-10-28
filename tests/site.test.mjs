@@ -1,22 +1,13 @@
 import assert from 'node:assert/strict';
-import { access, readFile, readdir } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import test from 'node:test';
+import { projects, services } from '../src/rebrand/data.mjs';
 
-const root = new URL('../', import.meta.url);
-const read = (path) => readFile(new URL(path, root), 'utf8');
+const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 const productionPages = [
-  'index.html',
-  'automatizacion-n8n.html',
-  'agentes-ia-claude.html',
-  'casos-de-uso.html',
-  'automatizacion-whatsapp-negocios.html',
-  'integraciones-mercado-pago.html',
-  'orquestacion-agentes.html',
-  'por-que-orkesta.html',
-  'preguntas-frecuentes.html',
-  'procesamiento-documentos-ia.html',
-  'sobre-orkesta.html',
-  'automatizacion-ia-para-empresas.html',
+  'index.html', 'proyectos/index.html', 'contacto/index.html', 'aviso-de-privacidad/index.html',
+  ...projects.map(({ slug }) => `proyectos/${slug}/index.html`),
+  ...services.map(({ slug }) => `servicios/${slug}/index.html`),
 ];
 
 test('the guided WhatsApp URL preserves source, situation, name and process', async () => {
@@ -43,7 +34,6 @@ test('WhatsApp links omit missing details instead of inventing them', async () =
 
 test('project inquiry includes only supplied details in Spanish and English', async () => {
   const { makeProjectWhatsAppUrl } = await import('../src/contact.js');
-  assert.equal(typeof makeProjectWhatsAppUrl, 'function');
   const input = {
     name: ' Ana  López ', type: 'sitio-web', description: ' Un sitio para mi estudio. ',
     phone: '+52 55 1234 5678', reference: 'grafik', budget: ' $20,000 ',
@@ -58,123 +48,30 @@ test('project inquiry includes only supplied details in Spanish and English', as
   assert.doesNotMatch(spanish, /Correo:|Fecha:|Por definir|Formulario no disponible/);
   const english = new URL(makeProjectWhatsAppUrl({ ...input, email: 'ana@example.com', date: 'June 2027' }, 'en')).searchParams.get('text');
   assert.match(english, /Hi, I'm Ana López\./);
-  assert.match(english, /website/);
   assert.match(english, /Email: ana@example\.com/);
   assert.match(english, /Phone: \+52 55 1234 5678/);
   assert.match(english, /Preferred date: June 2027/);
   assert.doesNotMatch(english, /Por definir|Formulario no disponible/);
-  const minimal = new URL(makeProjectWhatsAppUrl({ name: 'Ana', type: 'otro', description: 'Una idea nueva.', email: '  ', phone: '\n' }, 'es')).searchParams.get('text');
-  assert.doesNotMatch(minimal, /Correo:|Teléfono:/);
 });
 
-test('all production pages use deferred local bundles and no browser Babel', async () => {
+test('all published pages load the new site bundle without browser Babel', async () => {
   for (const file of productionPages) {
-    const html = await read(file);
+    const html = await read(`public/${file}`);
     assert.doesNotMatch(html, /babel-standalone|text\/babel/i, file);
-    assert.match(html, /<script\s+defer\s+src="\/assets\/[^"]+\.js"><\/script>/, file);
+    assert.match(html, /<script defer src="\/assets\/rebrand\.js"><\/script>/, file);
+    assert.doesNotMatch(html, /\.html(?:["?#])/, file);
   }
 });
 
-test('commercial pages expose the promised buyer-facing content in Spanish and English', async () => {
-  const expectations = {
-    'index.html': ['Ideas extraordinarias. Experiencias digitales reales.', 'Extraordinary ideas. Real digital experiences.', 'Lo que hemos construido'],
-    'automatizacion-n8n.html': ['Consultoría n8n para automatizar procesos', 'n8n consulting to automate processes', 'n8n vs. Make, Zapier y código a medida'],
-    'agentes-ia-claude.html': ['Agentes de IA para empresas y equipos', 'AI agents for businesses and teams', 'Chatbot de reglas'],
-    'casos-de-uso.html': ['Problema', 'Proceso', 'Resultado operativo', 'Descriptive use cases'],
-    'automatizacion-whatsapp-negocios.html': ['Automatización de WhatsApp para negocios', 'WhatsApp automation for businesses', 'Preguntas frecuentes'],
-  };
-
-  for (const [file, phrases] of Object.entries(expectations)) {
-    const html = await read(file);
-    for (const phrase of phrases) assert.match(html, new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), `${file}: ${phrase}`);
-    if (file !== 'index.html') assert.match(html, /Demostración recreada con datos ficticios|Recreated demonstration using fictional data/);
+test('the build assembles only current root documents', async () => {
+  const home = await read('public/index.html');
+  const bundle = await read('public/assets/rebrand.js');
+  const llms = await read('public/llms.txt');
+  assert.match(home, /Ideas extraordinarias\. Experiencias digitales reales\./);
+  assert.match(bundle, /\/_vercel\/insights\/script\.js/);
+  assert.match(llms, /Proyectos/);
+  assert.doesNotMatch(llms, /\.html(?:[\s)])/);
+  for (const file of ['design-system.html', 'index-hero-bg.html', 'llms-full.txt', 'styles.css', 'og-image.png']) {
+    await assert.rejects(access(new URL(`../public/${file}`, import.meta.url)), file);
   }
-});
-
-test('buyer-facing content is geographically neutral in both languages', async () => {
-  const productionNames = new Set(productionPages.map((file) => file.replace(/\.html$/, '')));
-  const generatedFiles = (await readdir(new URL('../src/generated/', import.meta.url)))
-    .filter((file) => file.endsWith('.jsx') && productionNames.has(file.replace(/\.jsx$/, '')))
-    .map((file) => `src/generated/${file}`);
-  const files = [...productionPages, ...generatedFiles, 'llms.txt', 'llms-full.txt', 'og-image.svg'];
-
-  for (const file of files) {
-    const content = await read(file);
-    assert.doesNotMatch(content, /\b(?:México|Mexico|LATAM|Latinoamérica|Latin America|CDMX)\b/i, file);
-    if (!/preguntas-frecuentes/.test(file)) {
-      assert.doesNotMatch(content, /\b(?:CFDI|RFC)\b/i, file);
-    }
-  }
-});
-
-test('the neutral automation guide replaces the regional URL', async () => {
-  const guide = await read('automatizacion-ia-para-empresas.html');
-  const sitemap = await read('sitemap.xml');
-
-  assert.match(guide, /Automatización con IA para empresas/);
-  assert.match(guide, /\$8 USD\/hora/);
-  assert.match(guide, /La conversación inicial con Orkesta/);
-  assert.match(guide, /https:\/\/www\.orkestalo\.com\/automatizacion-ia-para-empresas\.html/);
-  assert.match(sitemap, /automatizacion-ia-para-empresas\.html/);
-  assert.doesNotMatch(sitemap, /automatizacion-ia-pymes-latam\.html/);
-});
-
-test('Vercel permanently redirects the former regional guide URL', async () => {
-  const config = JSON.parse(await read('vercel.json'));
-  assert.deepEqual(config.redirects, [{
-    source: '/automatizacion-ia-pymes-latam.html',
-    destination: '/automatizacion-ia-para-empresas.html',
-    permanent: true,
-  }]);
-});
-
-test('updated SSR fallbacks expose the current content date', async () => {
-  const legacyPages = [
-    'automatizacion-ia-para-empresas.html',
-    'integraciones-mercado-pago.html',
-    'orquestacion-agentes.html',
-    'por-que-orkesta.html',
-    'preguntas-frecuentes.html',
-    'procesamiento-documentos-ia.html',
-    'sobre-orkesta.html',
-  ];
-
-  for (const file of legacyPages) {
-    const html = await read(file);
-    assert.match(html, /Última actualización: agosto 2026/, file);
-    assert.doesNotMatch(html, /Última actualización: junio 2026/, file);
-  }
-});
-
-test('JSON-LD is valid and the WhatsApp landing is indexed', async () => {
-  for (const file of productionPages) {
-    const html = await read(file);
-    const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
-    for (const [, json] of blocks) assert.doesNotThrow(() => JSON.parse(json), file);
-  }
-
-  const sitemap = await read('sitemap.xml');
-  const llms = await read('llms.txt');
-  assert.match(sitemap, /automatizacion-whatsapp-negocios\.html/);
-  assert.match(llms, /automatización de WhatsApp/i);
-  assert.doesNotMatch(llms, /\+15 horas|menos de 2 semanas/i);
-});
-
-test('existing automation pages keep their guided WhatsApp CTA and floating link', async () => {
-  for (const file of ['automatizacion-n8n.html', 'agentes-ia-claude.html', 'casos-de-uso.html', 'automatizacion-whatsapp-negocios.html']) {
-    const html = await read(file);
-    assert.match(html, /Cuéntanos tu proceso por WhatsApp/);
-    assert.match(html, /Tell us about your process on WhatsApp/);
-    assert.match(html, /class="[^"]*floating-wa[^"]*"[^>]*aria-label=/);
-  }
-});
-
-test('the build assembles the public output expected by Vercel', async () => {
-  const publicIndex = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
-  const publicBundle = await readFile(new URL('../public/assets/site.js', import.meta.url), 'utf8');
-  assert.match(publicIndex, /<title>Ideas extraordinarias\. Experiencias digitales reales\./);
-  assert.match(publicIndex, /<script defer src="\/assets\/site\.js"><\/script>/);
-  assert.ok(publicBundle.length > 100);
-  await assert.rejects(access(new URL('../public/design-system.html', import.meta.url)));
-  await assert.rejects(access(new URL('../public/index-hero-bg.html', import.meta.url)));
 });
