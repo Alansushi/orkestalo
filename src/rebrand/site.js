@@ -1,5 +1,8 @@
 import { projects, services } from './data.mjs';
 import { makeProjectWhatsAppUrl } from '../contact.js';
+import { inject } from '@vercel/analytics';
+
+inject();
 
 const demoSequences = {
   web: {
