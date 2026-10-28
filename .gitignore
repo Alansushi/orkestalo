@@ -10,6 +10,7 @@
 .worktrees/
 node_modules/
 public/
+assets/
 
 # Screenshots de desarrollo
 orkesta-es.png
