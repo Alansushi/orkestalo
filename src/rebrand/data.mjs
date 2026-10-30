@@ -32,7 +32,7 @@ export const services = [
 // Never capture personal RSVP, gift, banking or guest data in portfolio media.
 export const projects = [
   {
-    slug: 'grafik', category: 'sitios', name: { es: 'GRAFIK', en: 'GRAFIK' },
+    slug: 'grafik', status: 'published', category: 'sitios', name: { es: 'GRAFIK', en: 'GRAFIK' },
     summary: { es: 'Un sitio para explorar trabajos y servicios de impresión con una dirección visual directa.', en: 'A website for exploring print work and services through a direct visual language.' },
     detail: { es: 'La portada presenta trabajos reales, materiales y rutas claras para cotizar. El contraste visual deja que los impresos ocupen el centro de la experiencia.', en: 'The homepage presents real work, materials and clear paths to request a quote. Its visual contrast puts print work at the center.' },
     url: 'https://www.grafik.mx/', scope: { es: 'Sitio web · imprenta', en: 'Website · print studio' },
@@ -40,7 +40,7 @@ export const projects = [
     image: '/media/projects/grafik-desktop.webp', mobileImage: '/media/projects/grafik-mobile.webp',
   },
   {
-    slug: 'dra-ana-mora', category: 'sitios', name: { es: 'Dra. Ana Mora', en: 'Dr. Ana Mora' },
+    slug: 'dra-ana-mora', status: 'published', category: 'sitios', name: { es: 'Dra. Ana Mora', en: 'Dr. Ana Mora' },
     summary: { es: 'Presencia web para servicios de odontología y ortodoncia, con acceso visible a consulta y tratamientos.', en: 'A website for dentistry and orthodontics with clear access to consultation and treatments.' },
     detail: { es: 'La portada organiza especialidades, credenciales y una vía de contacto. La información clínica visible se atribuye al sitio de la doctora, sin prometer resultados médicos.', en: 'The homepage organizes specialties, credentials and a contact path. Clinical information belongs to the doctor’s site; no medical outcomes are claimed.' },
     url: 'https://www.draanamora.com.mx/', scope: { es: 'Sitio web · odontología', en: 'Website · dentistry' },
@@ -48,7 +48,7 @@ export const projects = [
     image: '/media/projects/dra-ana-mora-desktop.webp', mobileImage: '/media/projects/dra-ana-mora-mobile.webp',
   },
   {
-    slug: 'diego-y-giselle', category: 'experiencias', name: { es: 'Diego & Giselle', en: 'Diego & Giselle' },
+    slug: 'diego-y-giselle', status: 'published', category: 'experiencias', name: { es: 'Diego & Giselle', en: 'Diego & Giselle' },
     summary: { es: 'Una invitación digital que organiza la historia, los momentos y la información del evento en un recorrido móvil.', en: 'A digital invitation that brings the story, key moments and event information into one mobile journey.' },
     detail: { es: 'La portada presenta a la pareja y guía hacia la historia y los detalles de la celebración. Solo mostramos la vista inicial, sin datos de invitados o regalos.', en: 'The homepage introduces the couple and guides visitors to their story and event details. Only the first view is shown, without guest or gift data.' },
     url: 'https://www.diegoygiselle.com/',
@@ -57,7 +57,7 @@ export const projects = [
     image: '/media/projects/diego-y-giselle-desktop.webp', mobileImage: '/media/projects/diego-y-giselle-mobile.webp',
   },
   {
-    slug: 'dra-fernanda-suaste', category: 'sitios', name: { es: 'Dra. Fernanda Suaste', en: 'Dr. Fernanda Suaste' },
+    slug: 'dra-fernanda-suaste', status: 'in-construction', category: 'sitios', name: { es: 'Dra. Fernanda Suaste', en: 'Dra. Fernanda Suaste' },
     summary: { es: 'Un sitio odontológico que explica el cuidado del diente natural y ordena el camino hacia una valoración.', en: 'A dental website explaining natural tooth care and guiding visitors toward an assessment.' },
     detail: { es: 'La página da protagonismo a una ilustración anatómica y estructura el contenido en tratamientos, perfil profesional y proceso de atención.', en: 'An anatomical illustration anchors the page, with content organized around treatments, the doctor and the care process.' },
     url: 'https://sitio-dra-fernanda-suaste.vercel.app/', scope: { es: 'Sitio web · salud dental', en: 'Website · dental care' },
@@ -65,7 +65,7 @@ export const projects = [
     image: '/media/projects/dra-fernanda-suaste-desktop.webp', mobileImage: '/media/projects/dra-fernanda-suaste-mobile.webp',
   },
   {
-    slug: 'expression-grafica', category: 'sitios', name: { es: 'Expression Gráfica', en: 'Expression Gráfica' },
+    slug: 'expression-grafica', status: 'published', category: 'sitios', name: { es: 'Expression Gráfica', en: 'Expression Gráfica' },
     summary: { es: 'Un catálogo web para servicios de impresión offset y digital, con fotografía del trabajo en taller.', en: 'A website catalog for offset and digital print services with workshop photography.' },
     detail: { es: 'La portada muestra producción real y separa servicios, trabajos, proceso y contacto. La marca pública usa el nombre Expression Gráfica.', en: 'The homepage shows real production and separates services, work, process and contact. The public brand is Expression Gráfica.' },
     url: 'https://expresiongrafica.vercel.app/', scope: { es: 'Sitio web · imprenta', en: 'Website · print shop' },
@@ -73,11 +73,19 @@ export const projects = [
     image: '/media/projects/expression-grafica-desktop.webp', mobileImage: '/media/projects/expression-grafica-mobile.webp',
   },
   {
-    slug: 'aranza-y-mateo', category: 'experiencias', name: { es: 'Aranza & Mateo', en: 'Aranza & Mateo' },
+    slug: 'aranza-y-mateo', status: 'published', category: 'experiencias', name: { es: 'Aranza & Mateo', en: 'Aranza & Mateo' },
     summary: { es: 'Una invitación digital de cumpleaños con una portada lúdica y un recorrido temático.', en: 'A birthday invitation with a playful homepage and a themed digital journey.' },
     detail: { es: 'La portada reúne la fecha, el motivo de la celebración y el acceso a los detalles. La experiencia pública es una referencia visual de un evento ya concluido.', en: 'The homepage brings together the date, celebration theme and access to details. The public experience is a visual reference to a past event.' },
     url: 'https://aranza-mateo.vercel.app/', scope: { es: 'Experiencia digital · invitación', en: 'Digital experience · invitation' },
     note: { es: 'Evento concluido. No se enviarán respuestas ni confirmaciones.', en: 'Past event. No responses or RSVPs will be sent.' },
     image: '/media/projects/aranza-y-mateo-desktop.webp', mobileImage: '/media/projects/aranza-y-mateo-mobile.webp',
+  },
+  {
+    slug: 'engranes-cami', status: 'in-construction', category: 'sitios', name: { es: 'Engranes CAMI', en: 'Engranes CAMI' },
+    summary: { es: 'Un sitio para presentar la fabricación de engranes, maquinados y reparación de reductores.', en: 'A website presenting gear manufacturing, machining and gearbox repair.' },
+    detail: { es: 'La portada presenta el trabajo industrial de Engranes CAMI y organiza el acceso a sus servicios y contacto.', en: 'The homepage introduces Engranes CAMI’s industrial work and organizes access to its services and contact information.' },
+    url: 'https://www.engranescami.com/', scope: { es: 'Sitio web · industria', en: 'Website · industry' },
+    note: { es: 'La captura muestra solo la portada del sitio.', en: 'The capture shows the site’s homepage only.' },
+    image: '/media/projects/engranes-cami-desktop.jpg', mobileImage: '/media/projects/engranes-cami-mobile.jpg',
   },
 ];
