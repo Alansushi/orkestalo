@@ -4,8 +4,8 @@
 
 ## Sitio actual
 
-- [Inicio](https://www.orkestalo.com/): propuesta del estudio, servicios, proyectos realizados, método y contacto.
-- [Proyectos](https://www.orkestalo.com/proyectos/): GRAFIK, Dra. Ana Mora, Diego & Giselle, Dra. Fernanda Suaste, Expression Gráfica y Aranza & Mateo.
+- [Inicio](https://www.orkestalo.com/): propuesta del estudio, servicios, proyectos publicados, proyectos en construcción, método y contacto.
+- [Proyectos](https://www.orkestalo.com/proyectos/): proyectos publicados GRAFIK, Dra. Ana Mora, Diego & Giselle, Expression Gráfica y Aranza & Mateo; en construcción Dra. Fernanda Suaste y Engranes CAMI. Algunas partes de los sitios en construcción aún pueden no funcionar.
 - [Diseño y desarrollo web](https://www.orkestalo.com/servicios/diseno-desarrollo-web/): sitios claros, rápidos y adaptables.
 - [Experiencias digitales](https://www.orkestalo.com/servicios/experiencias-digitales/): micrositios e invitaciones interactivas.
 - [Automatización e IA](https://www.orkestalo.com/servicios/automatizacion-ia/): flujos que conectan conversaciones, documentos y sistemas.

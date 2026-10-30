@@ -4,15 +4,54 @@ import test from 'node:test';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
-test('portfolio only contains unique published projects with live HTTPS references', async () => {
+test('portfolio separates published projects from projects in construction', async () => {
   const { projects } = await import('../src/rebrand/data.mjs');
   assert.equal(new Set(projects.map((project) => project.slug)).size, projects.length);
-  assert.equal(projects.length, 6);
+  assert.deepEqual(projects.filter(({ status }) => status === 'in-construction').map(({ slug }) => slug), ['dra-fernanda-suaste', 'engranes-cami']);
+  assert.equal(projects.filter(({ status }) => status === 'published').length, 5);
+  assert.equal(projects.find(({ slug }) => slug === 'engranes-cami').url, 'https://www.engranescami.com/');
+  assert.equal(projects.find(({ slug }) => slug === 'dra-fernanda-suaste').name.en, 'Dra. Fernanda Suaste');
   for (const project of projects) {
+    assert.ok(['published', 'in-construction'].includes(project.status));
     assert.match(project.url, /^https:\/\//);
     assert.ok(project.name.es && project.name.en && project.summary.es && project.summary.en);
     assert.ok(project.image && project.mobileImage && project.detail.es && project.detail.en);
     assert.notEqual(project.slug, 'sello');
+  }
+});
+
+test('home and portfolio show construction cards after the published grid, outside its filters', async () => {
+  for (const path of ['public/index.html', 'public/proyectos/index.html']) {
+    const html = await read(path);
+    const published = html.match(/<section id="proyectos"[\s\S]*?<\/section>/)?.[0]
+      ?? html.match(/<section class="studio-section studio-section--dark"[\s\S]*?<\/section>/)?.[0];
+    const construction = html.match(/<section id="proximamente"[\s\S]*?<\/section>/)?.[0];
+    assert.ok(published, `${path}: published section`);
+    assert.ok(construction, `${path}: construction section`);
+    assert.ok(html.indexOf(published) < html.indexOf(construction), `${path}: section order`);
+    assert.equal((published.match(/class="project-card"/g) || []).length, 5);
+    assert.doesNotMatch(published, /dra-fernanda-suaste|engranes-cami/);
+    for (const slug of ['dra-fernanda-suaste', 'engranes-cami']) assert.match(construction, new RegExp(`href="/proyectos/${slug}/"`));
+    assert.equal((construction.match(/class="project-card"/g) || []).length, 2);
+    assert.equal((construction.match(/En construcción/g) || []).length >= 2, true);
+    assert.match(construction, /Under construction/);
+    assert.match(construction, /algunas partes de estos sitios aún pueden no funcionar/i);
+    assert.match(construction, /some parts of these sites may not work yet/i);
+    assert.doesNotMatch(construction, /data-project-category/);
+  }
+});
+
+test('construction case pages warn before visiting and advertise their status in search metadata', async () => {
+  for (const slug of ['dra-fernanda-suaste', 'engranes-cami']) {
+    const html = await read(`public/proyectos/${slug}/index.html`);
+    assert.match(html, /<title>[^<]*En construcción/);
+    assert.match(html, /<meta name="description" content="[^"]*en construcción/);
+    assert.match(html, /En construcción/);
+    assert.match(html, /Under construction/);
+    assert.match(html, /algunas partes de este sitio aún pueden no funcionar/);
+    assert.match(html, /some parts of this site may not work yet/);
+    assert.ok(html.indexOf('algunas partes de este sitio aún pueden no funcionar') < html.indexOf('Visitar sitio público'));
+    assert.match(html, /target="_blank" rel="noopener noreferrer"/);
   }
 });
 
