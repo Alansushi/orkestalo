@@ -1,4 +1,8 @@
 {
+  "proxy": {
+    "entrypoint": "proxy.js",
+    "matcher": ["/buen-fin-2026", "/buen-fin-2026/:path*"]
+  },
   "redirects": [
     {
       "source": "/automatizacion-ia-pymes-latam.html",

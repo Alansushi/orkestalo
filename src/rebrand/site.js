@@ -58,7 +58,7 @@ const contactForm = document.querySelector('[data-contact-form]');
 if (contactForm) {
   const params = new URLSearchParams(location.search);
   const reference = params.get('referencia') || '';
-  const validReferences = new Set([...services.map(({ slug }) => slug), ...projects.map(({ slug }) => slug)]);
+  const validReferences = new Set([...services.map(({ slug }) => slug), ...projects.map(({ slug }) => slug), 'buen-fin-2026']);
   if (validReferences.has(reference)) {
     contactForm.elements.reference.value = reference;
     const matchedService = services.find(({ slug }) => slug === reference);
@@ -66,6 +66,7 @@ if (contactForm) {
     if (!contactForm.elements.type.value) {
       if (matchedService) contactForm.elements.type.value = matchedService.type;
       else if (matchedProject) contactForm.elements.type.value = matchedProject.category === 'experiencias' ? 'experiencia-digital' : matchedProject.category === 'automatizacion' ? 'automatizacion-ia' : 'sitio-web';
+      else if (reference === 'buen-fin-2026') contactForm.elements.type.value = 'sitio-web';
     }
   }
   contactForm.addEventListener('submit', (event) => {
