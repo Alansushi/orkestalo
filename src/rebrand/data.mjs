@@ -3,9 +3,9 @@ export const services = [
     slug: 'diseno-desarrollo-web', type: 'sitio-web', number: '01',
     visual: '/media/orkesta-2/assets/services/servicio-desarrollo-web.webp',
     name: { es: 'Diseño y desarrollo web', en: 'Web design and development' },
-    summary: { es: 'Sitios claros, rápidos y fáciles de mantener. Del mensaje y la estructura al código y la publicación.', en: 'Clear, fast websites that are easy to maintain. From message and structure to code and launch.' },
-    deliverables: { es: ['Estrategia y arquitectura de contenidos', 'Diseño adaptable y accesible', 'Desarrollo, SEO técnico y entrega'], en: ['Content strategy and information architecture', 'Responsive and accessible design', 'Development, technical SEO and handoff'] },
-    scope: { es: 'Partimos del mensaje, las páginas necesarias y las acciones que debe poder realizar quien visita el sitio.', en: 'We start with the message, the pages needed and the actions visitors should be able to take.' },
+    summary: { es: 'Sitios claros, rápidos y fáciles de mantener, con contenido y bases técnicas preparados para buscadores y herramientas de IA.', en: 'Clear, fast websites that are easy to maintain, with content and technical foundations prepared for search engines and AI tools.' },
+    deliverables: { es: ['Estrategia y arquitectura de contenidos', 'Diseño adaptable y accesible', 'Desarrollo, SEO técnico y preparación para búsqueda con IA'], en: ['Content strategy and information architecture', 'Responsive and accessible design', 'Development, technical SEO and preparation for AI search'] },
+    scope: { es: 'Partimos del mensaje, las páginas necesarias y las acciones que debe poder realizar quien visita el sitio. Organizamos la información para que las personas y los sistemas de búsqueda puedan comprender qué ofreces.', en: 'We start with the message, the pages needed and the actions visitors should be able to take. We organize information so people and search systems can understand what you offer.' },
     conditions: { es: 'El contenido, las integraciones y la fecha de publicación se acuerdan según el alcance y los materiales disponibles.', en: 'Content, integrations and launch date are agreed based on scope and available materials.' },
   },
   {
