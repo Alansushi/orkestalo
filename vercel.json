@@ -1,4 +1,5 @@
 {
+  "devCommand": "node scripts/serve.mjs",
   "proxy": {
     "entrypoint": "proxy.js",
     "matcher": ["/buen-fin-2026", "/buen-fin-2026/:path*"]

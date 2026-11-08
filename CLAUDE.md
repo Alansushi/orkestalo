@@ -6,12 +6,13 @@ This repository builds the current Orkesta studio site. The public site consists
 
 ```bash
 npm ci
+npm run dev
 npm run build
 python3 -m http.server 8080 --directory public
 npm test
 ```
 
-Open `http://localhost:8080/` after starting the server. `npm test` runs the build and the Node test suite.
+`npm run dev` starts Vercel's local server at `http://localhost:3000/`, including the routing middleware and redirects in `vercel.json`. It requires the Vercel CLI installed on the machine (`npm i -g vercel@latest`) and a local project link. Restart it after switching branches. The Python server is a static preview of `public/` and does not run Vercel middleware. `npm test` runs the build and the Node test suite.
 
 ## Source of truth
 
