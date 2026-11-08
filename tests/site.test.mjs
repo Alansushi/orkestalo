@@ -54,6 +54,15 @@ test('project inquiry includes only supplied details in Spanish and English', as
   assert.doesNotMatch(english, /Por definir|Formulario no disponible/);
 });
 
+test('visual content inquiry names the selected project type in both languages', async () => {
+  const { makeProjectWhatsAppUrl } = await import('../src/contact.js');
+  const input = { name: 'Ana', type: 'contenido-visual', description: 'Fotos para lanzar el sitio y reels para redes.' };
+  const spanish = new URL(makeProjectWhatsAppUrl(input, 'es')).searchParams.get('text');
+  const english = new URL(makeProjectWhatsAppUrl(input, 'en')).searchParams.get('text');
+  assert.match(spanish, /conversar sobre contenido visual para mi sitio o redes/);
+  assert.match(english, /talk about visual content for my website or social media/);
+});
+
 test('all published pages load the new site bundle without browser Babel', async () => {
   for (const file of productionPages) {
     const html = await read(`public/${file}`);
