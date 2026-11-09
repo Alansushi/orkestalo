@@ -17,6 +17,7 @@ const projectTypes = {
   'sitio-web': { es: 'un sitio web', en: 'a website' },
   'experiencia-digital': { es: 'una experiencia digital', en: 'a digital experience' },
   'automatizacion-ia': { es: 'una automatización con IA', en: 'an AI automation project' },
+  'contenido-visual': { es: 'contenido visual para mi sitio o redes', en: 'visual content for my website or social media' },
   otro: { es: 'un proyecto', en: 'a project' },
 };
 
