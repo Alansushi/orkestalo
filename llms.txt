@@ -9,6 +9,6 @@
 - [Diseño y desarrollo web](https://www.orkestalo.com/servicios/diseno-desarrollo-web/): sitios claros, rápidos y adaptables.
 - [Experiencias digitales](https://www.orkestalo.com/servicios/experiencias-digitales/): micrositios e invitaciones interactivas.
 - [Automatización e IA](https://www.orkestalo.com/servicios/automatizacion-ia/): flujos que conectan conversaciones, documentos y sistemas.
-- [Contacto](https://www.orkestalo.com/contacto/): prepara un mensaje para WhatsApp; el visitante decide si lo envía.
+- [Contacto](https://www.orkestalo.com/contacto/): guarda una consulta con folio; abrir WhatsApp después es opcional.
 
 Los proyectos enlazan sus sitios públicos desde sus fichas. Las demostraciones de la portada son simulaciones locales.

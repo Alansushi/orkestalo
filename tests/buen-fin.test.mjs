@@ -10,7 +10,7 @@ test('campaign page, metadata, terms and contact route are built without enterin
     read('public/index.html'), read('public/buen-fin-2026/index.html'), read('public/sitemap.xml'),
   ]);
   assert.match(home, /data-campaign-link href="\/buen-fin-2026\/"/);
-  assert.match(page, /<title>Buen Fin 2026: sitios web personalizados desde \$7,000 MXN \| Orkesta<\/title>/);
+  assert.match(page, /<title>Buen Fin 2026: sitio web de una página por \$7,000 MXN \| Orkesta<\/title>/);
   assert.match(page, /<link rel="canonical" href="https:\/\/www\.orkestalo\.com\/buen-fin-2026\/">/);
   assert.match(page, /name="robots" content="noindex,follow"/);
   assert.match(page, /property="og:url" content="https:\/\/www\.orkestalo\.com\/buen-fin-2026\/"/);
@@ -23,6 +23,12 @@ test('campaign page, metadata, terms and contact route are built without enterin
   assert.match(page, /ayuda\/57759/);
   assert.match(page, /ayuda\/57760/);
   assert.match(page, /href="\/contacto\/\?referencia=buen-fin-2026"/);
+  assert.match(page, /data-checkout-form/);
+  assert.match(page, /name="accepted" type="checkbox" required/);
+  assert.match(page, /hasta cinco secciones/);
+  assert.match(page, /href="\/terminos-buen-fin-2026\/"/);
+  assert.match(await read('public/pedido/index.html'), /data-order-status/);
+  assert.doesNotMatch(sitemap, /terminos-buen-fin-2026|\/pedido\//);
   assert.doesNotMatch(sitemap, /buen-fin-2026/);
   for (const name of ['desktop', 'mobile']) {
     assert.match(page, new RegExp(`/media/buen-fin-2026/mercado-pago-${name}\\.png`));

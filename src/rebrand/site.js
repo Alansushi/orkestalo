@@ -69,14 +69,69 @@ if (contactForm) {
       else if (reference === 'buen-fin-2026') contactForm.elements.type.value = 'sitio-web';
     }
   }
-  contactForm.addEventListener('submit', (event) => {
+  contactForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (!contactForm.reportValidity()) return;
     const data = Object.fromEntries(new FormData(contactForm));
-    const url = makeProjectWhatsAppUrl(data, document.documentElement.lang);
-    window.orkestaTrack?.('contact_submit', { type: contactForm.elements.type.value, reference: contactForm.elements.reference.value });
-    window.open(url, '_blank', 'noopener,noreferrer');
+    const button = contactForm.querySelector('[type="submit"]');
+    const feedback = document.querySelector('[data-contact-feedback]');
+    button.disabled = true;
+    feedback.textContent = 'Guardando consulta…';
+    try {
+      const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'No pudimos guardar tu consulta.');
+      document.querySelector('[data-contact-folio]').textContent = result.folio;
+      document.querySelector('[data-contact-whatsapp]').href = makeProjectWhatsAppUrl({ ...data, description: `Folio: ${result.folio}\n${data.description}` }, document.documentElement.lang);
+      contactForm.hidden = true;
+      document.querySelector('[data-contact-success]').hidden = false;
+      window.orkestaTrack?.('contact_submit', { type: data.type, reference: data.reference });
+    } catch (error) {
+      feedback.textContent = error.message || 'No pudimos guardar tu consulta. Intenta de nuevo.';
+      button.disabled = false;
+    }
   });
+}
+
+const checkoutForm = document.querySelector('[data-checkout-form]');
+checkoutForm?.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  if (!checkoutForm.reportValidity()) return;
+  const button = checkoutForm.querySelector('[type="submit"]');
+  const feedback = document.querySelector('[data-checkout-feedback]');
+  const folioNote = document.querySelector('[data-checkout-folio]');
+  button.disabled = true;
+  feedback.textContent = 'Registrando pedido…';
+  try {
+    const data = Object.fromEntries(new FormData(checkoutForm));
+    data.accepted = checkoutForm.elements.accepted.checked;
+    const response = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    const result = await response.json();
+    if (result.folio) {
+      folioNote.querySelector('strong').textContent = result.folio;
+      folioNote.hidden = false;
+    }
+    if (!response.ok) throw new Error(result.error || 'No pudimos iniciar el pago.');
+    feedback.textContent = 'Abriendo Checkout Pro…';
+    location.assign(result.checkoutUrl);
+  } catch (error) {
+    feedback.textContent = error.message || 'No pudimos iniciar el pago.';
+    button.disabled = false;
+  }
+});
+
+const orderStatus = document.querySelector('[data-order-status]');
+if (orderStatus) {
+  const reference = new URLSearchParams(location.search).get('folio') || '';
+  document.querySelector('[data-order-folio]').textContent = reference;
+  if (!/^ORK26-[A-F0-9]{18}$/.test(reference)) orderStatus.textContent = 'Folio inválido. Escríbenos para revisar tu pedido.';
+  else fetch(`/api/order-status?folio=${encodeURIComponent(reference)}`)
+    .then(async (response) => {
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error);
+      orderStatus.textContent = ({ approved: 'Pago aprobado. Te contactaremos para solicitar el brief.', pending: 'Pago pendiente. Conserva tu folio y vuelve a consultar.', rejected: 'Pago rechazado o cancelado. Escríbenos con tu folio.', checkout_error: 'El pago no se inició. Escríbenos con tu folio.' })[result.status] || 'Aún no hay confirmación de pago.';
+    })
+    .catch(() => { orderStatus.textContent = 'No pudimos verificar el pago todavía. Intenta más tarde o escríbenos con tu folio.'; });
 }
 
 window.orkestaTrack = (name, detail = {}) => {
