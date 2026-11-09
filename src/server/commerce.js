@@ -42,18 +42,18 @@ export function normalizeBuyer(input) {
 }
 
 function settings() {
-  const { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = process.env;
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) throw new Error('Supabase no configurado');
+  const { SUPABASE_URL, SUPABASE_SECRET_KEY } = process.env;
+  if (!SUPABASE_URL || !SUPABASE_SECRET_KEY) throw new Error('Supabase no configurado');
   const url = new URL(SUPABASE_URL);
   if (url.protocol !== 'https:') throw new Error('URL de Supabase inválida');
-  return { url: url.origin, key: SUPABASE_SERVICE_ROLE_KEY };
+  return { url: url.origin, key: SUPABASE_SECRET_KEY };
 }
 
 export async function db(table, { method = 'GET', query = '', body } = {}) {
   const { url, key } = settings();
   const response = await fetch(`${url}/rest/v1/${table}${query}`, {
     method,
-    headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+    headers: { apikey: key, 'Content-Type': 'application/json', Prefer: 'return=representation' },
     ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     signal: AbortSignal.timeout(8000),
   });

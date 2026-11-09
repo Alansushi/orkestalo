@@ -6,7 +6,7 @@ import checkout from '../api/checkout.js';
 import webhook from '../api/mercado-pago-webhook.js';
 import orderStatus from '../api/order-status.js';
 import retryNotices from '../api/retry-notices.js';
-import { CAMPAIGN_END, CAMPAIGN_START, campaignOpen, normalizeBuyer, validCheckoutUrl, verifyMercadoSignature } from '../src/server/commerce.js';
+import { CAMPAIGN_END, CAMPAIGN_START, campaignOpen, db, normalizeBuyer, validCheckoutUrl, verifyMercadoSignature } from '../src/server/commerce.js';
 
 function response() {
   return { statusCode: 200, headers: {}, setHeader(name, value) { this.headers[name] = value; }, end(value) { this.body = JSON.parse(value); } };
@@ -63,8 +63,8 @@ function fakeServices({ failDb = false, failEmail = false, mpStatus = 'created',
 async function withServices(services, fn) {
   const previousFetch = globalThis.fetch;
   const previousNow = Date.now;
-  const previousEnv = Object.fromEntries(['SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY', 'MERCADO_PAGO_ACCESS_TOKEN', 'MERCADO_PAGO_WEBHOOK_SECRET', 'RESEND_API_KEY', 'ORKESTA_EMAIL_FROM', 'ORKESTA_CHECKOUT_ENABLED', 'CRON_SECRET'].map((key) => [key, process.env[key]]));
-  Object.assign(process.env, { SUPABASE_URL: 'https://db.example.supabase.co', SUPABASE_SERVICE_ROLE_KEY: 'service-key', MERCADO_PAGO_ACCESS_TOKEN: 'mp-token', MERCADO_PAGO_WEBHOOK_SECRET: 'webhook-secret', RESEND_API_KEY: 'mail-token', ORKESTA_EMAIL_FROM: 'Orkesta <avisos@orkestalo.com>', ORKESTA_CHECKOUT_ENABLED: '1', CRON_SECRET: 'cron-secret' });
+  const previousEnv = Object.fromEntries(['SUPABASE_URL', 'SUPABASE_SECRET_KEY', 'MERCADO_PAGO_ACCESS_TOKEN', 'MERCADO_PAGO_WEBHOOK_SECRET', 'RESEND_API_KEY', 'ORKESTA_EMAIL_FROM', 'ORKESTA_CHECKOUT_ENABLED', 'CRON_SECRET'].map((key) => [key, process.env[key]]));
+  Object.assign(process.env, { SUPABASE_URL: 'https://db.example.supabase.co', SUPABASE_SECRET_KEY: 'sb_secret_test', MERCADO_PAGO_ACCESS_TOKEN: 'mp-token', MERCADO_PAGO_WEBHOOK_SECRET: 'webhook-secret', RESEND_API_KEY: 'mail-token', ORKESTA_EMAIL_FROM: 'Orkesta <avisos@orkestalo.com>', ORKESTA_CHECKOUT_ENABLED: '1', CRON_SECRET: 'cron-secret' });
   globalThis.fetch = services.fetch;
   Date.now = () => CAMPAIGN_START + 60_000;
   try { await fn(); } finally {
@@ -75,6 +75,30 @@ async function withServices(services, fn) {
 }
 
 const buyer = { name: 'Ana López', email: 'ana@example.com', whatsapp: '+52 55 1234 5678', business: 'Café Ana', accepted: true };
+
+test('Supabase secret key is sent only as apikey for Data API requests', async () => {
+  const previousFetch = globalThis.fetch;
+  const previousUrl = process.env.SUPABASE_URL;
+  const previousSecret = process.env.SUPABASE_SECRET_KEY;
+  const previousLegacy = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  process.env.SUPABASE_URL = 'https://db.example.supabase.co';
+  process.env.SUPABASE_SECRET_KEY = 'sb_secret_test';
+  delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+  globalThis.fetch = async (url, options) => {
+    assert.equal(url, 'https://db.example.supabase.co/rest/v1/inquiries?select=folio');
+    assert.equal(options.headers.apikey, 'sb_secret_test');
+    assert.equal(options.headers.Authorization, undefined);
+    return Response.json([{ folio: 'ORK26-1234567890ABCDEF12' }]);
+  };
+  try {
+    assert.deepEqual(await db('inquiries', { query: '?select=folio' }), [{ folio: 'ORK26-1234567890ABCDEF12' }]);
+  } finally {
+    globalThis.fetch = previousFetch;
+    for (const [key, value] of Object.entries({ SUPABASE_URL: previousUrl, SUPABASE_SECRET_KEY: previousSecret, SUPABASE_SERVICE_ROLE_KEY: previousLegacy })) {
+      if (value === undefined) delete process.env[key]; else process.env[key] = value;
+    }
+  }
+});
 
 test('purchase window and buyer consent are enforced', () => {
   assert.equal(campaignOpen(CAMPAIGN_START - 1), false);
