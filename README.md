@@ -13,7 +13,7 @@ El comando usa Vercel CLI para aplicar las rutas, redirecciones y el middleware 
 
 ## Formularios y compra de Buen Fin
 
-Las rutas de servidor en `api/` usan las variables privadas de `.env.example`. Configúralas en Vercel para el proyecto Orkestalo; nunca uses el prefijo `NEXT_PUBLIC_`. Aplica `supabase/migrations/20261109171839_initial_commerce.sql` solo al nuevo proyecto de Orkestalo. Las tablas se consultan en Supabase Studio; los roles del navegador no tienen acceso.
+Las rutas de servidor en `api/` usan las variables privadas de `.env.example`. Configúralas en Vercel para el proyecto Orkestalo; nunca uses el prefijo `NEXT_PUBLIC_`. La migración `supabase/migrations/20261109171839_initial_commerce.sql` está aplicada al proyecto Supabase `ydgoutyckylbqtpyproy`. Las tablas se consultan en Supabase Studio; los roles del navegador no tienen acceso.
 
 Configura Checkout Pro de Mercado Pago mediante Orders API con el webhook del evento Order en `https://www.orkestalo.com/api/mercado-pago-webhook`. Usa la firma secreta de esa aplicación. Valida el cupón `BFINMP` en una sesión elegible real de Checkout Pro antes de publicar. Verifica el dominio de envío en Resend y configura `ORKESTA_EMAIL_FROM` con una dirección de ese dominio; los avisos llegan a `info@orkestalo.com`.
 
