@@ -6,6 +6,12 @@ export const CAMPAIGN_START = Date.parse('2026-11-13T06:00:00Z');
 export const CAMPAIGN_END = Date.parse('2026-11-18T06:00:00Z');
 const SITE = 'https://www.orkestalo.com';
 
+function checkoutSite() {
+  const host = process.env.VERCEL_URL || '';
+  if (process.env.VERCEL_ENV === 'preview' && /^[a-z0-9-]+(?:\.[a-z0-9-]+)*\.vercel\.app$/i.test(host)) return `https://${host}`;
+  return SITE;
+}
+
 export function folio() {
   return `ORK26-${randomBytes(9).toString('hex').toUpperCase()}`;
 }
@@ -90,7 +96,7 @@ export async function sendInquiryNotice(row) {
 }
 
 export function mercadoOrderPayload(order) {
-  const resultUrl = `${SITE}/pedido/?folio=${encodeURIComponent(order.folio)}`;
+  const resultUrl = `${checkoutSite()}/pedido/?folio=${encodeURIComponent(order.folio)}`;
   return {
     type: 'online', processing_mode: 'manual', capture_mode: 'automatic_async',
     total_amount: `${AMOUNT_MXN}.00`, external_reference: order.folio,

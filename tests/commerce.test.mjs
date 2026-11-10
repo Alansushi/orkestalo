@@ -63,8 +63,8 @@ function fakeServices({ failDb = false, failEmail = false, mpStatus = 'created',
 async function withServices(services, fn) {
   const previousFetch = globalThis.fetch;
   const previousNow = Date.now;
-  const previousEnv = Object.fromEntries(['SUPABASE_URL', 'SUPABASE_SECRET_KEY', 'MERCADO_PAGO_ACCESS_TOKEN', 'MERCADO_PAGO_WEBHOOK_SECRET', 'RESEND_API_KEY', 'ORKESTA_EMAIL_FROM', 'ORKESTA_CHECKOUT_ENABLED', 'CRON_SECRET'].map((key) => [key, process.env[key]]));
-  Object.assign(process.env, { SUPABASE_URL: 'https://db.example.supabase.co', SUPABASE_SECRET_KEY: 'sb_secret_test', MERCADO_PAGO_ACCESS_TOKEN: 'mp-token', MERCADO_PAGO_WEBHOOK_SECRET: 'webhook-secret', RESEND_API_KEY: 'mail-token', ORKESTA_EMAIL_FROM: 'Orkesta <avisos@orkestalo.com>', ORKESTA_CHECKOUT_ENABLED: '1', CRON_SECRET: 'cron-secret' });
+  const previousEnv = Object.fromEntries(['SUPABASE_URL', 'SUPABASE_SECRET_KEY', 'MERCADO_PAGO_ACCESS_TOKEN', 'MERCADO_PAGO_WEBHOOK_SECRET', 'RESEND_API_KEY', 'ORKESTA_EMAIL_FROM', 'ORKESTA_CHECKOUT_ENABLED', 'CRON_SECRET', 'VERCEL_ENV', 'VERCEL_URL'].map((key) => [key, process.env[key]]));
+  Object.assign(process.env, { SUPABASE_URL: 'https://db.example.supabase.co', SUPABASE_SECRET_KEY: 'sb_secret_test', MERCADO_PAGO_ACCESS_TOKEN: 'mp-token', MERCADO_PAGO_WEBHOOK_SECRET: 'webhook-secret', RESEND_API_KEY: 'mail-token', ORKESTA_EMAIL_FROM: 'Orkesta <avisos@orkestalo.com>', ORKESTA_CHECKOUT_ENABLED: '1', CRON_SECRET: 'cron-secret', VERCEL_ENV: 'production', VERCEL_URL: 'orkestalo-production.vercel.app' });
   globalThis.fetch = services.fetch;
   Date.now = () => CAMPAIGN_START + 60_000;
   try { await fn(); } finally {
@@ -140,6 +140,18 @@ test('checkout stays disabled until legal and coupon checks are approved', async
     assert.equal(res.statusCode, 503);
     assert.equal(services.orders.size, 0);
     assert.equal(services.mpPosts.length, 0);
+  });
+});
+
+test('preview checkout returns to the deployment where the order began', async () => {
+  const services = fakeServices();
+  await withServices(services, async () => {
+    process.env.VERCEL_ENV = 'preview';
+    process.env.VERCEL_URL = 'orkestalo-preview-alansushis-projects.vercel.app';
+    const created = response();
+    await checkout({ method: 'POST', body: buyer }, created);
+    assert.equal(created.statusCode, 201);
+    assert.equal(services.mpPosts[0].config.online.success_url, `https://orkestalo-preview-alansushis-projects.vercel.app/pedido/?folio=${created.body.folio}`);
   });
 });
 
