@@ -22,6 +22,16 @@ try {
     assert.equal(await page.locator('[data-checkout-form]').isVisible(), true);
     assert.equal(await page.locator('[data-checkout-unavailable]').isVisible(), false);
     assert.equal(await page.locator('[data-campaign-hero-cta]').getAttribute('href'), '#comprar');
+    await page.route('**/api/checkout', route => route.fulfill({ status: 503, contentType: 'application/json', body: '{"error":"La compra no está disponible en este momento."}' }));
+    await page.locator('input[name=name]').fill('Ana López');
+    await page.locator('input[name=email]').fill('ana@example.com');
+    await page.locator('input[name=whatsapp]').fill('+52 55 1234 5678');
+    await page.locator('input[name=business]').fill('Café Ana');
+    await page.locator('input[name=accepted]').check();
+    await page.locator('[data-checkout-form] button[type=submit]').click();
+    await page.locator('[data-checkout-form]').waitFor({ state: 'hidden' });
+    assert.equal(await page.locator('[data-checkout-form]').isVisible(), false);
+    assert.match(await page.locator('[data-checkout-message]').textContent(), /Escríbenos por WhatsApp/);
     available = false;
     await page.reload({ waitUntil: 'networkidle' });
     assert.equal(await page.locator('[data-checkout-form]').isVisible(), false);
