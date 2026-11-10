@@ -1,5 +1,7 @@
 # Orkesta 2.0 — entrega local
 
+> Documento histórico de la fase de rediseño. El formulario actual de esta rama guarda consultas en Supabase y ofrece WhatsApp después de confirmar el folio. Consulta el [README principal](../../README.md) para el flujo de formularios, compras y despliegue vigente.
+
 Estado: implementación y verificación local en `codex/orkesta-2-rebrand`. No se ha publicado ni integrado en `main`.
 
 ## Auditoría e inventario
