@@ -1,8 +1,9 @@
 import { projects, services } from './data.mjs';
 import { makeProjectWhatsAppUrl } from '../contact.js';
 import { inject } from '@vercel/analytics';
+import { redactAnalyticsEvent } from './analytics.mjs';
 
-inject();
+inject({ beforeSend: redactAnalyticsEvent });
 
 const demoSequences = {
   web: {
