@@ -103,6 +103,7 @@ if (contactForm) {
 }
 
 const checkoutForm = document.querySelector('[data-checkout-form]');
+let showCheckoutUnavailable;
 if (checkoutForm) {
   const unavailable = document.querySelector('[data-checkout-unavailable]');
   const message = document.querySelector('[data-checkout-message]');
@@ -117,6 +118,7 @@ if (checkoutForm) {
     hero.target = '_blank';
     hero.rel = 'noopener noreferrer';
   };
+  showCheckoutUnavailable = showUnavailable;
   const refresh = async () => {
     try {
       const response = await fetch('/api/checkout-availability', { cache: 'no-store' });
@@ -160,7 +162,9 @@ checkoutForm?.addEventListener('submit', async (event) => {
     feedback.textContent = 'Abriendo Checkout Pro…';
     location.assign(result.checkoutUrl);
   } catch (error) {
-    feedback.textContent = error.message || 'No pudimos iniciar el pago.';
+    const copy = error.message || 'No pudimos iniciar el pago.';
+    feedback.textContent = copy;
+    showCheckoutUnavailable?.(`${copy} Escríbenos por WhatsApp para recibir ayuda.`);
     button.disabled = false;
   }
 });
