@@ -9,6 +9,6 @@
 - [Diseño y desarrollo web](https://www.orkestalo.com/servicios/diseno-desarrollo-web/): sitios claros, rápidos y adaptables. La fotografía, el video y las piezas visuales para el sitio pueden formar parte del proyecto. El contenido recurrente para redes se define con cada cliente, incluidos formato, frecuencia y entregables.
 - [Experiencias digitales](https://www.orkestalo.com/servicios/experiencias-digitales/): micrositios e invitaciones interactivas.
 - [Automatización e IA](https://www.orkestalo.com/servicios/automatizacion-ia/): flujos que conectan conversaciones, documentos y sistemas.
-- [Contacto](https://www.orkestalo.com/contacto/): permite consultar por contenido visual para el sitio, contenido recurrente para redes o ambos. Prepara un mensaje para WhatsApp; el visitante decide si lo envía.
+- [Contacto](https://www.orkestalo.com/contacto/): permite consultar por contenido visual para el sitio, contenido recurrente para redes o ambos. Guarda la consulta con folio; abrir WhatsApp después es opcional.
 
 Los proyectos enlazan sus sitios públicos desde sus fichas. Las demostraciones de la portada son simulaciones locales.

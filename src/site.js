@@ -1,6 +1,7 @@
 import { makeWhatsAppUrl } from './contact.js';
 
 const getLanguage = () => {
+  if (location.pathname.startsWith('/buen-fin-2026')) return 'es';
   const query = new URLSearchParams(location.search).get('lang');
   if (query === 'en' || query === 'es') return query;
   try { return localStorage.getItem('orkesta-lang') === 'en' ? 'en' : 'es'; } catch { return 'es'; }
@@ -30,6 +31,7 @@ function setLanguage(lang) {
 function initLanguage() {
   setLanguage(getLanguage());
   document.querySelectorAll('[data-lang]').forEach((button) => button.addEventListener('click', () => {
+    if (location.pathname.startsWith('/buen-fin-2026')) return;
     const url = new URL(location.href);
     if (button.dataset.lang === 'en') url.searchParams.set('lang', 'en');
     else url.searchParams.delete('lang');
@@ -50,3 +52,20 @@ function initDirectLinks() {
 
 initLanguage();
 initDirectLinks();
+
+// Ciudad de México is UTC−6 at the end of this campaign.
+const campaignClose = Date.parse('2026-11-18T06:00:00Z');
+function syncCampaignLink() {
+  const link = document.querySelector('[data-campaign-link]');
+  if (link) link.hidden = Date.now() >= campaignClose;
+  if (link && !link.hidden) setTimeout(syncCampaignLink, Math.min(campaignClose - Date.now(), 2147483647));
+}
+syncCampaignLink();
+
+if (location.pathname === '/buen-fin-2026/' || location.pathname === '/buen-fin-2026') {
+  function closeCampaignPage() {
+    if (Date.now() >= campaignClose) location.replace('/');
+    else setTimeout(closeCampaignPage, Math.min(campaignClose - Date.now(), 2147483647));
+  }
+  closeCampaignPage();
+}

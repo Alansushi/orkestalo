@@ -55,7 +55,7 @@ test('construction case pages warn before visiting and advertise their status in
   }
 });
 
-test('contact page offers native autofill and one WhatsApp completion action', async () => {
+test('contact page offers native autofill, saved inquiry and optional WhatsApp', async () => {
   const home = await read('public/index.html');
   const contact = await read('public/contacto/index.html');
   const homeContact = home.match(/<section id="contacto"[\s\S]*?<\/section>/)?.[0] || '';
@@ -69,7 +69,9 @@ test('contact page offers native autofill and one WhatsApp completion action', a
   assert.match(contact, /name="type" required/);
   assert.match(contact, /name="description"[^>]*required/);
   assert.equal((contact.match(/<button class="studio-button" type="submit"/g) || []).length, 1);
-  assert.match(contact, /Continuar en WhatsApp/);
+  assert.match(contact, /Enviar consulta/);
+  assert.match(contact, /data-contact-folio/);
+  assert.match(contact, /Abrir WhatsApp \(opcional\)/);
   assert.doesNotMatch(contact, /studio-form__fallback|Prefiero escribir por WhatsApp|Formulario no disponible/);
 });
 

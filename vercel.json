@@ -1,4 +1,10 @@
 {
+  "devCommand": "node scripts/serve.mjs",
+  "proxy": {
+    "entrypoint": "proxy.js",
+    "matcher": ["/buen-fin-2026", "/buen-fin-2026/:path*"]
+  },
+  "crons": [{ "path": "/api/retry-notices", "schedule": "0 12 * * *" }],
   "redirects": [
     {
       "source": "/automatizacion-ia-pymes-latam.html",
