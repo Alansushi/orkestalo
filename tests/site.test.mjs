@@ -10,6 +10,27 @@ const productionPages = [
   ...services.map(({ slug }) => `servicios/${slug}/index.html`),
 ];
 
+test('privacy notice and forms separate optional proposals from project messages', async () => {
+  const [notice, contact, purchase] = await Promise.all([
+    read('public/aviso-de-privacidad/index.html'), read('public/contacto/index.html'), read('public/buen-fin-2026/index.html'),
+  ]);
+  assert.doesNotMatch(notice, /<h2>Proveedores<\/h2>|Supabase|Vercel|Resend|Mercado Pago/);
+  assert.match(notice, /alojamiento.*almacenamiento.*pagos.*avisos/s);
+  assert.match(notice, /Alan Guerrero García/);
+  assert.match(notice, /avisos de seguridad/);
+  assert.match(notice, /otros proyectos o servicios/);
+  assert.match(notice, /correo o WhatsApp/);
+  assert.match(notice, /revocar.*info@orkestalo\.com/s);
+  assert.match(contact, /WhatsApp \(opcional\)/);
+  assert.match(contact, /name="marketingConsent" type="checkbox"/);
+  assert.match(purchase, /name="marketingConsent" type="checkbox"/);
+  assert.doesNotMatch(contact + purchase, /name="marketingConsent" type="checkbox"[^>]*required|name="marketingConsent" type="checkbox"[^>]*checked/);
+  for (const page of [notice, contact, purchase]) {
+    assert.match(page, /© Orkesta/);
+    assert.doesNotMatch(page, /Todos los derechos reservados/);
+  }
+});
+
 test('the guided WhatsApp URL preserves source, situation, name and process', async () => {
   const { makeWhatsAppUrl } = await import('../src/contact.js');
   const url = makeWhatsAppUrl({

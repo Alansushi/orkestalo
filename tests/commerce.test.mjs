@@ -6,7 +6,7 @@ import checkout from '../api/checkout.js';
 import webhook from '../api/mercado-pago-webhook.js';
 import orderStatus from '../api/order-status.js';
 import retryNotices from '../api/retry-notices.js';
-import { CAMPAIGN_END, CAMPAIGN_START, campaignOpen, db, normalizeBuyer, validCheckoutUrl, verifyMercadoSignature } from '../src/server/commerce.js';
+import { CAMPAIGN_END, CAMPAIGN_START, MARKETING_CONSENT_VERSION, campaignOpen, db, normalizeBuyer, validCheckoutUrl, verifyMercadoSignature } from '../src/server/commerce.js';
 
 function response() {
   return { statusCode: 200, headers: {}, setHeader(name, value) { this.headers[name] = value; }, end(value) { this.body = JSON.parse(value); } };
@@ -75,6 +75,53 @@ async function withServices(services, fn) {
 }
 
 const buyer = { name: 'Ana López', email: 'ana@example.com', whatsapp: '+52 55 1234 5678', business: 'Café Ana', accepted: true };
+
+test('contact records optional marketing choice only with a reachable channel', async () => {
+  const services = fakeServices();
+  await withServices(services, async () => {
+    for (const input of [
+      { name: 'Ana', type: 'sitio-web', description: 'Quiero un sitio para mi negocio.' },
+      { name: 'Beto', email: 'beto@example.com', type: 'sitio-web', description: 'Quiero un sitio para mi negocio.', marketingConsent: false },
+    ]) {
+      const res = response();
+      await contact({ method: 'POST', body: input }, res);
+      assert.equal(res.statusCode, 201);
+      const saved = services.inquiries.get(res.body.folio);
+      assert.equal(saved.marketing_consent, false);
+      assert.equal(saved.marketing_consented_at, null);
+      assert.equal(saved.marketing_consent_version, null);
+    }
+    const optedIn = response();
+    await contact({ method: 'POST', body: { name: 'Caro', phone: '+52 55 1234 5678', type: 'sitio-web', description: 'Quiero un sitio para mi negocio.', marketingConsent: true } }, optedIn);
+    assert.equal(optedIn.statusCode, 201);
+    const saved = services.inquiries.get(optedIn.body.folio);
+    assert.equal(saved.marketing_consent, true);
+    assert.equal(saved.marketing_consent_version, MARKETING_CONSENT_VERSION);
+    assert.match(saved.marketing_consented_at, /^\d{4}-\d{2}-\d{2}T/);
+    const invalid = response();
+    await contact({ method: 'POST', body: { name: 'Dani', type: 'sitio-web', description: 'Quiero un sitio para mi negocio.', marketingConsent: true } }, invalid);
+    assert.equal(invalid.statusCode, 400);
+    assert.equal(services.inquiries.size, 3);
+    assert.equal(services.emails.length, 3);
+  });
+});
+
+test('checkout records optional marketing choice without changing operational notices', async () => {
+  const services = fakeServices();
+  await withServices(services, async () => {
+    for (const [marketingConsent, expected] of [[undefined, false], [false, false], [true, true]]) {
+      const res = response();
+      await checkout({ method: 'POST', body: { ...buyer, marketingConsent } }, res);
+      assert.equal(res.statusCode, 201);
+      const saved = services.orders.get(res.body.folio);
+      assert.equal(saved.marketing_consent, expected);
+      assert.equal(saved.marketing_consent_version, expected ? MARKETING_CONSENT_VERSION : null);
+      assert.equal(Boolean(saved.marketing_consented_at), expected);
+      assert.equal(saved.accepted_terms_at != null, true);
+    }
+    assert.equal(services.mpPosts.length, 3);
+  });
+});
 
 test('Supabase secret key is sent only as apikey for Data API requests', async () => {
   const previousFetch = globalThis.fetch;

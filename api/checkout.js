@@ -1,4 +1,4 @@
-import { AMOUNT_MXN, TERMS_VERSION, campaignOpen, db, folio, json, mercado, mercadoOrderPayload, normalizeBuyer, paymentIdempotencyKey, readBody, validCheckoutUrl } from '../src/server/commerce.js';
+import { AMOUNT_MXN, TERMS_VERSION, campaignOpen, db, folio, json, marketingConsentRecord, mercado, mercadoOrderPayload, normalizeBuyer, paymentIdempotencyKey, readBody, validCheckoutUrl } from '../src/server/commerce.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return json(res, 405, { error: 'Método no permitido' });
@@ -8,7 +8,8 @@ export default async function handler(req, res) {
   if (process.env.ORKESTA_CHECKOUT_ENABLED !== '1' || !process.env.MERCADO_PAGO_ACCESS_TOKEN || !process.env.MERCADO_PAGO_WEBHOOK_SECRET || !process.env.RESEND_API_KEY || !process.env.ORKESTA_EMAIL_FROM) return json(res, 503, { error: 'La compra no está disponible en este momento.' });
   const reference = folio();
   try {
-    const saved = await db('orders', { method: 'POST', body: { folio: reference, ...buyer, amount_mxn: AMOUNT_MXN, terms_version: TERMS_VERSION, accepted_terms_at: new Date().toISOString(), status: 'created' } });
+    const { marketingConsent, ...order } = buyer;
+    const saved = await db('orders', { method: 'POST', body: { folio: reference, ...order, ...marketingConsentRecord(marketingConsent), amount_mxn: AMOUNT_MXN, terms_version: TERMS_VERSION, accepted_terms_at: new Date().toISOString(), status: 'created' } });
     if (saved.length !== 1) throw new Error('El pedido no se confirmó');
   } catch (error) {
     console.error('No se pudo registrar el pedido', error);

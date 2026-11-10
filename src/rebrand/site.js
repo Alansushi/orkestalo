@@ -74,6 +74,14 @@ if (contactForm) {
     event.preventDefault();
     if (!contactForm.reportValidity()) return;
     const data = Object.fromEntries(new FormData(contactForm));
+    data.marketingConsent = contactForm.elements.marketingConsent.checked;
+    if (data.marketingConsent && !data.email?.trim() && !data.phone?.trim()) {
+      const channel = contactForm.elements.email;
+      channel.setCustomValidity('Indica un correo o WhatsApp para recibir propuestas.');
+      channel.reportValidity();
+      channel.setCustomValidity('');
+      return;
+    }
     const button = contactForm.querySelector('[type="submit"]');
     const feedback = document.querySelector('[data-contact-feedback]');
     button.disabled = true;
@@ -106,6 +114,7 @@ checkoutForm?.addEventListener('submit', async (event) => {
   try {
     const data = Object.fromEntries(new FormData(checkoutForm));
     data.accepted = checkoutForm.elements.accepted.checked;
+    data.marketingConsent = checkoutForm.elements.marketingConsent.checked;
     const response = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
     const result = await response.json();
     if (result.folio) {

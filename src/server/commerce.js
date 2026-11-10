@@ -2,6 +2,7 @@ import { createHmac, randomBytes, randomUUID, timingSafeEqual } from 'node:crypt
 
 export const AMOUNT_MXN = 7000;
 export const TERMS_VERSION = 'buen-fin-2026-v1';
+export const MARKETING_CONSENT_VERSION = 'propuestas-otros-proyectos-2026-11-09-v1';
 export const CAMPAIGN_START = Date.parse('2026-11-13T06:00:00Z');
 export const CAMPAIGN_END = Date.parse('2026-11-18T06:00:00Z');
 const SITE = 'https://www.orkestalo.com';
@@ -34,17 +35,24 @@ export function validPhone(value) {
 
 export function normalizeContact(input) {
   if (!input || !validText(input.name, 120) || !validText(input.type, 60) || !validText(input.description, 4000, 15)) return null;
+  if (input.marketingConsent != null && typeof input.marketingConsent !== 'boolean') return null;
   const optional = ['email', 'phone', 'budget', 'date', 'reference'];
   for (const key of optional) if (input[key] != null && typeof input[key] !== 'string') return null;
   if (input.email && !validEmail(input.email)) return null;
   if (input.phone && !validPhone(input.phone)) return null;
+  if (input.marketingConsent === true && !input.email?.trim() && !input.phone?.trim()) return null;
   if (!validText(input.budget ?? '', 100, 0) || !validText(input.date ?? '', 100, 0) || !validText(input.reference ?? '', 120, 0)) return null;
-  return Object.fromEntries(['name', 'email', 'phone', 'type', 'description', 'budget', 'date', 'reference'].map((key) => [key, (input[key] || '').trim()]));
+  return { ...Object.fromEntries(['name', 'email', 'phone', 'type', 'description', 'budget', 'date', 'reference'].map((key) => [key, (input[key] || '').trim()])), marketingConsent: input.marketingConsent === true };
 }
 
 export function normalizeBuyer(input) {
   if (!input || !validText(input.name, 120) || !validEmail(input.email) || !validPhone(input.whatsapp) || !validText(input.business, 160) || input.accepted !== true) return null;
-  return Object.fromEntries(['name', 'email', 'whatsapp', 'business'].map((key) => [key, input[key].trim()]));
+  if (input.marketingConsent != null && typeof input.marketingConsent !== 'boolean') return null;
+  return { ...Object.fromEntries(['name', 'email', 'whatsapp', 'business'].map((key) => [key, input[key].trim()])), marketingConsent: input.marketingConsent === true };
+}
+
+export function marketingConsentRecord(accepted) {
+  return { marketing_consent: accepted, marketing_consented_at: accepted ? new Date().toISOString() : null, marketing_consent_version: accepted ? MARKETING_CONSENT_VERSION : null };
 }
 
 function settings() {

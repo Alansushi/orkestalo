@@ -1,4 +1,4 @@
-import { db, folio, json, normalizeContact, readBody, sendInquiryNotice } from '../src/server/commerce.js';
+import { db, folio, json, marketingConsentRecord, normalizeContact, readBody, sendInquiryNotice } from '../src/server/commerce.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return json(res, 405, { error: 'Método no permitido' });
@@ -6,7 +6,8 @@ export default async function handler(req, res) {
   if (!input) return json(res, 400, { error: 'Revisa los datos del formulario.' });
   const reference = folio();
   try {
-    const saved = await db('inquiries', { method: 'POST', body: { folio: reference, ...input } });
+    const { marketingConsent, ...contact } = input;
+    const saved = await db('inquiries', { method: 'POST', body: { folio: reference, ...contact, ...marketingConsentRecord(marketingConsent) } });
     if (saved.length !== 1) throw new Error('La consulta no se confirmó');
   } catch (error) {
     console.error('No se pudo guardar la consulta', error);
