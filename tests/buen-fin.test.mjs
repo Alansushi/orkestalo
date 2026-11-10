@@ -18,7 +18,7 @@ test('campaign page, metadata, terms and contact route are built without enterin
   assert.match(page, /13 al 17 de noviembre de 2026/);
   assert.match(page, /BFINMP/);
   assert.match(page, /hasta 30%/);
-  assert.match(page, /mínimo de \$2,000 MXN/);
+  assert.match(page, /Hasta 15% de descuento/);
   assert.match(page, /no garantizan el cupón ni una bonificación/);
   assert.match(page, /ayuda\/57759/);
   assert.match(page, /ayuda\/57760/);
@@ -30,12 +30,11 @@ test('campaign page, metadata, terms and contact route are built without enterin
   assert.match(await read('public/pedido/index.html'), /data-order-status/);
   assert.doesNotMatch(sitemap, /terminos-buen-fin-2026|\/pedido\//);
   assert.doesNotMatch(sitemap, /buen-fin-2026/);
-  for (const name of ['desktop', 'mobile']) {
-    assert.match(page, new RegExp(`/media/buen-fin-2026/mercado-pago-${name}\\.png`));
-    const png = await readFile(new URL(`../public/media/buen-fin-2026/mercado-pago-${name}.png`, import.meta.url));
-    assert.equal(png.readUInt32BE(16), name === 'desktop' ? 1200 : 600);
-    assert.equal(png.readUInt32BE(20), name === 'desktop' ? 700 : 600);
-  }
+  assert.match(page, /data-checkout-unavailable/);
+  assert.match(page, /data-checkout-form novalidate hidden/);
+  assert.match(page, /Me interesa la promoción · Escríbenos por WhatsApp/);
+  assert.match(page, /Escribirnos no reserva el paquete ni genera un cobro/);
+  assert.doesNotMatch(page, /mercado-pago-desktop\.png|pendiente de aprobación|mínimo de \$2,000 MXN/);
 });
 
 test('campaign closes exactly at midnight in Mexico City with a 410', async () => {

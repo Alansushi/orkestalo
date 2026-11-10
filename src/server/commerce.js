@@ -21,6 +21,10 @@ export function campaignOpen(now = Date.now()) {
   return now >= CAMPAIGN_START && now < CAMPAIGN_END;
 }
 
+export function checkoutReady() {
+  return process.env.ORKESTA_CHECKOUT_ENABLED === '1' && ['SUPABASE_URL', 'SUPABASE_SECRET_KEY', 'MERCADO_PAGO_ACCESS_TOKEN', 'MERCADO_PAGO_WEBHOOK_SECRET', 'RESEND_API_KEY', 'ORKESTA_EMAIL_FROM'].every((key) => Boolean(process.env[key]));
+}
+
 export function validText(value, max, min = 1) {
   return typeof value === 'string' && value.trim().length >= min && value.trim().length <= max;
 }

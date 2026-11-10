@@ -131,6 +131,7 @@ await preserved.close();
 if (apiRequests.length !== 2) findings.push(`expected two saved contact API requests, got ${apiRequests.length}`);
 const campaign = await browser.newPage({ viewport: { width: 390, height: 844 } });
 let checkoutData;
+await campaign.route('**/api/checkout-availability', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: '{"available":true}' }));
 await campaign.route('**/api/checkout', (route) => {
   checkoutData = route.request().postDataJSON();
   return route.fulfill({ status: 201, contentType: 'application/json', body: JSON.stringify({ folio: 'ORK26-1234567890ABCDEF12', checkoutUrl: 'https://www.mercadopago.com.mx/checkout/test' }) });

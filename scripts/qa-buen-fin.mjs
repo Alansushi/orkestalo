@@ -2,39 +2,30 @@ import assert from 'node:assert/strict';
 import { chromium } from 'playwright-core';
 
 const base = process.env.BUEN_FIN_BASE_URL || 'http://127.0.0.1:3001';
-const chrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-const browser = await chromium.launch({ executablePath: chrome, headless: true, args: ['--no-sandbox'] });
+const browser = await chromium.launch({ executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true, args: ['--no-sandbox'] });
+const message = 'Hola, me interesa el sitio web de una página de Buen Fin 2026 por $7,000 MXN. Quisiera conocer el alcance y cómo contratarlo del 13 al 17 de noviembre';
 
 try {
   for (const [width, height] of [[1440, 900], [390, 844]]) {
     const page = await browser.newPage({ viewport: { width, height } });
-    await page.clock.install({ time: new Date('2026-11-18T05:59:00Z') });
-    await page.goto(base, { waitUntil: 'networkidle' });
-    const link = page.locator('[data-campaign-link]');
-    assert.equal(await link.isVisible(), true, `${width}: hero link before close`);
-    await page.clock.fastForward(60_000);
-    assert.equal(await link.isVisible(), false, `${width}: hero link at close`);
-    await page.clock.setFixedTime(new Date('2026-11-18T05:59:00Z'));
-    await page.goto(`${base}/buen-fin-2026/`, { waitUntil: 'networkidle' });
-    assert.equal(await page.locator('h1').count(), 1);
-    assert.equal(await page.locator('picture source[media="(max-width: 600px)"]').getAttribute('srcset'), '/media/buen-fin-2026/mercado-pago-mobile.png');
-    assert.ok((await page.locator('.bf-art img').evaluate((img) => img.naturalWidth)) > 0);
-    assert.ok((await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)) <= 1, `${width}: horizontal overflow`);
+    let available = false;
+    await page.route('**/api/checkout-availability', route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ available }) }));
+    await page.goto(base + '/buen-fin-2026/', { waitUntil: 'networkidle' });
+    assert.equal(await page.locator('[data-checkout-form]').isVisible(), false);
+    assert.equal(await page.locator('[data-campaign-whatsapp]').isVisible(), true);
+    assert.equal(new URL(await page.locator('[data-campaign-whatsapp]').getAttribute('href')).searchParams.get('text'), message);
+    assert.ok((await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)) <= 1, width + ': overflow');
+    assert.equal(await page.locator('.bf-art__panel').isVisible(), true);
     await page.screenshot({ path: `/private/tmp/orkesta-buen-fin-${width}.png`, fullPage: true });
-    await page.getByRole('link', { name: 'Ir al formulario de contacto ↗' }).click();
-    await page.waitForURL('**/contacto/?referencia=buen-fin-2026');
-    assert.equal(await page.locator('select[name="type"]').inputValue(), 'sitio-web');
-    assert.equal(await page.locator('input[name="reference"]').inputValue(), 'buen-fin-2026');
+    available = true;
+    await page.reload({ waitUntil: 'networkidle' });
+    assert.equal(await page.locator('[data-checkout-form]').isVisible(), true);
+    assert.equal(await page.locator('[data-checkout-unavailable]').isVisible(), false);
+    assert.equal(await page.locator('[data-campaign-hero-cta]').getAttribute('href'), '#comprar');
+    available = false;
+    await page.reload({ waitUntil: 'networkidle' });
+    assert.equal(await page.locator('[data-checkout-form]').isVisible(), false);
     await page.close();
-    const openCampaign = await browser.newPage({ viewport: { width, height } });
-    await openCampaign.clock.install({ time: new Date('2026-11-18T05:59:00Z') });
-    await openCampaign.goto(`${base}/buen-fin-2026/`, { waitUntil: 'networkidle' });
-    await openCampaign.clock.fastForward(60_000);
-    await openCampaign.waitForURL(base + '/');
-    assert.equal(await openCampaign.locator('[data-campaign-link]').isVisible(), false);
-    await openCampaign.close();
   }
-  process.stdout.write('Buen Fin browser QA passed (desktop, mobile, close boundary, contact).\n');
-} finally {
-  await browser.close();
-}
+  process.stdout.write('Buen Fin browser QA passed (desktop, mobile, WhatsApp, available, paused).\\n');
+} finally { await browser.close(); }

@@ -103,6 +103,41 @@ if (contactForm) {
 }
 
 const checkoutForm = document.querySelector('[data-checkout-form]');
+if (checkoutForm) {
+  const unavailable = document.querySelector('[data-checkout-unavailable]');
+  const message = document.querySelector('[data-checkout-message]');
+  const hero = document.querySelector('[data-campaign-hero-cta]');
+  const whatsapp = document.querySelector('[data-campaign-whatsapp]');
+  const showUnavailable = (copy) => {
+    checkoutForm.hidden = true;
+    unavailable.hidden = false;
+    message.textContent = copy;
+    hero.href = whatsapp.href;
+    hero.textContent = 'Me interesa la promoción · Escríbenos por WhatsApp ↗';
+    hero.target = '_blank';
+    hero.rel = 'noopener noreferrer';
+  };
+  const refresh = async () => {
+    try {
+      const response = await fetch('/api/checkout-availability', { cache: 'no-store' });
+      if (!response.ok) throw new Error('No pudimos comprobar la disponibilidad.');
+      const { available } = await response.json();
+      if (!available) { showUnavailable('La compra en línea estará disponible del 13 al 17 de noviembre de 2026, hora de Ciudad de México, cuando el checkout esté habilitado.'); return; }
+      checkoutForm.hidden = false;
+      unavailable.hidden = true;
+      hero.href = '#comprar';
+      hero.textContent = 'Revisar y comprar ↗';
+      hero.removeAttribute('target');
+      hero.removeAttribute('rel');
+    } catch {
+      showUnavailable('No pudimos comprobar la disponibilidad del pago. Escríbenos por WhatsApp.');
+    }
+  };
+  showUnavailable('La compra en línea abre el 13 de noviembre. Escríbenos si te interesa el paquete.');
+  refresh();
+  setInterval(refresh, 30_000);
+  window.addEventListener('focus', refresh);
+}
 checkoutForm?.addEventListener('submit', async (event) => {
   event.preventDefault();
   if (!checkoutForm.reportValidity()) return;

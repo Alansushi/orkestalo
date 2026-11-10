@@ -190,6 +190,20 @@ test('checkout stays disabled until legal and coupon checks are approved', async
   });
 });
 
+test('direct checkout cannot create an order before opening or at close', async () => {
+  const services = fakeServices();
+  await withServices(services, async () => {
+    for (const date of [CAMPAIGN_START - 1, CAMPAIGN_END]) {
+      Date.now = () => date;
+      const res = response();
+      await checkout({ method: 'POST', body: buyer }, res);
+      assert.equal(res.statusCode, 403);
+    }
+    assert.equal(services.orders.size, 0);
+    assert.equal(services.mpPosts.length, 0);
+  });
+});
+
 test('preview checkout returns to the deployment where the order began', async () => {
   const services = fakeServices();
   await withServices(services, async () => {
