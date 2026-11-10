@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return json(res, 405, { error: 'Método no permitido' });
   if (!campaignOpen()) return json(res, 403, { error: 'La compra está disponible del 13 al 17 de noviembre de 2026.' });
   const buyer = normalizeBuyer(readBody(req));
-  if (!buyer) return json(res, 400, { error: 'Revisa tus datos y acepta los términos y el aviso de privacidad.' });
+  if (!buyer) return json(res, 400, { error: 'Revisa tus datos, acepta los términos y autoriza la comunicación de datos del pedido.' });
   if (process.env.ORKESTA_CHECKOUT_ENABLED !== '1' || !process.env.MERCADO_PAGO_ACCESS_TOKEN || !process.env.MERCADO_PAGO_WEBHOOK_SECRET || !process.env.RESEND_API_KEY || !process.env.ORKESTA_EMAIL_FROM) return json(res, 503, { error: 'La compra no está disponible en este momento.' });
   const reference = folio();
   try {
