@@ -26,7 +26,8 @@ test('campaign page, metadata, terms and contact route are built without enterin
   assert.match(page, /Checkout Pro <strong>no garantizan<\/strong>/);
   assert.doesNotMatch(page, /El registro MIPYME de Orkesta tampoco garantiza estos beneficios/);
   for (const content of [page, terms]) {
-    for (const phrase of ['hasta cinco secciones', 'textos iniciales', 'layout', 'paleta', 'tipografías', 'animaciones', 'carruseles', 'enlaces a redes sociales', 'botones de llamada a la acción', 'formulario que prepara un mensaje de WhatsApp', 'el visitante', 'SEO, AEO y GEO', 'contenido claro', 'estructura rastreable', 'metadatos', 'sin garantizar aparición en buscadores ni en respuestas de IA', 'una ronda de ajustes', 'información verificable', 'fotografías', 'logotipo', 'enlaces', 'número de WhatsApp', 'accesos', 'contenido para páginas adicionales', 'producción de fotografía o video', 'integraciones a medida']) {
+    assert.doesNotMatch(content, /sin garantizar aparición en buscadores ni en respuestas de IA/);
+    for (const phrase of ['hasta cinco secciones', 'textos iniciales', 'layout', 'paleta', 'tipografías', 'animaciones', 'carruseles', 'enlaces a redes sociales', 'botones de llamada a la acción', 'formulario que prepara un mensaje de WhatsApp', 'el visitante', 'SEO, AEO y GEO', 'contenido claro', 'estructura rastreable', 'metadatos', 'una ronda de ajustes', 'información verificable', 'fotografías', 'logotipo', 'enlaces', 'número de WhatsApp', 'accesos', 'contenido para páginas adicionales', 'producción de fotografía o video', 'integraciones a medida']) {
       assert.ok(content.includes(phrase), `Missing ${phrase} from campaign or terms`);
     }
   }
