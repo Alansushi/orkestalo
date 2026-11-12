@@ -6,8 +6,8 @@ import proxy, { CAMPAIGN_CLOSE, isCampaignClosed } from '../proxy.js';
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
 test('campaign page, metadata, terms and contact route are built without entering sitemap', async () => {
-  const [home, page, sitemap] = await Promise.all([
-    read('public/index.html'), read('public/buen-fin-2026/index.html'), read('public/sitemap.xml'),
+  const [home, page, terms, sitemap] = await Promise.all([
+    read('public/index.html'), read('public/buen-fin-2026/index.html'), read('public/terminos-buen-fin-2026/index.html'), read('public/sitemap.xml'),
   ]);
   assert.match(home, /data-campaign-link href="\/buen-fin-2026\/"/);
   assert.match(home, /logo-mipymes-vertical\.png"[^>]+alt="El Buen Fin 2026, MIPYMES"/);
@@ -24,6 +24,12 @@ test('campaign page, metadata, terms and contact route are built without enterin
   assert.match(page, /compra mínima de \$2,000 MXN/);
   assert.match(page, /límite de \$1,000 MXN por participante/);
   assert.match(page, /Checkout Pro <strong>no garantizan<\/strong>/);
+  assert.doesNotMatch(page, /El registro MIPYME de Orkesta tampoco garantiza estos beneficios/);
+  for (const content of [page, terms]) {
+    for (const phrase of ['hasta cinco secciones', 'textos iniciales', 'layout', 'paleta', 'tipografías', 'animaciones', 'carruseles', 'enlaces a redes sociales', 'botones de llamada a la acción', 'formulario que prepara un mensaje de WhatsApp', 'el visitante', 'SEO, AEO y GEO', 'contenido claro', 'estructura rastreable', 'metadatos', 'sin garantizar aparición en buscadores ni en respuestas de IA', 'una ronda de ajustes', 'información verificable', 'fotografías', 'logotipo', 'enlaces', 'número de WhatsApp', 'accesos', 'contenido para páginas adicionales', 'producción de fotografía o video', 'integraciones a medida']) {
+      assert.ok(content.includes(phrase), `Missing ${phrase} from campaign or terms`);
+    }
+  }
   assert.match(page, /ayuda\/57759/);
   assert.match(page, /ayuda\/57760/);
   assert.match(page, /href="\/contacto\/\?referencia=buen-fin-2026"/);
