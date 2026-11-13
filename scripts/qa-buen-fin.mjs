@@ -34,6 +34,7 @@ try {
     available = true;
     await page.reload({ waitUntil: 'networkidle' });
     assert.equal(await page.locator('[data-checkout-form]').isVisible(), true);
+    assert.equal(await page.locator('[data-campaign-whatsapp]').isVisible(), true);
     assert.equal(await page.locator('[data-checkout-unavailable]').isVisible(), false);
     assert.equal(await page.locator('[data-campaign-hero-cta]').getAttribute('href'), '#comprar');
     await page.route('**/api/checkout', route => route.fulfill({ status: 503, contentType: 'application/json', body: '{"error":"La compra no está disponible en este momento."}' }));
@@ -45,6 +46,7 @@ try {
     await page.locator('[data-checkout-form] button[type=submit]').click();
     await page.locator('[data-checkout-form]').waitFor({ state: 'hidden' });
     assert.equal(await page.locator('[data-checkout-form]').isVisible(), false);
+    assert.equal(await page.locator('[data-campaign-whatsapp]').isVisible(), true);
     assert.match(await page.locator('[data-checkout-message]').textContent(), /Escríbenos por WhatsApp/);
     available = false;
     await page.reload({ waitUntil: 'networkidle' });

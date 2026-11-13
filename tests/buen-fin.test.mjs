@@ -48,6 +48,7 @@ test('campaign page, metadata, terms and contact route are built without enterin
   assert.doesNotMatch(sitemap, /buen-fin-2026/);
   assert.match(page, /data-checkout-unavailable/);
   assert.match(page, /data-checkout-form novalidate hidden/);
+  assert.match(page, /data-checkout-message[^>]*>[^<]*<\/p><\/div><a class="studio-button" data-campaign-whatsapp/);
   assert.match(page, /Me interesa la promoción · Escríbenos por WhatsApp/);
   assert.match(page, /Escribirnos no reserva el paquete ni genera un cobro/);
   assert.doesNotMatch(page, /pendiente de aprobación/);
