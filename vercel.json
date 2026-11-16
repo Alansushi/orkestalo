@@ -1,6 +1,5 @@
 {
   "devCommand": "node scripts/serve.mjs",
-  "functions": { "api/measurement-sync.js": { "maxDuration": 60 } },
   "proxy": {
     "entrypoint": "proxy.js",
     "matcher": ["/buen-fin-2026", "/buen-fin-2026/:path*"]
