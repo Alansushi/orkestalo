@@ -101,10 +101,11 @@
     });
     $('verify').addEventListener('submit',async event=>{
       event.preventDefault();$('status').textContent='Validando acceso…';
-      const code=new FormData(event.currentTarget).get('code');
+      const form=event.currentTarget;
+      const code=new FormData(form).get('code');
       try {
         const response=await fetch('/api/measurement-session',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:loginEmail,code,type:loginType})});
-        event.currentTarget.elements.code.value='';
+        form.elements.code.value='';
         $('status').textContent=response.ok?'':'Código inválido o vencido.';
         if(response.ok) await load();
       } catch {$('status').textContent='No se pudo validar el código.';}
