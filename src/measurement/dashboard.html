@@ -88,12 +88,13 @@
       $('login').hidden=true;$('verify').hidden=true;$('results').hidden=false;$('logout').hidden=false;render();
     }
     $('site').addEventListener('change',render);
-    let loginEmail='';
+    let loginEmail='',loginType='magiclink';
     $('login').addEventListener('submit',async event=>{
       event.preventDefault();$('status').textContent='Enviando código…';
       loginEmail=new FormData(event.currentTarget).get('email');
       try {
         const response=await fetch('/api/measurement-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:loginEmail})});
+        if(response.ok) loginType=(await response.json()).type;
         $('status').textContent=response.ok?'Revisa tu correo e introduce el código.':'No se pudo enviar el código.';
         if(response.ok) {$('login').hidden=true;$('verify').hidden=false;$('verify').elements.code.focus();}
       } catch {$('status').textContent='No se pudo enviar el código.';}
@@ -102,7 +103,7 @@
       event.preventDefault();$('status').textContent='Validando acceso…';
       const code=new FormData(event.currentTarget).get('code');
       try {
-        const response=await fetch('/api/measurement-session',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:loginEmail,code})});
+        const response=await fetch('/api/measurement-session',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:loginEmail,code,type:loginType})});
         event.currentTarget.elements.code.value='';
         $('status').textContent=response.ok?'':'Código inválido o vencido.';
         if(response.ok) await load();

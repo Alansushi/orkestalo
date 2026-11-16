@@ -21,7 +21,7 @@ export default async function handler(req, res) {
   }
   if (req.method !== 'POST' && req.method !== 'PUT') return json(res, 405, { error: 'Método no permitido' });
   if (!configured()) return json(res, 503, { error: 'Panel no configurado' });
-  const { email, code } = readBody(req) || {};
+  const { email, code, type } = readBody(req) || {};
   if (!ownerEmail(email)) return json(res, 403, { error: 'Sin acceso al panel' });
   const normalizedEmail = process.env.MEASUREMENT_OWNER_EMAIL;
 
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
       });
       if (!generated.ok) throw new Error(`Supabase Auth ${generated.status}`);
       const { email_otp, verification_type } = await generated.json();
-      if (!/^\d{6,8}$/.test(email_otp) || verification_type !== 'magiclink') throw new Error('Supabase Auth no devolvió un código válido');
+      if (!/^\d{6,8}$/.test(email_otp) || !['signup', 'magiclink'].includes(verification_type)) throw new Error('Supabase Auth no devolvió un código válido');
       const mailed = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
         signal: AbortSignal.timeout(8000),
       });
       if (!mailed.ok) throw new Error(`Correo ${mailed.status}`);
-      return json(res, 200, { ok: true });
+      return json(res, 200, { ok: true, type: verification_type });
     } catch (error) {
       recentRequests.delete(normalizedEmail);
       console.error('Fallo de envío de código de medición', error);
@@ -59,12 +59,12 @@ export default async function handler(req, res) {
     }
   }
 
-  if (typeof code !== 'string' || !/^\d{6,8}$/.test(code)) return json(res, 400, { error: 'Código inválido' });
+  if (typeof code !== 'string' || !/^\d{6,8}$/.test(code) || !['signup', 'magiclink'].includes(type)) return json(res, 400, { error: 'Código inválido' });
   try {
     const response = await fetch(`${process.env.SUPABASE_URL}/auth/v1/verify`, {
       method: 'POST',
       headers: { apikey: process.env.SUPABASE_SECRET_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'magiclink', email: normalizedEmail, token: code }),
+      body: JSON.stringify({ type, email: normalizedEmail, token: code }),
       signal: AbortSignal.timeout(8000),
     });
     if (!response.ok) return json(res, 401, { error: 'Código inválido o vencido' });
