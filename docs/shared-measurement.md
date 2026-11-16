@@ -4,11 +4,11 @@ El esquema de `supabase/migrations/20261116035541_shared_measurement.sql` agrega
 
 ## Puesta en marcha
 
-1. Aplicar la migración al proyecto Supabase de Orkéstalo y comprobar las tablas y políticas con una consulta real. El registro inicial contiene las dos doctoras desactivadas. Fernanda no tiene dominio de producción definido; cargar su origen HTTPS y URL del aviso antes de activarla.
+1. Aplicar las migraciones al proyecto Supabase de Orkéstalo y comprobar las tablas y políticas con una consulta real. El registro inicial contiene las dos doctoras desactivadas. Verificar el dominio de Fernanda en la segunda migración antes de activarla.
 2. Configurar `MEASUREMENT_OWNER_USER_ID` con el UUID de la cuenta de Supabase Auth de Alan en Vercel. El panel está en `/medicion/`; solo el dueño puede consultar su API.
 3. Revisar el aviso de privacidad y el consentimiento de cada sitio. Activar `measurement_sites.active` solo cuando el sitio y el colector estén publicados y el dominio coincida exactamente con `allowed_origins`.
 4. El script compartido está en `/assets/measurement.js`. Cada sitio lo carga después del consentimiento analítico, con `data-site` y `data-consent-key`. Una falla de red del colector no interrumpe la web.
-5. `/api/measurement-retention` elimina diariamente eventos y contactos al superar `retention_days`; lo invoca Vercel Cron con `CRON_SECRET`.
+5. `/api/measurement-maintenance` elimina diariamente eventos y contactos al superar `retention_days` y sincroniza las métricas; lo invoca Vercel Cron con `CRON_SECRET`.
 
 ## Contrato
 
@@ -18,7 +18,7 @@ El endpoint opcional de contactos admite nombre, correo o teléfono, canal, y ve
 
 ## Integraciones
 
-La tarea diaria `/api/measurement-sync` comprueba disponibilidad y consulta PageSpeed para cada sitio activo. Si se configura `GOOGLE_PERFORMANCE_API_KEY`, consulta además CrUX directamente. PageSpeed registra datos de laboratorio; CrUX registra percentiles reales de una ventana móvil de 28 días, cuando hay suficiente tráfico. Ambos se presentan por separado y conservan fecha y estado de conexión.
+La tarea diaria `/api/measurement-maintenance` comprueba disponibilidad y consulta PageSpeed para cada sitio activo. Si se configura `GOOGLE_PERFORMANCE_API_KEY`, consulta además CrUX directamente. PageSpeed registra datos de laboratorio; CrUX registra percentiles reales de una ventana móvil de 28 días, cuando hay suficiente tráfico. Ambos se presentan por separado y conservan fecha y estado de conexión.
 
 El esquema y panel admiten también datos diarios de Google Ads, Meta Ads y Search Console, junto con última sincronización y error. Estos tres conectores aún requieren las cuentas o credenciales autorizadas y el identificador de cuenta por sitio. No registrar cifras manuales como si fueran importaciones automáticas.
 
