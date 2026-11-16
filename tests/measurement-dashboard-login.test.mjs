@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { chromium } from 'playwright-core';
+import { setSession } from '../src/server/measurement-auth.js';
 
 const chrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 
@@ -10,20 +11,23 @@ test('email code opens the measurement dashboard', { skip: process.platform !== 
   try {
     const page = await browser.newPage();
     const errors = [];
-    let authenticated = false;
     page.on('pageerror', error => errors.push(error.message));
     const html = await readFile(new URL('../src/measurement/dashboard.html', import.meta.url), 'utf8');
     await page.route('**/*', route => {
       const url = new URL(route.request().url());
       if (url.pathname === '/medicion/') return route.fulfill({ status: 200, contentType: 'text/html', body: html });
-      if (url.pathname === '/api/measurement-dashboard') return route.fulfill({ status: authenticated ? 200 : 401, contentType: 'application/json', body: JSON.stringify({ sites: [], daily: [], sources: [], connections: [], external: [], contacts: [] }) });
+      if (url.pathname === '/api/measurement-dashboard') {
+        const authenticated = route.request().headers().cookie?.includes('orkesta_measurement_session=owner-token');
+        return route.fulfill({ status: authenticated ? 200 : 401, contentType: 'application/json', body: JSON.stringify({ sites: [], daily: [], sources: [], connections: [], external: [], contacts: [] }) });
+      }
       if (url.pathname === '/api/measurement-session') {
-        if (route.request().method() === 'PUT') authenticated = true;
-        return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true, type: 'signup' }) });
+        const headers = {};
+        if (route.request().method() === 'PUT') setSession({ setHeader: (key, value) => { headers[key] = value; } }, 'owner-token', 3600);
+        return route.fulfill({ status: 200, headers, contentType: 'application/json', body: JSON.stringify({ ok: true, type: 'signup' }) });
       }
       return route.fulfill({ status: 404 });
     });
-    await page.goto('http://measurement.test/medicion/');
+    await page.goto('https://measurement.test/medicion/');
     await page.locator('input[name="email"]').fill('owner@example.com');
     await page.getByRole('button', { name: 'Enviar código' }).click();
     await page.locator('input[name="code"]').fill('123456');

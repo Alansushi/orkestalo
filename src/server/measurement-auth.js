@@ -8,5 +8,5 @@ export async function isOwner(req) {
   return ownerFromToken(readSession(req));
 }
 export function setSession(res, token, seconds) {
-  res.setHeader('Set-Cookie', `${COOKIE}=${encodeURIComponent(token)}; HttpOnly; Secure; SameSite=Strict; Path=/api/measurement-; Max-Age=${seconds}`);
+  res.setHeader('Set-Cookie', `${COOKIE}=${encodeURIComponent(token)}; HttpOnly; Secure; SameSite=Strict; Path=/api/measurement-dashboard; Max-Age=${seconds}`);
 }
