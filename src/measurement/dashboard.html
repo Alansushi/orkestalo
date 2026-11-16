@@ -6,81 +6,96 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Medición · Orkéstalo</title>
   <style>
-    :root{font:16px/1.5 system-ui,sans-serif;color:#18232d;background:#f6f8f7}
-    body{margin:0;padding:2rem;max-width:1100px}
-    h1{font-size:2rem;margin:.2rem 0}h2{font-size:1.3rem;margin:.2rem 0}
-    p{color:#52616c}form,.card{background:white;border:1px solid #dce5e3;border-radius:12px;padding:1.2rem;margin:1rem 0}
-    label{display:block;margin:.5rem 0}input{display:block;font:inherit;padding:.6rem;width:min(100%,24rem);box-sizing:border-box}
-    button,select{font:inherit;padding:.6rem .9rem;border-radius:8px;border:1px solid #899e9a;background:white}
-    button{cursor:pointer;background:#175e54;color:white;border-color:#175e54}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.8rem}
-    .metric{background:#ebf2ef;padding:1rem;border-radius:8px}.metric strong{display:block;font-size:1.8rem}
-    table{border-collapse:collapse;width:100%}th,td{text-align:left;border-bottom:1px solid #e0e7e4;padding:.5rem}
-    .scroll{overflow:auto}#logout{float:right}#status{min-height:1.5em}
+    @font-face{font-family:'Space Grotesk';src:url('/media/fonts/space-grotesk-600.ttf')}@font-face{font-family:'DM Sans';src:url('/media/fonts/dm-sans-400.ttf')}@font-face{font-family:'DM Sans';src:url('/media/fonts/dm-sans-600.ttf');font-weight:600}@font-face{font-family:'IBM Plex Mono';src:url('/media/fonts/ibm-plex-mono-400.ttf')}
+    :root{font:16px/1.5 'DM Sans',Arial,sans-serif;color:#17181c;background:#f7f6f2}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}[hidden]{display:none!important}:focus-visible{outline:3px solid #555cff;outline-offset:4px}
+    .skip{position:absolute;top:-60px;left:16px;background:#dbff77;color:#17181c;padding:8px 12px;z-index:5}.skip:focus{top:12px}.wrap{width:min(100% - 48px,1280px);margin:auto}.top{border-bottom:1px solid #d8d7d1;background:#fff}.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:82px}.top img{display:block;width:164px;height:auto}.eyebrow{font:12px/1.4 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#34364a}.intro{padding:54px 0 34px}.intro h1{font:600 clamp(42px,6vw,76px)/1.03 'Space Grotesk',sans-serif;letter-spacing:-.055em;margin:12px 0}.intro p{max-width:720px;font-size:18px;color:#414149;margin:0}.status{min-height:1.5em;color:#252277}
+    form,.card{background:#fff;border:1px solid #d8d7d1;border-radius:20px;padding:24px;margin:20px 0}.access{max-width:620px;margin:30px 0 90px;padding:clamp(24px,5vw,44px)}h2{font:600 clamp(24px,3vw,34px)/1.15 'Space Grotesk',sans-serif;letter-spacing:-.04em;margin:0 0 12px}p{color:#4d4e55}.access label,.chooser label{display:block;font-weight:600;margin:25px 0 9px}.access input,.chooser select{display:block;width:100%;min-height:50px;border:1px solid #767780;border-radius:10px;background:#f7f6f2;padding:10px 14px;color:#17181c}.access button{margin-top:22px}
+    button{border-radius:999px;padding:11px 20px;font-weight:600;background:#555cff;border:1px solid #555cff;color:#fff}button:disabled{cursor:not-allowed;opacity:.55}.secondary,#logout{background:#fff;border-color:#17181c;color:#17181c}.toolbar{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:24px}.chooser{min-width:min(100%,340px)}.chooser label{margin:0 0 8px}.scope{padding:28px 34px;border-radius:22px;background:#d9d5ff;margin-bottom:22px}.scope h2{font-size:clamp(30px,4vw,48px);margin:6px 0}.scope p{margin:0;color:#343443}.badge{display:inline-block;border:1px solid #17181c;border-radius:999px;padding:5px 11px;font-size:12px;font-weight:600;margin-top:14px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.metric{min-height:155px;padding:22px;border:1px solid #d8d7d1;border-radius:18px;background:#fff}.metric:first-child{background:#dbff77;border-color:#dbff77}.metric span{display:block;font-size:14px;font-weight:600}.metric strong{display:block;font:600 clamp(30px,4vw,48px)/1.1 'Space Grotesk',sans-serif;letter-spacing:-.05em;margin-top:23px}.metric strong.empty-value{font-size:22px;line-height:1.25}.metric small{display:block;color:#4d4e55;margin-top:10px}.note{padding:18px 22px;background:#eeedff;border-left:4px solid #555cff;border-radius:0 12px 12px 0;color:#29294d;margin:22px 0}.card{min-width:0}.card h2{font-size:25px}.scroll{overflow-x:auto;max-width:100%}table{border-collapse:collapse;width:100%;min-width:520px;font-size:14px}th,td{text-align:left;border-bottom:1px solid #e3e2dd;padding:11px 13px 11px 0;vertical-align:top}th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#414149}.empty{padding:30px 0;color:#414149}.empty strong{display:block;color:#17181c;font-size:18px;margin-bottom:5px}.footer{border-top:1px solid #d8d7d1;padding:24px 0 50px;color:#4d4e55;font-size:13px}
+    @media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.wrap{width:min(100% - 32px,1280px)}.top .wrap{min-height:68px}.top img{width:132px}.intro{padding:34px 0 22px}.intro p{font-size:16px}.toolbar{align-items:stretch;flex-direction:column}.chooser{width:100%}.grid{gap:9px}.metric{min-height:135px;padding:16px}.metric strong{margin-top:18px}.scope{padding:24px}.card{padding:18px}}
   </style>
 </head>
 <body>
-  <button id="logout" type="button" hidden>Salir</button>
-  <h1>Medición de sitios</h1>
-  <p>Últimos 30 días. Un clic de WhatsApp indica intención; no confirma un mensaje ni una cita.</p>
-  <p id="status" role="status"></p>
-  <form id="login" autocomplete="on">
+  <a class="skip" href="#contenido">Ir al contenido</a>
+  <header class="top"><div class="wrap"><img src="/logo-orkesta.svg" alt="Orkesta" width="164" height="40"><button id="logout" type="button" hidden>Cerrar sesión</button></div></header>
+  <div class="wrap" id="contenido">
+  <div class="intro"><span class="eyebrow">Panel privado / Medición</span><h1>Resultados con contexto.</h1><p>Visitas e intención de contacto de los últimos 30 días. Los datos aparecen cuando cada sitio empieza a medir.</p></div>
+  <p id="status" class="status" role="status" aria-live="polite"></p>
+  <form id="login" class="access" autocomplete="on">
     <h2>Acceso privado</h2>
     <label>Correo <input name="email" type="email" autocomplete="username" required></label>
     <button>Enviar código</button>
   </form>
-  <form id="verify" hidden>
+  <form id="verify" class="access" hidden>
     <h2>Introduce el código enviado a tu correo</h2>
     <label>Código <input name="code" inputmode="numeric" pattern="[0-9]{6,8}" autocomplete="one-time-code" required></label>
     <button>Entrar</button>
   </form>
   <main id="results" hidden>
-    <label>Sitio <select id="site"></select></label>
+    <div class="toolbar"><div class="chooser" id="chooser"><label for="site">Sitio que quieres consultar</label><select id="site"></select></div><button id="presentation" class="secondary" type="button" disabled>Presentar este sitio</button></div>
+    <section class="scope" aria-labelledby="scope-title"><span class="eyebrow" id="scope-kicker">Vista general</span><h2 id="scope-title"></h2><p id="scope-description"></p><span id="site-state" class="badge" hidden></span></section>
     <section id="summary" class="grid"></section>
-    <section class="card"><h2>Evolución diaria</h2><div class="scroll"><table><thead><tr><th>Fecha</th><th>Visitas</th><th>Clics de contacto</th><th>Formularios enviados</th></tr></thead><tbody id="daily"></tbody></table></div></section>
-    <section class="card"><h2>Fuentes</h2><div class="scroll"><table><thead><tr><th>Origen</th><th>Medio</th><th>Campaña</th><th>Visitas</th><th>Intención de contacto</th></tr></thead><tbody id="sources"></tbody></table></div></section>
-    <section class="card"><h2>Métricas importadas</h2><div class="scroll"><table><thead><tr><th>Fecha</th><th>Proveedor</th><th>Campaña</th><th>Métrica</th><th>Valor</th></tr></thead><tbody id="external"></tbody></table></div></section>
-    <section class="card"><h2>Fuentes externas</h2><div class="scroll"><table><thead><tr><th>Proveedor</th><th>Última actualización</th><th>Estado</th></tr></thead><tbody id="connections"></tbody></table></div></section>
+    <p class="note">Un clic en WhatsApp indica intención de contacto. No confirma que se haya enviado un mensaje ni que se haya agendado una cita.</p>
+    <section class="card"><h2>Evolución diaria</h2><p>Visitas e intención de contacto por día.</p><div id="daily-empty" class="empty" hidden></div><div id="daily-scroll" class="scroll"><table><thead><tr><th>Fecha</th><th>Visitas</th><th>Clics de contacto</th><th>Formularios enviados</th></tr></thead><tbody id="daily"></tbody></table></div></section>
+    <section class="card"><h2>De dónde llegan</h2><p>Origen, medio y campaña registrados en el sitio.</p><div id="sources-empty" class="empty" hidden></div><div id="sources-scroll" class="scroll"><table><thead><tr><th>Origen</th><th>Medio</th><th>Campaña</th><th>Visitas</th><th>Intención de contacto</th></tr></thead><tbody id="sources"></tbody></table></div></section>
+    <section class="card"><h2>Métricas importadas</h2><p>Resultados de plataformas externas, cuando están conectadas.</p><div id="external-empty" class="empty" hidden></div><div id="external-scroll" class="scroll"><table><thead><tr><th>Fecha</th><th>Proveedor</th><th>Campaña</th><th>Métrica</th><th>Valor</th></tr></thead><tbody id="external"></tbody></table></div></section>
+    <section class="card"><h2>Estado de las fuentes externas</h2><p>La ausencia de una conexión no se presenta como un resultado medido.</p><div class="scroll"><table><thead><tr><th>Proveedor</th><th>Última actualización</th><th>Estado</th></tr></thead><tbody id="connections"></tbody></table></div></section>
   </main>
+  </div><footer class="footer"><div class="wrap">Orkesta · Panel de uso privado</div></footer>
   <script>
     const $ = id => document.getElementById(id);
-    let dataset;
+    const providerNames={google_ads:'Google Ads',meta_ads:'Meta Ads',search_console:'Google Search Console',pagespeed:'PageSpeed Insights',crux:'Chrome UX Report',uptime:'Disponibilidad'};
+    const metricNames={clicks:'Clics',impressions:'Impresiones',cost:'Inversión',ctr:'CTR',position:'Posición',lcp:'LCP',inp:'INP',cls:'CLS'};
+    let dataset,presenting=false;
     function cell(row, value) { const td=document.createElement('td');td.textContent=String(value ?? '—');row.append(td); }
-    function metric(label,value) { const el=document.createElement('div');el.className='metric';const small=document.createElement('span');small.textContent=label;const strong=document.createElement('strong');strong.textContent=String(value);el.append(small,strong);$('summary').append(el); }
+    function metric(label,value,hint) { const el=document.createElement('div');el.className='metric';const small=document.createElement('span');small.textContent=label;const strong=document.createElement('strong');strong.textContent=String(value);if(value==='Aún sin datos')strong.className='empty-value';const note=document.createElement('small');note.textContent=hint;el.append(small,strong,note);$('summary').append(el); }
+    function empty(id,hasRows,description) { const notice=$(id+'-empty');notice.replaceChildren();if(!hasRows){const strong=document.createElement('strong');strong.textContent='Aún sin datos';const detail=document.createElement('span');detail.textContent=description;notice.append(strong,detail)}notice.hidden=hasRows;$(id+'-scroll').hidden=!hasRows; }
     function render() {
       const id=$('site').value;
+      const selected=dataset.sites.find(x=>x.id===id);
+      $('presentation').disabled=!selected&&!presenting;
+      $('presentation').textContent=presenting?'Salir de presentación':'Presentar este sitio';
+      $('chooser').hidden=presenting;
+      $('scope-kicker').textContent=presenting?'Presentación / Sitio seleccionado':selected?'Sitio seleccionado':'Vista general';
+      $('scope-title').textContent=selected?.name||'Todos los sitios';
+      $('scope-description').textContent=selected?'Resultados registrados durante los últimos 30 días.':'Selecciona un sitio para revisar sus resultados o presentarlo en una reunión.';
+      $('site-state').hidden=!selected||selected.active;
+      $('site-state').textContent=selected?.active?'':'Medición inactiva';
       const rows=dataset.daily.filter(x=>!id||x.site_id===id);
       const contacts=dataset.contacts.filter(x=>!id||x.site_id===id);
       $('summary').replaceChildren();
-      metric('Visitas',rows.reduce((n,x)=>n+Number(x.visits),0));
-      metric('Intención de contacto',rows.reduce((n,x)=>n+Number(x.contact_clicks),0));
-      metric('Formularios enviados',rows.reduce((n,x)=>n+Number(x.form_submits),0));
-      metric('Contactos guardados',contacts.length);
+      metric('Visitas',rows.length?rows.reduce((n,x)=>n+Number(x.visits),0):'Aún sin datos','Sesiones registradas');
+      metric('Intención de contacto',rows.length?rows.reduce((n,x)=>n+Number(x.contact_clicks),0):'Aún sin datos','Clics en canales de contacto');
+      metric('Formularios enviados',rows.length?rows.reduce((n,x)=>n+Number(x.form_submits),0):'Aún sin datos','Envíos registrados');
+      metric('Contactos guardados',contacts.length||rows.length?contacts.length:'Aún sin datos','Contactos del periodo');
       $('daily').replaceChildren();
       for(const day of [...rows].reverse()) { const tr=document.createElement('tr');[day.day,day.visits,day.contact_clicks,day.form_submits].forEach(x=>cell(tr,x));$('daily').append(tr); }
+      empty('daily',rows.length>0,'Aquí aparecerán las visitas y acciones registradas por día.');
       $('sources').replaceChildren();
       const grouped=new Map();
       for(const row of dataset.sources.filter(x=>!id||x.site_id===id)) {
-        const key=[row.source,row.medium,row.campaign].join('|');
+        const key=JSON.stringify([row.source,row.medium,row.campaign]);
         const current=grouped.get(key)||{...row,visits:0,contact_clicks:0};
         current.visits+=Number(row.visits);current.contact_clicks+=Number(row.contact_clicks);
         grouped.set(key,current);
       }
       for(const row of [...grouped.values()].sort((a,b)=>b.visits-a.visits)) {const tr=document.createElement('tr');[row.source,row.medium,row.campaign,row.visits,row.contact_clicks].forEach(x=>cell(tr,x));$('sources').append(tr);}
+      empty('sources',grouped.size>0,'Aquí aparecerán los orígenes y campañas registrados.');
       $('external').replaceChildren();
-      for(const row of dataset.external.filter(x=>!id||x.site_id===id).sort((a,b)=>b.day.localeCompare(a.day))) {const tr=document.createElement('tr');[row.day,row.provider,row.campaign_ref,row.metric,row.value].forEach(x=>cell(tr,x));$('external').append(tr);}
+      const external=dataset.external.filter(x=>!id||x.site_id===id).sort((a,b)=>b.day.localeCompare(a.day));
+      for(const row of external) {const tr=document.createElement('tr');[row.day,providerNames[row.provider]||row.provider,row.campaign_ref,metricNames[row.metric]||row.metric,row.value].forEach(x=>cell(tr,x));$('external').append(tr);}
+      empty('external',external.length>0,'Aquí aparecerán las métricas de plataformas conectadas.');
       $('connections').replaceChildren();
-      for(const provider of ['google_ads','meta_ads','search_console','pagespeed','crux','uptime']) {
+      for(const provider of Object.keys(providerNames)) {
         const matches=dataset.connections.filter(x=>x.provider===provider&&(!id||x.site_id===id));
         const last=matches.sort((a,b)=>String(b.last_synced_at).localeCompare(String(a.last_synced_at)))[0];
         const tr=document.createElement('tr');
-        [provider,last?.last_synced_at?new Date(last.last_synced_at).toLocaleString('es-MX'):'Sin sincronizar',last?.last_error||(!last?'Sin conectar':'Correcta')].forEach(x=>cell(tr,x));
+        [providerNames[provider],last?.last_synced_at?new Date(last.last_synced_at).toLocaleString('es-MX'):'Sin sincronizar',last?.last_error||(!last?'Pendiente de conectar':'Correcta')].forEach(x=>cell(tr,x));
         $('connections').append(tr);
       }
     }
     async function load() {
       const response=await fetch('/api/measurement-dashboard',{cache:'no-store'});
-      if(!response.ok) { $('login').hidden=false;$('verify').hidden=true;$('results').hidden=true;$('logout').hidden=true;return; }
+      if(!response.ok) { dataset=undefined;presenting=false;$('login').hidden=false;$('verify').hidden=true;$('results').hidden=true;$('logout').hidden=true;return; }
       dataset=await response.json();
       $('site').replaceChildren();
       const all=document.createElement('option');all.value='';all.textContent='Todos los sitios';$('site').append(all);
@@ -88,6 +103,7 @@
       $('login').hidden=true;$('verify').hidden=true;$('results').hidden=false;$('logout').hidden=false;render();
     }
     $('site').addEventListener('change',render);
+    $('presentation').addEventListener('click',()=>{if(!presenting&&!$('site').value)return;presenting=!presenting;render();$('presentation').focus();});
     let loginEmail='',loginType='magiclink';
     $('login').addEventListener('submit',async event=>{
       event.preventDefault();$('status').textContent='Enviando código…';
