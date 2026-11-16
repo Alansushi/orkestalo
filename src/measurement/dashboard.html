@@ -27,7 +27,11 @@
   <form id="login" autocomplete="on">
     <h2>Acceso privado</h2>
     <label>Correo <input name="email" type="email" autocomplete="username" required></label>
-    <label>Contraseña <input name="password" type="password" autocomplete="current-password" required></label>
+    <button>Enviar código</button>
+  </form>
+  <form id="verify" hidden>
+    <h2>Introduce el código enviado a tu correo</h2>
+    <label>Código <input name="code" inputmode="numeric" pattern="[0-9]{6,8}" autocomplete="one-time-code" required></label>
     <button>Entrar</button>
   </form>
   <main id="results" hidden>
@@ -76,21 +80,33 @@
     }
     async function load() {
       const response=await fetch('/api/measurement-dashboard',{cache:'no-store'});
-      if(!response.ok) { $('login').hidden=false;$('results').hidden=true;$('logout').hidden=true;return; }
+      if(!response.ok) { $('login').hidden=false;$('verify').hidden=true;$('results').hidden=true;$('logout').hidden=true;return; }
       dataset=await response.json();
       $('site').replaceChildren();
       const all=document.createElement('option');all.value='';all.textContent='Todos los sitios';$('site').append(all);
       for(const site of dataset.sites) { const option=document.createElement('option');option.value=site.id;option.textContent=site.name;$('site').append(option); }
-      $('login').hidden=true;$('results').hidden=false;$('logout').hidden=false;render();
+      $('login').hidden=true;$('verify').hidden=true;$('results').hidden=false;$('logout').hidden=false;render();
     }
     $('site').addEventListener('change',render);
+    let loginEmail='';
     $('login').addEventListener('submit',async event=>{
+      event.preventDefault();$('status').textContent='Enviando código…';
+      loginEmail=new FormData(event.currentTarget).get('email');
+      try {
+        const response=await fetch('/api/measurement-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:loginEmail})});
+        $('status').textContent=response.ok?'Revisa tu correo e introduce el código.':'No se pudo enviar el código.';
+        if(response.ok) {$('login').hidden=true;$('verify').hidden=false;$('verify').elements.code.focus();}
+      } catch {$('status').textContent='No se pudo enviar el código.';}
+    });
+    $('verify').addEventListener('submit',async event=>{
       event.preventDefault();$('status').textContent='Validando acceso…';
-      const form=new FormData(event.currentTarget);
-      const response=await fetch('/api/measurement-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:form.get('email'),password:form.get('password')})});
-      event.currentTarget.elements.password.value='';
-      $('status').textContent=response.ok?'':'No se pudo iniciar sesión.';
-      if(response.ok) await load();
+      const code=new FormData(event.currentTarget).get('code');
+      try {
+        const response=await fetch('/api/measurement-session',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:loginEmail,code})});
+        event.currentTarget.elements.code.value='';
+        $('status').textContent=response.ok?'':'Código inválido o vencido.';
+        if(response.ok) await load();
+      } catch {$('status').textContent='No se pudo validar el código.';}
     });
     $('logout').addEventListener('click',async()=>{await fetch('/api/measurement-session',{method:'DELETE'});await load();});
     load().catch(()=>{$('status').textContent='Panel no disponible.'});

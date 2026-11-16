@@ -51,12 +51,12 @@ export async function siteForCapture(slug, origin) {
 }
 
 export async function ownerFromToken(token) {
-  if (!token || !process.env.MEASUREMENT_OWNER_USER_ID || !process.env.SUPABASE_URL || !process.env.SUPABASE_SECRET_KEY) return false;
+  if (!token || !process.env.MEASUREMENT_OWNER_EMAIL || !process.env.SUPABASE_URL || !process.env.SUPABASE_SECRET_KEY) return false;
   const response = await fetch(`${process.env.SUPABASE_URL}/auth/v1/user`, {
     headers: { apikey: process.env.SUPABASE_SECRET_KEY, Authorization: `Bearer ${token}` },
     signal: AbortSignal.timeout(8000),
   });
   if (!response.ok) return false;
   const user = await response.json();
-  return user.id === process.env.MEASUREMENT_OWNER_USER_ID;
+  return Boolean(user.email_confirmed_at) && user.email?.toLowerCase() === process.env.MEASUREMENT_OWNER_EMAIL.toLowerCase();
 }

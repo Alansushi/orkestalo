@@ -1,5 +1,6 @@
 import { db, json } from '../src/server/commerce.js';
 import { syncSite } from '../src/server/measurement-sync.js';
+import { sendMonthlyReport } from '../src/server/measurement-report.js';
 
 async function pruneExpiredData() {
   const sites = await db('measurement_sites', { query: '?select=id,retention_days' });
@@ -23,8 +24,8 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') return json(res, 405, { error: 'Método no permitido' });
   if (!process.env.CRON_SECRET || req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) return json(res, 401, { error: 'Sin acceso' });
   try {
-    const [retainedSites, syncedSites] = await Promise.all([pruneExpiredData(), syncActiveSites()]);
-    return json(res, 200, { ok: true, retainedSites, syncedSites });
+    const [retainedSites, syncedSites, report] = await Promise.all([pruneExpiredData(), syncActiveSites(), sendMonthlyReport()]);
+    return json(res, 200, { ok: true, retainedSites, syncedSites, report });
   } catch (error) {
     console.error('Fallo de mantenimiento de medición', error);
     return json(res, 503, { error: 'Mantenimiento no disponible' });
