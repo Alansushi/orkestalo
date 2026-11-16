@@ -122,9 +122,9 @@ test('production serves only the new site and redirects retired pages', async ()
   assert.deepEqual(publicHtml, ['index.html']);
 
   const assets = await readdir(new URL('../public/assets/', import.meta.url));
-  assert.deepEqual(new Set(assets), new Set(['site.js', 'rebrand.js', 'rebrand.css']));
+  assert.deepEqual(new Set(assets), new Set(['site.js', 'rebrand.js', 'rebrand.css', 'measurement.js']));
   const buildAssets = await readdir(new URL('../assets/', import.meta.url));
-  assert.deepEqual(new Set(buildAssets), new Set(['site.js', 'rebrand.js', 'rebrand.css']));
+  assert.deepEqual(new Set(buildAssets), new Set(['site.js', 'rebrand.js', 'rebrand.css', 'measurement.js']));
   await assert.rejects(access(new URL('../src/generated/', import.meta.url)));
 
   const config = JSON.parse(await read('vercel.json'));

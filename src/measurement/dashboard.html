@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Medición · Orkéstalo</title>
+  <style>
+    :root{font:16px/1.5 system-ui,sans-serif;color:#18232d;background:#f6f8f7}
+    body{margin:0;padding:2rem;max-width:1100px}
+    h1{font-size:2rem;margin:.2rem 0}h2{font-size:1.3rem;margin:.2rem 0}
+    p{color:#52616c}form,.card{background:white;border:1px solid #dce5e3;border-radius:12px;padding:1.2rem;margin:1rem 0}
+    label{display:block;margin:.5rem 0}input{display:block;font:inherit;padding:.6rem;width:min(100%,24rem);box-sizing:border-box}
+    button,select{font:inherit;padding:.6rem .9rem;border-radius:8px;border:1px solid #899e9a;background:white}
+    button{cursor:pointer;background:#175e54;color:white;border-color:#175e54}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.8rem}
+    .metric{background:#ebf2ef;padding:1rem;border-radius:8px}.metric strong{display:block;font-size:1.8rem}
+    table{border-collapse:collapse;width:100%}th,td{text-align:left;border-bottom:1px solid #e0e7e4;padding:.5rem}
+    .scroll{overflow:auto}#logout{float:right}#status{min-height:1.5em}
+  </style>
+</head>
+<body>
+  <button id="logout" type="button" hidden>Salir</button>
+  <h1>Medición de sitios</h1>
+  <p>Últimos 30 días. Un clic de WhatsApp indica intención; no confirma un mensaje ni una cita.</p>
+  <p id="status" role="status"></p>
+  <form id="login" autocomplete="on">
+    <h2>Acceso privado</h2>
+    <label>Correo <input name="email" type="email" autocomplete="username" required></label>
+    <label>Contraseña <input name="password" type="password" autocomplete="current-password" required></label>
+    <button>Entrar</button>
+  </form>
+  <main id="results" hidden>
+    <label>Sitio <select id="site"></select></label>
+    <section id="summary" class="grid"></section>
+    <section class="card"><h2>Evolución diaria</h2><div class="scroll"><table><thead><tr><th>Fecha</th><th>Visitas</th><th>Clics de contacto</th><th>Formularios enviados</th></tr></thead><tbody id="daily"></tbody></table></div></section>
+    <section class="card"><h2>Fuentes</h2><div class="scroll"><table><thead><tr><th>Origen</th><th>Medio</th><th>Campaña</th><th>Visitas</th><th>Intención de contacto</th></tr></thead><tbody id="sources"></tbody></table></div></section>
+    <section class="card"><h2>Métricas importadas</h2><div class="scroll"><table><thead><tr><th>Fecha</th><th>Proveedor</th><th>Campaña</th><th>Métrica</th><th>Valor</th></tr></thead><tbody id="external"></tbody></table></div></section>
+    <section class="card"><h2>Fuentes externas</h2><div class="scroll"><table><thead><tr><th>Proveedor</th><th>Última actualización</th><th>Estado</th></tr></thead><tbody id="connections"></tbody></table></div></section>
+  </main>
+  <script>
+    const $ = id => document.getElementById(id);
+    let dataset;
+    function cell(row, value) { const td=document.createElement('td');td.textContent=String(value ?? '—');row.append(td); }
+    function metric(label,value) { const el=document.createElement('div');el.className='metric';const small=document.createElement('span');small.textContent=label;const strong=document.createElement('strong');strong.textContent=String(value);el.append(small,strong);$('summary').append(el); }
+    function render() {
+      const id=$('site').value;
+      const rows=dataset.daily.filter(x=>!id||x.site_id===id);
+      const contacts=dataset.contacts.filter(x=>!id||x.site_id===id);
+      $('summary').replaceChildren();
+      metric('Visitas',rows.reduce((n,x)=>n+Number(x.visits),0));
+      metric('Intención de contacto',rows.reduce((n,x)=>n+Number(x.contact_clicks),0));
+      metric('Formularios enviados',rows.reduce((n,x)=>n+Number(x.form_submits),0));
+      metric('Contactos guardados',contacts.length);
+      $('daily').replaceChildren();
+      for(const day of [...rows].reverse()) { const tr=document.createElement('tr');[day.day,day.visits,day.contact_clicks,day.form_submits].forEach(x=>cell(tr,x));$('daily').append(tr); }
+      $('sources').replaceChildren();
+      const grouped=new Map();
+      for(const row of dataset.sources.filter(x=>!id||x.site_id===id)) {
+        const key=[row.source,row.medium,row.campaign].join('|');
+        const current=grouped.get(key)||{...row,visits:0,contact_clicks:0};
+        current.visits+=Number(row.visits);current.contact_clicks+=Number(row.contact_clicks);
+        grouped.set(key,current);
+      }
+      for(const row of [...grouped.values()].sort((a,b)=>b.visits-a.visits)) {const tr=document.createElement('tr');[row.source,row.medium,row.campaign,row.visits,row.contact_clicks].forEach(x=>cell(tr,x));$('sources').append(tr);}
+      $('external').replaceChildren();
+      for(const row of dataset.external.filter(x=>!id||x.site_id===id).sort((a,b)=>b.day.localeCompare(a.day))) {const tr=document.createElement('tr');[row.day,row.provider,row.campaign_ref,row.metric,row.value].forEach(x=>cell(tr,x));$('external').append(tr);}
+      $('connections').replaceChildren();
+      for(const provider of ['google_ads','meta_ads','search_console','pagespeed','crux','uptime']) {
+        const matches=dataset.connections.filter(x=>x.provider===provider&&(!id||x.site_id===id));
+        const last=matches.sort((a,b)=>String(b.last_synced_at).localeCompare(String(a.last_synced_at)))[0];
+        const tr=document.createElement('tr');
+        [provider,last?.last_synced_at?new Date(last.last_synced_at).toLocaleString('es-MX'):'Sin sincronizar',last?.last_error||(!last?'Sin conectar':'Correcta')].forEach(x=>cell(tr,x));
+        $('connections').append(tr);
+      }
+    }
+    async function load() {
+      const response=await fetch('/api/measurement-dashboard',{cache:'no-store'});
+      if(!response.ok) { $('login').hidden=false;$('results').hidden=true;$('logout').hidden=true;return; }
+      dataset=await response.json();
+      $('site').replaceChildren();
+      const all=document.createElement('option');all.value='';all.textContent='Todos los sitios';$('site').append(all);
+      for(const site of dataset.sites) { const option=document.createElement('option');option.value=site.id;option.textContent=site.name;$('site').append(option); }
+      $('login').hidden=true;$('results').hidden=false;$('logout').hidden=false;render();
+    }
+    $('site').addEventListener('change',render);
+    $('login').addEventListener('submit',async event=>{
+      event.preventDefault();$('status').textContent='Validando acceso…';
+      const form=new FormData(event.currentTarget);
+      const response=await fetch('/api/measurement-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:form.get('email'),password:form.get('password')})});
+      event.currentTarget.elements.password.value='';
+      $('status').textContent=response.ok?'':'No se pudo iniciar sesión.';
+      if(response.ok) await load();
+    });
+    $('logout').addEventListener('click',async()=>{await fetch('/api/measurement-session',{method:'DELETE'});await load();});
+    load().catch(()=>{$('status').textContent='Panel no disponible.'});
+  </script>
+</body>
+</html>
