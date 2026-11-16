@@ -32,6 +32,14 @@ async function store(siteId, provider, day, values) {
 }
 
 async function connection(siteId, provider, error = null) {
+  if (error) {
+    const updated = await db('measurement_connections', {
+      method: 'PATCH',
+      query: `?site_id=eq.${encodeURIComponent(siteId)}&provider=eq.${provider}&account_ref=eq.`,
+      body: { last_error: error },
+    });
+    if (updated.length) return;
+  }
   await db('measurement_connections', {
     method: 'POST', query: '?on_conflict=site_id,provider,account_ref',
     body: { site_id: siteId, provider, account_ref: '', last_synced_at: error ? null : new Date().toISOString(), last_error: error },
