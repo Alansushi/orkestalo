@@ -1,10 +1,14 @@
 {
   "devCommand": "node scripts/serve.mjs",
+  "functions": { "api/measurement-maintenance.js": { "maxDuration": 60 } },
   "proxy": {
     "entrypoint": "proxy.js",
     "matcher": ["/buen-fin-2026", "/buen-fin-2026/:path*"]
   },
-  "crons": [{ "path": "/api/retry-notices", "schedule": "0 12 * * *" }],
+  "crons": [
+    { "path": "/api/retry-notices", "schedule": "0 12 * * *" },
+    { "path": "/api/measurement-maintenance", "schedule": "0 13 * * *" }
+  ],
   "redirects": [
     {
       "source": "/automatizacion-ia-pymes-latam.html",

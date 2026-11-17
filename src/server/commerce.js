@@ -67,17 +67,17 @@ function settings() {
   return { url: url.origin, key: SUPABASE_SECRET_KEY };
 }
 
-export async function db(table, { method = 'GET', query = '', body } = {}) {
+export async function db(table, { method = 'GET', query = '', body, prefer = 'return=representation' } = {}) {
   const { url, key } = settings();
   const response = await fetch(`${url}/rest/v1/${table}${query}`, {
     method,
-    headers: { apikey: key, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+    headers: { apikey: key, 'Content-Type': 'application/json', Prefer: prefer },
     ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     signal: AbortSignal.timeout(8000),
   });
   if (!response.ok) throw new Error(`Supabase ${response.status}`);
-  const data = await response.json();
-  return data;
+  if (response.status === 204 || prefer.includes('return=minimal')) return [];
+  return response.json();
 }
 
 export async function sendNotice({ subject, text, key }) {
