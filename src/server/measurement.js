@@ -50,7 +50,7 @@ export async function siteForCapture(slug, origin) {
   return site?.active && exactOrigin(origin, site.allowed_origins) ? site : null;
 }
 
-export async function ownerFromToken(token) {
+export async function ownerUserFromToken(token, requireAal2 = true) {
   if (!token || !process.env.MEASUREMENT_OWNER_EMAIL || !process.env.SUPABASE_URL || !process.env.SUPABASE_SECRET_KEY) return false;
   const response = await fetch(`${process.env.SUPABASE_URL}/auth/v1/user`, {
     headers: { apikey: process.env.SUPABASE_SECRET_KEY, Authorization: `Bearer ${token}` },
@@ -58,5 +58,16 @@ export async function ownerFromToken(token) {
   });
   if (!response.ok) return false;
   const user = await response.json();
-  return Boolean(user.email_confirmed_at) && user.email?.toLowerCase() === process.env.MEASUREMENT_OWNER_EMAIL.toLowerCase();
+  if (!user.email_confirmed_at || user.email?.toLowerCase() !== process.env.MEASUREMENT_OWNER_EMAIL.toLowerCase()) return false;
+  if (requireAal2) {
+    try {
+      const payload = JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString('utf8'));
+      if (payload.aal !== 'aal2' || payload.sub !== user.id) return false;
+    } catch { return false; }
+  }
+  return user;
+}
+
+export async function ownerFromToken(token) {
+  return Boolean(await ownerUserFromToken(token));
 }

@@ -5,10 +5,11 @@ El esquema de `supabase/migrations/20261116035541_shared_measurement.sql` agrega
 ## Puesta en marcha
 
 1. Aplicar las migraciones al proyecto Supabase de Orkéstalo y comprobar las tablas y políticas con una consulta real. El registro inicial contiene las dos doctoras desactivadas. Verificar el dominio de Fernanda en la segunda migración antes de activarla.
-2. Configurar `MEASUREMENT_OWNER_EMAIL` en Vercel con el correo autorizado para entrar al panel. El panel está en `/medicion/`: envía un código de un solo uso por Resend y solo acepta una sesión cuyo correo haya sido confirmado por Supabase Auth. Configurar `MEASUREMENT_REPORT_EMAIL` con el destinatario del resumen mensual automático del mes anterior.
+2. Configurar `MEASUREMENT_OWNER_EMAIL` en Vercel con el correo autorizado para entrar al panel. El panel está en `/medicion/`: envía un código de un solo uso por Resend y exige un código TOTP en cada acceso. El primer acceso registra la aplicación autenticadora. Solo una sesión Supabase validada con `aal2` puede leer el panel; el código por correo conserva un token temporal sin acceso a datos. `measurement_claim_code_request` limita el envío a una vez por minuto mediante una operación atómica en la base de datos, compartida entre instancias de Vercel. Configurar `MEASUREMENT_REPORT_EMAIL` con el destinatario del resumen mensual automático del mes anterior.
 3. Revisar el aviso de privacidad y el consentimiento de cada sitio. Activar `measurement_sites.active` solo cuando el sitio y el colector estén publicados y el dominio coincida exactamente con `allowed_origins`.
 4. El script compartido está en `/assets/measurement.js`. Cada sitio lo carga después del consentimiento analítico, con `data-site` y `data-consent-key`. Una falla de red del colector no interrumpe la web.
 5. `/api/measurement-maintenance` elimina diariamente eventos y contactos al superar `retention_days`, sincroniza las métricas y el día 1 envía un resumen del mes anterior; lo invoca Vercel Cron con `CRON_SECRET`.
+6. Revisar en Supabase SSL Enforcement, restricciones de red, límites de Auth, protección de contraseñas filtradas y MFA de los administradores. No restringir IP de la base sin confirmar el origen de cada cliente. Comprobar respaldos disponibles y restaurar una exportación en una base aislada antes de publicar. En proyectos sin respaldos automáticos, programar una exportación cifrada fuera de Supabase y probar su recuperación periódicamente.
 
 ## Contrato
 

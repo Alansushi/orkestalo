@@ -30,6 +30,14 @@
     <label>Código <input name="code" inputmode="numeric" pattern="[0-9]{6,8}" autocomplete="one-time-code" required></label>
     <button>Entrar</button>
   </form>
+  <form id="mfa" class="access" hidden>
+    <h2>Verificación con autenticador</h2>
+    <p id="mfa-instructions">Abre tu aplicación autenticadora e introduce el código.</p>
+    <div id="mfa-setup" hidden><img id="mfa-qr" alt="Código QR para configurar el autenticador" width="220" height="220"><p>Si no puedes escanearlo, introduce esta clave en tu aplicación: <strong id="mfa-secret"></strong></p></div>
+    <label>Código del autenticador <input name="totp" inputmode="numeric" pattern="[0-9]{6}" autocomplete="one-time-code" required></label>
+    <button>Verificar autenticador</button>
+    <button id="restart-login" class="secondary" type="button">Solicitar otro código por correo</button>
+  </form>
   <main id="results" hidden>
     <div class="toolbar"><div class="chooser" id="chooser"><label for="site">Sitio que quieres consultar</label><select id="site"></select></div><button id="presentation" class="secondary" type="button" disabled>Presentar este sitio</button></div>
     <section class="scope" aria-labelledby="scope-title"><span class="eyebrow" id="scope-kicker">Vista general</span><h2 id="scope-title"></h2><p id="scope-description"></p><span id="site-state" class="badge" hidden></span></section>
@@ -95,16 +103,23 @@
     }
     async function load() {
       const response=await fetch('/api/measurement-dashboard',{cache:'no-store'});
-      if(!response.ok) { dataset=undefined;presenting=false;$('login').hidden=false;$('verify').hidden=true;$('results').hidden=true;$('logout').hidden=true;return; }
+      if(!response.ok) { dataset=undefined;presenting=false;if($('verify').hidden&&$('mfa').hidden)$('login').hidden=false;$('results').hidden=true;$('logout').hidden=true;return; }
       dataset=await response.json();
       $('site').replaceChildren();
       const all=document.createElement('option');all.value='';all.textContent='Todos los sitios';$('site').append(all);
       for(const site of dataset.sites) { const option=document.createElement('option');option.value=site.id;option.textContent=site.name;$('site').append(option); }
-      $('login').hidden=true;$('verify').hidden=true;$('results').hidden=false;$('logout').hidden=false;render();
+      $('login').hidden=true;$('verify').hidden=true;$('mfa').hidden=true;$('results').hidden=false;$('logout').hidden=false;render();
     }
     $('site').addEventListener('change',render);
     $('presentation').addEventListener('click',()=>{if(!presenting&&!$('site').value)return;presenting=!presenting;render();$('presentation').focus();});
-    let loginEmail='',loginType='magiclink';
+    let loginEmail='',loginType='magiclink',mfaFactor='';
+    async function restartLogin() {
+      await fetch('/api/measurement-session',{method:'DELETE'}).catch(()=>{});
+      loginEmail='';mfaFactor='';$('login').hidden=false;$('verify').hidden=true;$('mfa').hidden=true;
+      $('verify').reset();$('mfa').reset();$('mfa-qr').removeAttribute('src');$('mfa-secret').textContent='';
+      $('login').elements.email.focus();
+    }
+    $('restart-login').addEventListener('click',()=>{restartLogin().then(()=>$('status').textContent='Solicita un código nuevo por correo.');});
     $('login').addEventListener('submit',async event=>{
       event.preventDefault();$('status').textContent='Enviando código…';
       loginEmail=new FormData(event.currentTarget).get('email');
@@ -123,8 +138,31 @@
         const response=await fetch('/api/measurement-session',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:loginEmail,code,type:loginType})});
         form.elements.code.value='';
         $('status').textContent=response.ok?'':'Código inválido o vencido.';
-        if(response.ok) await load();
-      } catch {$('status').textContent='No se pudo validar el código.';}
+        if(response.ok) {
+          const next=await response.json();
+          mfaFactor=next.factorId||'';
+          $('verify').hidden=true;$('mfa').hidden=false;
+          $('mfa-setup').hidden=next.mfa!=='enroll';
+          if(next.mfa==='enroll') {
+            const enrolled=await fetch('/api/measurement-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'enroll'})});
+            if(!enrolled.ok) throw new Error('enroll');
+            const setup=await enrolled.json();mfaFactor=setup.factorId;
+            $('mfa-qr').src=setup.qr||'';$('mfa-secret').textContent=setup.secret||'';
+            $('mfa-instructions').textContent='Escanea el QR y después introduce el código de tu aplicación autenticadora.';
+          } else $('mfa-instructions').textContent='Abre tu aplicación autenticadora e introduce el código.';
+          $('mfa').elements.totp.focus();
+        }
+      } catch {await restartLogin();$('status').textContent='No se pudo configurar el autenticador. Solicita un código nuevo.';}
+    });
+    $('mfa').addEventListener('submit',async event=>{
+      event.preventDefault();$('status').textContent='Verificando autenticador…';
+      const form=event.currentTarget;
+      try {
+        const response=await fetch('/api/measurement-session',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({factorId:mfaFactor,code:new FormData(form).get('totp')})});
+        form.elements.totp.value='';
+        if(!response.ok) {$('status').textContent=response.status===401?'La verificación por correo venció. Solicita otro código.':'Código de autenticador inválido o vencido.';return;}
+        $('status').textContent='';await load();
+      } catch {$('status').textContent='No se pudo verificar el autenticador.';}
     });
     $('logout').addEventListener('click',async()=>{await fetch('/api/measurement-session',{method:'DELETE'});await load();});
     load().catch(()=>{$('status').textContent='Panel no disponible.'});
