@@ -13,9 +13,9 @@ function browser({ consent = 'accepted', beacon = () => true } = {}) {
     URL, URLSearchParams, Blob,
     crypto: { randomUUID: () => `00000000-0000-4000-8000-${String(++serial).padStart(12,'0')}` },
     navigator: { sendBeacon: (url, blob) => { payloads.push(blob.text()); return beacon(url, blob); } },
-    location: { search: '?utm_source=google&utm_campaign=noviembre&patient=dolor', pathname: '/paciente/privado' },
+    location: { search: '?utm_source=google&utm_campaign=noviembre&patient=dolor', pathname: '/' },
     localStorage: { getItem: key => values.get(key) },
-    sessionStorage: { getItem: key => values.get(key) || null, setItem: (key, value) => values.set(key, value) },
+    sessionStorage: { getItem: key => values.get(key) || null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) },
     document: {
       currentScript: { src: 'https://www.orkestalo.com/assets/measurement.js', dataset: { site: 'dra-ana-mora', consentKey: 'dental-cookie-consent-v2' } },
       referrer: '',
@@ -40,6 +40,20 @@ test('collector sends campaign source without patient URL or clinical fields and
   assert.equal(events[0].utm_source, 'google');
   assert.equal(events[0].utm_campaign, 'noviembre');
   assert.equal(events.every(x => x.path === '/' && !JSON.stringify(x).includes('dolor')), true);
+  assert.match(events[0].attribution_ref, /^[0-9a-f-]{36}$/);
+  assert.equal(events[0].attribution_ref, events[1].attribution_ref);
+});
+
+test('route navigation records only public categories and consent withdrawal removes attribution', async () => {
+  const { context, payloads, values } = browser();
+  context.window.orkestaMeasurement.page('/servicios?patient=Ana');
+  context.window.orkestaMeasurement.page('/paciente/privado');
+  let events = (await Promise.all(payloads)).map(x => JSON.parse(x).events[0]);
+  assert.deepEqual(events.map(x => x.path), ['/', '/servicios']);
+  values.set('dental-cookie-consent-v2', 'rejected');
+  context.window.orkestaMeasurement.page('/');
+  assert.equal(payloads.length, 2);
+  assert.equal(values.has('orkesta_measure_dra-ana-mora:ref'), false);
 });
 
 test('collector does not start without consent or when network fails', () => {
