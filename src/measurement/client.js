@@ -9,7 +9,7 @@
     const key = `orkesta_measure_${site}`;
     const session = sessionStorage;
     const endpoint = new URL('/api/measurement-track', script.src).href;
-    const revocationEndpoint = new URL('/api/measurement-revoke', script.src).href;
+    const revocationEndpoint = new URL('/api/measurement-track?action=revoke', script.src).href;
     const permitted = () => {
       try {
         const allowed = consentKey && localStorage.getItem(consentKey) === 'accepted';

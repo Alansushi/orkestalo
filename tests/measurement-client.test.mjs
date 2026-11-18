@@ -14,7 +14,7 @@ async function browser({ consent = 'accepted', beacon = () => true } = {}) {
   const context = {
     URL, URLSearchParams, Blob, TextEncoder, Uint8Array,
     crypto: { randomUUID: () => `00000000-0000-4000-8000-${String(++serial).padStart(12,'0')}`, subtle: webcrypto.subtle },
-    navigator: { sendBeacon: (url, blob) => { (String(url).includes('measurement-revoke') ? revocations : payloads).push(blob.text()); return beacon(url, blob); } },
+    navigator: { sendBeacon: (url, blob) => { (String(url).includes('action=revoke') ? revocations : payloads).push(blob.text()); return beacon(url, blob); } },
     location: { search: '?utm_source=google&utm_campaign=noviembre&patient=dolor', pathname: '/' },
     localStorage: { getItem: key => values.get(key) },
     sessionStorage: { getItem: key => values.get(key) || null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) },

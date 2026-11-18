@@ -1,11 +1,8 @@
-import { db, json } from '../src/server/commerce.js';
-import { siteForCapture } from '../src/server/measurement.js';
+import { db, json } from './commerce.js';
+import { siteForCapture } from './measurement.js';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return json(res, 405, { error: 'Método no permitido' });
-  let raw;
-  try { raw = typeof req.body === 'string' && req.body.length < 500 ? JSON.parse(req.body) : req.body; } catch { raw = null; }
+export async function revokeMeasurement(raw, req, res) {
   if (!raw || Object.keys(raw).sort().join(',') !== 'reference,site' || !UUID.test(raw.reference || '') || !/^[a-z0-9-]{3,60}$/.test(raw.site || '')) return json(res, 400, { error: 'Referencia inválida' });
   try {
     const site = await siteForCapture(raw.site, req.headers.origin, false);

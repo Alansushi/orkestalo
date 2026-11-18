@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import revoke from '../api/measurement-revoke.js';
+import revoke from '../api/measurement-track.js';
 
 function response() { return { statusCode: 0, headers: {}, body: null, setHeader(key, value) { this.headers[key] = value; }, end(value) { this.body = JSON.parse(value); } }; }
 

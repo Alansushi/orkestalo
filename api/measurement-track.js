@@ -1,5 +1,6 @@
 import { db, json } from '../src/server/commerce.js';
 import { siteForCapture, validateMeasurement } from '../src/server/measurement.js';
+import { revokeMeasurement } from '../src/server/measurement-revoke.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return json(res, 405, { error: 'Método no permitido' });
@@ -9,6 +10,7 @@ export default async function handler(req, res) {
   if (typeof raw === 'string' && raw.length <= 12000) {
     try { raw = JSON.parse(raw); } catch { raw = null; }
   }
+  if (raw && !Array.isArray(raw) && Object.keys(raw).sort().join(',') === 'reference,site') return revokeMeasurement(raw, req, res);
   const input = validateMeasurement(raw);
   if (!input) return json(res, 400, { error: 'Evento inválido' });
   try {
