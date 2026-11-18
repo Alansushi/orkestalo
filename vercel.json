@@ -3,7 +3,7 @@
   "functions": { "api/measurement-maintenance.js": { "maxDuration": 60 } },
   "proxy": {
     "entrypoint": "proxy.js",
-    "matcher": ["/buen-fin-2026", "/buen-fin-2026/:path*"]
+    "matcher": ["/buen-fin-2026", "/buen-fin-2026/:path*", "/terminos-buen-fin-2026", "/terminos-buen-fin-2026/:path*"]
   },
   "crons": [
     { "path": "/api/retry-notices", "schedule": "0 12 * * *" },

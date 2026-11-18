@@ -59,7 +59,7 @@ const contactForm = document.querySelector('[data-contact-form]');
 if (contactForm) {
   const params = new URLSearchParams(location.search);
   const reference = params.get('referencia') || '';
-  const validReferences = new Set([...services.map(({ slug }) => slug), ...projects.map(({ slug }) => slug), 'buen-fin-2026']);
+  const validReferences = new Set([...services.map(({ slug }) => slug), ...projects.map(({ slug }) => slug)]);
   if (validReferences.has(reference)) {
     contactForm.elements.reference.value = reference;
     const matchedService = services.find(({ slug }) => slug === reference);
@@ -67,7 +67,6 @@ if (contactForm) {
     if (!contactForm.elements.type.value) {
       if (matchedService) contactForm.elements.type.value = matchedService.type;
       else if (matchedProject) contactForm.elements.type.value = matchedProject.category === 'experiencias' ? 'experiencia-digital' : matchedProject.category === 'automatizacion' ? 'automatizacion-ia' : 'sitio-web';
-      else if (reference === 'buen-fin-2026') contactForm.elements.type.value = 'sitio-web';
     }
   }
   contactForm.addEventListener('submit', async (event) => {
@@ -101,73 +100,6 @@ if (contactForm) {
     }
   });
 }
-
-const checkoutForm = document.querySelector('[data-checkout-form]');
-let showCheckoutUnavailable;
-if (checkoutForm) {
-  const unavailable = document.querySelector('[data-checkout-unavailable]');
-  const message = document.querySelector('[data-checkout-message]');
-  const hero = document.querySelector('[data-campaign-hero-cta]');
-  const whatsapp = document.querySelector('[data-campaign-whatsapp]');
-  const showUnavailable = (copy) => {
-    checkoutForm.hidden = true;
-    unavailable.hidden = false;
-    message.textContent = copy;
-    hero.href = whatsapp.href;
-    hero.textContent = 'Me interesa la promoción · Escríbenos por WhatsApp ↗';
-    hero.target = '_blank';
-    hero.rel = 'noopener noreferrer';
-  };
-  showCheckoutUnavailable = showUnavailable;
-  const refresh = async () => {
-    try {
-      const response = await fetch('/api/checkout-availability', { cache: 'no-store' });
-      if (!response.ok) throw new Error('No pudimos comprobar la disponibilidad.');
-      const { available } = await response.json();
-      if (!available) { showUnavailable('La compra en línea estará disponible del 13 al 17 de noviembre de 2026, hora de Ciudad de México, cuando el checkout esté habilitado.'); return; }
-      checkoutForm.hidden = false;
-      unavailable.hidden = true;
-      hero.href = '#comprar';
-      hero.textContent = 'Revisar y comprar ↗';
-      hero.removeAttribute('target');
-      hero.removeAttribute('rel');
-    } catch {
-      showUnavailable('No pudimos comprobar la disponibilidad del pago. Escríbenos por WhatsApp.');
-    }
-  };
-  showUnavailable('La compra en línea abre el 13 de noviembre. Escríbenos si te interesa el paquete.');
-  refresh();
-  setInterval(refresh, 30_000);
-  window.addEventListener('focus', refresh);
-}
-checkoutForm?.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  if (!checkoutForm.reportValidity()) return;
-  const button = checkoutForm.querySelector('[type="submit"]');
-  const feedback = document.querySelector('[data-checkout-feedback]');
-  const folioNote = document.querySelector('[data-checkout-folio]');
-  button.disabled = true;
-  feedback.textContent = 'Registrando pedido…';
-  try {
-    const data = Object.fromEntries(new FormData(checkoutForm));
-    data.accepted = checkoutForm.elements.accepted.checked;
-    data.marketingConsent = checkoutForm.elements.marketingConsent.checked;
-    const response = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-    const result = await response.json();
-    if (result.folio) {
-      folioNote.querySelector('strong').textContent = result.folio;
-      folioNote.hidden = false;
-    }
-    if (!response.ok) throw new Error(result.error || 'No pudimos iniciar el pago.');
-    feedback.textContent = 'Abriendo Checkout Pro…';
-    location.assign(result.checkoutUrl);
-  } catch (error) {
-    const copy = error.message || 'No pudimos iniciar el pago.';
-    feedback.textContent = copy;
-    showCheckoutUnavailable?.(`${copy} Escríbenos por WhatsApp para recibir ayuda.`);
-    button.disabled = false;
-  }
-});
 
 const orderStatus = document.querySelector('[data-order-status]');
 if (orderStatus) {
