@@ -1,10 +1,14 @@
 import { db } from './commerce.js';
 
-const NAMES = new Set(['page_view', 'section_view', 'contact_click', 'form_start', 'form_submit', 'site_error']);
+const NAMES = new Set(['page_view', 'section_view', 'contact_click', 'agenda_click', 'form_start', 'form_submit', 'site_error']);
 const CHANNELS = new Set(['whatsapp', 'phone', 'email', 'form']);
 const LABELS = new Set(['hero', 'nav', 'services', 'about', 'faq', 'booking', 'contact', 'footer', 'form', 'other']);
 const INPUT_KEYS = new Set(['site', 'events']);
-const EVENT_KEYS = new Set(['id', 'session', 'name', 'path', 'label', 'channel', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer_host']);
+const EVENT_KEYS = new Set(['id', 'session', 'name', 'path', 'label', 'channel', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer_host', 'attribution_ref']);
+const ROUTES = new Set(['/','/servicios','/preguntas-frecuentes','/buen-fin-mercado-pago','/aviso-de-privacidad','/politica-de-cookies','/politica-cancelacion','/terminos-de-uso','/gracias','/pago-pendiente','/error-pago']);
+const SOURCES = new Set(['google','bing','facebook','instagram','meta','tiktok','doctoralia','whatsapp','email','direct','other']);
+const MEDIUMS = new Set(['cpc','paid','organic','social','email','referral','none','other']);
+const REFERRERS = new Set(['google','bing','facebook','instagram','doctoralia','other']);
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const SAFE = /^[\p{L}\p{N} _.-]+$/u;
 
@@ -18,16 +22,21 @@ export function validateMeasurement(input) {
   const events = [];
   for (const item of input.events) {
     if (!item || typeof item !== 'object' || Array.isArray(item) || Object.keys(item).some(k => !EVENT_KEYS.has(k))) return null;
-    if (!UUID.test(item.id) || !UUID.test(item.session) || !NAMES.has(item.name) || item.path !== '/') return null;
+    if (!UUID.test(item.id) || !UUID.test(item.session) || !NAMES.has(item.name) || !ROUTES.has(item.path)) return null;
+    if (item.attribution_ref != null && !UUID.test(item.attribution_ref)) return null;
     if (item.label != null && !LABELS.has(item.label)) return null;
     if (item.channel != null && !CHANNELS.has(item.channel)) return null;
     if (item.name === 'contact_click' && !item.channel) return null;
-    const row = { event_id: item.id, session_id: item.session, name: item.name, path: item.path };
+    const row = { event_id: item.id, session_id: item.session, name: item.name, path: item.path, attribution_ref: item.attribution_ref || null };
     for (const key of ['label', 'channel', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer_host']) {
       if (item[key] != null) {
         const max = key === 'referrer_host' ? 160 : key === 'label' ? 80 : 100;
         const clean = short(item[key], max);
         if (!clean) return null;
+        if (key === 'utm_source' && !SOURCES.has(clean)) return null;
+        if (key === 'utm_medium' && !MEDIUMS.has(clean)) return null;
+        if (key === 'referrer_host' && !REFERRERS.has(clean)) return null;
+        if (key === 'utm_campaign' && !/^cmp_[a-f0-9]{16}$/.test(clean)) return null;
         row[key] = clean;
       }
     }
@@ -44,10 +53,10 @@ export function exactOrigin(origin, allowed) {
   } catch { return false; }
 }
 
-export async function siteForCapture(slug, origin) {
+export async function siteForCapture(slug, origin, requireActive = true) {
   const sites = await db('measurement_sites', { query: `?slug=eq.${encodeURIComponent(slug)}&select=id,active,allowed_origins&limit=1` });
   const site = sites[0];
-  return site?.active && exactOrigin(origin, site.allowed_origins) ? site : null;
+  return site && (!requireActive || site.active) && exactOrigin(origin, site.allowed_origins) ? site : null;
 }
 
 export async function ownerUserFromToken(token, requireAal2 = true) {
