@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
 import { validateMeasurement, exactOrigin } from '../src/server/measurement.js';
-import contact from '../api/measurement-contact.js';
 
 const id = 'a9e6537d-6a58-49d5-a845-eecad58957d5';
 const session = '90c3be77-45f2-4c9b-a8cb-4b12c6c9655b';
@@ -39,7 +39,5 @@ test('site origin is exact and HTTPS', () => {
 });
 
 test('medical contact ingestion is disabled', () => {
-  const res = { statusCode: 0, end() {}, setHeader() {} };
-  contact({}, res);
-  assert.equal(res.statusCode, 410);
+  assert.equal(existsSync(new URL('../api/measurement-contact.js', import.meta.url)), false);
 });
