@@ -129,30 +129,6 @@ await preserved.goto('http://localhost:8080/contacto/?referencia=experiencias-di
 if (await preserved.locator('select[name=type]').inputValue() !== 'otro') findings.push('reference overwrote an existing project type');
 await preserved.close();
 if (apiRequests.length !== 2) findings.push(`expected two saved contact API requests, got ${apiRequests.length}`);
-const campaign = await browser.newPage({ viewport: { width: 390, height: 844 } });
-let checkoutData;
-await campaign.route('**/api/checkout-availability', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: '{"available":true}' }));
-await campaign.route('**/api/checkout', (route) => {
-  checkoutData = route.request().postDataJSON();
-  return route.fulfill({ status: 201, contentType: 'application/json', body: JSON.stringify({ folio: 'ORK26-1234567890ABCDEF12', checkoutUrl: 'https://www.mercadopago.com.mx/checkout/test' }) });
-});
-await campaign.route('https://www.mercadopago.com.mx/checkout/**', (route) => route.fulfill({ status: 200, contentType: 'text/html', body: '<title>Checkout Pro test target</title>' }));
-await campaign.goto('http://localhost:8080/buen-fin-2026/', { waitUntil: 'networkidle' });
-const campaignOverflow = await campaign.evaluate(() => document.documentElement.scrollWidth - innerWidth);
-if (campaignOverflow > 1) findings.push(`campaign mobile horizontal overflow ${campaignOverflow}px`);
-await campaign.locator('[data-checkout-form] button[type=submit]').click();
-if (checkoutData) findings.push('empty checkout form submitted');
-await campaign.locator('input[name=name]').fill('Ana López');
-await campaign.locator('input[name=email]').fill('ana@example.com');
-await campaign.locator('input[name=whatsapp]').fill('+52 55 1234 5678');
-await campaign.locator('input[name=business]').fill('Café Ana');
-await campaign.locator('[data-checkout-form] button[type=submit]').click();
-if (checkoutData) findings.push('checkout submitted without legal acceptance');
-await campaign.locator('input[name=accepted]').check();
-await campaign.locator('[data-checkout-form] button[type=submit]').click();
-await campaign.waitForURL('https://www.mercadopago.com.mx/checkout/test');
-if (checkoutData?.accepted !== true || checkoutData?.business !== 'Café Ana') findings.push('checkout payload missing consent or business');
-await campaign.close();
 const order = await browser.newPage();
 await order.route('**/api/order-status?**', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ folio: 'ORK26-1234567890ABCDEF12', status: 'approved' }) }));
 await order.goto('http://localhost:8080/pedido/?folio=ORK26-1234567890ABCDEF12', { waitUntil: 'networkidle' });
@@ -161,4 +137,4 @@ await order.close();
 await browser.close();
 await writeFile(new URL('../docs/orkesta-rebrand/qa-results.json', import.meta.url), JSON.stringify({ sizes, findings }, null, 2));
 if (findings.length) { console.error(findings.join('\n')); process.exitCode = 1; }
-else console.log(`QA passed: ${sizes.length} home viewports, contact, optional WhatsApp, checkout consent and verified order status`);
+else console.log(`QA passed: ${sizes.length} home viewports, contact, optional WhatsApp and verified historical order status`);

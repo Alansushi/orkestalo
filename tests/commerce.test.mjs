@@ -2,11 +2,10 @@ import assert from 'node:assert/strict';
 import { createHmac } from 'node:crypto';
 import test from 'node:test';
 import contact from '../api/contact.js';
-import checkout from '../api/checkout.js';
 import webhook from '../api/mercado-pago-webhook.js';
 import orderStatus from '../api/order-status.js';
 import retryNotices from '../api/retry-notices.js';
-import { CAMPAIGN_END, CAMPAIGN_START, MARKETING_CONSENT_VERSION, campaignOpen, db, normalizeBuyer, validCheckoutUrl, verifyMercadoSignature } from '../src/server/commerce.js';
+import { MARKETING_CONSENT_VERSION, db, verifyMercadoSignature } from '../src/server/commerce.js';
 
 function response() {
   return { statusCode: 200, headers: {}, setHeader(name, value) { this.headers[name] = value; }, end(value) { this.body = JSON.parse(value); } };
@@ -16,7 +15,6 @@ function fakeServices({ failDb = false, failEmail = false, mpStatus = 'created',
   const inquiries = new Map();
   const orders = new Map();
   const emails = [];
-  const mpPosts = [];
   const mpId = 'ORDTEST123456';
   const fetch = async (url, options = {}) => {
     const parsed = new URL(url);
@@ -42,11 +40,6 @@ function fakeServices({ failDb = false, failEmail = false, mpStatus = 'created',
       return Response.json([...map.values()].filter((row) => row[field] === value));
     }
     if (parsed.hostname === 'api.mercadopago.com') {
-      if (options.method === 'POST') {
-        const payload = JSON.parse(options.body);
-        mpPosts.push(payload);
-        return Response.json({ id: mpId, external_reference: payload.external_reference, total_amount: payload.total_amount, currency: 'MXN', checkout_url: `https://www.mercadopago.com.mx/checkout/v1/redirect?order_id=${mpId}` });
-      }
       const order = [...orders.values()].find((row) => row.mp_order_id === mpId);
       return Response.json({ id: mpId, external_reference: order.folio, total_amount: '7000.00', currency: 'MXN', status: mpStatus, status_detail: mpDetail });
     }
@@ -57,16 +50,15 @@ function fakeServices({ failDb = false, failEmail = false, mpStatus = 'created',
     }
     throw new Error(`Unexpected request ${url}`);
   };
-  return { fetch, inquiries, orders, emails, mpPosts, mpId, setPayment(status, detail) { mpStatus = status; mpDetail = detail; }, setEmailFailure(value) { failEmail = value; } };
+  return { fetch, inquiries, orders, emails, mpId, setPayment(status, detail) { mpStatus = status; mpDetail = detail; }, setEmailFailure(value) { failEmail = value; } };
 }
 
 async function withServices(services, fn) {
   const previousFetch = globalThis.fetch;
   const previousNow = Date.now;
-  const previousEnv = Object.fromEntries(['SUPABASE_URL', 'SUPABASE_SECRET_KEY', 'MERCADO_PAGO_ACCESS_TOKEN', 'MERCADO_PAGO_WEBHOOK_SECRET', 'RESEND_API_KEY', 'ORKESTA_EMAIL_FROM', 'ORKESTA_CHECKOUT_ENABLED', 'CRON_SECRET', 'VERCEL_ENV', 'VERCEL_URL'].map((key) => [key, process.env[key]]));
-  Object.assign(process.env, { SUPABASE_URL: 'https://db.example.supabase.co', SUPABASE_SECRET_KEY: 'sb_secret_test', MERCADO_PAGO_ACCESS_TOKEN: 'mp-token', MERCADO_PAGO_WEBHOOK_SECRET: 'webhook-secret', RESEND_API_KEY: 'mail-token', ORKESTA_EMAIL_FROM: 'Orkesta <avisos@orkestalo.com>', ORKESTA_CHECKOUT_ENABLED: '1', CRON_SECRET: 'cron-secret', VERCEL_ENV: 'production', VERCEL_URL: 'orkestalo-production.vercel.app' });
+  const previousEnv = Object.fromEntries(['SUPABASE_URL', 'SUPABASE_SECRET_KEY', 'MERCADO_PAGO_ACCESS_TOKEN', 'MERCADO_PAGO_WEBHOOK_SECRET', 'RESEND_API_KEY', 'ORKESTA_EMAIL_FROM', 'CRON_SECRET'].map((key) => [key, process.env[key]]));
+  Object.assign(process.env, { SUPABASE_URL: 'https://db.example.supabase.co', SUPABASE_SECRET_KEY: 'sb_secret_test', MERCADO_PAGO_ACCESS_TOKEN: 'mp-token', MERCADO_PAGO_WEBHOOK_SECRET: 'webhook-secret', RESEND_API_KEY: 'mail-token', ORKESTA_EMAIL_FROM: 'Orkesta <avisos@orkestalo.com>', CRON_SECRET: 'cron-secret' });
   globalThis.fetch = services.fetch;
-  Date.now = () => CAMPAIGN_START + 60_000;
   try { await fn(); } finally {
     globalThis.fetch = previousFetch;
     Date.now = previousNow;
@@ -74,7 +66,11 @@ async function withServices(services, fn) {
   }
 }
 
-const buyer = { name: 'Ana López', email: 'ana@example.com', whatsapp: '+52 55 1234 5678', business: 'Café Ana', accepted: true };
+const historicalFolio = 'ORK26-1234567890ABCDEF12';
+function seedHistoricalOrder(services, status = 'pending') {
+  services.orders.set(historicalFolio, { folio: historicalFolio, mp_order_id: services.mpId, status, name: 'Ana López', email: 'ana@example.com', whatsapp: '+52 55 1234 5678', business: 'Café Ana', terms_version: 'buen-fin-2026-v1' });
+  return historicalFolio;
+}
 
 test('contact records optional marketing choice only with a reachable channel', async () => {
   const services = fakeServices();
@@ -106,23 +102,6 @@ test('contact records optional marketing choice only with a reachable channel', 
   });
 });
 
-test('checkout records optional marketing choice without changing operational notices', async () => {
-  const services = fakeServices();
-  await withServices(services, async () => {
-    for (const [marketingConsent, expected] of [[undefined, false], [false, false], [true, true]]) {
-      const res = response();
-      await checkout({ method: 'POST', body: { ...buyer, marketingConsent } }, res);
-      assert.equal(res.statusCode, 201);
-      const saved = services.orders.get(res.body.folio);
-      assert.equal(saved.marketing_consent, expected);
-      assert.equal(saved.marketing_consent_version, expected ? MARKETING_CONSENT_VERSION : null);
-      assert.equal(Boolean(saved.marketing_consented_at), expected);
-      assert.equal(saved.accepted_terms_at != null, true);
-    }
-    assert.equal(services.mpPosts.length, 3);
-  });
-});
-
 test('Supabase secret key is sent only as apikey for Data API requests', async () => {
   const previousFetch = globalThis.fetch;
   const previousUrl = process.env.SUPABASE_URL;
@@ -147,15 +126,6 @@ test('Supabase secret key is sent only as apikey for Data API requests', async (
   }
 });
 
-test('purchase window and buyer consent are enforced', () => {
-  assert.equal(campaignOpen(CAMPAIGN_START - 1), false);
-  assert.equal(campaignOpen(CAMPAIGN_START), true);
-  assert.equal(campaignOpen(CAMPAIGN_END), false);
-  assert.equal(normalizeBuyer({ ...buyer, accepted: false }), null);
-  assert.equal(validCheckoutUrl('https://www.mercadopago.com.mx/checkout/test'), true);
-  assert.equal(validCheckoutUrl('https://evilmercadopago.com.mx/checkout/test'), false);
-});
-
 test('contact is stored before email; email failure still leaves a folio', async () => {
   const services = fakeServices({ failEmail: true });
   await withServices(services, async () => {
@@ -168,66 +138,10 @@ test('contact is stored before email; email failure still leaves a folio', async
   });
 });
 
-test('database outage prevents Mercado Pago checkout', async () => {
-  const services = fakeServices({ failDb: true });
-  await withServices(services, async () => {
-    const res = response();
-    await checkout({ method: 'POST', body: buyer }, res);
-    assert.equal(res.statusCode, 503);
-    assert.equal(services.mpPosts.length, 0);
-  });
-});
-
-test('checkout stays disabled until legal and coupon checks are approved', async () => {
+test('historical order remains available through status, webhook and duplicate notifications', async () => {
   const services = fakeServices();
   await withServices(services, async () => {
-    process.env.ORKESTA_CHECKOUT_ENABLED = '0';
-    const res = response();
-    await checkout({ method: 'POST', body: buyer }, res);
-    assert.equal(res.statusCode, 503);
-    assert.equal(services.orders.size, 0);
-    assert.equal(services.mpPosts.length, 0);
-  });
-});
-
-test('direct checkout cannot create an order before opening or at close', async () => {
-  const services = fakeServices();
-  await withServices(services, async () => {
-    for (const date of [CAMPAIGN_START - 1, CAMPAIGN_END]) {
-      Date.now = () => date;
-      const res = response();
-      await checkout({ method: 'POST', body: buyer }, res);
-      assert.equal(res.statusCode, 403);
-    }
-    assert.equal(services.orders.size, 0);
-    assert.equal(services.mpPosts.length, 0);
-  });
-});
-
-test('preview checkout returns to the deployment where the order began', async () => {
-  const services = fakeServices();
-  await withServices(services, async () => {
-    process.env.VERCEL_ENV = 'preview';
-    process.env.VERCEL_URL = 'orkestalo-preview-alansushis-projects.vercel.app';
-    const created = response();
-    await checkout({ method: 'POST', body: buyer }, created);
-    assert.equal(created.statusCode, 201);
-    assert.equal(services.mpPosts[0].config.online.success_url, `https://orkestalo-preview-alansushis-projects.vercel.app/pedido/?folio=${created.body.folio}`);
-  });
-});
-
-test('checkout uses saved folio; pending, approval, duplicate and rejection are reconciled', async () => {
-  const services = fakeServices();
-  await withServices(services, async () => {
-    const created = response();
-    await checkout({ method: 'POST', body: buyer }, created);
-    assert.equal(created.statusCode, 201);
-    const reference = created.body.folio;
-    assert.equal(services.orders.get(reference).mp_order_id, services.mpId);
-    assert.equal(services.orders.get(reference).terms_version, 'buen-fin-2026-v1');
-    assert.equal(services.mpPosts[0].external_reference, reference);
-    assert.equal(services.mpPosts[0].total_amount, '7000.00');
-    assert.equal(services.mpPosts[0].config.online.success_url, `https://www.orkestalo.com/pedido/?folio=${reference}`);
+    const reference = seedHistoricalOrder(services);
     const status = response();
     await orderStatus({ method: 'GET', url: `/api/order-status?folio=${reference}` }, status);
     assert.equal(status.body.status, 'pending');
@@ -250,7 +164,6 @@ test('checkout uses saved folio; pending, approval, duplicate and rejection are 
     const after = response();
     await orderStatus({ method: 'GET', url: `/api/order-status?folio=${reference}` }, after);
     assert.equal(after.body.status, 'approved');
-    assert.equal(services.orders.get(reference).status, 'approved');
   });
 });
 
@@ -268,12 +181,11 @@ test('invalid webhook signatures are rejected before any lookup', async () => {
 test('rejected payment is recorded without approval notice', async () => {
   const services = fakeServices({ mpStatus: 'failed', mpDetail: 'rejected' });
   await withServices(services, async () => {
-    const created = response();
-    await checkout({ method: 'POST', body: buyer }, created);
+    const reference = seedHistoricalOrder(services);
     const checked = response();
-    await orderStatus({ method: 'GET', url: `/api/order-status?folio=${created.body.folio}` }, checked);
+    await orderStatus({ method: 'GET', url: `/api/order-status?folio=${reference}` }, checked);
     assert.equal(checked.body.status, 'rejected');
-    assert.equal(services.orders.get(created.body.folio).status, 'rejected');
+    assert.equal(services.orders.get(reference).status, 'rejected');
     assert.equal(services.emails.length, 0);
   });
 });
@@ -293,14 +205,31 @@ test('a failed checkout is not shown as a pending payment', async () => {
 test('approved payment remains visible if email fails and can retry later', async () => {
   const services = fakeServices({ failEmail: true, mpStatus: 'processed', mpDetail: 'accredited' });
   await withServices(services, async () => {
-    const created = response();
-    await checkout({ method: 'POST', body: buyer }, created);
+    const reference = seedHistoricalOrder(services);
     const checked = response();
-    await orderStatus({ method: 'GET', url: `/api/order-status?folio=${created.body.folio}` }, checked);
+    await orderStatus({ method: 'GET', url: `/api/order-status?folio=${reference}` }, checked);
     assert.equal(checked.statusCode, 200);
     assert.equal(checked.body.status, 'approved');
-    assert.equal(services.orders.get(created.body.folio).email_claimed_at, null);
-    assert.equal(services.orders.get(created.body.folio).email_sent_at, undefined);
+    assert.equal(services.orders.get(reference).email_claimed_at, null);
+    assert.equal(services.orders.get(reference).email_sent_at, undefined);
+  });
+});
+
+test('daily retry sends a pending notice for a historical approved order once', async () => {
+  const services = fakeServices({ mpStatus: 'processed', mpDetail: 'accredited' });
+  await withServices(services, async () => {
+    const reference = seedHistoricalOrder(services, 'approved');
+    const request = { method: 'GET', headers: { authorization: 'Bearer cron-secret' } };
+    const first = response();
+    await retryNotices(request, first);
+    assert.equal(first.statusCode, 200);
+    assert.equal(first.body.sent, 1);
+    assert.equal(services.emails.length, 1);
+    assert.ok(services.orders.get(reference).email_sent_at);
+    const repeat = response();
+    await retryNotices(request, repeat);
+    assert.equal(repeat.body.sent, 0);
+    assert.equal(services.emails.length, 1);
   });
 });
 

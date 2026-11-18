@@ -11,8 +11,8 @@ const productionPages = [
 ];
 
 test('privacy notice and forms separate optional proposals from project messages', async () => {
-  const [notice, contact, purchase] = await Promise.all([
-    read('public/aviso-de-privacidad/index.html'), read('public/contacto/index.html'), read('public/buen-fin-2026/index.html'),
+  const [notice, contact] = await Promise.all([
+    read('public/aviso-de-privacidad/index.html'), read('public/contacto/index.html'),
   ]);
   assert.doesNotMatch(notice, /<h2>Proveedores<\/h2>|Supabase|Vercel|Resend|Mercado Pago/);
   assert.match(notice, /alojamiento.*almacenamiento.*pagos.*avisos/s);
@@ -23,9 +23,8 @@ test('privacy notice and forms separate optional proposals from project messages
   assert.match(notice, /revocar.*info@orkestalo\.com/s);
   assert.match(contact, /WhatsApp \(opcional\)/);
   assert.match(contact, /name="marketingConsent" type="checkbox"/);
-  assert.match(purchase, /name="marketingConsent" type="checkbox"/);
-  assert.doesNotMatch(contact + purchase, /name="marketingConsent" type="checkbox"[^>]*required|name="marketingConsent" type="checkbox"[^>]*checked/);
-  for (const page of [notice, contact, purchase]) {
+  assert.doesNotMatch(contact, /name="marketingConsent" type="checkbox"[^>]*required|name="marketingConsent" type="checkbox"[^>]*checked/);
+  for (const page of [notice, contact]) {
     assert.match(page, /© Orkesta/);
     assert.doesNotMatch(page, /Todos los derechos reservados/);
   }
