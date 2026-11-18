@@ -9,6 +9,8 @@ async function pruneExpiredData() {
     const siteFilter = encodeURIComponent(site.id);
     const cutoff = encodeURIComponent(before);
     await db('measurement_events', { method: 'DELETE', query: `?site_id=eq.${siteFilter}&occurred_at=lt.${cutoff}`, prefer: 'return=minimal' });
+    await db('measurement_conversions', { method: 'DELETE', query: `?site_id=eq.${siteFilter}&occurred_at=lt.${cutoff}`, prefer: 'return=minimal' });
+    await db('measurement_revocations', { method: 'DELETE', query: `?site_id=eq.${siteFilter}&revoked_at=lt.${cutoff}`, prefer: 'return=minimal' });
     await db('measurement_contacts', { method: 'DELETE', query: `?site_id=eq.${siteFilter}&created_at=lt.${cutoff}`, prefer: 'return=minimal' });
   }
   return sites.length;

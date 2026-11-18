@@ -127,6 +127,7 @@ test('presentation isolates one site and empty sites never show invented zeroes'
       daily: [{ site_id: 'ana', day: '2026-11-15', visits: 12, contact_clicks: 3, form_submits: 1 }],
       sources: [{ site_id: 'ana', source: 'google', medium: 'organic', campaign: null, visits: 12, contact_clicks: 3 }],
       funnel: [],
+      actions: [{ site_id: 'ana', day: '2026-11-15', path: '/preguntas-frecuentes', name: 'section_view', label: 'faq', events: 4 }, { site_id: 'ana', day: '2026-11-15', path: '/', name: 'agenda_click', label: 'booking', events: 2 }],
       external: [{ site_id: 'ana', day: '2026-11-15', provider: 'search_console', campaign_ref: null, metric: 'clicks', value: 7 }],
       connections: [{ site_id: 'ana', provider: 'search_console', last_synced_at: '2026-11-15T12:00:00Z', last_error: null }],
     };
@@ -143,6 +144,8 @@ test('presentation isolates one site and empty sites never show invented zeroes'
     await page.locator('#site').selectOption('ana');
     assert.match(await page.locator('#summary').innerText(), /12/);
     assert.match(await page.locator('#summary').innerText(), /Reservas verificadas\s+0/);
+    assert.match(await page.locator('#actions').innerText(), /preguntas-frecuentes/);
+    assert.match(await page.locator('#actions').innerText(), /agenda_click/);
     assert.match(await page.locator('#external').innerText(), /Google Search Console/);
     await page.getByRole('button', { name: 'Presentar este sitio' }).click();
     assert.equal(await page.locator('#site').isVisible(), false);

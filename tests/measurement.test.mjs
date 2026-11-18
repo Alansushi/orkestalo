@@ -25,6 +25,13 @@ test('agenda clicks stay distinct from contact and verified conversions', () => 
   assert.equal(validateMeasurement({ ...batch, events: [{ ...batch.events[0], name: 'agenda_click', channel: undefined, label: 'booking' }] })?.events[0].name, 'agenda_click');
 });
 
+test('campaign attribution accepts only coarse sources and hashed campaign codes', () => {
+  assert.equal(validateMeasurement({ ...batch, events: [{ ...batch.events[0], utm_source: 'Ana Pérez' }] }), null);
+  assert.equal(validateMeasurement({ ...batch, events: [{ ...batch.events[0], utm_medium: 'dolor dental' }] }), null);
+  assert.equal(validateMeasurement({ ...batch, events: [{ ...batch.events[0], utm_campaign: 'ana-perez' }] }), null);
+  assert.equal(validateMeasurement({ ...batch, events: [{ ...batch.events[0], utm_campaign: 'cmp_' + 'a'.repeat(16) }] })?.events[0].utm_campaign, 'cmp_' + 'a'.repeat(16));
+});
+
 test('site origin is exact and HTTPS', () => {
   assert.equal(exactOrigin('https://draanamora.com.mx', ['https://draanamora.com.mx']), true);
   assert.equal(exactOrigin('https://evil.draanamora.com.mx', ['https://draanamora.com.mx']), false);

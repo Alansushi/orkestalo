@@ -4,7 +4,7 @@ import { createHmac } from 'node:crypto';
 import conversion from '../api/measurement-conversion.js';
 
 function response() { return { statusCode: 0, body: null, setHeader() {}, end(value) { this.body = JSON.parse(value); } }; }
-const input = { site: 'dra-ana-mora', reference: '90c3be77-45f2-4c9b-a8cb-4b12c6c9655b', event: 'payment_approved', key: 'a'.repeat(64) };
+const input = { site: 'dra-ana-mora', reference: '90c3be77-45f2-4c9b-a8cb-4b12c6c9655b', event: 'booking_created', key: 'a'.repeat(64) };
 test('forged signatures never query or write conversions; valid duplicates use one site key', async () => {
   const old = { fetch: global.fetch, url: process.env.SUPABASE_URL, db: process.env.SUPABASE_SECRET_KEY, secret: process.env.MEASUREMENT_ANA_SECRET };
   process.env.SUPABASE_URL = 'https://db.example.test';
@@ -14,7 +14,7 @@ test('forged signatures never query or write conversions; valid duplicates use o
   global.fetch = async (url, options) => {
     calls.push({ url: String(url), options });
     if (String(url).includes('measurement_sites')) return new Response(JSON.stringify([{ id: 'site-ana', active: true }]), { status: 200 });
-    if (String(url).includes('measurement_events')) return new Response(JSON.stringify([{ event_id: 'visit' }]), { status: 200 });
+    if (String(url).includes('measurement_conversions') && options.method === 'GET') return new Response(JSON.stringify([{ attribution_ref: input.reference }]), { status: 200 });
     return new Response(null, { status: 204 });
   };
   try {
@@ -34,6 +34,16 @@ test('forged signatures never query or write conversions; valid duplicates use o
     assert.equal(JSON.parse(insert.options.body).key, input.key);
     assert.equal(JSON.parse(insert.options.body).site_id, 'site-ana');
     assert.match(insert.url, /on_conflict=site_id,event,key/);
+
+    const payment = { site: input.site, event: 'payment_approved', booking_key: input.key, key: 'c'.repeat(64) };
+    const paymentRaw = JSON.stringify(payment);
+    const paymentNonce = 'd'.repeat(32);
+    const paymentRequest = { method: 'POST', body: paymentRaw, headers: { 'x-measurement-timestamp': timestamp, 'x-measurement-nonce': paymentNonce, 'x-measurement-signature': createHmac('sha256', 'shared-secret').update(`${timestamp}.${paymentNonce}.${paymentRaw}`).digest('hex') } };
+    const paymentResponse = response();
+    await conversion(paymentRequest, paymentResponse);
+    assert.equal(paymentResponse.statusCode, 202);
+    const paymentInsert = calls.filter(x => x.url.includes('measurement_conversions') && x.options.method === 'POST').at(-1);
+    assert.equal(JSON.parse(paymentInsert.options.body).attribution_ref, input.reference);
   } finally {
     global.fetch = old.fetch;
     for (const [name, value] of [['SUPABASE_URL',old.url],['SUPABASE_SECRET_KEY',old.db],['MEASUREMENT_ANA_SECRET',old.secret]]) {

@@ -16,7 +16,13 @@ export default async function handler(req, res) {
   try {
     const sites = await db('measurement_sites', { query: `?slug=eq.${input.site}&select=id,active&limit=1` });
     if (!sites[0]?.active) return json(res, 403, { error: 'Sitio inactivo' });
-    await db('measurement_conversions', { method: 'POST', query: '?on_conflict=site_id,event,key', body: { site_id: sites[0].id, attribution_ref: input.reference, event: input.event, key: input.key, nonce: headers.nonce }, prefer: 'resolution=ignore-duplicates,return=minimal' });
+    let reference = input.reference;
+    if (input.event !== 'booking_created') {
+      const booking = await db('measurement_conversions', { query: `?site_id=eq.${sites[0].id}&event=eq.booking_created&key=eq.${input.booking_key}&select=attribution_ref&limit=1` });
+      reference = booking[0]?.attribution_ref;
+      if (!reference) return json(res, 202, { accepted: false });
+    }
+    await db('measurement_conversions', { method: 'POST', query: '?on_conflict=site_id,event,key', body: { site_id: sites[0].id, attribution_ref: reference, event: input.event, key: input.key, nonce: headers.nonce }, prefer: 'resolution=ignore-duplicates,return=minimal' });
     // The dashboard joins only to a consented page view. Recording first avoids
     // losing a real conversion when the browser beacon arrives after this call.
     return json(res, 202, { accepted: true });

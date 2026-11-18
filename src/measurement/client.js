@@ -1,6 +1,6 @@
 // Embed with <script src="https://www.orkestalo.com/assets/measurement.js"
 // data-site="registered-site-slug"></script>. Attribution is per tab and consented.
-(() => {
+(async () => {
   try {
     const script = document.currentScript;
     const site = script?.dataset.site;
@@ -8,16 +8,24 @@
     const consentKey = script.dataset.consentKey;
     const key = `orkesta_measure_${site}`;
     const session = sessionStorage;
+    const endpoint = new URL('/api/measurement-track', script.src).href;
+    const revocationEndpoint = new URL('/api/measurement-revoke', script.src).href;
     const permitted = () => {
       try {
         const allowed = consentKey && localStorage.getItem(consentKey) === 'accepted';
-        if (!allowed) for (const suffix of ['', ':ref', ':ctx']) session.removeItem(key + suffix);
+        if (!allowed) {
+          const oldRef = session.getItem(`${key}:ref`);
+          if (oldRef) try {
+            const body = JSON.stringify({ site, reference: oldRef });
+            navigator.sendBeacon(revocationEndpoint, new Blob([body], { type: 'text/plain' }));
+          } catch { /* keep consent withdrawal immediate */ }
+          for (const suffix of ['', ':ref', ':ctx']) session.removeItem(key + suffix);
+        }
         return allowed;
       }
       catch { return false; }
     };
     if (!permitted()) return;
-    const endpoint = new URL('/api/measurement-track', script.src).href;
     let sessionId = session.getItem(key);
     if (!sessionId) {
       sessionId = crypto.randomUUID();
@@ -30,15 +38,26 @@
     }
     const params = new URLSearchParams(location.search);
     let context = {};
-    try { context = JSON.parse(session.getItem(`${key}:ctx`) || '{}'); } catch { context = {}; }
+    try {
+      const stored = JSON.parse(session.getItem(`${key}:ctx`) || '{}');
+      if (['google','bing','facebook','instagram','meta','tiktok','doctoralia','whatsapp','email','direct','other'].includes(stored.utm_source)) context.utm_source = stored.utm_source;
+      if (['cpc','paid','organic','social','email','referral','none','other'].includes(stored.utm_medium)) context.utm_medium = stored.utm_medium;
+      if (/^cmp_[a-f0-9]{16}$/.test(stored.utm_campaign || '')) context.utm_campaign = stored.utm_campaign;
+      if (['google','bing','facebook','instagram','doctoralia','other'].includes(stored.referrer_host)) context.referrer_host = stored.referrer_host;
+    } catch { context = {}; }
     if (!Object.keys(context).length) {
-      for (const name of ['utm_source', 'utm_medium', 'utm_campaign']) {
-        const value = params.get(name);
-        if (value && /^[\p{L}\p{N} _.-]{1,100}$/u.test(value)) context[name] = value;
+      const source = params.get('utm_source')?.toLowerCase();
+      const medium = params.get('utm_medium')?.toLowerCase();
+      if (['google','bing','facebook','instagram','meta','tiktok','doctoralia','whatsapp','email','direct','other'].includes(source)) context.utm_source = source;
+      if (['cpc','paid','organic','social','email','referral','none','other'].includes(medium)) context.utm_medium = medium;
+      const campaign = params.get('utm_campaign');
+      if (campaign && /^[a-z0-9][a-z0-9_-]{2,63}$/.test(campaign) && crypto.subtle) {
+        const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(campaign));
+        context.utm_campaign = 'cmp_' + Array.from(new Uint8Array(digest)).slice(0, 8).map(x => x.toString(16).padStart(2, '0')).join('');
       }
       if (document.referrer) {
         const host = new URL(document.referrer).hostname;
-        if (/^[a-z0-9.-]{1,160}$/i.test(host)) context.referrer_host = host;
+        context.referrer_host = /(^|\.)google\./.test(host) ? 'google' : /(^|\.)bing\./.test(host) ? 'bing' : /(^|\.)facebook\./.test(host) ? 'facebook' : /(^|\.)instagram\./.test(host) ? 'instagram' : /(^|\.)doctoralia\./.test(host) ? 'doctoralia' : 'other';
       }
       session.setItem(`${key}:ctx`, JSON.stringify(context));
     }
