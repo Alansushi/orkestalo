@@ -1,5 +1,5 @@
 const $ = id => document.getElementById(id);
-let config, session, clinics = [], current, snapshot, generation = 0;
+let config, session, clinics = [], current, snapshot, generation = 0, pendingEmail;
 const saved = sessionStorage.getItem('consultorio_session');
 try { session = saved ? JSON.parse(saved) : null; } catch { session = null; }
 const show = (id, value) => { $(id).textContent = value; };
@@ -18,7 +18,7 @@ async function api(path, options = {}) {
   if (!response.ok) throw new Error(data.error || 'No se pudo completar la acción');
   return data;
 }
-function signOut() { generation++; session = null; current = null; snapshot = null; clinics = []; sessionStorage.removeItem('consultorio_session'); $('dashboard').hidden = true; $('login').hidden = false; $('logout').hidden = true; for (const id of ['login-form','task-form','manual-form','slot-form','booking-form']) $(id).reset(); for (const id of ['appointments','tasks','messages','slots','clinic-select']) $(id).replaceChildren(); $('booking-form').hidden = true; note(''); }
+function signOut() { generation++; session = null; current = null; snapshot = null; pendingEmail = null; clinics = []; sessionStorage.removeItem('consultorio_session'); $('dashboard').hidden = true; $('login').hidden = false; $('logout').hidden = true; $('login-form').hidden = false; $('code-form').hidden = true; for (const id of ['login-form','code-form','task-form','manual-form','slot-form','booking-form','email-settings-form']) $(id).reset(); for (const id of ['appointments','tasks','messages','slots','clinic-select','site-proposal','template-editors']) $(id).replaceChildren(); $('booking-form').hidden = true; note(''); }
 function element(tag, text, className) { const node = document.createElement(tag); if (text != null) node.textContent = text; if (className) node.className = className; return node; }
 function item(title, detail, action, onClick) {
   const row = element('div', null, 'item'), body = element('div');
@@ -49,10 +49,48 @@ function render() {
   for (const t of open) taskList.append(item(t.title, when(t.created_at), 'Hecho', async () => { try { await api(`consultorio?clinic=${current}`, { method: 'PATCH', body: JSON.stringify({ action: 'task', id: t.id, done: true }) }); await load(); } catch(e) { note(e.message); } }));
   const ml = $('messages'); ml.replaceChildren();
   if (!messages.length) ml.append(element('p','Aún no se han enviado mensajes.','muted'));
-  for (const m of messages.slice(0,20)) ml.append(item(m.kind === 'welcome' ? 'Bienvenida' : 'Encuesta', `${m.status}${m.last_error ? ` · ${m.last_error}` : ''} · ${when(m.created_at)}`));
+  for (const m of messages.slice(0,20)) ml.append(item({ welcome:'Bienvenida', followup:'Reserva posterior', survey:'Encuesta' }[m.kind] || m.kind, `${m.status}${m.last_error ? ` · ${m.last_error}` : ''} · ${when(m.created_at)}`));
   for (const invite of paymentInvites.slice(0,10)) ml.append(item('Enlace con anticipo', `${invite.email_status} · ${when(invite.created_at)}`));
 }
-async function load() { if (!current || !session) return; const version = generation, clinic = current, accessToken = session.access_token; const result = await api(`consultorio?clinic=${clinic}`); if (version !== generation || clinic !== current || accessToken !== session?.access_token) return; snapshot = result; render(); }
+async function load() { if (!current || !session) return; const version = generation, clinic = current, accessToken = session.access_token; const [result, emails] = await Promise.all([api(`consultorio?clinic=${clinic}`), api(`consultorio?action=email&clinic=${clinic}`)]); if (version !== generation || clinic !== current || accessToken !== session?.access_token) return; snapshot = result; render(); renderEmails(emails); }
+const emailNames = { welcome:'Bienvenida', followup:'Reserva posterior', invite:'Invitación con anticipo', survey:'Encuesta' };
+function renderEmails(data) {
+  const settings = $('email-settings-form');
+  settings.elements.sender_name.value = data.clinic.sender_name || data.clinic.doctor_name;
+  settings.elements.reply_to.value = data.clinic.reply_to;
+  settings.elements.brand_color.value = data.clinic.brand_color || '#163f51';
+  settings.elements.location.value = data.clinic.location || '';
+  settings.elements.cal_booking_url.value = data.clinic.cal_booking_url || '';
+  const source = $('site-proposal'); source.replaceChildren();
+  if (data.proposal) {
+    for (const [key, detail] of Object.entries(data.proposal.proposal)) source.append(item(`${key}: ${detail.value}`, `Fuente: ${detail.source}`));
+    const apply = element('button', 'Aplicar datos propuestos', 'quiet'); apply.type='button'; apply.addEventListener('click', () => run(async () => {
+      const proposal = data.proposal.proposal;
+      const values = Object.fromEntries(Object.entries({ sender_name:proposal.name?.value, reply_to:proposal.email?.value, brand_color:proposal.color?.value, location:proposal.location?.value, cal_booking_url:proposal.booking_url?.value }).filter(([,value]) => value));
+      if (!Object.keys(values).length) throw new Error('No se encontraron datos aplicables.');
+      await api(`consultorio?action=email-settings&clinic=${current}`, { method:'PATCH', body:JSON.stringify(values) }); await load(); note('Datos aplicados. Revisa los borradores antes de activar correos.');
+    })); source.append(apply);
+  }
+  const root = $('template-editors'); root.replaceChildren();
+  for (const [kind, name] of Object.entries(emailNames)) {
+    const history = data.templates.filter(t => t.kind === kind), draft = history.find(t => !t.approved_at), latest = draft || history[0];
+    const box = element('section', null, 'email-editor'); box.append(element('h3', name));
+    const form = element('form');
+    const subjectLabel = element('label', 'Asunto'); const subject = element('input'); subject.name='subject'; subject.maxLength=200; subject.required=true; subject.value=latest?.subject || ''; subjectLabel.append(subject);
+    const bodyLabel = element('label', 'Cuerpo'); const body = element('textarea'); body.name='body'; body.maxLength=5000; body.required=true; body.rows=6; body.value=latest?.body || ''; bodyLabel.append(body);
+    const save = element('button','Guardar borrador'); form.append(subjectLabel, bodyLabel, save); form.addEventListener('submit', event => { event.preventDefault(); run(async () => { await api(`consultorio?action=email-template&clinic=${current}`, { method:'PATCH', body:JSON.stringify({ kind, subject:subject.value, body:body.value }) }); await load(); note('Borrador guardado.'); }); }); box.append(form);
+    const versions = element('p', `Versiones: ${history.map(t => `v${t.version} ${t.approved_at ? 'aprobada' : 'borrador'}`).join(' · ') || 'ninguna'}`, 'muted'); box.append(versions);
+    if (latest) {
+      const actions = element('div', null, 'email-actions');
+      for (const [label, action] of [['Vista previa','email-preview'], ['Enviar prueba','email-test'], ['Aprobar versión','email-approve']]) {
+        const button = element('button',label,'quiet'); button.type='button'; if (action === 'email-approve' && latest.approved_at) button.disabled=true;
+        button.addEventListener('click', () => run(async () => { const result = await api(`consultorio?action=${action}&clinic=${current}`, { method:'POST', body:JSON.stringify({ id:latest.id }) }); if (action === 'email-preview') { const old=box.querySelector('.email-preview'); if (old) old.remove(); const preview=element('div',null,'email-preview'); preview.append(element('strong',`Asunto: ${result.email.subject}`)); const frame=element('iframe'); frame.title=`Vista previa HTML de ${name}`; frame.setAttribute('sandbox',''); frame.srcdoc=result.email.html; preview.append(frame,element('strong','Versión de texto')); const plain=element('pre',result.email.text); preview.append(plain); box.append(preview); } else { await load(); note(action === 'email-test' ? 'Prueba enviada a tu correo.' : 'Versión aprobada.'); } })); actions.append(button);
+      }
+      box.append(actions);
+    }
+    const toggle = element('label', ` Activar ${name}`); const check = element('input'); check.type='checkbox'; check.checked=!!data.clinic[`${kind}_enabled`]; check.addEventListener('change', () => run(async () => { await api(`consultorio?action=email-settings&clinic=${current}`, { method:'PATCH', body:JSON.stringify({ [`${kind}_enabled`]:check.checked }) }); await load(); })); toggle.prepend(check); box.append(toggle); root.append(box);
+  }
+}
 async function enter() {
   const version = generation, accessToken = session?.access_token;
   const data = await api('consultorio?action=clinics');
@@ -70,8 +108,23 @@ $('login-form').addEventListener('submit', async event => {
   try { const form = formData(event.currentTarget); session = await auth('token?grant_type=password', { email: form.email, password: form.password }); sessionStorage.setItem('consultorio_session', JSON.stringify(session)); await enter(); }
   catch (error) { signOut(); show('login-error', error.message); }
 });
+$('request-code').addEventListener('click', () => run(async () => {
+  const emailInput=$('login-form').elements.email;
+  if (!emailInput.reportValidity()) return;
+  pendingEmail=emailInput.value.trim().toLowerCase();
+  await auth('otp', { email:pendingEmail, create_user:false });
+  $('login-form').hidden=true; $('code-form').hidden=false;
+  show('login-error','Revisa tu correo e introduce el código de acceso.');
+}));
+$('code-form').addEventListener('submit', event => { event.preventDefault(); run(async () => {
+  session=await auth('verify', { email:pendingEmail, token:formData(event.target).code, type:'email' });
+  sessionStorage.setItem('consultorio_session',JSON.stringify(session)); await enter();
+  $('code-form').hidden=true; $('login-form').hidden=false; pendingEmail=null; show('login-error','');
+}); });
 $('logout').addEventListener('click', signOut);
 $('refresh').addEventListener('click', () => run(load));
+$('analyze-site').addEventListener('click', () => run(async () => { await api(`consultorio?action=analyze-site&clinic=${current}`, { method:'POST' }); await load(); note('Propuesta creada. Revisa las fuentes y los borradores.'); }));
+$('email-settings-form').addEventListener('submit', event => { event.preventDefault(); run(async () => { const values = formData(event.target); await api(`consultorio?action=email-settings&clinic=${current}`, { method:'PATCH', body:JSON.stringify(values) }); await load(); note('Identidad guardada.'); }); });
 $('clinic-select').addEventListener('change', event => { generation++; current = event.target.value; snapshot = null; $('dashboard').hidden = true; run(async () => { await load(); if (snapshot && current === event.target.value) $('dashboard').hidden = false; }); });
 $('task-form').addEventListener('submit', event => { event.preventDefault(); run(async () => { await api(`consultorio?clinic=${current}`, { method:'POST', body: JSON.stringify({ action:'task', title:formData(event.target).title }) }); event.target.reset(); await load(); }); });
 $('manual-form').addEventListener('submit', event => { event.preventDefault(); run(async () => { const form = formData(event.target); await api(`consultorio?clinic=${current}`, { method:'POST', body: JSON.stringify({ action:'manual', name:form.name, email:form.email, phone:form.phone, start:new Date(form.start).toISOString(), end:new Date(form.end).toISOString(), surveyAllowed: !!form.surveyAllowed }) }); event.target.reset(); await load(); note('Cita pendiente guardada. Regístrala en Cal.com.'); }); });

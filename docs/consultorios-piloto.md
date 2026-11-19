@@ -1,5 +1,15 @@
 # Piloto de consultorios
 
+## Personalización de correos (noviembre de 2026)
+
+La migración `20261119043419_clinic_email_personalization.sql` crea pacientes por consultorio, borradores versionados y una copia del contenido de cada envío. El primer correo se asigna a la primera cita confirmada registrada para el correo normalizado dentro de ese consultorio. Las citas pendientes de pago no cuentan; las siguientes citas confirmadas reciben la plantilla de reserva posterior. Los reintentos usan la copia guardada, y una cancelación detiene el reintento de bienvenida o reserva.
+
+El panel permite entrar con un código enviado al correo de la doctora, analizar el sitio público, revisar la fuente de cada dato propuesto, editar identidad y cuatro plantillas, ver HTML y texto, recibir una prueba y aprobar una revisión. Una edición invalida la prueba anterior. Un análisis nuevo crea borradores sin modificar versiones aprobadas. Cada tipo permanece desactivado hasta que exista una versión aprobada y la doctora lo active.
+
+Los perfiles iniciales usan provisionalmente `anabadillomora@gmail.com` y `fersuasmi.endo@gmail.com`, con `orkestalo.com` como dominio remitente y esos correos como `Reply-To`. Las dos cuentas y membresías se crearon sin envío de invitaciones; las doctoras pueden solicitar un código desde `/consultorio/`. Hay ocho borradores sin aprobación y todos los envíos siguen desactivados. Los sitios proponen nombre, correo y ubicación para ambas; el de Ana también ofrece agenda Cal.com y el de Fernanda ofrece color. Cada doctora debe revisar y aplicar esos datos antes de aprobar las plantillas.
+
+Para completar la activación faltan las credenciales OAuth confidenciales de Cal.com, los ID y enlaces de tipos de cita de cada doctora, registrar ambos webhooks de Cal.com y el secreto del webhook de Resend. Después, cada doctora debe probar y aprobar sus cuatro plantillas. Probar reservas ficticias y la entrega en ambos consultorios antes de activar cualquier tipo de correo. No agregar credenciales al repositorio.
+
 El panel privado está en `/consultorio/`; la encuesta pública de un solo uso está en `/encuesta/`. Ambos están excluidos de indexación. El piloto usa exclusivamente datos operativos: contacto, cita, tarea, entrega de mensajes y respuesta a encuesta. No cargar diagnósticos, expedientes ni notas clínicas.
 
 ## Activación de cada consultorio

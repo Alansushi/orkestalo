@@ -1,6 +1,7 @@
 import { db, json, readBody, validEmail, validPhone, validText } from '../src/server/commerce.js';
 import { queryValue, requireClinic, ensureSurvey, surveyConsentRecord, userFromRequest } from '../src/server/consultorio.js';
 import calHandler from '../src/server/consultorio-endpoints/cal-api.js';
+import emailSettings from '../src/server/consultorio-endpoints/clinic-email-settings.js';
 
 const uuid = value => /^[0-9a-f-]{36}$/i.test(value || '');
 const q = queryValue;
@@ -23,9 +24,10 @@ export default async function handler(req, res) {
   try { access = await requireClinic(req, clinicId); } catch { return json(res, 503, { error: 'Acceso no disponible' }); }
   if (!access) return json(res, 401, { error: 'Acceso restringido' });
   try {
-    const clinics = await db('clinics', { query: `?id=eq.${q(clinicId)}&select=id,name,doctor_name,sender_local_part,reply_to,cal_event_type_id,cal_booking_url,survey_enabled,welcome_enabled` });
+    const clinics = await db('clinics', { query: `?id=eq.${q(clinicId)}&select=id,name,doctor_name,sender_name,sender_local_part,reply_to,website_url,location,brand_color,cal_event_type_id,cal_booking_url,survey_enabled,welcome_enabled,followup_enabled,invite_enabled` });
     const clinic = clinics[0];
     if (!clinic) return json(res, 404, { error: 'Consultorio no encontrado' });
+    if (['email','analyze-site','email-settings','email-template','email-preview','email-test','email-approve'].includes(url.searchParams.get('action'))) return emailSettings(req, res, { clinic, clinicId, user:access.user, action:url.searchParams.get('action') });
     if (req.method === 'GET') {
       const now = new Date(), weekAgo = new Date(Date.now() - 7 * 86400000);
       const [upcoming, recent, openTasks, completedTasks, messages, connection, paymentInvites] = await Promise.all([

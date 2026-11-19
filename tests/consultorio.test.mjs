@@ -188,3 +188,9 @@ test('build publishes private clinic and survey entry points without indexing th
   assert.match(survey, /Califica tu visita/);
   assert.match(survey, /noindex/);
 });
+
+test('clinic panel offers email-code access for newly provisioned doctors', async () => {
+  const panel = await readFile(new URL('../public/consultorio/index.html', import.meta.url), 'utf8');
+  assert.match(panel, /id="code-form"/);
+  assert.match(panel, /Código de acceso/);
+});

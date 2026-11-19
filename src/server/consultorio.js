@@ -1,11 +1,23 @@
 import { createHash, createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 import { db, validEmail } from './commerce.js';
+import { normalizeEmail, prepareEmail } from './clinic-email-content.js';
 
 const calEvents = { BOOKING_CREATED: 'confirmed', BOOKING_RESCHEDULED: 'confirmed', BOOKING_CANCELLED: 'cancelled', BOOKING_REQUESTED: 'pending', BOOKING_PAYMENT_INITIATED: 'pending', BOOKING_PAID: 'confirmed', BOOKING_REJECTED: 'cancelled', BOOKING_NO_SHOW_UPDATED: 'missed' };
 export const token = () => randomBytes(24).toString('base64url');
 export const surveyToken = (appointmentId, secret) => createHmac('sha256', secret).update(appointmentId).digest('hex');
 export const surveyConsentRecord = allowed => ({ survey_allowed: allowed, survey_allowed_at: allowed ? new Date().toISOString() : null, survey_consent_version: allowed ? 'consultorio-encuesta-v1' : null });
 export const queryValue = value => encodeURIComponent(value);
+export async function approvedTemplate(clinicId, kind) {
+  return (await db('clinic_email_templates', { query:`?clinic_id=eq.${queryValue(clinicId)}&kind=eq.${kind}&approved_at=not.is.null&select=*&order=version.desc&limit=1` }))[0] || null;
+}
+export async function claimFirstPatient(clinic, appointment) {
+  const email = normalizeEmail(appointment.patient_email);
+  if (!email) return null;
+  const rows = await db('clinic_patients', { method:'POST', query:'?on_conflict=clinic_id,email', body:{ clinic_id:clinic.id, email, first_appointment_id:appointment.id }, prefer:'resolution=ignore-duplicates,return=representation' });
+  if (rows.length) return true;
+  const [patient] = await db('clinic_patients', { query:`?clinic_id=eq.${queryValue(clinic.id)}&email=eq.${queryValue(email)}&select=first_appointment_id&limit=1` });
+  return patient?.first_appointment_id === appointment.id;
+}
 
 export function verifyCalWebhook(raw, signature, secret) {
   if (typeof raw !== 'string' || !/^[a-f\d]{64}$/i.test(signature || '') || !secret) return false;
@@ -76,13 +88,11 @@ async function applyEarlyDelivery(table, id, clinicId, field, resendId) {
 }
 
 export async function deliverPaymentInvite(clinic, invite) {
+  if (!invite.email_snapshot) return false;
   if (!await claimDelivery('clinic_payment_invites', invite.id, clinic.id, 'email_status')) return false;
   try {
-    const bookingUrl = new URL(clinic.cal_booking_url);
-    bookingUrl.searchParams.set('orkesta_invite', invite.id);
-    bookingUrl.searchParams.set('name', invite.patient_name);
-    bookingUrl.searchParams.set('email', invite.patient_email);
-    const response = await fetch('https://api.resend.com/emails', { method:'POST', headers:{ Authorization:`Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type':'application/json', 'Idempotency-Key':`payment-invite-${invite.id}` }, body:JSON.stringify({ from:`${clinic.doctor_name} <${clinic.sender_local_part}@orkestalo.com>`, reply_to:clinic.reply_to, to:[invite.patient_email], subject:`Reserva tu cita con ${clinic.doctor_name}`, text:paymentInvitationMessage({ doctor:clinic.doctor_name, patient:invite.patient_name, url:bookingUrl.toString() }) }), signal:AbortSignal.timeout(8000) });
+    const { template_version, ...email } = invite.email_snapshot;
+    const response = await fetch('https://api.resend.com/emails', { method:'POST', headers:{ Authorization:`Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type':'application/json', 'Idempotency-Key':`payment-invite-${invite.id}` }, body:JSON.stringify(email), signal:AbortSignal.timeout(8000) });
     if (!response.ok) throw new Error(`Resend ${response.status}`);
     const { id } = await response.json();
     await db('clinic_payment_invites', { method:'PATCH', query:`?id=eq.${invite.id}&clinic_id=eq.${clinic.id}`, body:{ email_status:'sent', resend_id:id } });
@@ -122,20 +132,24 @@ export async function sendClinicEmail({ clinic, appointment, kind, text, key }) 
   return (await response.json()).id;
 }
 
-export async function queueMessage(clinic, appointment, kind) {
+export async function queueMessage(clinic, appointment, kind, surveyUrl) {
   if (kind === 'survey' && !appointment.survey_allowed) return null;
-  const key = kind === 'welcome' ? `welcome-${clinic.id}-${createHash('sha256').update(appointment.patient_email.toLowerCase()).digest('hex')}` : `survey-${appointment.id}`;
-  const rows = await db('clinic_messages', { method: 'POST', query: '?on_conflict=clinic_id,idempotency_key', body: { clinic_id: clinic.id, appointment_id: appointment.id, kind, idempotency_key: key, status: 'queued' }, prefer: 'resolution=ignore-duplicates,return=representation' });
+  const template = await approvedTemplate(clinic.id, kind);
+  if (!template) return null;
+  const key = `${kind}-${appointment.id}`;
+  const snapshot = prepareEmail(clinic, template, { patient:appointment.patient_name, doctor:clinic.doctor_name, survey_url:surveyUrl || '', booking_url:clinic.cal_booking_url || '', location:clinic.location || '' }, appointment.patient_email);
+  const rows = await db('clinic_messages', { method: 'POST', query: '?on_conflict=clinic_id,idempotency_key', body: { clinic_id: clinic.id, appointment_id: appointment.id, kind, idempotency_key: key, status: 'queued', email_snapshot:snapshot }, prefer: 'resolution=ignore-duplicates,return=representation' });
   return rows[0] || null;
 }
 
 export async function deliverMessage(clinic, appointment, message, surveyUrl) {
+  if (!message.email_snapshot) return false;
   if (!await claimDelivery('clinic_messages', message.id, clinic.id, 'status')) return false;
-  const text = message.kind === 'welcome'
-    ? welcomeMessage({ doctor: clinic.doctor_name, patient: appointment.patient_name })
-    : surveyMessage({ doctor: clinic.doctor_name, url: surveyUrl });
   try {
-    const id = await sendClinicEmail({ clinic, appointment, kind: message.kind, text, key: message.idempotency_key });
+    const { template_version, ...email } = message.email_snapshot;
+    const response = await fetch('https://api.resend.com/emails', { method:'POST', headers:{ Authorization:`Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type':'application/json', 'Idempotency-Key':message.idempotency_key }, body:JSON.stringify(email), signal:AbortSignal.timeout(8000) });
+    if (!response.ok) throw new Error(`Resend ${response.status}`);
+    const { id } = await response.json();
     await db('clinic_messages', { method: 'PATCH', query: `?id=eq.${message.id}&clinic_id=eq.${clinic.id}`, body: { status: 'sent', resend_id: id, sent_at: new Date().toISOString() } });
     await applyEarlyDelivery('clinic_messages', message.id, clinic.id, 'status', id);
     return true;
@@ -150,7 +164,8 @@ export async function ensureSurvey(clinic, appointment) {
   const linkToken = surveyToken(appointment.id, process.env.SURVEY_TOKEN_SECRET);
   const hash = createHash('sha256').update(linkToken).digest('hex');
   await db('clinic_surveys', { method:'POST', query:'?on_conflict=appointment_id', body:{ clinic_id:clinic.id, appointment_id:appointment.id, token_hash:hash }, prefer:'resolution=ignore-duplicates,return=representation' });
-  const message = await queueMessage(clinic, appointment, 'survey');
+  const surveyUrl = `https://www.orkestalo.com/encuesta/?token=${linkToken}`;
+  const message = await queueMessage(clinic, appointment, 'survey', surveyUrl);
   if (!message) return false;
-  return deliverMessage(clinic, appointment, message, `https://www.orkestalo.com/encuesta/?token=${linkToken}`);
+  return deliverMessage(clinic, appointment, message, surveyUrl);
 }
