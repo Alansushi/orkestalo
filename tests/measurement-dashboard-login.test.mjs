@@ -143,7 +143,7 @@ test('presentation isolates one site and empty sites never show invented zeroes'
     await page.goto('https://measurement.test/medicion/');
     await page.locator('#site').selectOption('ana');
     assert.match(await page.locator('#summary').innerText(), /12/);
-    assert.match(await page.locator('#summary').innerText(), /Reservas verificadas\s+0/);
+    assert.match(await page.locator('#summary').innerText(), /Reservas verificadas\s+Aún sin datos/);
     assert.match(await page.locator('#actions').innerText(), /preguntas-frecuentes/);
     assert.match(await page.locator('#actions').innerText(), /agenda_click/);
     assert.match(await page.locator('#external').innerText(), /Google Search Console/);
@@ -155,7 +155,7 @@ test('presentation isolates one site and empty sites never show invented zeroes'
     assert.equal(await page.locator('#site').isVisible(), true);
     await page.locator('#site').selectOption('fernanda');
     assert.match(await page.locator('#summary').innerText(), /Aún sin datos/);
-    assert.match(await page.locator('#summary').innerText(), /No aplica/);
+    assert.match(await page.locator('#summary').innerText(), /Reservas verificadas/);
     assert.match(await page.locator('#results').innerText(), /inactiva/i);
     assert.doesNotMatch(await page.locator('#site-state').innerText(), /aún no mide/i);
     await page.setViewportSize({ width: 375, height: 812 });

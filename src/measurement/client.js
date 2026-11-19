@@ -131,6 +131,8 @@
       page(path) { track('page_view', { path }); window.orkestaObserveSections?.(); },
       reference() { return permitted() ? session.getItem(`${key}:ref`) : null; },
     };
+    window.addEventListener?.('site-consent-changed', permitted);
+    window.addEventListener?.('storage', permitted);
     if (safePath() ) trackOnce('page', 'page_view', { path: safePath() });
   } catch { /* measurement must never interrupt the site */ }
 })();

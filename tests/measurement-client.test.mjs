@@ -8,6 +8,7 @@ const source = await readFile(new URL('../src/measurement/client.js', import.met
 async function browser({ consent = 'accepted', beacon = () => true } = {}) {
   const values = new Map([['dental-cookie-consent-v2', consent]]);
   const handlers = {};
+  const windowHandlers = {};
   const payloads = [];
   const revocations = [];
   let serial = 0;
@@ -24,10 +25,10 @@ async function browser({ consent = 'accepted', beacon = () => true } = {}) {
       addEventListener: (name, fn) => { handlers[name] = fn; },
       querySelectorAll: () => [],
     },
-    window: {},
+    window: { addEventListener: (name, fn) => { windowHandlers[name] = fn; } },
   };
   await runInNewContext(source, context);
-  return { context, handlers, payloads, revocations, values };
+  return { context, handlers, windowHandlers, payloads, revocations, values };
 }
 
 test('collector sends campaign source without patient URL or clinical fields and deduplicates contact clicks', async () => {
@@ -66,4 +67,11 @@ test('collector does not start without consent or when network fails', async () 
   assert.equal(denied.handlers.click, undefined);
   const failure = await browser({ beacon: () => { throw new Error('offline'); } });
   assert.doesNotThrow(() => failure.handlers.click({ target: { closest: () => ({ getAttribute: () => 'tel:5512345678', dataset: {} }) } }));
+});
+
+test('consent withdrawal immediately sends revocation without another click', async () => {
+  const { windowHandlers, values, revocations } = await browser();
+  values.set('dental-cookie-consent-v2', 'rejected');
+  windowHandlers['site-consent-changed']();
+  assert.equal(revocations.length, 1);
 });

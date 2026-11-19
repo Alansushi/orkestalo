@@ -60,7 +60,7 @@ export const projects = [
     slug: 'dra-fernanda-suaste', status: 'in-construction', category: 'sitios', name: { es: 'Dra. Fernanda Suaste', en: 'Dra. Fernanda Suaste' },
     summary: { es: 'Un sitio odontológico que explica el cuidado del diente natural y ordena el camino hacia una valoración.', en: 'A dental website explaining natural tooth care and guiding visitors toward an assessment.' },
     detail: { es: 'La página da protagonismo a una ilustración anatómica y estructura el contenido en tratamientos, perfil profesional y proceso de atención.', en: 'An anatomical illustration anchors the page, with content organized around treatments, the doctor and the care process.' },
-    url: 'https://sitio-dra-fernanda-suaste.vercel.app/', scope: { es: 'Sitio web · salud dental', en: 'Website · dental care' },
+    url: 'https://www.fersuasmi.com.mx/', scope: { es: 'Sitio web · salud dental', en: 'Website · dental care' },
     note: { es: 'Sitio público de la Dra. Fernanda Suaste. La captura muestra solo la portada.', en: 'Public website of Dr. Fernanda Suaste. The capture shows the homepage only.' },
     image: '/media/projects/dra-fernanda-suaste-desktop.webp', mobileImage: '/media/projects/dra-fernanda-suaste-mobile.webp',
   },
