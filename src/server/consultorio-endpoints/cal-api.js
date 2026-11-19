@@ -1,8 +1,8 @@
 import { createHash } from 'node:crypto';
-import { db, json, readBody, validEmail, validText } from '../src/server/commerce.js';
-import { deliverPaymentInvite, queryValue, requireClinic, token } from '../src/server/consultorio.js';
+import { db, json, readBody, validEmail, validText } from '../commerce.js';
+import { deliverPaymentInvite, queryValue, requireClinic, token } from '../consultorio.js';
 
-const redirectUri = 'https://www.orkestalo.com/api/consultorio-cal?action=callback';
+const redirectUri = 'https://www.orkestalo.com/api/consultorio?action=callback';
 const q = queryValue;
 const hash = value => createHash('sha256').update(value).digest('hex');
 

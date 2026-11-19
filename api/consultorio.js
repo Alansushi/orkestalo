@@ -1,5 +1,6 @@
 import { db, json, readBody, validEmail, validPhone, validText } from '../src/server/commerce.js';
 import { queryValue, requireClinic, ensureSurvey, surveyConsentRecord, userFromRequest } from '../src/server/consultorio.js';
+import calHandler from '../src/server/consultorio-endpoints/cal-api.js';
 
 const uuid = value => /^[0-9a-f-]{36}$/i.test(value || '');
 const q = queryValue;
@@ -7,6 +8,7 @@ const q = queryValue;
 export default async function handler(req, res) {
   if (!['GET', 'POST', 'PATCH'].includes(req.method)) return json(res, 405, { error: 'Método no permitido' });
   const url = new URL(req.url, 'https://www.orkestalo.com');
+  if (['callback','connect','slots','booking'].includes(url.searchParams.get('action'))) return calHandler(req, res);
   if (req.method === 'GET' && url.searchParams.get('action') === 'clinics') {
     try {
       const user = await userFromRequest(req);
