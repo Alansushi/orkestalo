@@ -39,6 +39,11 @@ await build({
   outfile: fileURLToPath(new URL('../assets/rebrand.css', import.meta.url)),
 });
 
+for (const [source, output] of [['app.js','consultorio.js'],['survey.js','survey.js']]) {
+  await build({ entryPoints: [fileURLToPath(new URL(`../src/consultorio/${source}`, import.meta.url))], bundle: true, minify: true, target: ['es2020'], outfile: fileURLToPath(new URL(`../assets/${output}`, import.meta.url)) });
+}
+await cp(new URL('../src/consultorio/style.css', import.meta.url), new URL('../assets/consultorio.css', import.meta.url));
+
 const publicDir = new URL('../public/', import.meta.url);
 await rm(publicDir, { recursive: true, force: true });
 await mkdir(publicDir, { recursive: true });
@@ -51,11 +56,15 @@ for (const file of publicFiles) {
   await cp(new URL(`../${file}`, import.meta.url), new URL(`../public/${file}`, import.meta.url));
 }
 await mkdir(new URL('../public/assets/', import.meta.url), { recursive: true });
-for (const file of ['site.js', 'rebrand.js', 'rebrand.css', 'measurement.js']) {
+for (const file of ['site.js', 'rebrand.js', 'rebrand.css', 'measurement.js', 'consultorio.js', 'survey.js', 'consultorio.css']) {
   await cp(new URL(`../assets/${file}`, import.meta.url), new URL(`../public/assets/${file}`, import.meta.url));
 }
 await mkdir(new URL('../public/medicion/', import.meta.url), { recursive: true });
 await cp(new URL('../src/measurement/dashboard.html', import.meta.url), new URL('../public/medicion/index.html', import.meta.url));
+await mkdir(new URL('../public/consultorio/', import.meta.url), { recursive: true });
+await cp(new URL('../src/consultorio/index.html', import.meta.url), new URL('../public/consultorio/index.html', import.meta.url));
+await mkdir(new URL('../public/encuesta/', import.meta.url), { recursive: true });
+await cp(new URL('../src/consultorio/survey.html', import.meta.url), new URL('../public/encuesta/index.html', import.meta.url));
 const mediaDir = new URL('../media/', import.meta.url);
 try { await access(mediaDir); await cp(mediaDir, new URL('../public/media/', import.meta.url), { recursive: true }); } catch {}
 const newRoutes = await renderRoutePages(publicDir);
