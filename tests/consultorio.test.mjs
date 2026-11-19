@@ -193,4 +193,8 @@ test('clinic panel offers email-code access for newly provisioned doctors', asyn
   const panel = await readFile(new URL('../public/consultorio/index.html', import.meta.url), 'utf8');
   assert.match(panel, /id="code-form"/);
   assert.match(panel, /Código de acceso/);
+  const client = await readFile(new URL('../src/consultorio/app.js', import.meta.url), 'utf8');
+  assert.match(client, /otp\?redirect_to=/);
+  assert.doesNotMatch(client, /email_redirect_to/);
+  assert.match(client, /location\.hash/);
 });
