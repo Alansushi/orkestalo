@@ -76,14 +76,14 @@
       metric('Visitas',rows.length?rows.reduce((n,x)=>n+Number(x.visits),0):'Aún sin datos','Sesiones registradas');
       metric('Intención de contacto',rows.length?rows.reduce((n,x)=>n+Number(x.contact_clicks),0):'Aún sin datos','Clics en canales de contacto');
       metric('Formularios enviados',rows.length?rows.reduce((n,x)=>n+Number(x.form_submits),0):'Aún sin datos','Envíos registrados');
-      const online=funnel.filter(x=>dataset.sites.find(s=>s.id===x.site_id)?.slug==='dra-ana-mora');
-      metric('Reservas verificadas',selected?.slug==='dra-fernanda-suaste'?'No aplica':online.reduce((n,x)=>n+Number(x.bookings),0),'Solo agenda activa');
-      metric('Pagos aprobados',selected?.slug==='dra-fernanda-suaste'?'No aplica':online.reduce((n,x)=>n+Number(x.approved_payments),0),'Confirmados por Mercado Pago');
-      metric('Citas confirmadas',selected?.slug==='dra-fernanda-suaste'?'No aplica':online.reduce((n,x)=>n+Number(x.confirmed_appointments),0),'Confirmadas en Cal.com');
+      const online=funnel;
+      metric('Reservas verificadas',online.length?online.reduce((n,x)=>n+Number(x.bookings),0):'Aún sin datos','Solo agenda activa');
+      metric('Pagos aprobados',online.length?online.reduce((n,x)=>n+Number(x.approved_payments),0):'Aún sin datos','Confirmados por Mercado Pago');
+      metric('Citas confirmadas',online.length?online.reduce((n,x)=>n+Number(x.confirmed_appointments),0):'Aún sin datos','Confirmadas en Cal.com');
       $('funnel').replaceChildren();
       const campaignRows=new Map();
       for(const row of funnel) {const key=JSON.stringify([row.site_id,row.source,row.medium,row.campaign]);const current=campaignRows.get(key)||{...row,visits:0,bookings:0,approved_payments:0,confirmed_appointments:0};for(const metric of ['visits','bookings','approved_payments','confirmed_appointments'])current[metric]+=Number(row[metric]);campaignRows.set(key,current);}
-      for(const row of campaignRows.values()) {const tr=document.createElement('tr');const site=dataset.sites.find(s=>s.id===row.site_id);[site?.name,row.source,row.medium,row.campaign,row.visits,site?.slug==='dra-fernanda-suaste'?'No aplica':row.bookings,site?.slug==='dra-fernanda-suaste'?'No aplica':row.approved_payments,site?.slug==='dra-fernanda-suaste'?'No aplica':row.confirmed_appointments].forEach(x=>cell(tr,x));$('funnel').append(tr);}
+      for(const row of campaignRows.values()) {const tr=document.createElement('tr');const site=dataset.sites.find(s=>s.id===row.site_id);[site?.name,row.source,row.medium,row.campaign,row.visits,row.bookings,row.approved_payments,row.confirmed_appointments].forEach(x=>cell(tr,x));$('funnel').append(tr);}
       empty('funnel',campaignRows.size>0,'Aquí aparecerán las campañas de visitas con consentimiento.');
       $('actions').replaceChildren();
       const actionRows=new Map();
