@@ -18,7 +18,7 @@ async function api(path, options = {}) {
   if (!response.ok) throw new Error(data.error || 'No se pudo completar la acción');
   return data;
 }
-function signOut() { generation++; session = null; current = null; snapshot = null; pendingEmail = null; clinics = []; sessionStorage.removeItem('consultorio_session'); $('dashboard').hidden = true; $('login').hidden = false; $('logout').hidden = true; $('login-form').hidden = false; $('code-form').hidden = true; for (const id of ['login-form','code-form','task-form','manual-form','slot-form','booking-form','email-settings-form']) $(id).reset(); for (const id of ['appointments','tasks','messages','slots','clinic-select','site-proposal','template-editors']) $(id).replaceChildren(); $('booking-form').hidden = true; note(''); }
+function signOut() { generation++; session = null; current = null; snapshot = null; pendingEmail = null; clinics = []; sessionStorage.removeItem('consultorio_session'); $('dashboard').hidden = true; $('login').hidden = false; $('logout').hidden = true; $('admin-panel').hidden = true; $('login-form').hidden = false; $('code-form').hidden = true; for (const id of ['login-form','code-form','task-form','manual-form','slot-form','booking-form','email-settings-form','admin-invite-form']) $(id).reset(); for (const id of ['appointments','tasks','messages','slots','clinic-select','site-proposal','template-editors','onboarding-steps','admin-invites']) $(id).replaceChildren(); $('booking-form').hidden = true; note(''); }
 function element(tag, text, className) { const node = document.createElement(tag); if (text != null) node.textContent = text; if (className) node.className = className; return node; }
 function item(title, detail, action, onClick) {
   const row = element('div', null, 'item'), body = element('div');
@@ -52,21 +52,52 @@ function render() {
   for (const m of messages.slice(0,20)) ml.append(item({ welcome:'Bienvenida', followup:'Reserva posterior', survey:'Encuesta' }[m.kind] || m.kind, `${m.status}${m.last_error ? ` · ${m.last_error}` : ''} · ${when(m.created_at)}`));
   for (const invite of paymentInvites.slice(0,10)) ml.append(item('Enlace con anticipo', `${invite.email_status} · ${when(invite.created_at)}`));
 }
-async function load() { if (!current || !session) return; const version = generation, clinic = current, accessToken = session.access_token; const [result, emails] = await Promise.all([api(`consultorio?clinic=${clinic}`), api(`consultorio?action=email&clinic=${clinic}`)]); if (version !== generation || clinic !== current || accessToken !== session?.access_token) return; snapshot = result; render(); renderEmails(emails); }
+async function load() { if (!current || !session) return; const version = generation, clinic = current, accessToken = session.access_token; const [result, emails] = await Promise.all([api(`consultorio?clinic=${clinic}`), api(`consultorio?action=email&clinic=${clinic}`)]); if (version !== generation || clinic !== current || accessToken !== session?.access_token) return; snapshot = result; render(); renderEmails(emails); await renderEventTypes(result); }
 const emailNames = { welcome:'Bienvenida', followup:'Reserva posterior', invite:'Invitación con anticipo', survey:'Encuesta' };
+const stepCopy = {
+  identity:['Confirma tus datos','Revisa el nombre que verán tus pacientes y el correo al que responderán. Puedes añadir tu sitio web o escribir todo a mano.','identity-settings'],
+  calendar:['Conecta Cal.com','Autoriza tu cuenta y elige por nombre tu tipo de cita normal. Si falla la conexión, usa «Conectar o reconectar Cal.com».','cal-setup'],
+  content:['Revisa la información propuesta','Analiza tu sitio si tienes uno, comprueba las fuentes y guarda los datos que quieras usar.','identity-settings'],
+  welcome:['Prueba y aprueba la bienvenida','Edita el mensaje, envíate una prueba y aprueba la versión que recibiste.','template-editors'],
+  followup:['Prueba y aprueba la siguiente cita','Comprueba los datos de la nueva reserva y aprueba la versión final.','template-editors'],
+  invite:['Prueba y aprueba la invitación','Prepara este correo aunque no cobres anticipos. El envío con anticipo es opcional.','template-editors'],
+  survey:['Prueba y aprueba la encuesta','Verifica que la encuesta solo se envíe con autorización de cada paciente.','template-editors'],
+  privacy:['Revisa privacidad y encuestas','Lee el aviso y confirma cómo solicitarás la autorización de encuesta en cada cita.','privacy-settings'],
+  activate:['Activa los mensajes','Activa expresamente cada tipo después de completar sus pruebas y aprobaciones.','template-editors'],
+};
+function renderOnboarding(steps) {
+  const list=$('onboarding-steps'); list.replaceChildren();
+  const completed=steps.filter(s => s.done).length;
+  show('onboarding-progress',`${completed} de ${steps.length} pasos`);
+  for(const step of steps){ const [title,help,target]=stepCopy[step.id] || [step.id,'','operations']; const li=element('li',null,`step ${step.done?'done':'pending'}`); const badge=element('span',step.done?'Listo':'Pendiente','step-status'); const content=element('div'); content.append(element('strong',title),element('p',help)); const link=element('a',step.done?'Revisar':'Continuar','step-link'); link.href=`#${target}`; li.append(badge,content,link); list.append(li); }
+}
+async function renderEventTypes(data) {
+  const normal=$('event-type-select'), paid=$('paid-event-select');
+  normal.replaceChildren(); paid.replaceChildren();
+  const empty=element('option',data.connected?'Elige un tipo de cita':'Conecta Cal.com para ver tus citas'); empty.value=''; normal.append(empty);
+  const none=element('option','No usar anticipo'); none.value=''; paid.append(none);
+  if(!data.connected){show('cal-help','Conecta Cal.com para continuar.');return;}
+  try { const {events}=await api(`consultorio?action=event-types&clinic=${current}`); for(const event of events){const label=`${event.title}${event.price>0?' · con anticipo':''}`; const a=element('option',label); a.value=event.id; normal.append(a); const b=element('option',`${label}${event.paidReady?'':' · falta configurar cobro o campo oculto'}`); b.value=event.id; paid.append(b);} normal.value=String(data.clinic.cal_event_type_id||''); paid.value=String(data.clinic.cal_paid_event_type_id||''); show('cal-help',events.length?'Elige tu cita normal. El anticipo es opcional.':'No hay tipos de cita. Crea uno en Cal.com y vuelve a actualizar.'); }
+  catch(error){show('cal-help',`${error.message} Usa «Conectar o reconectar Cal.com» si venció el permiso.`);}
+}
 function renderEmails(data) {
   const settings = $('email-settings-form');
   settings.elements.sender_name.value = data.clinic.sender_name || data.clinic.doctor_name;
+  settings.elements.website_url.value = data.clinic.website_url || '';
   settings.elements.reply_to.value = data.clinic.reply_to;
   settings.elements.brand_color.value = data.clinic.brand_color || '#163f51';
   settings.elements.location.value = data.clinic.location || '';
-  settings.elements.cal_booking_url.value = data.clinic.cal_booking_url || '';
+  renderOnboarding(data.steps || []);
+  $('confirm-identity').disabled=!!data.clinic.identity_confirmed_at;
+  $('confirm-content').disabled=!!data.clinic.content_reviewed_at;
+  $('accept-privacy').disabled=!!data.clinic.privacy_accepted_at;
+  show('privacy-state',data.clinic.privacy_accepted_at?'Privacidad revisada.':'Pendiente de revisión.');
   const source = $('site-proposal'); source.replaceChildren();
   if (data.proposal) {
     for (const [key, detail] of Object.entries(data.proposal.proposal)) source.append(item(`${key}: ${detail.value}`, `Fuente: ${detail.source}`));
     const apply = element('button', 'Aplicar datos propuestos', 'quiet'); apply.type='button'; apply.addEventListener('click', () => run(async () => {
       const proposal = data.proposal.proposal;
-      const values = Object.fromEntries(Object.entries({ sender_name:proposal.name?.value, reply_to:proposal.email?.value, brand_color:proposal.color?.value, location:proposal.location?.value, cal_booking_url:proposal.booking_url?.value }).filter(([,value]) => value));
+      const values = Object.fromEntries(Object.entries({ sender_name:proposal.name?.value, reply_to:proposal.email?.value, brand_color:proposal.color?.value, location:proposal.location?.value }).filter(([,value]) => value));
       if (!Object.keys(values).length) throw new Error('No se encontraron datos aplicables.');
       await api(`consultorio?action=email-settings&clinic=${current}`, { method:'PATCH', body:JSON.stringify(values) }); await load(); note('Datos aplicados. Revisa los borradores antes de activar correos.');
     })); source.append(apply);
@@ -88,7 +119,7 @@ function renderEmails(data) {
       }
       box.append(actions);
     }
-    const toggle = element('label', ` Activar ${name}`); const check = element('input'); check.type='checkbox'; check.checked=!!data.clinic[`${kind}_enabled`]; check.addEventListener('change', () => run(async () => { await api(`consultorio?action=email-settings&clinic=${current}`, { method:'PATCH', body:JSON.stringify({ [`${kind}_enabled`]:check.checked }) }); await load(); })); toggle.prepend(check); box.append(toggle); root.append(box);
+    const toggle = element('label', ` Activar ${name}`); const check = element('input'); check.type='checkbox'; check.checked=!!data.clinic[`${kind}_enabled`]; check.addEventListener('change', () => run(async () => { try { await api(`consultorio?action=email-settings&clinic=${current}`, { method:'PATCH', body:JSON.stringify({ [`${kind}_enabled`]:check.checked }) }); } finally { await load(); } })); toggle.prepend(check); box.append(toggle); root.append(box);
   }
 }
 async function enter() {
@@ -96,11 +127,17 @@ async function enter() {
   const data = await api('consultorio?action=clinics');
   if (version !== generation || accessToken !== session?.access_token) return;
   clinics = data.clinics;
-  if (!clinics.length) { signOut(); throw new Error('Tu cuenta aún no está asignada a un consultorio.'); }
+  const admin = await api('consultorio?action=admin-list').catch(() => null);
+  if (!clinics.length && !admin) { signOut(); throw new Error('Tu cuenta aún no está asignada a un consultorio.'); }
   const select = $('clinic-select'); select.replaceChildren();
   for (const clinic of clinics) { const option = element('option', clinic.name); option.value = clinic.id; select.append(option); }
-  current = clinics[0].id; await load(); if (!session) return; $('dashboard').hidden = false; $('login').hidden = true; $('logout').hidden = false; $('login-form').reset();
+  if (clinics.length) {current=clinics[0].id;await load();if(!session)return;}
+  else {current=null;show('clinic-name','Administración de consultorios');}
+  $('onboarding').hidden=!clinics.length;$('cal-setup').hidden=!clinics.length;$('operations').hidden=!clinics.length;select.hidden=!clinics.length;$('refresh').hidden=!clinics.length;
+  $('dashboard').hidden = false; $('login').hidden = true; $('logout').hidden = false; $('login-form').reset();
+  $('admin-panel').hidden=!admin;if(admin)renderAdmin(admin.invitations);
 }
+function renderAdmin(invitations){ const list=$('admin-invites');list.replaceChildren(); for(const invite of invitations)list.append(item(invite.email,invite.last_sent_at?`Último envío: ${when(invite.last_sent_at)}`:'Acceso existente','Reenviar',()=>run(async()=>{await api('consultorio?action=admin-resend',{method:'POST',body:JSON.stringify({email:invite.email})});const data=await api('consultorio?action=admin-list');renderAdmin(data.invitations);note('Invitación reenviada.');}))); }
 function formData(form) { return Object.fromEntries(new FormData(form)); }
 async function run(fn) { try { note(''); await fn(); } catch (e) { note(e.message); } }
 $('login-form').addEventListener('submit', async event => {
@@ -125,6 +162,13 @@ $('logout').addEventListener('click', signOut);
 $('refresh').addEventListener('click', () => run(load));
 $('analyze-site').addEventListener('click', () => run(async () => { await api(`consultorio?action=analyze-site&clinic=${current}`, { method:'POST' }); await load(); note('Propuesta creada. Revisa las fuentes y los borradores.'); }));
 $('email-settings-form').addEventListener('submit', event => { event.preventDefault(); run(async () => { const values = formData(event.target); await api(`consultorio?action=email-settings&clinic=${current}`, { method:'PATCH', body:JSON.stringify(values) }); await load(); note('Identidad guardada.'); }); });
+$('confirm-identity').addEventListener('click',()=>run(async()=>{await api(`consultorio?action=email-settings&clinic=${current}`,{method:'PATCH',body:JSON.stringify({identity_confirmed:true})});await load();note('Nombre y correo confirmados.');}));
+$('confirm-content').addEventListener('click',()=>run(async()=>{await api(`consultorio?action=email-settings&clinic=${current}`,{method:'PATCH',body:JSON.stringify({content_reviewed:true})});await load();note('Datos revisados y confirmados.');}));
+$('accept-privacy').addEventListener('click',()=>run(async()=>{await api(`consultorio?action=email-settings&clinic=${current}`,{method:'PATCH',body:JSON.stringify({privacy_accepted:true})});await load();note('Revisión de privacidad confirmada.');}));
+$('admin-invite-form').addEventListener('submit',event=>{event.preventDefault();run(async()=>{const values=formData(event.target);const result=await api('consultorio?action=admin-invite',{method:'POST',body:JSON.stringify(values)});const list=await api('consultorio?action=admin-list');renderAdmin(list.invitations);event.target.reset();note(result.invitation.resent?'Invitación reenviada.':'Invitación enviada.');});});
+$('cal-reconnect').addEventListener('click',()=>run(async()=>{const data=await api(`consultorio?action=connect&clinic=${current}`,{method:'POST'});location.assign(data.url);}));
+$('event-type-form').addEventListener('submit',event=>{event.preventDefault();run(async()=>{await api(`consultorio?action=select-event&clinic=${current}`,{method:'POST',body:JSON.stringify({eventTypeId:Number(formData(event.target).eventTypeId),paid:false})});await load();note('Tipo de cita y avisos de Cal.com comprobados.');});});
+$('paid-event-form').addEventListener('submit',event=>{event.preventDefault();run(async()=>{const id=formData(event.target).eventTypeId;if(!id){note('No se configuró anticipo.');return;}await api(`consultorio?action=select-event&clinic=${current}`,{method:'POST',body:JSON.stringify({eventTypeId:Number(id),paid:true})});await load();note('Anticipo y avisos de Cal.com comprobados.');});});
 $('clinic-select').addEventListener('change', event => { generation++; current = event.target.value; snapshot = null; $('dashboard').hidden = true; run(async () => { await load(); if (snapshot && current === event.target.value) $('dashboard').hidden = false; }); });
 $('task-form').addEventListener('submit', event => { event.preventDefault(); run(async () => { await api(`consultorio?clinic=${current}`, { method:'POST', body: JSON.stringify({ action:'task', title:formData(event.target).title }) }); event.target.reset(); await load(); }); });
 $('manual-form').addEventListener('submit', event => { event.preventDefault(); run(async () => { const form = formData(event.target); await api(`consultorio?clinic=${current}`, { method:'POST', body: JSON.stringify({ action:'manual', name:form.name, email:form.email, phone:form.phone, start:new Date(form.start).toISOString(), end:new Date(form.end).toISOString(), surveyAllowed: !!form.surveyAllowed }) }); event.target.reset(); await load(); note('Cita pendiente guardada. Regístrala en Cal.com.'); }); });

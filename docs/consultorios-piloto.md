@@ -1,5 +1,15 @@
 # Piloto de consultorios
 
+## Alta autogestionada
+
+La migración `20261119191714_clinic_self_serve.sql` añade el estado de alta, el registro de invitaciones y los webhooks por tipo de cita. Desactiva los cuatro envíos de los consultorios existentes hasta que cada profesional confirme sus datos, revise privacidad, pruebe y apruebe los mensajes, y active los tipos deseados. Las cuentas, citas y borradores existentes permanecen.
+
+El correo configurado como `MEASUREMENT_OWNER_EMAIL` tiene acceso al área de invitaciones. Si quieres autorizar más cuentas verificadas, configura `CLINIC_ADMIN_EMAILS` en Vercel Production y Preview con esos correos separados por comas. Enviar de nuevo el mismo correo reutiliza el consultorio; el enlace nuevo llega por Resend. El acceso con código de Supabase sigue disponible para las personas ya invitadas. No habilites el alta pública en Supabase Auth.
+
+Cada profesional entra en `/consultorio/` y sigue el recorrido. Puede escribir nombre, correo de respuestas, ubicación y color sin sitio web; si añade uno, el analizador solo lee una página pública HTTPS con dirección DNS pública y no sigue redirecciones. Para Cal.com, el cliente OAuth confidencial necesita `BOOKING_READ`, `BOOKING_WRITE`, `EVENT_TYPE_READ`, `EVENT_TYPE_WRITE`, `WEBHOOK_READ` y `WEBHOOK_WRITE`. Tras conectar, el panel lista los tipos de cita y crea o actualiza un webhook firmado por tipo seleccionado. Si reconecta la cuenta, los envíos se apagan hasta comprobar nuevamente los avisos. El tipo con anticipo es opcional; debe tener precio, URL de Cal.com y un campo oculto de texto corto con slug `orkesta_invite` antes de elegirlo.
+
+La activación se valida en el servidor contra la membresía, la conexión de Cal.com, el webhook, la identidad confirmada, la revisión de privacidad y una versión probada y aprobada de cada correo. El correo de invitación con anticipo exige además su propio tipo y webhook. Configura el webhook global de Resend y `SURVEY_TOKEN_SECRET` por separado. Antes de activar en producción, comprueba la entrega de pruebas y reservas ficticias con las credenciales reales.
+
 ## Personalización de correos (noviembre de 2026)
 
 La migración `20261119043419_clinic_email_personalization.sql` crea pacientes por consultorio, borradores versionados y una copia del contenido de cada envío. El primer correo se asigna a la primera cita confirmada registrada para el correo normalizado dentro de ese consultorio. Las citas pendientes de pago no cuentan; las siguientes citas confirmadas reciben la plantilla de reserva posterior. Los reintentos usan la copia guardada, y una cancelación detiene el reintento de bienvenida o reserva.

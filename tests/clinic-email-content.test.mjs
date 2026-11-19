@@ -5,6 +5,7 @@ import panel from '../api/consultorio.js';
 import { claimFirstPatient, queueMessage, deliverMessage } from '../src/server/consultorio.js';
 import calWebhook from '../src/server/consultorio-endpoints/cal-webhook.js';
 import retryHandler from '../src/server/consultorio-endpoints/consultorio-retry.js';
+import emailSettings from '../src/server/consultorio-endpoints/clinic-email-settings.js';
 import { createHmac } from 'node:crypto';
 
 test('normalizes a patient address within a clinic', () => {
@@ -152,7 +153,7 @@ test('analyzing a public site never replaces an approved template', async () => 
   };
   const res={ statusCode:200, setHeader(){}, end(value){ this.body=JSON.parse(value); } };
   try {
-    await panel({ method:'POST', url:`/api/consultorio?action=analyze-site&clinic=${clinicId}`, headers:{ authorization:'Bearer doctor-token' }, body:{} }, res);
+    await emailSettings({ method:'POST', body:{} }, res, { clinic:{ id:clinicId, website_url:'https://www.draanamora.com.mx/', doctor_name:'Dra. Ana' }, clinicId, user:{ id:'doctor', email:'doctor@example.com' }, action:'analyze-site', siteReader:async () => '<title>Dra. Ana Mora</title>' });
     assert.equal(res.statusCode, 200);
     assert.equal(templateInserts, 4);
     assert.equal(templateUpdates, 0);
