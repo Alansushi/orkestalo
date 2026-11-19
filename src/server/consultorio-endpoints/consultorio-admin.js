@@ -17,7 +17,7 @@ async function linkFor(email, existing) {
   if (!existing && response.status === 422) response = await call('magiclink');
   if (!response.ok) throw new Error(`Invitación ${response.status}`);
   const data = await response.json();
-  if (!data.action_link || !data.user?.id) throw new Error('Enlace inválido');
+  if (!data.action_link || !data.id) throw new Error('Enlace inválido');
   return data;
 }
 
@@ -43,7 +43,7 @@ export default async function admin(req, res, action) {
     const [clinic] = await db('clinics', { query:`?id=eq.${q(invitation.clinic_id)}&select=name&limit=1` });
     if (!clinic) return json(res, 404, { error:'Consultorio no encontrado' });
     const link = await linkFor(email, true);
-    if (link.user.id !== invitation.user_id) return json(res, 409, { error:'La cuenta del correo cambió; revisa el acceso' });
+    if (link.id !== invitation.user_id) return json(res, 409, { error:'La cuenta del correo cambió; revisa el acceso' });
     await sendInvite(email, clinic.name, link.action_link);
     await db('clinic_invitations', { method:'PATCH', query:`?email=eq.${q(email)}`, body:{ last_sent_at:new Date().toISOString() } });
     return json(res, 200, { sent:true });
@@ -56,9 +56,9 @@ export default async function admin(req, res, action) {
   const link = await linkFor(email, !!existing);
   let invitation = existing;
   if (!invitation) {
-    const [clinic] = await db('clinics', { method:'POST', body:{ name:input.name.trim(), doctor_name:(input.doctor_name || input.name).trim(), sender_local_part:`consulta-${randomBytes(5).toString('hex')}`, reply_to:email, cal_webhook_secret:randomBytes(32).toString('hex'), website_url:input.website_url ? siteUrlAllowed(input.website_url).toString() : null } });
-    await db('clinic_memberships', { method:'POST', body:{ clinic_id:clinic.id, user_id:link.user.id, active:true } });
-    [invitation] = await db('clinic_invitations', { method:'POST', body:{ email, clinic_id:clinic.id, user_id:link.user.id } });
+    const [provisioned] = await db('rpc/clinic_provision', { method:'POST', body:{ p_email:email, p_user_id:link.id, p_name:input.name.trim(), p_doctor_name:(input.doctor_name || input.name).trim(), p_sender_local_part:`consulta-${randomBytes(5).toString('hex')}`, p_cal_webhook_secret:randomBytes(32).toString('hex'), p_website_url:input.website_url ? siteUrlAllowed(input.website_url).toString() : null } });
+    if (!provisioned || provisioned.user_id !== link.id) return json(res, 409, { error:'El correo ya pertenece a otra cuenta' });
+    invitation = provisioned;
   }
   await sendInvite(email, input.name.trim(), link.action_link);
   await db('clinic_invitations', { method:'PATCH', query:`?email=eq.${q(email)}`, body:{ last_sent_at:new Date().toISOString() } });

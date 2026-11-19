@@ -89,6 +89,7 @@ function renderEmails(data) {
   settings.elements.location.value = data.clinic.location || '';
   renderOnboarding(data.steps || []);
   $('confirm-identity').disabled=!!data.clinic.identity_confirmed_at;
+  $('confirm-content').disabled=!!data.clinic.content_reviewed_at;
   $('accept-privacy').disabled=!!data.clinic.privacy_accepted_at;
   show('privacy-state',data.clinic.privacy_accepted_at?'Privacidad revisada.':'Pendiente de revisión.');
   const source = $('site-proposal'); source.replaceChildren();
@@ -118,7 +119,7 @@ function renderEmails(data) {
       }
       box.append(actions);
     }
-    const toggle = element('label', ` Activar ${name}`); const check = element('input'); check.type='checkbox'; check.checked=!!data.clinic[`${kind}_enabled`]; check.addEventListener('change', () => run(async () => { await api(`consultorio?action=email-settings&clinic=${current}`, { method:'PATCH', body:JSON.stringify({ [`${kind}_enabled`]:check.checked }) }); await load(); })); toggle.prepend(check); box.append(toggle); root.append(box);
+    const toggle = element('label', ` Activar ${name}`); const check = element('input'); check.type='checkbox'; check.checked=!!data.clinic[`${kind}_enabled`]; check.addEventListener('change', () => run(async () => { try { await api(`consultorio?action=email-settings&clinic=${current}`, { method:'PATCH', body:JSON.stringify({ [`${kind}_enabled`]:check.checked }) }); } finally { await load(); } })); toggle.prepend(check); box.append(toggle); root.append(box);
   }
 }
 async function enter() {
@@ -162,6 +163,7 @@ $('refresh').addEventListener('click', () => run(load));
 $('analyze-site').addEventListener('click', () => run(async () => { await api(`consultorio?action=analyze-site&clinic=${current}`, { method:'POST' }); await load(); note('Propuesta creada. Revisa las fuentes y los borradores.'); }));
 $('email-settings-form').addEventListener('submit', event => { event.preventDefault(); run(async () => { const values = formData(event.target); await api(`consultorio?action=email-settings&clinic=${current}`, { method:'PATCH', body:JSON.stringify(values) }); await load(); note('Identidad guardada.'); }); });
 $('confirm-identity').addEventListener('click',()=>run(async()=>{await api(`consultorio?action=email-settings&clinic=${current}`,{method:'PATCH',body:JSON.stringify({identity_confirmed:true})});await load();note('Nombre y correo confirmados.');}));
+$('confirm-content').addEventListener('click',()=>run(async()=>{await api(`consultorio?action=email-settings&clinic=${current}`,{method:'PATCH',body:JSON.stringify({content_reviewed:true})});await load();note('Datos revisados y confirmados.');}));
 $('accept-privacy').addEventListener('click',()=>run(async()=>{await api(`consultorio?action=email-settings&clinic=${current}`,{method:'PATCH',body:JSON.stringify({privacy_accepted:true})});await load();note('Revisión de privacidad confirmada.');}));
 $('admin-invite-form').addEventListener('submit',event=>{event.preventDefault();run(async()=>{const values=formData(event.target);const result=await api('consultorio?action=admin-invite',{method:'POST',body:JSON.stringify(values)});const list=await api('consultorio?action=admin-list');renderAdmin(list.invitations);event.target.reset();note(result.invitation.resent?'Invitación reenviada.':'Invitación enviada.');});});
 $('cal-reconnect').addEventListener('click',()=>run(async()=>{const data=await api(`consultorio?action=connect&clinic=${current}`,{method:'POST'});location.assign(data.url);}));

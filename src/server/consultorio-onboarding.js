@@ -33,21 +33,22 @@ export function paidEventReady(event) {
 export function onboardingSteps({ clinic, connected, templates = [] }) {
   const approved = kind => templates.some(t => t.kind === kind && t.approved_at && t.tested_at && t.tested_revision === t.revision);
   const identity = !!clinic.sender_name && !!clinic.reply_to && !!clinic.identity_confirmed_at;
+  const content = !!clinic.content_reviewed_at;
   const calendar = !!connected && !!clinic.cal_event_type_id && !!clinic.cal_webhook_ready;
   const privacy = !!clinic.privacy_accepted_at;
   return [
     { id:'identity', done:identity },
     { id:'calendar', done:calendar },
-    { id:'content', done:identity },
+    { id:'content', done:content },
     ...['welcome','followup','invite','survey'].map(kind => ({ id:kind, done:approved(kind) })),
     { id:'privacy', done:privacy },
-    { id:'activate', done:identity && calendar && privacy && ['welcome','followup','invite','survey'].every(approved) && ['welcome','followup','survey'].every(kind => clinic[`${kind}_enabled`]) },
+    { id:'activate', done:identity && content && calendar && privacy && ['welcome','followup','invite','survey'].every(approved) && ['welcome','followup','survey'].every(kind => clinic[`${kind}_enabled`]) },
   ];
 }
 
 export function canActivateEmail({ clinic, connected, templates, kind }) {
   const steps = onboardingSteps({ clinic, connected, templates });
-  if (!steps.find(step => step.id === 'identity')?.done || !steps.find(step => step.id === 'calendar')?.done || !steps.find(step => step.id === 'privacy')?.done || !steps.find(step => step.id === kind)?.done) return false;
+  if (!steps.find(step => step.id === 'identity')?.done || !steps.find(step => step.id === 'content')?.done || !steps.find(step => step.id === 'calendar')?.done || !steps.find(step => step.id === 'privacy')?.done || !steps.find(step => step.id === kind)?.done) return false;
   if (kind === 'invite' && (!clinic.cal_paid_event_type_id || !clinic.cal_paid_event_ready || !clinic.cal_paid_webhook_ready)) return false;
   return true;
 }

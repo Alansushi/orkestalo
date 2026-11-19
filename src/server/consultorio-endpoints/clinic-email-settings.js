@@ -27,6 +27,7 @@ export default async function emailSettings(req, res, { clinic, clinicId, user, 
       proposal = { ...extracted, ...proposal };
     }
     await db('clinic_site_analyses', { method:'POST', body:{ clinic_id:clinicId, proposal } });
+    await db('clinics', { method:'PATCH', query:`?id=eq.${q(clinicId)}`, body:{ content_reviewed_at:null } });
     const existing = await drafts(clinicId);
     for (const [kind, content] of Object.entries(starterTemplates(proposal))) {
       const history = existing.filter(row => row.kind === kind);
@@ -40,29 +41,35 @@ export default async function emailSettings(req, res, { clinic, clinicId, user, 
     if (input.website_url !== undefined) {
       if (input.website_url && !siteUrlAllowed(input.website_url)) return json(res, 400, { error:'Sitio inválido' });
       changes.website_url = input.website_url ? siteUrlAllowed(input.website_url).toString() : null;
+      if (changes.website_url !== clinic.website_url) changes.content_reviewed_at = null;
     }
     if (input.sender_name !== undefined) {
       if (!validText(input.sender_name, 120) || /[<>\r\n]/.test(input.sender_name)) return json(res, 400, { error:'Nombre inválido' });
       changes.sender_name = input.sender_name.trim();
       if (changes.sender_name !== clinic.sender_name) changes.identity_confirmed_at = null;
+      if (changes.sender_name !== clinic.sender_name) changes.content_reviewed_at = null;
     }
     if (input.reply_to !== undefined) {
       if (!validEmail(input.reply_to)) return json(res, 400, { error:'Correo inválido' });
       changes.reply_to = input.reply_to.trim().toLowerCase();
       if (changes.reply_to !== clinic.reply_to) changes.identity_confirmed_at = null;
+      if (changes.reply_to !== clinic.reply_to) changes.content_reviewed_at = null;
     }
     if (input.brand_color !== undefined) {
       if (!/^#[0-9a-f]{6}$/i.test(input.brand_color)) return json(res, 400, { error:'Color inválido' });
       changes.brand_color = input.brand_color;
+      if (changes.brand_color !== clinic.brand_color) changes.content_reviewed_at = null;
     }
     if (input.location !== undefined) {
       if (!validText(input.location, 250, 0)) return json(res, 400, { error:'Ubicación inválida' });
       changes.location = input.location.trim();
+      if (changes.location !== clinic.location) changes.content_reviewed_at = null;
     }
     if (input.identity_confirmed === true) {
       if (!validText(changes.sender_name || clinic.sender_name, 120) || !validEmail(changes.reply_to || clinic.reply_to)) return json(res, 409, { error:'Completa nombre y correo de respuestas' });
       changes.identity_confirmed_at = new Date().toISOString();
     }
+    if (input.content_reviewed === true) changes.content_reviewed_at = new Date().toISOString();
     if (input.privacy_accepted === true) {
       changes.privacy_accepted_at = new Date().toISOString();
       changes.privacy_version = 'consultorio-privacidad-v1';
@@ -80,7 +87,8 @@ export default async function emailSettings(req, res, { clinic, clinicId, user, 
     }
     if (!Object.keys(changes).length) return json(res, 400, { error:'Sin cambios' });
     const [updated] = await db('clinics', { method:'PATCH', query:`?id=eq.${q(clinicId)}`, body:changes });
-    return json(res, 200, { clinic:updated });
+    const publicFields = ['id','name','doctor_name','sender_name','reply_to','website_url','location','brand_color','cal_event_type_id','cal_paid_event_type_id','cal_booking_url','cal_webhook_ready','cal_paid_event_ready','cal_paid_webhook_ready','identity_confirmed_at','content_reviewed_at','privacy_accepted_at','welcome_enabled','followup_enabled','invite_enabled','survey_enabled'];
+    return json(res, 200, { clinic:Object.fromEntries(publicFields.map(key => [key,updated?.[key]])) });
   }
   if (req.method === 'PATCH' && action === 'email-template') {
     if (!validTemplate(input)) return json(res, 400, { error:'Plantilla inválida' });

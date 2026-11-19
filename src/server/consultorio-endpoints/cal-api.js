@@ -1,4 +1,4 @@
-import { createHash, randomUUID } from 'node:crypto';
+import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import { db, json, readBody, validEmail, validText } from '../commerce.js';
 import { approvedTemplate, deliverPaymentInvite, queryValue, requireClinic, token } from '../consultorio.js';
 import { prepareEmail } from '../clinic-email-content.js';
@@ -43,7 +43,7 @@ export default async function handler(req, res) {
       if (!rows.length) return json(res, 401, { error: 'Autorización vencida' });
       const tokens = await oauthToken({ grant_type: 'authorization_code', code: url.searchParams.get('code'), redirect_uri: redirectUri });
       if (!tokens.access_token || !tokens.refresh_token || !tokens.expires_in) throw new Error('Cal no devolvió credenciales');
-      await db('clinics', { method:'PATCH', query:`?id=eq.${q(rows[0].clinic_id)}`, body:{ cal_webhook_ready:false, cal_paid_webhook_ready:false, welcome_enabled:false, followup_enabled:false, survey_enabled:false, invite_enabled:false } });
+      await db('clinics', { method:'PATCH', query:`?id=eq.${q(rows[0].clinic_id)}`, body:{ cal_webhook_secret:randomBytes(32).toString('hex'), cal_webhook_ready:false, cal_paid_webhook_ready:false, welcome_enabled:false, followup_enabled:false, survey_enabled:false, invite_enabled:false } });
       await db('clinic_cal_connections', { method: 'POST', query: '?on_conflict=clinic_id', body: { clinic_id: rows[0].clinic_id, access_token: tokens.access_token, refresh_token: tokens.refresh_token, expires_at: new Date(Date.now() + tokens.expires_in * 1000).toISOString() }, prefer: 'resolution=merge-duplicates,return=representation' });
       res.statusCode = 302;
       res.setHeader('Location', '/consultorio/?connected=1');
@@ -60,7 +60,7 @@ export default async function handler(req, res) {
       const state = token();
       await db('clinic_oauth_states', { method: 'POST', body: { state_hash: hash(state), clinic_id: clinicId, expires_at: new Date(Date.now() + 10 * 60_000).toISOString() } });
       const target = new URL('https://app.cal.com/auth/oauth2/authorize');
-      for (const [key, value] of Object.entries({ client_id: process.env.CAL_OAUTH_CLIENT_ID, redirect_uri: redirectUri, state, scope: 'BOOKING_READ BOOKING_WRITE EVENT_TYPE_READ WEBHOOK_READ WEBHOOK_WRITE' })) target.searchParams.set(key, value);
+      for (const [key, value] of Object.entries({ client_id: process.env.CAL_OAUTH_CLIENT_ID, redirect_uri: redirectUri, state, scope: 'BOOKING_READ BOOKING_WRITE EVENT_TYPE_READ EVENT_TYPE_WRITE WEBHOOK_READ WEBHOOK_WRITE' })) target.searchParams.set(key, value);
       return json(res, 200, { url: target.toString() });
     }
     if (action === 'event-types' && req.method === 'GET') {
@@ -78,7 +78,19 @@ export default async function handler(req, res) {
       const [clinic] = await db('clinics', { query:`?id=eq.${q(clinicId)}&select=id,cal_webhook_secret,cal_event_type_id,cal_paid_event_type_id` });
       if (!clinic?.cal_webhook_secret) return json(res, 503, { error:'Falta la firma del consultorio' });
       if (input.paid && clinic.cal_event_type_id === selected.id || !input.paid && clinic.cal_paid_event_type_id === selected.id) return json(res, 409, { error:'Elige tipos de cita distintos' });
+      await db('clinic_cal_setup_locks', { method:'DELETE', query:`?clinic_id=eq.${q(clinicId)}&claimed_at=lt.${q(new Date(Date.now()-2*60_000).toISOString())}`, prefer:'return=minimal' });
+      const [lock] = await db('clinic_cal_setup_locks', { method:'POST', query:'?on_conflict=clinic_id', body:{ clinic_id:clinicId }, prefer:'resolution=ignore-duplicates,return=representation' });
+      if (!lock) return json(res, 409, { error:'Cal.com ya se está configurando. Actualiza en un momento.' });
+      try {
       const subscriberUrl = `https://www.orkestalo.com/api/consultorio-misc?route=cal&clinic=${clinicId}`;
+      const previousId = input.paid ? clinic.cal_paid_event_type_id : clinic.cal_event_type_id;
+      if (previousId && Number(previousId) !== selected.id) {
+        await db('clinics', { method:'PATCH', query:`?id=eq.${q(clinicId)}`, body:input.paid ? { cal_paid_webhook_ready:false, invite_enabled:false } : { cal_webhook_ready:false, welcome_enabled:false, followup_enabled:false, survey_enabled:false } });
+        const oldPath = `event-types/${previousId}/webhooks`;
+        const oldHooks = await cal(oldPath, access);
+        for (const old of (Array.isArray(oldHooks) ? oldHooks : []).filter(hook => hook.subscriberUrl === subscriberUrl)) await cal(`${oldPath}/${old.id}`, access, undefined, undefined, 'DELETE');
+        await db('clinic_cal_webhooks', { method:'DELETE', query:`?clinic_id=eq.${q(clinicId)}&event_type_id=eq.${previousId}` });
+      }
       const path = `event-types/${selected.id}/webhooks`;
       const hooks = await cal(path, access);
       const found = (Array.isArray(hooks) ? hooks : []).find(hook => hook.subscriberUrl === subscriberUrl);
@@ -92,6 +104,9 @@ export default async function handler(req, res) {
       const changes = input.paid ? { cal_paid_event_type_id:selected.id, cal_booking_url:selected.bookingUrl, cal_paid_event_ready:true, cal_paid_webhook_ready:true, invite_enabled:false } : { cal_event_type_id:selected.id, cal_webhook_ready:true, welcome_enabled:false, followup_enabled:false, survey_enabled:false };
       await db('clinics', { method:'PATCH', query:`?id=eq.${q(clinicId)}`, body:changes });
       return json(res, 200, { event:{ id:selected.id, title:selected.title, paid:input.paid }, webhookReady:true });
+      } finally {
+        await db('clinic_cal_setup_locks', { method:'DELETE', query:`?clinic_id=eq.${q(clinicId)}`, prefer:'return=minimal' });
+      }
     }
     const clinics = await db('clinics', { query: `?id=eq.${q(clinicId)}&select=id,doctor_name,sender_name,sender_local_part,reply_to,brand_color,invite_enabled,cal_event_type_id,cal_paid_event_type_id,cal_booking_url` });
     const clinic = clinics[0];

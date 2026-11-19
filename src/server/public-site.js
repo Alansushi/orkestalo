@@ -11,7 +11,7 @@ export async function readPublicSite(value, { resolve = lookup, request = https.
   return new Promise((resolveText, reject) => {
     const req = request(url, {
       method:'GET', headers:{ Accept:'text/html' }, timeout:7000,
-      lookup:(_host,_options,callback) => callback(null,chosen.address,chosen.family),
+      lookup:(_host,options,callback) => options.all ? callback(null,[chosen]) : callback(null,chosen.address,chosen.family),
       servername:url.hostname,
     }, response => {
       if (response.statusCode !== 200 || !/^text\/html\b/i.test(response.headers['content-type'] || '')) { response.resume(); resolveText(''); return; }

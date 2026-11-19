@@ -29,7 +29,7 @@ export default async function handler(req, res) {
   try { access = await requireClinic(req, clinicId); } catch { return json(res, 503, { error: 'Acceso no disponible' }); }
   if (!access) return json(res, 401, { error: 'Acceso restringido' });
   try {
-    const clinics = await db('clinics', { query: `?id=eq.${q(clinicId)}&select=id,name,doctor_name,sender_name,sender_local_part,reply_to,website_url,location,brand_color,cal_event_type_id,cal_paid_event_type_id,cal_booking_url,cal_webhook_ready,cal_paid_event_ready,cal_paid_webhook_ready,identity_confirmed_at,privacy_accepted_at,survey_enabled,welcome_enabled,followup_enabled,invite_enabled` });
+    const clinics = await db('clinics', { query: `?id=eq.${q(clinicId)}&select=id,name,doctor_name,sender_name,sender_local_part,reply_to,website_url,location,brand_color,cal_event_type_id,cal_paid_event_type_id,cal_booking_url,cal_webhook_ready,cal_paid_event_ready,cal_paid_webhook_ready,identity_confirmed_at,content_reviewed_at,privacy_accepted_at,survey_enabled,welcome_enabled,followup_enabled,invite_enabled` });
     const clinic = clinics[0];
     if (!clinic) return json(res, 404, { error: 'Consultorio no encontrado' });
     if (['email','analyze-site','email-settings','email-template','email-preview','email-test','email-approve'].includes(url.searchParams.get('action'))) return emailSettings(req, res, { clinic, clinicId, user:access.user, action:url.searchParams.get('action') });
