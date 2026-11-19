@@ -2,6 +2,7 @@ import { db, json, readBody, validEmail, validPhone, validText } from '../src/se
 import { queryValue, requireClinic, ensureSurvey, surveyConsentRecord, userFromRequest } from '../src/server/consultorio.js';
 import calHandler from '../src/server/consultorio-endpoints/cal-api.js';
 import emailSettings from '../src/server/consultorio-endpoints/clinic-email-settings.js';
+import admin from '../src/server/consultorio-endpoints/consultorio-admin.js';
 
 const uuid = value => /^[0-9a-f-]{36}$/i.test(value || '');
 const q = queryValue;
@@ -9,7 +10,11 @@ const q = queryValue;
 export default async function handler(req, res) {
   if (!['GET', 'POST', 'PATCH'].includes(req.method)) return json(res, 405, { error: 'Método no permitido' });
   const url = new URL(req.url, 'https://www.orkestalo.com');
-  if (['callback','connect','slots','booking'].includes(url.searchParams.get('action'))) return calHandler(req, res);
+  if (['admin-list','admin-invite','admin-resend'].includes(url.searchParams.get('action'))) {
+    try { return await admin(req, res, url.searchParams.get('action')); }
+    catch (error) { console.error('Clinic admin', error); return json(res, 503, { error:'Administración no disponible' }); }
+  }
+  if (['callback','connect','slots','booking','event-types','select-event'].includes(url.searchParams.get('action'))) return calHandler(req, res);
   if (req.method === 'GET' && url.searchParams.get('action') === 'clinics') {
     try {
       const user = await userFromRequest(req);
@@ -24,7 +29,7 @@ export default async function handler(req, res) {
   try { access = await requireClinic(req, clinicId); } catch { return json(res, 503, { error: 'Acceso no disponible' }); }
   if (!access) return json(res, 401, { error: 'Acceso restringido' });
   try {
-    const clinics = await db('clinics', { query: `?id=eq.${q(clinicId)}&select=id,name,doctor_name,sender_name,sender_local_part,reply_to,website_url,location,brand_color,cal_event_type_id,cal_booking_url,survey_enabled,welcome_enabled,followup_enabled,invite_enabled` });
+    const clinics = await db('clinics', { query: `?id=eq.${q(clinicId)}&select=id,name,doctor_name,sender_name,sender_local_part,reply_to,website_url,location,brand_color,cal_event_type_id,cal_paid_event_type_id,cal_booking_url,cal_webhook_ready,cal_paid_event_ready,cal_paid_webhook_ready,identity_confirmed_at,privacy_accepted_at,survey_enabled,welcome_enabled,followup_enabled,invite_enabled` });
     const clinic = clinics[0];
     if (!clinic) return json(res, 404, { error: 'Consultorio no encontrado' });
     if (['email','analyze-site','email-settings','email-template','email-preview','email-test','email-approve'].includes(url.searchParams.get('action'))) return emailSettings(req, res, { clinic, clinicId, user:access.user, action:url.searchParams.get('action') });
