@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     for (const message of messages) {
       const [clinic] = await db('clinics', { query: `?id=eq.${message.clinic_id}&select=*` });
       const [appointment] = await db('clinic_appointments', { query: `?id=eq.${message.appointment_id}&clinic_id=eq.${message.clinic_id}&select=*` });
-      if (!clinic || !appointment || (message.kind === 'survey' && (!clinic.survey_enabled || !appointment.survey_due || !process.env.SURVEY_TOKEN_SECRET)) || (message.kind === 'welcome' && !clinic.welcome_enabled)) continue;
+      if (!clinic || !appointment || (message.kind !== 'survey' && !['confirmed','attended'].includes(appointment.status)) || (message.kind === 'survey' && (!clinic.survey_enabled || !appointment.survey_due || appointment.status !== 'attended' || !process.env.SURVEY_TOKEN_SECRET)) || (message.kind === 'welcome' && !clinic.welcome_enabled) || (message.kind === 'followup' && !clinic.followup_enabled)) continue;
       const surveyUrl = message.kind === 'survey' ? `https://www.orkestalo.com/encuesta/?token=${surveyToken(appointment.id, process.env.SURVEY_TOKEN_SECRET)}` : undefined;
       if (await deliverMessage(clinic, appointment, message, surveyUrl)) sent++;
     }
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     ];
     for (const invite of invites) {
       const [clinic] = await db('clinics', { query:`?id=eq.${invite.clinic_id}&select=*` });
-      if (clinic && invite.status === 'pending' && await deliverPaymentInvite(clinic, invite)) sent++;
+      if (clinic?.invite_enabled && invite.status === 'pending' && await deliverPaymentInvite(clinic, invite)) sent++;
     }
     if (process.env.SURVEY_TOKEN_SECRET) {
       const attended = await db('clinic_appointments', { query:'?status=eq.attended&survey_due=eq.true&select=*&order=attended_at.desc&limit=100' });

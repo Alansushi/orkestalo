@@ -1,6 +1,7 @@
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { db, json, readBody, validEmail, validText } from '../commerce.js';
-import { deliverPaymentInvite, queryValue, requireClinic, token } from '../consultorio.js';
+import { approvedTemplate, deliverPaymentInvite, queryValue, requireClinic, token } from '../consultorio.js';
+import { prepareEmail } from '../clinic-email-content.js';
 
 const redirectUri = 'https://www.orkestalo.com/api/consultorio?action=callback';
 const q = queryValue;
@@ -59,7 +60,7 @@ export default async function handler(req, res) {
       for (const [key, value] of Object.entries({ client_id: process.env.CAL_OAUTH_CLIENT_ID, redirect_uri: redirectUri, state, scope: 'BOOKING_READ BOOKING_WRITE' })) target.searchParams.set(key, value);
       return json(res, 200, { url: target.toString() });
     }
-    const clinics = await db('clinics', { query: `?id=eq.${q(clinicId)}&select=id,doctor_name,sender_local_part,reply_to,cal_event_type_id,cal_paid_event_type_id,cal_booking_url` });
+    const clinics = await db('clinics', { query: `?id=eq.${q(clinicId)}&select=id,doctor_name,sender_name,sender_local_part,reply_to,brand_color,invite_enabled,cal_event_type_id,cal_paid_event_type_id,cal_booking_url` });
     const clinic = clinics[0];
     if (!clinic?.cal_event_type_id) return json(res, 409, { error: 'Tipo de cita no configurado' });
     if (action === 'slots' && req.method === 'GET') {
@@ -73,10 +74,18 @@ export default async function handler(req, res) {
       const input = readBody(req) || {};
       if (!validText(input.name, 120) || !validEmail(input.email) || !Number.isFinite(Date.parse(input.start))) return json(res, 400, { error: 'Datos inválidos' });
       if (input.payment === true) {
+        if (!clinic.invite_enabled) return json(res, 409, { error:'Invitaciones aún no activadas' });
+        const template = await approvedTemplate(clinicId, 'invite');
+        if (!template) return json(res, 409, { error:'Invitación aún no aprobada' });
         let bookingUrl;
         try { bookingUrl = new URL(clinic.cal_booking_url); } catch { return json(res, 409, { error:'Enlace de pago no configurado' }); }
         if (bookingUrl.protocol !== 'https:' || !['cal.com','app.cal.com'].includes(bookingUrl.hostname) || !clinic.cal_paid_event_type_id) return json(res, 409, { error:'Enlace de pago inválido' });
-        const [invite] = await db('clinic_payment_invites', { method:'POST', body:{ clinic_id:clinicId, patient_name:input.name.trim(), patient_email:input.email.trim().toLowerCase(), requested_start:input.start } });
+        const id = randomUUID(), patientEmail = input.email.trim().toLowerCase(), patientName = input.name.trim();
+        bookingUrl.searchParams.set('orkesta_invite', id);
+        bookingUrl.searchParams.set('name', patientName);
+        bookingUrl.searchParams.set('email', patientEmail);
+        const snapshot = prepareEmail(clinic, template, { patient:patientName, doctor:clinic.doctor_name, booking_url:bookingUrl.toString(), survey_url:'', location:'' }, patientEmail);
+        const [invite] = await db('clinic_payment_invites', { method:'POST', body:{ id, clinic_id:clinicId, patient_name:patientName, patient_email:patientEmail, requested_start:input.start, email_snapshot:snapshot } });
         const emailSent = await deliverPaymentInvite(clinic, invite);
         return json(res, 201, { invitePending:true, emailSent });
       }

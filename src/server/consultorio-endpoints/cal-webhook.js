@@ -1,5 +1,5 @@
 import { db, json } from '../commerce.js';
-import { appointmentFromCal, deliverMessage, matchingManualAppointment, queryValue, queueMessage, verifyCalWebhook } from '../consultorio.js';
+import { appointmentFromCal, claimFirstPatient, deliverMessage, matchingManualAppointment, queryValue, queueMessage, verifyCalWebhook } from '../consultorio.js';
 
 export const config = { api: { bodyParser: false } };
 const q = queryValue;
@@ -23,6 +23,15 @@ async function findAppointment(clinicId, uid) {
 async function alias(clinicId, uid, appointmentId) {
   if (!uid) return;
   await db('clinic_cal_aliases', { method:'POST', query:'?on_conflict=clinic_id,cal_uid', body:{ clinic_id:clinicId, cal_uid:uid, appointment_id:appointmentId }, prefer:'resolution=ignore-duplicates,return=minimal' });
+}
+
+async function ensureBookingEmail(clinic, row, triggerEvent) {
+  if (!['BOOKING_CREATED','BOOKING_PAID'].includes(triggerEvent) || row.status !== 'confirmed') return;
+  const first = await claimFirstPatient(clinic, row);
+  const kind = first ? 'welcome' : 'followup';
+  if (first === null || !clinic[`${kind}_enabled`]) return;
+  const message = await queueMessage(clinic, row, kind);
+  if (message) await deliverMessage(clinic, row, message);
 }
 
 export default async function handler(req, res) {
@@ -57,7 +66,10 @@ export default async function handler(req, res) {
 
     let row;
     if (existing) {
-      if (existing.cal_event_at && Date.parse(existing.cal_event_at) >= Date.parse(appointment.cal_event_at)) return json(res, 200, { duplicate:true });
+      if (existing.cal_event_at && Date.parse(existing.cal_event_at) >= Date.parse(appointment.cal_event_at)) {
+        await ensureBookingEmail(clinic, existing, event.triggerEvent);
+        return json(res, 200, { duplicate:true });
+      }
       const status = existing.status === 'attended' && ['confirmed','pending'].includes(appointment.status) ? 'attended' : appointment.status;
       const [updated] = await db('clinic_appointments', { method:'PATCH', query:`?id=eq.${existing.id}&clinic_id=eq.${q(clinicId)}&or=(cal_event_at.is.null,cal_event_at.lt.${q(appointment.cal_event_at)})`, body:{ ...appointment, status } });
       row = updated || existing;
@@ -79,10 +91,7 @@ export default async function handler(req, res) {
       const inviteId = event.payload?.responses?.orkesta_invite;
       if (uuid(inviteId)) await db('clinic_payment_invites', { method:'PATCH', query:`?id=eq.${q(inviteId)}&clinic_id=eq.${q(clinicId)}&patient_email=eq.${q(appointment.patient_email)}&status=eq.pending`, body:{ status:'confirmed', cal_uid:appointment.cal_uid } });
     }
-    if (clinic.welcome_enabled && appointment.status === 'confirmed' && row.status === 'confirmed') {
-      const message = await queueMessage(clinic, row, 'welcome');
-      if (message) await deliverMessage(clinic, row, message);
-    }
+    await ensureBookingEmail(clinic, row, event.triggerEvent);
     return json(res, 200, { ok:true });
   } catch (error) { console.error('Cal webhook', error); return json(res, 503, { error:'No se pudo procesar' }); }
 }
