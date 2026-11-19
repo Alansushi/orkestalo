@@ -24,3 +24,7 @@ Configura `CRON_SECRET` como valor aleatorio privado en Vercel. La tarea diaria 
 ## Seguimiento
 
 Las comprobaciones pendientes de reserva, pago y capturas de Ana están en [docs/seguimiento-medicion.md](docs/seguimiento-medicion.md).
+
+## Piloto de consultorios
+
+El panel privado, las integraciones y la activación por clínica están documentados en [docs/consultorios-piloto.md](docs/consultorios-piloto.md). Hasta configurar las credenciales, conectar Cal.com y aprobar textos y avisos con las doctoras, el panel queda inactivo para pacientes reales.

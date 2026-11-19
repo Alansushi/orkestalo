@@ -1,12 +1,18 @@
 {
   "devCommand": "node scripts/serve.mjs",
-  "functions": { "api/measurement-maintenance.js": { "maxDuration": 60 } },
+  "functions": {
+    "api/measurement-maintenance.js": { "maxDuration": 60 },
+    "api/consultorio.js": { "maxDuration": 60 },
+    "api/consultorio-cal.js": { "maxDuration": 60 },
+    "api/consultorio-misc.js": { "maxDuration": 60 }
+  },
   "proxy": {
     "entrypoint": "proxy.js",
     "matcher": ["/buen-fin-2026", "/buen-fin-2026/:path*", "/terminos-buen-fin-2026", "/terminos-buen-fin-2026/:path*"]
   },
   "crons": [
     { "path": "/api/retry-notices", "schedule": "0 12 * * *" },
+    { "path": "/api/consultorio-misc", "schedule": "15 12 * * *" },
     { "path": "/api/measurement-maintenance", "schedule": "0 13 * * *" }
   ],
   "redirects": [
