@@ -5,6 +5,8 @@ import { chromium } from 'playwright-core';
 import { setSession } from '../src/server/measurement-auth.js';
 
 const chrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const view = await readFile(new URL('../src/measurement/dashboard-view.js', import.meta.url), 'utf8');
+const viewCss = await readFile(new URL('../src/measurement/dashboard-view.css', import.meta.url), 'utf8');
 
 test('email code needs TOTP before opening the measurement dashboard', { skip: process.platform !== 'darwin' }, async () => {
   const browser = await chromium.launch({ executablePath: chrome, headless: true, args: ['--no-sandbox'] });
@@ -15,6 +17,8 @@ test('email code needs TOTP before opening the measurement dashboard', { skip: p
     const html = await readFile(new URL('../src/measurement/dashboard.html', import.meta.url), 'utf8');
     await page.route('**/*', route => {
       const url = new URL(route.request().url());
+      if (url.pathname === '/assets/dashboard-view.js') return route.fulfill({ status: 200, contentType: 'text/javascript', body: view });
+      if (url.pathname === '/assets/dashboard-view.css') return route.fulfill({ status: 200, contentType: 'text/css', body: viewCss });
       if (url.pathname === '/medicion/') return route.fulfill({ status: 200, contentType: 'text/html', body: html });
       if (url.pathname === '/api/measurement-dashboard') {
         const authenticated = route.request().headers().cookie?.includes('orkesta_measurement_session=owner-token');
@@ -52,6 +56,8 @@ test('first login shows authenticator setup before opening the dashboard', { ski
     const html = await readFile(new URL('../src/measurement/dashboard.html', import.meta.url), 'utf8');
     await page.route('**/*', route => {
       const url = new URL(route.request().url());
+      if (url.pathname === '/assets/dashboard-view.js') return route.fulfill({ status: 200, contentType: 'text/javascript', body: view });
+      if (url.pathname === '/assets/dashboard-view.css') return route.fulfill({ status: 200, contentType: 'text/css', body: viewCss });
       if (url.pathname === '/medicion/') return route.fulfill({ status: 200, contentType: 'text/html', body: html });
       if (url.pathname === '/api/measurement-dashboard') {
         const authorized = route.request().headers().cookie?.includes('orkesta_measurement_session=owner-token');
@@ -92,6 +98,8 @@ test('expired email verification lets the owner restart login', { skip: process.
     const html = await readFile(new URL('../src/measurement/dashboard.html', import.meta.url), 'utf8');
     await page.route('**/*', route => {
       const url = new URL(route.request().url());
+      if (url.pathname === '/assets/dashboard-view.js') return route.fulfill({ status: 200, contentType: 'text/javascript', body: view });
+      if (url.pathname === '/assets/dashboard-view.css') return route.fulfill({ status: 200, contentType: 'text/css', body: viewCss });
       if (url.pathname === '/medicion/') return route.fulfill({ status: 200, contentType: 'text/html', body: html });
       if (url.pathname === '/api/measurement-dashboard') return route.fulfill({ status: 401, contentType: 'application/json', body: '{}' });
       if (url.pathname === '/api/measurement-session') {
@@ -135,6 +143,8 @@ test('presentation isolates one site and empty sites never show invented zeroes'
     await page.context().addCookies([{ name: 'orkesta_measurement_session', value: 'owner-token', domain: 'measurement.test', path: '/' }]);
     await page.route('**/*', route => {
       const url = new URL(route.request().url());
+      if (url.pathname === '/assets/dashboard-view.js') return route.fulfill({ status: 200, contentType: 'text/javascript', body: view });
+      if (url.pathname === '/assets/dashboard-view.css') return route.fulfill({ status: 200, contentType: 'text/css', body: viewCss });
       if (url.pathname === '/medicion/') return route.fulfill({ status: 200, contentType: 'text/html', body: html });
       if (url.pathname === '/api/measurement-dashboard') return route.fulfill({ status: loggedIn ? 200 : 401, contentType: 'application/json', body: JSON.stringify(data) });
       if (url.pathname === '/api/measurement-session') { if (route.request().method() === 'DELETE') loggedIn = false; return route.fulfill({ status: 200, contentType: 'application/json', body: '{}' }); }
@@ -142,11 +152,11 @@ test('presentation isolates one site and empty sites never show invented zeroes'
     });
     await page.goto('https://measurement.test/medicion/');
     await page.locator('#site').selectOption('ana');
-    assert.match(await page.locator('#summary').innerText(), /12/);
-    assert.match(await page.locator('#summary').innerText(), /Reservas verificadas\s+Aún sin datos/);
-    assert.match(await page.locator('#actions').innerText(), /preguntas-frecuentes/);
-    assert.match(await page.locator('#actions').innerText(), /agenda_click/);
-    assert.match(await page.locator('#external').innerText(), /Google Search Console/);
+    assert.match(await page.locator('.mv-grid').innerText(), /12/);
+    assert.match(await page.locator('.mv-grid').innerText(), /Reservas verificadas\s*Aún sin datos/);
+    assert.match(await page.locator('.mv-card').nth(1).innerText(), /preguntas-frecuentes/);
+    assert.match(await page.locator('.mv-card').nth(1).innerText(), /agenda_click/);
+    assert.match(await page.locator('.mv-card').nth(4).innerText(), /Google Search Console/);
     await page.getByRole('button', { name: 'Presentar este sitio' }).click();
     assert.equal(await page.locator('#site').isVisible(), false);
     assert.doesNotMatch(await page.locator('body').innerText(), /Fernanda Suaste/);
@@ -154,10 +164,10 @@ test('presentation isolates one site and empty sites never show invented zeroes'
     await page.getByRole('button', { name: 'Salir de presentación' }).click();
     assert.equal(await page.locator('#site').isVisible(), true);
     await page.locator('#site').selectOption('fernanda');
-    assert.match(await page.locator('#summary').innerText(), /Aún sin datos/);
-    assert.match(await page.locator('#summary').innerText(), /Reservas verificadas/);
+    assert.match(await page.locator('.mv-grid').innerText(), /Aún sin datos/);
+    assert.match(await page.locator('.mv-grid').innerText(), /Reservas verificadas/);
     assert.match(await page.locator('#results').innerText(), /inactiva/i);
-    assert.doesNotMatch(await page.locator('#site-state').innerText(), /aún no mide/i);
+    assert.doesNotMatch(await page.locator('.mv-badge').innerText(), /aún no mide/i);
     await page.setViewportSize({ width: 375, height: 812 });
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
     await page.locator('#site').focus();

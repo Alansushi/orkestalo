@@ -122,6 +122,8 @@ test('foreign clinic request, file and measurement actions fail at membership ga
     for(const [method,body] of [['POST',{action:'download',version_id:V}],['POST',{action:'request',kind:'sitio',title:'Cambiar portada',description:'Actualizar foto'}],['PATCH',{action:'measurement-link',site_id:V}]]) {
       assert.equal((await request(B,method,body)).statusCode,401);
     }
+    const measured=response();await presence({method:'GET',url:`/api/clinic-presence?clinic=${B}&action=measurement`,headers:{authorization:'Bearer token'}},measured);
+    assert.equal(measured.statusCode,401);
     assert.equal(calls.some(c=>['clinic_brand_versions','clinic_service_requests','measurement_sites'].includes(c.table)),false);
   });
 });
@@ -136,9 +138,9 @@ test('measurement outage leaves brand and requests available with unverified sta
     if(table==='clinics')return Response.json([{id:A,name:'Ana',website_url:'https://ana.example.com'}]);
     if(table==='clinic_measurement_links')return Response.json([{site_id:V,verified_at:'2026-11-19T00:00:00Z'}]);
     if(table==='measurement_sites')return Response.json([{id:V,slug:'ana',active:true,allowed_origins:['https://ana.example.com']}]);
-    if(table==='clinic_measurement_daily')return new Response('',{status:503});
+    if(table==='measurement_event_daily')return new Response('',{status:503});
     return Response.json([]);
   };
-  try{const res=await request(A);assert.equal(res.statusCode,200);assert.equal(res.body.results.status,'sin datos verificados');assert.deepEqual(res.body.resources,[]);}
+  try{const res=await request(A);assert.equal(res.statusCode,200);assert.deepEqual(res.body.resources,[]);const metrics=response();await presence({method:'GET',url:`/api/clinic-presence?clinic=${A}&action=measurement`,headers:{authorization:'Bearer token'}},metrics);assert.equal(metrics.statusCode,200);assert.equal(metrics.body.status,'medición no disponible');}
   finally{globalThis.fetch=old.fetch;for(const [key,value] of [['SUPABASE_URL',old.url],['SUPABASE_SECRET_KEY',old.key]])if(value===undefined)delete process.env[key];else process.env[key]=value;}
 });

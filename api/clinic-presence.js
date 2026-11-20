@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { db, json, readBody, validText } from '../src/server/commerce.js';
 import { queryValue, userFromRequest } from '../src/server/consultorio.js';
 import { deliverRequestNotice } from '../src/server/clinic-request-notices.js';
+import { loadClinicMeasurement } from '../src/server/measurement-dashboard-data.js';
 
 const q = queryValue;
 const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
@@ -26,17 +27,6 @@ async function storage(path, { method='POST', body, type='application/json' }={}
 async function event(clinicId,type,resourceId,actorId,details={}) {
   await db('clinic_presence_events',{method:'POST',body:{clinic_id:clinicId,type,resource_id:resourceId,actor_id:actorId,details}});
 }
-async function metrics(clinic,clinicId) {
-  const link=await row('clinic_measurement_links',`?clinic_id=eq.${q(clinicId)}&select=site_id,verified_at,verified_by&limit=1`);
-  if(!link?.verified_at || !clinic.website_url) return {status:'sin datos verificados'};
-  const site=await row('measurement_sites',`?id=eq.${q(link.site_id)}&select=id,slug,allowed_origins,active&limit=1`);
-  let origin;try { origin=new URL(clinic.website_url).origin; } catch { return {status:'sin datos verificados'}; }
-  if(!site?.active || !site.allowed_origins?.includes(origin)) return {status:'sin datos verificados'};
-  const end=new Date(), start=new Date(end.getTime()-30*86400000);
-  const daily=await db('clinic_measurement_daily',{query:`?site_id=eq.${q(site.id)}&day=gte.${start.toISOString().slice(0,10)}&select=day,visits,clicks,forms,booking_requests,confirmed_appointments&limit=35`});
-  const totals=Object.fromEntries(['visits','clicks','forms','booking_requests','confirmed_appointments'].map(key=>[key,daily.reduce((sum,d)=>sum+Number(d[key]),0)]));
-  return {status:'verificado',period:{start:start.toISOString().slice(0,10),end:end.toISOString().slice(0,10)},source:site.slug,...totals};
-}
 export default async function handler(req,res) {
   if(!['GET','POST','PATCH'].includes(req.method)) return json(res,405,{error:'Método no permitido'});
   const url=new URL(req.url,'https://www.orkestalo.com'), clinicId=url.searchParams.get('clinic');
@@ -50,18 +40,21 @@ export default async function handler(req,res) {
     const admin=member.role==='admin';
     const clinic=await row('clinics',`?id=eq.${q(clinicId)}&select=id,name,website_url&limit=1`);
     if(!clinic) return json(res,404,{error:'Consultorio no encontrado'});
+    if(req.method==='GET' && url.searchParams.get('action')==='measurement') {
+      try { return json(res,200,await loadClinicMeasurement(clinic,clinicId)); }
+      catch(error) { console.error('Medición consultorio',error); return json(res,200,{status:'medición no disponible'}); }
+    }
     if(req.method==='GET') {
-      const [resources,versions,presence,requests,history,events,results,pilot]=await Promise.all([
+      const [resources,versions,presence,requests,history,events,pilot]=await Promise.all([
         db('clinic_brand_resources',{query:`?clinic_id=eq.${q(clinicId)}&select=*&order=created_at.desc&limit=100`}),
         db('clinic_brand_versions',{query:`?clinic_id=eq.${q(clinicId)}&select=id,resource_id,version,status,name,category,uses,license,restrictions,reference_only,created_at,approved_at,approved_by&order=created_at.desc&limit=300`}),
         row('clinic_presence_profiles',`?clinic_id=eq.${q(clinicId)}&select=*&limit=1`),
         db('clinic_service_requests',{query:`?clinic_id=eq.${q(clinicId)}&select=*&order=created_at.desc&limit=100`}),
         db('clinic_request_history',{query:`?clinic_id=eq.${q(clinicId)}&select=*&order=created_at.desc&limit=500`}),
         db('clinic_presence_events',{query:`?clinic_id=eq.${q(clinicId)}&select=id,type,resource_id,details,created_at&order=created_at.desc&limit=50`}),
-        metrics(clinic,clinicId).catch(error=>{console.error('Medición consultorio',error);return {status:'sin datos verificados'};}),
         admin ? row('clinic_pilot_scorecards',`?clinic_id=eq.${q(clinicId)}&select=*&limit=1`) : null
       ]);
-      return json(res,200,{role:member.role,resources,versions,presence,requests,history,events,results,pilot});
+      return json(res,200,{role:member.role,resources,versions,presence,requests,history,events,pilot});
     }
     const input=typeof req.body==='string' && req.body.length<=3000000 ? JSON.parse(req.body) : readBody(req)||{}, action=input.action;
     if(action==='download' && req.method==='POST') {

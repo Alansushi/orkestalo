@@ -1,4 +1,5 @@
 const $ = id => document.getElementById(id);
+import { renderMeasurementView } from '../measurement/dashboard-view.js';
 let config, session, clinics = [], current, snapshot, presenceSnapshot, generation = 0, pendingEmail;
 const saved = sessionStorage.getItem('consultorio_session');
 try { session = saved ? JSON.parse(saved) : null; } catch { session = null; }
@@ -52,7 +53,7 @@ function render() {
   for (const m of messages.slice(0,20)) ml.append(item({ welcome:'Bienvenida', followup:'Reserva posterior', survey:'Encuesta' }[m.kind] || m.kind, `${m.status}${m.last_error ? ` · ${m.last_error}` : ''} · ${when(m.created_at)}`));
   for (const invite of paymentInvites.slice(0,10)) ml.append(item('Enlace con anticipo', `${invite.email_status} · ${when(invite.created_at)}`));
 }
-async function load() { if (!current || !session) return; const version = generation, clinic = current, accessToken = session.access_token; const [result, emails, presence] = await Promise.all([api(`consultorio?clinic=${clinic}`), api(`consultorio?action=email&clinic=${clinic}`), api(`clinic-presence?clinic=${clinic}`)]); if (version !== generation || clinic !== current || accessToken !== session?.access_token) return; snapshot = result; presenceSnapshot = presence; render(); renderEmails(emails); renderPresence(presence); await renderEventTypes(result); }
+async function load() { if (!current || !session) return; const version = generation, clinic = current, accessToken = session.access_token; const [result, emails, presence, measurement] = await Promise.all([api(`consultorio?clinic=${clinic}`), api(`consultorio?action=email&clinic=${clinic}`), api(`clinic-presence?clinic=${clinic}`), api(`clinic-presence?clinic=${clinic}&action=measurement`).catch(() => ({status:'medición no disponible'}))]); if (version !== generation || clinic !== current || accessToken !== session?.access_token) return; snapshot = result; presenceSnapshot = presence; render(); renderEmails(emails); renderPresence(presence,measurement); await renderEventTypes(result); }
 const emailNames = { welcome:'Bienvenida', followup:'Reserva posterior', invite:'Invitación con anticipo', survey:'Encuesta' };
 const stepCopy = {
   identity:['Confirma tus datos','Revisa el nombre que verán tus pacientes y el correo al que responderán. Puedes añadir tu sitio web o escribir todo a mano.','identity-settings'],
@@ -122,7 +123,7 @@ function renderEmails(data) {
     const toggle = element('label', ` Activar ${name}`); const check = element('input'); check.type='checkbox'; check.checked=!!data.clinic[`${kind}_enabled`]; check.addEventListener('change', () => run(async () => { try { await api(`consultorio?action=email-settings&clinic=${current}`, { method:'PATCH', body:JSON.stringify({ [`${kind}_enabled`]:check.checked }) }); } finally { await load(); } })); toggle.prepend(check); box.append(toggle); root.append(box);
   }
 }
-function renderPresence(data) {
+function renderPresence(data,measurement) {
   const admin=data.role==='admin';
   for(const node of document.querySelectorAll('.admin-only')) node.hidden=!admin;
   if(admin) {
@@ -179,11 +180,8 @@ function renderPresence(data) {
     requests.append(box);
   }
   const result=$('results-detail');result.replaceChildren();
-  if(data.results.status!=='verificado') result.append(element('p','Sin datos verificados para este consultorio.','muted'));
-  else {
-    result.append(element('p',`Periodo: ${data.results.period.start} a ${data.results.period.end} · Fuente: ${data.results.source}`));
-    const list=element('ul');for(const [label,key] of [['Visitas','visits'],['Clics','clicks'],['Formularios','forms'],['Solicitudes de reserva','booking_requests'],['Citas confirmadas','confirmed_appointments']]) list.append(element('li',`${label}: ${data.results[key]}`));result.append(list);
-  }
+  if(measurement?.status==='verificado') renderMeasurementView(result,measurement.dataset,{siteId:measurement.dataset.sites[0]?.id});
+  else result.append(element('p',measurement?.status==='medición no disponible'?'Medición no disponible. Intenta actualizar más tarde.':'Sin datos verificados para este consultorio.','muted'));
   const activity=$('presence-activity');activity.replaceChildren();
   if(!data.events.length) activity.append(element('p','Todavía no hay actividad documentada.','muted'));
   const labels={version_uploaded:'Versión cargada',version_approved:'Versión aprobada',resource_archived:'Material archivado',presence_updated:'Ficha de presencia revisada',presence_reviewed:'Ficha confirmada por la doctora',request_created:'Solicitud recibida',request_status:'Solicitud actualizada'};
