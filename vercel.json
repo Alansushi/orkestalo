@@ -3,7 +3,8 @@
   "functions": {
     "api/measurement-maintenance.js": { "maxDuration": 60 },
     "api/consultorio.js": { "maxDuration": 60 },
-    "api/consultorio-misc.js": { "maxDuration": 60 }
+    "api/consultorio-misc.js": { "maxDuration": 60 },
+    "api/clinic-presence.js": { "maxDuration": 60 }
   },
   "proxy": {
     "entrypoint": "proxy.js",
