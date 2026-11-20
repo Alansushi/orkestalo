@@ -1,12 +1,13 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import presence from '../api/clinic-presence.js';
+import presence from '../api/consultorio.js';
+import consultorio from '../api/consultorio.js';
 
 const A = '00000000-0000-0000-0000-000000000001';
 const B = '00000000-0000-0000-0000-000000000002';
 const V = '00000000-0000-0000-0000-000000000003';
 function response() { return { statusCode:200, headers:{}, setHeader(k,v) { this.headers[k]=v; }, end(value) { this.body=JSON.parse(value); } }; }
-async function request(path, method='GET', body) { const res=response(); await presence({ method, url:`/api/clinic-presence?clinic=${path}`, headers:{ authorization:'Bearer token' }, body },res); return res; }
+async function request(path, method='GET', body) { const res=response(); await presence({ method, url:`/api/consultorio?route=presence&clinic=${path}`, headers:{ authorization:'Bearer token' }, body },res); return res; }
 async function fixture(role, fn, versionStatus='draft', versionClinic=B, archived=false) {
   const prior={ fetch:globalThis.fetch, url:process.env.SUPABASE_URL, key:process.env.SUPABASE_SECRET_KEY };
   process.env.SUPABASE_URL='https://db.example.supabase.co'; process.env.SUPABASE_SECRET_KEY='secret';
@@ -30,7 +31,17 @@ async function fixture(role, fn, versionStatus='draft', versionClinic=B, archive
 
 test('missing and foreign memberships deny all private data before querying it', async()=>{
   await fixture('doctor',async calls=>{ const res=await request(B); assert.equal(res.statusCode,401); assert.deepEqual(calls.map(c=>c.table),['user','clinic_memberships']); });
-  const res=response(); await presence({method:'GET',url:`/api/clinic-presence?clinic=${A}`,headers:{}},res); assert.equal(res.statusCode,401);
+  const res=response(); await presence({method:'GET',url:`/api/consultorio?route=presence&clinic=${A}`,headers:{}},res); assert.equal(res.statusCode,401);
+});
+
+test('consultorio routes presence requests through its existing function', async()=>{
+  await fixture('doctor',async()=>{
+    const res=response();
+    await consultorio({method:'GET',url:`/api/consultorio?route=presence&clinic=${A}`,headers:{authorization:'Bearer token'}},res);
+    assert.equal(res.statusCode,200);
+    assert.equal(res.body.role,'doctor');
+    assert.ok(Array.isArray(res.body.resources));
+  });
 });
 
 test('doctor cannot approve another clinic version or download a draft',async()=>{
@@ -61,7 +72,7 @@ test('doctor cannot set request status or verified measurement link',async()=>{
 test('large JSON upload bodies reach validation instead of disappearing',async()=>{
   await fixture('admin',async()=>{
     const body=JSON.stringify({action:'upload',name:'Logo',category:'logo',filename:'logo.png',mime:'image/png',uses:['Sitio web'],license:'Uso autorizado',restrictions:'',data:Buffer.alloc(12000).toString('base64')});
-    const res=response();await presence({method:'POST',url:`/api/clinic-presence?clinic=${A}`,headers:{authorization:'Bearer token'},body},res);
+    const res=response();await presence({method:'POST',url:`/api/consultorio?route=presence&clinic=${A}`,headers:{authorization:'Bearer token'},body},res);
     assert.equal(res.statusCode,201);
   });
 });
@@ -104,7 +115,7 @@ test('Ana, Fernanda, nonmember and expired sessions stay within their own clinic
   };
   try {
     for(const [token,clinic,want] of [['ana',A,200],['ana',B,401],['fer',B,200],['fer',A,401],['outsider',A,401],['expired',A,401]]) {
-      const res=response();await presence({method:'GET',url:`/api/clinic-presence?clinic=${clinic}`,headers:{authorization:`Bearer ${token}`}},res);assert.equal(res.statusCode,want,`${token} to ${clinic}`);
+      const res=response();await presence({method:'GET',url:`/api/consultorio?route=presence&clinic=${clinic}`,headers:{authorization:`Bearer ${token}`}},res);assert.equal(res.statusCode,want,`${token} to ${clinic}`);
     }
     assert.equal(selected.some(call=>call.clinic===`eq.${B}`&&call.table!=='clinics'),true);
   } finally {globalThis.fetch=prior.fetch;for(const [key,value] of [['SUPABASE_URL',prior.url],['SUPABASE_SECRET_KEY',prior.key]]) if(value===undefined)delete process.env[key];else process.env[key]=value;}
@@ -122,7 +133,7 @@ test('foreign clinic request, file and measurement actions fail at membership ga
     for(const [method,body] of [['POST',{action:'download',version_id:V}],['POST',{action:'request',kind:'sitio',title:'Cambiar portada',description:'Actualizar foto'}],['PATCH',{action:'measurement-link',site_id:V}]]) {
       assert.equal((await request(B,method,body)).statusCode,401);
     }
-    const measured=response();await presence({method:'GET',url:`/api/clinic-presence?clinic=${B}&action=measurement`,headers:{authorization:'Bearer token'}},measured);
+    const measured=response();await presence({method:'GET',url:`/api/consultorio?route=presence&clinic=${B}&action=measurement`,headers:{authorization:'Bearer token'}},measured);
     assert.equal(measured.statusCode,401);
     assert.equal(calls.some(c=>['clinic_brand_versions','clinic_service_requests','measurement_sites'].includes(c.table)),false);
   });
@@ -141,6 +152,6 @@ test('measurement outage leaves brand and requests available with unverified sta
     if(table==='measurement_event_daily')return new Response('',{status:503});
     return Response.json([]);
   };
-  try{const res=await request(A);assert.equal(res.statusCode,200);assert.deepEqual(res.body.resources,[]);const metrics=response();await presence({method:'GET',url:`/api/clinic-presence?clinic=${A}&action=measurement`,headers:{authorization:'Bearer token'}},metrics);assert.equal(metrics.statusCode,200);assert.equal(metrics.body.status,'medición no disponible');}
+  try{const res=await request(A);assert.equal(res.statusCode,200);assert.deepEqual(res.body.resources,[]);const metrics=response();await presence({method:'GET',url:`/api/consultorio?route=presence&clinic=${A}&action=measurement`,headers:{authorization:'Bearer token'}},metrics);assert.equal(metrics.statusCode,200);assert.equal(metrics.body.status,'medición no disponible');}
   finally{globalThis.fetch=old.fetch;for(const [key,value] of [['SUPABASE_URL',old.url],['SUPABASE_SECRET_KEY',old.key]])if(value===undefined)delete process.env[key];else process.env[key]=value;}
 });

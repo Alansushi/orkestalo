@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto';
-import { db, json, readBody, validText } from '../src/server/commerce.js';
-import { queryValue, userFromRequest } from '../src/server/consultorio.js';
-import { deliverRequestNotice } from '../src/server/clinic-request-notices.js';
-import { loadClinicMeasurement } from '../src/server/measurement-dashboard-data.js';
+import { db, json, readBody, validText } from '../commerce.js';
+import { queryValue, userFromRequest } from '../consultorio.js';
+import { deliverRequestNotice } from '../clinic-request-notices.js';
+import { loadClinicMeasurement } from '../measurement-dashboard-data.js';
 
 const q = queryValue;
 const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
