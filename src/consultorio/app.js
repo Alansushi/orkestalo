@@ -171,7 +171,7 @@ function renderPresence(data) {
     const box=element('article',null,'request-card');box.id=`request-${request.id}`;
     box.append(element('strong',request.title),element('p',`${request.kind} · ${request.status} · Responsable: ${request.owner||'Por asignar'}`),element('p',request.description));
     const history=(data.history||[]).filter(h=>h.request_id===request.id).sort((a,b)=>Date.parse(a.created_at)-Date.parse(b.created_at));
-    for(const entry of history) box.append(element('small',`${when(entry.created_at)} · ${entry.status} · ${entry.actor_id===request.requester_id?'Doctora':'Orkesta'}`));
+    for(const entry of history) box.append(element('small',`${when(entry.created_at)} · ${entry.status} · ${entry.actor_label||'Orkesta'}`));
     if(admin && request.status!=='completada') {
       const owner=element('input');owner.placeholder='Responsable de Orkesta';owner.value=request.owner||'';owner.maxLength=120;owner.setAttribute('aria-label',`Responsable de ${request.title}`);
       const button=element('button',`Pasar a ${steps[steps.indexOf(request.status)+1]}`);button.type='button';button.addEventListener('click',()=>run(async()=>{await api(`clinic-presence?clinic=${current}`,{method:'PATCH',body:JSON.stringify({action:'request-status',request_id:request.id,status:steps[steps.indexOf(request.status)+1],owner:owner.value})});await load();}));box.append(owner,button);

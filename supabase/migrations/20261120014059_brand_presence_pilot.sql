@@ -74,6 +74,7 @@ create table public.clinic_request_history (
   clinic_id uuid not null,
   request_id uuid not null,
   actor_id uuid not null references auth.users(id),
+  actor_label text not null check (char_length(actor_label) between 1 and 254),
   status text not null check (status in ('recibida','en revisión','en proceso','completada')),
   notification_status text not null default 'queued' check (notification_status in ('queued','sending','sent','failed')),
   notification_claimed_at timestamptz,

@@ -13,7 +13,7 @@ async function fixture(role, fn, versionStatus='draft', versionClinic=B, archive
   const calls=[];
   globalThis.fetch=async (url, options={}) => {
     const parsed=new URL(url), table=parsed.pathname.split('/').at(-1), body=options.body && !Buffer.isBuffer(options.body) ? JSON.parse(options.body) : null;
-    calls.push({ table, query:parsed.search, method:options.method, body, url:String(url) });
+    calls.push({ table, query:parsed.search, method:options.method, body, url:String(url), headers:options.headers });
     if(parsed.pathname==='/auth/v1/user') return Response.json({ id:'person-a', email:'a@example.com' });
     if(table==='clinic_memberships') return Response.json(parsed.searchParams.get('clinic_id')===`eq.${A}` ? [{clinic_id:A,user_id:'person-a',active:true,role}] : []);
     if(table==='clinics') return Response.json([{id:A,name:'Consultorio A',website_url:'https://a.example.com'}]);
@@ -43,9 +43,11 @@ test('doctor cannot approve another clinic version or download a draft',async()=
 
 test('approved own version receives a five minute private signed URL',async()=>{
   await fixture('doctor',async calls=>{
+    process.env.SUPABASE_SECRET_KEY='sb_secret_test';
     const res=await request(A,'POST',{action:'download',version_id:V});
     assert.equal(res.statusCode,200); assert.match(res.body.url,/token=short/);
     assert.equal(calls.find(c=>c.url.includes('/storage/v1/object/sign/'))?.body.expiresIn,300);
+    assert.equal(calls.find(c=>c.url.includes('/storage/v1/object/sign/'))?.headers.Authorization,undefined);
   },'approved',A);
 });
 
@@ -122,4 +124,21 @@ test('foreign clinic request, file and measurement actions fail at membership ga
     }
     assert.equal(calls.some(c=>['clinic_brand_versions','clinic_service_requests','measurement_sites'].includes(c.table)),false);
   });
+});
+
+test('measurement outage leaves brand and requests available with unverified state',async()=>{
+  const old={fetch:globalThis.fetch,url:process.env.SUPABASE_URL,key:process.env.SUPABASE_SECRET_KEY};
+  process.env.SUPABASE_URL='https://db.example.supabase.co';process.env.SUPABASE_SECRET_KEY='secret';
+  globalThis.fetch=async(url)=>{
+    const parsed=new URL(url),table=parsed.pathname.split('/').at(-1);
+    if(parsed.pathname==='/auth/v1/user')return Response.json({id:'ana',email:'ana@example.com'});
+    if(table==='clinic_memberships')return Response.json([{clinic_id:A,user_id:'ana',active:true,role:'doctor'}]);
+    if(table==='clinics')return Response.json([{id:A,name:'Ana',website_url:'https://ana.example.com'}]);
+    if(table==='clinic_measurement_links')return Response.json([{site_id:V,verified_at:'2026-11-19T00:00:00Z'}]);
+    if(table==='measurement_sites')return Response.json([{id:V,slug:'ana',active:true,allowed_origins:['https://ana.example.com']}]);
+    if(table==='clinic_measurement_daily')return new Response('',{status:503});
+    return Response.json([]);
+  };
+  try{const res=await request(A);assert.equal(res.statusCode,200);assert.equal(res.body.results.status,'sin datos verificados');assert.deepEqual(res.body.resources,[]);}
+  finally{globalThis.fetch=old.fetch;for(const [key,value] of [['SUPABASE_URL',old.url],['SUPABASE_SECRET_KEY',old.key]])if(value===undefined)delete process.env[key];else process.env[key]=value;}
 });

@@ -16,7 +16,10 @@ const safe = (value,max) => validText(value,max) && !/[<>\r\n]/.test(value);
 async function storage(path, { method='POST', body, type='application/json' }={}) {
   const base=new URL(process.env.SUPABASE_URL);
   const url=new URL(`/storage/v1/object/${path}`,base);
-  const response=await fetch(url,{method,headers:{apikey:process.env.SUPABASE_SECRET_KEY,Authorization:`Bearer ${process.env.SUPABASE_SECRET_KEY}`,'Content-Type':type},body: type==='application/json' ? JSON.stringify(body) : body,signal:AbortSignal.timeout(15000)});
+  const key=process.env.SUPABASE_SECRET_KEY;
+  const headers={apikey:key,'Content-Type':type};
+  if(!key.startsWith('sb_secret_')) headers.Authorization=`Bearer ${key}`;
+  const response=await fetch(url,{method,headers,body: type==='application/json' ? JSON.stringify(body) : body,signal:AbortSignal.timeout(15000)});
   if(!response.ok) throw new Error(`Storage ${response.status}`);
   return response.json();
 }
@@ -55,7 +58,7 @@ export default async function handler(req,res) {
         db('clinic_service_requests',{query:`?clinic_id=eq.${q(clinicId)}&select=*&order=created_at.desc&limit=100`}),
         db('clinic_request_history',{query:`?clinic_id=eq.${q(clinicId)}&select=*&order=created_at.desc&limit=500`}),
         db('clinic_presence_events',{query:`?clinic_id=eq.${q(clinicId)}&select=id,type,resource_id,details,created_at&order=created_at.desc&limit=50`}),
-        metrics(clinic,clinicId),
+        metrics(clinic,clinicId).catch(error=>{console.error('Medición consultorio',error);return {status:'sin datos verificados'};}),
         admin ? row('clinic_pilot_scorecards',`?clinic_id=eq.${q(clinicId)}&select=*&limit=1`) : null
       ]);
       return json(res,200,{role:member.role,resources,versions,presence,requests,history,events,results,pilot});
@@ -86,7 +89,7 @@ export default async function handler(req,res) {
     if(action==='request' && req.method==='POST') {
       if(!kinds.includes(input.kind) || !safe(input.title,120) || !validText(input.description,2000)) return json(res,400,{error:'Revisa la solicitud'});
       const [request]=await db('clinic_service_requests',{method:'POST',body:{clinic_id:clinicId,kind:input.kind,title:input.title.trim(),description:input.description.trim(),requester_id:user.id,requester_email:user.email,status:'recibida'}});
-      const [history]=await db('clinic_request_history',{method:'POST',body:{clinic_id:clinicId,request_id:request.id,actor_id:user.id,status:'recibida'}});
+      const [history]=await db('clinic_request_history',{method:'POST',body:{clinic_id:clinicId,request_id:request.id,actor_id:user.id,actor_label:user.email,status:'recibida'}});
       await event(clinicId,'request_created',request.id,user.id);
       await deliverRequestNotice(clinic,request,history);
       return json(res,201,{request});
@@ -148,7 +151,7 @@ export default async function handler(req,res) {
       if(statuses.indexOf(input.status)!==statuses.indexOf(old.status)+1) return json(res,409,{error:'Sigue el orden de estados'});
       const updated=await db('clinic_service_requests',{method:'PATCH',query:`?id=eq.${q(input.request_id)}&clinic_id=eq.${q(clinicId)}&status=eq.${q(old.status)}`,body:{status:input.status,owner:input.owner.trim(),updated_at:new Date().toISOString()}});
       if(!updated.length) return json(res,409,{error:'La solicitud ya cambió'});
-      const [history]=await db('clinic_request_history',{method:'POST',body:{clinic_id:clinicId,request_id:input.request_id,actor_id:user.id,status:input.status}});
+      const [history]=await db('clinic_request_history',{method:'POST',body:{clinic_id:clinicId,request_id:input.request_id,actor_id:user.id,actor_label:user.email,status:input.status}});
       await event(clinicId,'request_status',input.request_id,user.id,{status:input.status});
       await deliverRequestNotice(clinic,updated[0],history);
       return json(res,200,{request:updated[0]});
