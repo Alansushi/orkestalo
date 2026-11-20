@@ -138,25 +138,3 @@ revoke all on public.clinic_brand_resources,public.clinic_brand_versions,public.
 grant all on public.clinic_brand_resources,public.clinic_brand_versions,public.clinic_presence_profiles,
   public.clinic_service_requests,public.clinic_request_history,public.clinic_presence_events,public.clinic_measurement_links,public.clinic_pilot_scorecards
   to service_role;
-
-create view public.clinic_measurement_daily with (security_invoker = true) as
-with e as (
-  select site_id, occurred_at::date as day,
-    count(distinct session_id) filter (where name = 'page_view') as visits,
-    count(*) filter (where name in ('contact_click','agenda_click')) as clicks,
-    count(*) filter (where name = 'form_submit') as forms
-  from public.measurement_events
-  group by site_id,occurred_at::date
-), c as (
-  select site_id, occurred_at::date as day,
-    count(*) filter (where event = 'booking_created') as booking_requests,
-    count(*) filter (where event = 'appointment_confirmed') as confirmed_appointments
-  from public.measurement_conversions
-  group by site_id,occurred_at::date
-)
-select coalesce(e.site_id,c.site_id) as site_id,coalesce(e.day,c.day) as day,
-  coalesce(e.visits,0) as visits,coalesce(e.clicks,0) as clicks,coalesce(e.forms,0) as forms,
-  coalesce(c.booking_requests,0) as booking_requests,coalesce(c.confirmed_appointments,0) as confirmed_appointments
-from e full join c on e.site_id=c.site_id and e.day=c.day;
-revoke all on public.clinic_measurement_daily from public,anon,authenticated;
-grant select on public.clinic_measurement_daily to service_role;

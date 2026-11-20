@@ -35,7 +35,7 @@ El panel privado está en `/consultorio/`; la encuesta pública de un solo uso e
 
 ### Medición compartida
 
-`/medicion/` y «Mis resultados» de `/consultorio/` usan las mismas vistas, seis indicadores y tablas para los últimos 30 días. El consultorio consulta únicamente el sitio vinculado en `clinic_measurement_links` y comprueba la membresía y el dominio en cada solicitud. Un sitio desactivado conserva su historial con «Medición inactiva»; un vínculo ausente o incorrecto muestra «Sin datos verificados». La migración `20261120131851_unify_clinic_measurement.sql` retira la vista paralela.
+`/medicion/` y «Mis resultados» de `/consultorio/` usan las mismas vistas, seis indicadores y tablas para los últimos 30 días. El consultorio consulta únicamente el sitio vinculado en `clinic_measurement_links` y comprueba la membresía y el dominio en cada solicitud. Un sitio desactivado conserva su historial con «Medición inactiva»; un vínculo ausente o incorrecto muestra «Sin datos verificados».
 
 Antes de integrar esta rama en `main`, comparar en Preview las seis cifras y cada tabla con Ana y Fernanda autenticadas, una cuenta sin membresía, una sesión vencida y el acceso del administrador con código y autenticador. Comprobar también sitio desactivado, vínculo y dominio incorrectos, ausencia de filas, más de 1 000 filas y caída de la fuente. La publicación sigue el PR a `main` y el despliegue automático de la integración Git de Vercel.
 
