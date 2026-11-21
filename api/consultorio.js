@@ -3,6 +3,7 @@ import { queryValue, requireClinic, ensureSurvey, surveyConsentRecord, userFromR
 import calHandler from '../src/server/consultorio-endpoints/cal-api.js';
 import emailSettings from '../src/server/consultorio-endpoints/clinic-email-settings.js';
 import admin from '../src/server/consultorio-endpoints/consultorio-admin.js';
+import presence from '../src/server/consultorio-endpoints/clinic-presence.js';
 
 const uuid = value => /^[0-9a-f-]{36}$/i.test(value || '');
 const q = queryValue;
@@ -10,6 +11,7 @@ const q = queryValue;
 export default async function handler(req, res) {
   if (!['GET', 'POST', 'PATCH'].includes(req.method)) return json(res, 405, { error: 'Método no permitido' });
   const url = new URL(req.url, 'https://www.orkestalo.com');
+  if (url.searchParams.get('route') === 'presence') return presence(req, res);
   if (['admin-list','admin-invite','admin-resend'].includes(url.searchParams.get('action'))) {
     try { return await admin(req, res, url.searchParams.get('action')); }
     catch (error) { console.error('Clinic admin', error); return json(res, 503, { error:'Administración no disponible' }); }

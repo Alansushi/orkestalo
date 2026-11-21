@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>Medición · Orkéstalo</title>
+  <link rel="stylesheet" href="/assets/dashboard-view.css">
   <style>
     @font-face{font-family:'Space Grotesk';src:url('/media/fonts/space-grotesk-600.ttf')}@font-face{font-family:'DM Sans';src:url('/media/fonts/dm-sans-400.ttf')}@font-face{font-family:'DM Sans';src:url('/media/fonts/dm-sans-600.ttf');font-weight:600}@font-face{font-family:'IBM Plex Mono';src:url('/media/fonts/ibm-plex-mono-400.ttf')}
     :root{font:16px/1.5 'DM Sans',Arial,sans-serif;color:#17181c;background:#f7f6f2}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}[hidden]{display:none!important}:focus-visible{outline:3px solid #555cff;outline-offset:4px}
@@ -40,81 +41,20 @@
   </form>
   <main id="results" hidden>
     <div class="toolbar"><div class="chooser" id="chooser"><label for="site">Sitio que quieres consultar</label><select id="site"></select></div><button id="presentation" class="secondary" type="button" disabled>Presentar este sitio</button></div>
-    <section class="scope" aria-labelledby="scope-title"><span class="eyebrow" id="scope-kicker">Vista general</span><h2 id="scope-title"></h2><p id="scope-description"></p><span id="site-state" class="badge" hidden></span></section>
-    <section id="summary" class="grid"></section>
-    <p class="note">Cobertura limitada a visitantes que aceptaron analítica. Un clic de contacto no confirma una reserva ni un pago.</p>
-    <section class="card"><h2>Embudo por campaña</h2><p>Las reservas, pagos y citas proceden de verificaciones de los servidores del sitio.</p><div id="funnel-empty" class="empty" hidden></div><div id="funnel-scroll" class="scroll"><table><thead><tr><th>Sitio</th><th>Origen</th><th>Medio</th><th>Campaña</th><th>Visitas</th><th>Reservas</th><th>Pagos aprobados</th><th>Citas confirmadas</th></tr></thead><tbody id="funnel"></tbody></table></div></section>
-    <section class="card"><h2>Rutas y acciones</h2><p>Secciones y accesos a agenda separados de los clics de contacto.</p><div id="actions-empty" class="empty" hidden></div><div id="actions-scroll" class="scroll"><table><thead><tr><th>Ruta</th><th>Acción</th><th>Sección</th><th>Eventos</th></tr></thead><tbody id="actions"></tbody></table></div></section>
-    <section class="card"><h2>Evolución diaria</h2><p>Visitas e intención de contacto por día.</p><div id="daily-empty" class="empty" hidden></div><div id="daily-scroll" class="scroll"><table><thead><tr><th>Fecha</th><th>Visitas</th><th>Clics de contacto</th><th>Formularios enviados</th></tr></thead><tbody id="daily"></tbody></table></div></section>
-    <section class="card"><h2>De dónde llegan</h2><p>Origen, medio y campaña registrados en el sitio.</p><div id="sources-empty" class="empty" hidden></div><div id="sources-scroll" class="scroll"><table><thead><tr><th>Origen</th><th>Medio</th><th>Campaña</th><th>Visitas</th><th>Intención de contacto</th></tr></thead><tbody id="sources"></tbody></table></div></section>
-    <section class="card"><h2>Métricas importadas</h2><p>Resultados de plataformas externas, cuando están conectadas.</p><div id="external-empty" class="empty" hidden></div><div id="external-scroll" class="scroll"><table><thead><tr><th>Fecha</th><th>Proveedor</th><th>Campaña</th><th>Métrica</th><th>Valor</th></tr></thead><tbody id="external"></tbody></table></div></section>
-    <section class="card"><h2>Estado de las fuentes externas</h2><p>La ausencia de una conexión no se presenta como un resultado medido.</p><div class="scroll"><table><thead><tr><th>Proveedor</th><th>Última actualización</th><th>Estado</th></tr></thead><tbody id="connections"></tbody></table></div></section>
+    <div id="measurement-view"></div>
   </main>
   </div><footer class="footer"><div class="wrap">Orkesta · Panel de uso privado</div></footer>
-  <script>
+  <script type="module">
+    import { renderMeasurementView } from "/assets/dashboard-view.js";
     const $ = id => document.getElementById(id);
-    const providerNames={google_ads:'Google Ads',meta_ads:'Meta Ads',search_console:'Google Search Console',pagespeed:'PageSpeed Insights',crux:'Chrome UX Report',uptime:'Disponibilidad'};
-    const metricNames={clicks:'Clics',impressions:'Impresiones',cost:'Inversión',ctr:'CTR',position:'Posición',lcp:'LCP',inp:'INP',cls:'CLS'};
     let dataset,presenting=false;
-    function cell(row, value) { const td=document.createElement('td');td.textContent=String(value ?? '—');row.append(td); }
-    function metric(label,value,hint) { const el=document.createElement('div');el.className='metric';const small=document.createElement('span');small.textContent=label;const strong=document.createElement('strong');strong.textContent=String(value);if(value==='Aún sin datos')strong.className='empty-value';const note=document.createElement('small');note.textContent=hint;el.append(small,strong,note);$('summary').append(el); }
-    function empty(id,hasRows,description) { const notice=$(id+'-empty');notice.replaceChildren();if(!hasRows){const strong=document.createElement('strong');strong.textContent='Aún sin datos';const detail=document.createElement('span');detail.textContent=description;notice.append(strong,detail)}notice.hidden=hasRows;$(id+'-scroll').hidden=!hasRows; }
     function render() {
       const id=$('site').value;
       const selected=dataset.sites.find(x=>x.id===id);
       $('presentation').disabled=!selected&&!presenting;
       $('presentation').textContent=presenting?'Salir de presentación':'Presentar este sitio';
       $('chooser').hidden=presenting;
-      $('scope-kicker').textContent=presenting?'Presentación / Sitio seleccionado':selected?'Sitio seleccionado':'Vista general';
-      $('scope-title').textContent=selected?.name||'Todos los sitios';
-      $('scope-description').textContent=selected?'Resultados registrados durante los últimos 30 días.':'Selecciona un sitio para revisar sus resultados o presentarlo en una reunión.';
-      $('site-state').hidden=!selected||selected.active;
-      $('site-state').textContent=selected?.active?'':'Medición inactiva';
-      const rows=dataset.daily.filter(x=>!id||x.site_id===id);
-      const funnel=dataset.funnel.filter(x=>!id||x.site_id===id);
-      $('summary').replaceChildren();
-      metric('Visitas',rows.length?rows.reduce((n,x)=>n+Number(x.visits),0):'Aún sin datos','Sesiones registradas');
-      metric('Intención de contacto',rows.length?rows.reduce((n,x)=>n+Number(x.contact_clicks),0):'Aún sin datos','Clics en canales de contacto');
-      metric('Formularios enviados',rows.length?rows.reduce((n,x)=>n+Number(x.form_submits),0):'Aún sin datos','Envíos registrados');
-      const online=funnel;
-      metric('Reservas verificadas',online.length?online.reduce((n,x)=>n+Number(x.bookings),0):'Aún sin datos','Solo agenda activa');
-      metric('Pagos aprobados',online.length?online.reduce((n,x)=>n+Number(x.approved_payments),0):'Aún sin datos','Confirmados por Mercado Pago');
-      metric('Citas confirmadas',online.length?online.reduce((n,x)=>n+Number(x.confirmed_appointments),0):'Aún sin datos','Confirmadas en Cal.com');
-      $('funnel').replaceChildren();
-      const campaignRows=new Map();
-      for(const row of funnel) {const key=JSON.stringify([row.site_id,row.source,row.medium,row.campaign]);const current=campaignRows.get(key)||{...row,visits:0,bookings:0,approved_payments:0,confirmed_appointments:0};for(const metric of ['visits','bookings','approved_payments','confirmed_appointments'])current[metric]+=Number(row[metric]);campaignRows.set(key,current);}
-      for(const row of campaignRows.values()) {const tr=document.createElement('tr');const site=dataset.sites.find(s=>s.id===row.site_id);[site?.name,row.source,row.medium,row.campaign,row.visits,row.bookings,row.approved_payments,row.confirmed_appointments].forEach(x=>cell(tr,x));$('funnel').append(tr);}
-      empty('funnel',campaignRows.size>0,'Aquí aparecerán las campañas de visitas con consentimiento.');
-      $('actions').replaceChildren();
-      const actionRows=new Map();
-      for(const row of dataset.actions.filter(x=>!id||x.site_id===id)){const key=JSON.stringify([row.site_id,row.path,row.name,row.label]);const current=actionRows.get(key)||{...row,events:0};current.events+=Number(row.events);actionRows.set(key,current);}
-      for(const row of actionRows.values()){const tr=document.createElement('tr');[row.path,row.name,row.label||'—',row.events].forEach(x=>cell(tr,x));$('actions').append(tr);}
-      empty('actions',actionRows.size>0,'Aquí aparecerán las rutas, secciones y accesos registrados.');
-      $('daily').replaceChildren();
-      for(const day of [...rows].reverse()) { const tr=document.createElement('tr');[day.day,day.visits,day.contact_clicks,day.form_submits].forEach(x=>cell(tr,x));$('daily').append(tr); }
-      empty('daily',rows.length>0,'Aquí aparecerán las visitas y acciones registradas por día.');
-      $('sources').replaceChildren();
-      const grouped=new Map();
-      for(const row of dataset.sources.filter(x=>!id||x.site_id===id)) {
-        const key=JSON.stringify([row.source,row.medium,row.campaign]);
-        const current=grouped.get(key)||{...row,visits:0,contact_clicks:0};
-        current.visits+=Number(row.visits);current.contact_clicks+=Number(row.contact_clicks);
-        grouped.set(key,current);
-      }
-      for(const row of [...grouped.values()].sort((a,b)=>b.visits-a.visits)) {const tr=document.createElement('tr');[row.source,row.medium,row.campaign,row.visits,row.contact_clicks].forEach(x=>cell(tr,x));$('sources').append(tr);}
-      empty('sources',grouped.size>0,'Aquí aparecerán los orígenes y campañas registrados.');
-      $('external').replaceChildren();
-      const external=dataset.external.filter(x=>!id||x.site_id===id).sort((a,b)=>b.day.localeCompare(a.day));
-      for(const row of external) {const tr=document.createElement('tr');[row.day,providerNames[row.provider]||row.provider,row.campaign_ref,metricNames[row.metric]||row.metric,row.value].forEach(x=>cell(tr,x));$('external').append(tr);}
-      empty('external',external.length>0,'Aquí aparecerán las métricas de plataformas conectadas.');
-      $('connections').replaceChildren();
-      for(const provider of Object.keys(providerNames)) {
-        const matches=dataset.connections.filter(x=>x.provider===provider&&(!id||x.site_id===id));
-        const last=matches.sort((a,b)=>String(b.last_synced_at).localeCompare(String(a.last_synced_at)))[0];
-        const tr=document.createElement('tr');
-        [providerNames[provider],last?.last_synced_at?new Date(last.last_synced_at).toLocaleString('es-MX'):'Sin sincronizar',last?.last_error||(!last?'Pendiente de conectar':'Correcta')].forEach(x=>cell(tr,x));
-        $('connections').append(tr);
-      }
+      renderMeasurementView($('measurement-view'),dataset,{siteId:id,presenting});
     }
     async function load() {
       const response=await fetch('/api/measurement-dashboard',{cache:'no-store'});

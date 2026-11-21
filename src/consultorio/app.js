@@ -1,5 +1,6 @@
 const $ = id => document.getElementById(id);
-let config, session, clinics = [], current, snapshot, generation = 0, pendingEmail;
+import { renderMeasurementView } from '../measurement/dashboard-view.js';
+let config, session, clinics = [], current, snapshot, presenceSnapshot, generation = 0, pendingEmail;
 const saved = sessionStorage.getItem('consultorio_session');
 try { session = saved ? JSON.parse(saved) : null; } catch { session = null; }
 const show = (id, value) => { $(id).textContent = value; };
@@ -18,7 +19,7 @@ async function api(path, options = {}) {
   if (!response.ok) throw new Error(data.error || 'No se pudo completar la acción');
   return data;
 }
-function signOut() { generation++; session = null; current = null; snapshot = null; pendingEmail = null; clinics = []; sessionStorage.removeItem('consultorio_session'); $('dashboard').hidden = true; $('login').hidden = false; $('logout').hidden = true; $('admin-panel').hidden = true; $('login-form').hidden = false; $('code-form').hidden = true; for (const id of ['login-form','code-form','task-form','manual-form','slot-form','booking-form','email-settings-form','admin-invite-form']) $(id).reset(); for (const id of ['appointments','tasks','messages','slots','clinic-select','site-proposal','template-editors','onboarding-steps','admin-invites']) $(id).replaceChildren(); $('booking-form').hidden = true; note(''); }
+function signOut() { generation++; session = null; current = null; snapshot = null; presenceSnapshot = null; pendingEmail = null; clinics = []; sessionStorage.removeItem('consultorio_session'); $('dashboard').hidden = true; $('login').hidden = false; $('logout').hidden = true; $('admin-panel').hidden = true; $('login-form').hidden = false; $('code-form').hidden = true; for (const id of ['login-form','code-form','task-form','manual-form','slot-form','booking-form','email-settings-form','admin-invite-form','service-request-form','brand-upload-form','presence-form','measurement-link-form','pilot-form']) $(id).reset(); for (const id of ['appointments','tasks','messages','slots','clinic-select','site-proposal','template-editors','onboarding-steps','admin-invites','brand-list','presence-detail','request-list','results-detail','presence-activity']) $(id).replaceChildren(); $('booking-form').hidden = true; note(''); }
 function element(tag, text, className) { const node = document.createElement(tag); if (text != null) node.textContent = text; if (className) node.className = className; return node; }
 function item(title, detail, action, onClick) {
   const row = element('div', null, 'item'), body = element('div');
@@ -52,7 +53,7 @@ function render() {
   for (const m of messages.slice(0,20)) ml.append(item({ welcome:'Bienvenida', followup:'Reserva posterior', survey:'Encuesta' }[m.kind] || m.kind, `${m.status}${m.last_error ? ` · ${m.last_error}` : ''} · ${when(m.created_at)}`));
   for (const invite of paymentInvites.slice(0,10)) ml.append(item('Enlace con anticipo', `${invite.email_status} · ${when(invite.created_at)}`));
 }
-async function load() { if (!current || !session) return; const version = generation, clinic = current, accessToken = session.access_token; const [result, emails] = await Promise.all([api(`consultorio?clinic=${clinic}`), api(`consultorio?action=email&clinic=${clinic}`)]); if (version !== generation || clinic !== current || accessToken !== session?.access_token) return; snapshot = result; render(); renderEmails(emails); await renderEventTypes(result); }
+async function load() { if (!current || !session) return; const version = generation, clinic = current, accessToken = session.access_token; const [result, emails, presence, measurement] = await Promise.all([api(`consultorio?clinic=${clinic}`), api(`consultorio?action=email&clinic=${clinic}`), api(`consultorio?route=presence&clinic=${clinic}`), api(`consultorio?route=presence&clinic=${clinic}&action=measurement`).catch(() => ({status:'medición no disponible'}))]); if (version !== generation || clinic !== current || accessToken !== session?.access_token) return; snapshot = result; presenceSnapshot = presence; render(); renderEmails(emails); renderPresence(presence,measurement); await renderEventTypes(result); }
 const emailNames = { welcome:'Bienvenida', followup:'Reserva posterior', invite:'Invitación con anticipo', survey:'Encuesta' };
 const stepCopy = {
   identity:['Confirma tus datos','Revisa el nombre que verán tus pacientes y el correo al que responderán. Puedes añadir tu sitio web o escribir todo a mano.','identity-settings'],
@@ -122,6 +123,71 @@ function renderEmails(data) {
     const toggle = element('label', ` Activar ${name}`); const check = element('input'); check.type='checkbox'; check.checked=!!data.clinic[`${kind}_enabled`]; check.addEventListener('change', () => run(async () => { try { await api(`consultorio?action=email-settings&clinic=${current}`, { method:'PATCH', body:JSON.stringify({ [`${kind}_enabled`]:check.checked }) }); } finally { await load(); } })); toggle.prepend(check); box.append(toggle); root.append(box);
   }
 }
+function renderPresence(data,measurement) {
+  const admin=data.role==='admin';
+  for(const node of document.querySelectorAll('.admin-only')) node.hidden=!admin;
+  if(admin) {
+    const pilot=data.pilot||{},f=$('pilot-form');
+    show('pilot-state',pilot.start_at?`Inició el ${when(pilot.start_at)} · Día 30: ${new Intl.DateTimeFormat('es-MX',{dateStyle:'medium'}).format(new Date(Date.parse(pilot.start_at)+30*86400000))}`:'Pendiente de inicio: se requiere biblioteca aprobada y ficha revisada por la doctora.');
+    $('pilot-start').hidden=!!pilot.start_at;
+    f.elements.setup_hours.value=(pilot.setup_minutes||0)/60;f.elements.support_hours.value=(pilot.support_minutes||0)/60;
+    for(const key of ['discontinued_tasks','usage_notes','proposal_scope','response_notes']) f.elements[key].value=pilot[key]||'';
+    f.elements.proposed_price_mxn.value=pilot.proposed_price_mxn??'';f.elements.would_buy.value=pilot.would_buy==null?'':String(pilot.would_buy);
+  }
+  const brands=$('brand-list'); brands.replaceChildren();
+  if(!data.resources.length) brands.append(element('p','Aún no hay materiales cargados.','muted'));
+  for(const resource of data.resources) {
+    const wrapper=element('div',null,'item'); wrapper.id=`resource-${resource.id}`;
+    const info=element('div'); info.append(element('strong',resource.name),element('small',resource.archived_at?`${resource.category} · Archivado`:resource.category));
+    const versions=data.versions.filter(v=>v.resource_id===resource.id).sort((a,b)=>b.version-a.version);
+    for(const version of versions) {
+      const line=element('div',null,'version-row');
+      line.append(element('span',`v${version.version} · ${version.status==='approved'?'Aprobada':'Borrador'} · ${version.license} · Usos: ${(version.uses||[]).join(', ')||'sin usos declarados'}${version.restrictions?` · Restricciones: ${version.restrictions}`:''}`));
+      if(version.status==='approved' && !version.reference_only && !resource.archived_at) { const button=element('button','Descargar','quiet'); button.type='button'; button.addEventListener('click',()=>run(async()=>{const file=await api(`consultorio?route=presence&clinic=${current}`,{method:'POST',body:JSON.stringify({action:'download',version_id:version.id})});location.assign(file.url);})); line.append(button); }
+      if(version.status==='draft' && !admin && !resource.archived_at) { const button=element('button','Aprobar versión'); button.type='button'; button.addEventListener('click',()=>run(async()=>{await api(`consultorio?route=presence&clinic=${current}`,{method:'PATCH',body:JSON.stringify({action:'approve',version_id:version.id})});await load();note('Versión aprobada.');})); line.append(button); }
+      info.append(line);
+    }
+    wrapper.append(info);
+    if(admin && !resource.archived_at) { const button=element('button','Archivar','quiet'); button.type='button';button.addEventListener('click',()=>run(async()=>{await api(`consultorio?route=presence&clinic=${current}`,{method:'PATCH',body:JSON.stringify({action:'archive',resource_id:resource.id})});await load();}));wrapper.append(button); }
+    brands.append(wrapper);
+  }
+  const profile=$('presence-detail');profile.replaceChildren();
+  if(data.presence) {
+    profile.append(element('p',`Última revisión: ${when(data.presence.reviewed_at)}. ${data.presence.evidence||''}`));
+    const links=element('ul');for(const link of data.presence.links||[]){const li=element('li'),anchor=element('a',link.label);anchor.href=link.url;anchor.target='_blank';anchor.rel='noopener noreferrer';li.append(anchor);links.append(li);}profile.append(links);
+    const checklist=element('ul');for(const check of data.presence.checklist||[]) checklist.append(element('li',`${check.done?'✓':'○'} ${check.label}`));profile.append(checklist);
+    profile.append(element('p',`Próxima acción: ${data.presence.next_action||'Por definir'}`));
+    profile.append(element('p',data.presence.reviewed_by_doctor_at?`Revisada por la doctora: ${when(data.presence.reviewed_by_doctor_at)}`:'Pendiente de revisión por la doctora.'));
+  } else profile.append(element('p','Orkesta aún no ha documentado la ficha de presencia.','muted'));
+  $('presence-review').hidden=admin||!data.presence;
+  if(admin && data.presence) {
+    const f=$('presence-form');f.elements.links.value=(data.presence.links||[]).map(x=>`${x.label} | ${x.url}`).join('\n');
+    f.elements.checklist.value=(data.presence.checklist||[]).map(x=>`${x.done?'✓ ':''}${x.label}`).join('\n');
+    f.elements.evidence.value=data.presence.evidence||'';f.elements.next_action.value=data.presence.next_action||'';
+  }
+  const requests=$('request-list');requests.replaceChildren();
+  if(!data.requests.length) requests.append(element('p','Todavía no hay solicitudes.','muted'));
+  const steps=['recibida','en revisión','en proceso','completada'];
+  for(const request of data.requests) {
+    const box=element('article',null,'request-card');box.id=`request-${request.id}`;
+    box.append(element('strong',request.title),element('p',`${request.kind} · ${request.status} · Responsable: ${request.owner||'Por asignar'}`),element('p',request.description));
+    const history=(data.history||[]).filter(h=>h.request_id===request.id).sort((a,b)=>Date.parse(a.created_at)-Date.parse(b.created_at));
+    for(const entry of history) box.append(element('small',`${when(entry.created_at)} · ${entry.status} · ${entry.actor_label||'Orkesta'}`));
+    if(admin && request.status!=='completada') {
+      const owner=element('input');owner.placeholder='Responsable de Orkesta';owner.value=request.owner||'';owner.maxLength=120;owner.setAttribute('aria-label',`Responsable de ${request.title}`);
+      const button=element('button',`Pasar a ${steps[steps.indexOf(request.status)+1]}`);button.type='button';button.addEventListener('click',()=>run(async()=>{await api(`consultorio?route=presence&clinic=${current}`,{method:'PATCH',body:JSON.stringify({action:'request-status',request_id:request.id,status:steps[steps.indexOf(request.status)+1],owner:owner.value})});await load();}));box.append(owner,button);
+    }
+    requests.append(box);
+  }
+  const result=$('results-detail');result.replaceChildren();
+  if(measurement?.status==='verificado') renderMeasurementView(result,measurement.dataset,{siteId:measurement.dataset.sites[0]?.id});
+  else result.append(element('p',measurement?.status==='medición no disponible'?'Medición no disponible. Intenta actualizar más tarde.':'Sin datos verificados para este consultorio.','muted'));
+  const activity=$('presence-activity');activity.replaceChildren();
+  if(!data.events.length) activity.append(element('p','Todavía no hay actividad documentada.','muted'));
+  const labels={version_uploaded:'Versión cargada',version_approved:'Versión aprobada',resource_archived:'Material archivado',presence_updated:'Ficha de presencia revisada',presence_reviewed:'Ficha confirmada por la doctora',request_created:'Solicitud recibida',request_status:'Solicitud actualizada'};
+  for(const entry of data.events) { const link=element('a',`${when(entry.created_at)} · ${labels[entry.type]||entry.type}`);link.href=entry.type.startsWith('request_')?`#request-${entry.resource_id}`:entry.type.startsWith('presence_')?'#presence-section':`#resource-${entry.resource_id}`;activity.append(link); }
+}
+async function fileBase64(file) { return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=()=>reject(new Error('No se pudo leer el archivo'));reader.readAsDataURL(file);}); }
 async function enter() {
   const version = generation, accessToken = session?.access_token;
   const data = await api('consultorio?action=clinics');
@@ -134,12 +200,20 @@ async function enter() {
   if (clinics.length) {current=clinics[0].id;await load();if(!session)return;}
   else {current=null;show('clinic-name','Administración de consultorios');}
   $('onboarding').hidden=!clinics.length;$('cal-setup').hidden=!clinics.length;$('operations').hidden=!clinics.length;select.hidden=!clinics.length;$('refresh').hidden=!clinics.length;
+  if(!clinics.length){$('brand-section').parentElement.hidden=true;$('activity-section').hidden=true;$('pilot-section').hidden=true;}
   $('dashboard').hidden = false; $('login').hidden = true; $('logout').hidden = false; $('login-form').reset();
   $('admin-panel').hidden=!admin;if(admin)renderAdmin(admin.invitations);
 }
 function renderAdmin(invitations){ const list=$('admin-invites');list.replaceChildren(); for(const invite of invitations)list.append(item(invite.email,invite.last_sent_at?`Último envío: ${when(invite.last_sent_at)}`:'Acceso existente','Reenviar',()=>run(async()=>{await api('consultorio?action=admin-resend',{method:'POST',body:JSON.stringify({email:invite.email})});const data=await api('consultorio?action=admin-list');renderAdmin(data.invitations);note('Invitación reenviada.');}))); }
 function formData(form) { return Object.fromEntries(new FormData(form)); }
 async function run(fn) { try { note(''); await fn(); } catch (e) { note(e.message); } }
+$('service-request-form').addEventListener('submit',event=>{event.preventDefault();run(async()=>{await api(`consultorio?route=presence&clinic=${current}`,{method:'POST',body:JSON.stringify({action:'request',...formData(event.target)})});event.target.reset();await load();note('Solicitud enviada.');});});
+$('presence-review').addEventListener('click',()=>run(async()=>{await api(`consultorio?route=presence&clinic=${current}`,{method:'PATCH',body:JSON.stringify({action:'presence-review'})});await load();note('Revisión registrada.');}));
+$('brand-upload-form').addEventListener('submit',event=>{event.preventDefault();run(async()=>{const f=event.target,file=f.elements.file.files[0],referenceOnly=f.elements.reference_only.checked;if((!file&&!referenceOnly)||file?.size>2*1024*1024)throw new Error('El archivo debe pesar hasta 2 MB, salvo que sea solo referencia.');const values=formData(f);await api(`consultorio?route=presence&clinic=${current}`,{method:'POST',body:JSON.stringify({action:'upload',resource_id:values.resource_id||undefined,name:values.name,category:values.category,reference_only:referenceOnly,...(referenceOnly?{}:{filename:file.name,mime:file.type,data:await fileBase64(file)}),uses:values.uses.split('\n').map(s=>s.trim()).filter(Boolean),license:values.license,restrictions:values.restrictions})});f.reset();await load();note('Borrador cargado.');});});
+$('presence-form').addEventListener('submit',event=>{event.preventDefault();run(async()=>{const values=formData(event.target),links=values.links.split('\n').map(s=>s.trim()).filter(Boolean).map(s=>{const [label,...url]=s.split('|');return {label:label.trim(),url:url.join('|').trim()};}),checklist=values.checklist.split('\n').map(s=>s.trim()).filter(Boolean).map(s=>({label:s.replace(/^✓\s*/,''),done:s.startsWith('✓')}));await api(`consultorio?route=presence&clinic=${current}`,{method:'PATCH',body:JSON.stringify({action:'presence',links,checklist,evidence:values.evidence,next_action:values.next_action})});await load();note('Revisión guardada.');});});
+$('measurement-link-form').addEventListener('submit',event=>{event.preventDefault();run(async()=>{await api(`consultorio?route=presence&clinic=${current}`,{method:'PATCH',body:JSON.stringify({action:'measurement-link',site_id:formData(event.target).site_id})});await load();note('Vínculo verificado.');});});
+$('pilot-start').addEventListener('click',()=>run(async()=>{await api(`consultorio?route=presence&clinic=${current}`,{method:'PATCH',body:JSON.stringify({action:'pilot-start'})});await load();note('Piloto iniciado.');}));
+$('pilot-form').addEventListener('submit',event=>{event.preventDefault();run(async()=>{const values=formData(event.target);await api(`consultorio?route=presence&clinic=${current}`,{method:'PATCH',body:JSON.stringify({action:'pilot-scorecard',setup_minutes:Math.round(Number(values.setup_hours)*60),support_minutes:Math.round(Number(values.support_hours)*60),discontinued_tasks:values.discontinued_tasks,usage_notes:values.usage_notes,proposal_scope:values.proposal_scope,proposed_price_mxn:values.proposed_price_mxn===''?null:Number(values.proposed_price_mxn),would_buy:values.would_buy===''?null:values.would_buy==='true',response_notes:values.response_notes})});await load();note('Scorecard guardado.');});});
 $('login-form').addEventListener('submit', async event => {
   event.preventDefault(); show('login-error','');
   try { const form = formData(event.currentTarget); session = await auth('token?grant_type=password', { email: form.email, password: form.password }); sessionStorage.setItem('consultorio_session', JSON.stringify(session)); await enter(); }

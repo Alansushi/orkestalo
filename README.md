@@ -28,3 +28,5 @@ Las comprobaciones pendientes de reserva, pago y capturas de Ana están en [docs
 ## Piloto de consultorios
 
 El panel privado, las integraciones y la activación por clínica están documentados en [docs/consultorios-piloto.md](docs/consultorios-piloto.md). Hasta configurar las credenciales, conectar Cal.com y aprobar textos y avisos con las doctoras, el panel queda inactivo para pacientes reales.
+
+La biblioteca de marca, ficha de presencia, solicitudes, resultados verificados y scorecard del piloto están descritos en [docs/brand-presence-pilot.md](docs/brand-presence-pilot.md).
