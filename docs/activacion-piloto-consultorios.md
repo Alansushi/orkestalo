@@ -13,9 +13,11 @@ Estado al 21 de noviembre de 2026: el webhook de Resend y su secreto ya están c
 
 Si una variable se añade o cambia después de un despliegue, repetir el flujo commit, push, PR a `main`, integración y verificación del nuevo despliegue. No desplegar con Vercel CLI, API, promoción ni carga manual.
 
-## 2. Sesión individual por doctora
+## 2. Ensayo propio y revisión individual
 
-Usar una sesión autenticada a Vercel para abrir el Preview del PR #40. Cada doctora entra en `/consultorio/` con **su propia cuenta**. Terminar su sesión antes de pasar a la siguiente. No registrar datos clínicos ni material sin su autorización.
+Antes de pedir la revisión a Ana y Fernanda, hacer un ensayo técnico en un **consultorio de prueba independiente**, con una cuenta de Orkéstalo para el panel y la cuenta personal de Cal.com del dueño para la agenda. No conectar esa agenda a los consultorios reales ni activar envíos hacia pacientes reales. Cuando Cal.com apruebe el cliente OAuth, conectar la cuenta, elegir un tipo de cita de prueba y comprobar la creación del webhook firmado. El retorno OAuth lleva a `www.orkestalo.com/consultorio/`; volver a abrir el Preview del PR #40 para continuar la prueba de su interfaz. Reservar, reprogramar y cancelar usando correos de prueba controlados; revisar los estados de cita y entrega. Probar plantillas, consentimiento y encuesta dentro del consultorio de prueba. El anticipo solo se prueba si el proveedor de pago del evento admite un entorno sin cargo real. Documentar cada resultado en el PR #40 y corregir los fallos antes de invitar a las doctoras.
+
+Después, compartir con cada doctora el Preview del PR #40. Cada una entra en `/consultorio/` con **su propia cuenta** y puede revisar y aprobar su contenido de forma asincrónica; no hace falta una llamada. No registrar datos clínicos ni material sin su autorización.
 
 1. Revisar nombre visible, correo de respuesta, sitio, ubicación, identidad y aviso de privacidad. La doctora confirma sus datos y la revisión de privacidad.
 2. Revisar las cuatro plantillas (bienvenida, reserva posterior, invitación con anticipo y encuesta). Enviar pruebas a su propio correo. Una edición posterior invalida la prueba: reenviar y volver a revisar. Solo la doctora aprueba sus versiones.
