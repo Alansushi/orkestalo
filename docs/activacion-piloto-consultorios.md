@@ -9,7 +9,9 @@ Esta guía acompaña al [piloto de consultorios](consultorios-piloto.md) y al PR
 - En Resend, crear un webhook para `https://www.orkestalo.com/api/consultorio-misc?route=email` con `email.delivered`, `email.failed`, `email.bounced` y `email.suppressed`. Guardar su secreto de firma como `RESEND_WEBHOOK_SECRET` en **Preview y Production**. Confirmar que `orkestalo.com` sigue verificado y que `RESEND_API_KEY` ya existe en ambos entornos.
 - Confirmar que `SURVEY_TOKEN_SECRET` está en **Preview y Production**. El callback de Cal.com y el de Resend deben responder en producción después del nuevo despliegue de Git; una petición sin firma válida debe rechazarse.
 
-Si Cal.com todavía no aprueba el cliente, integrar primero esta guía tras configurar Resend y verificar el despliegue automático. Cuando llegue la aprobación, guardar las credenciales y repetir el flujo commit, push, PR a `main`, integración y verificación del nuevo despliegue. No desplegar con Vercel CLI, API, promoción ni carga manual.
+Estado al 21 de noviembre de 2026: el webhook de Resend y su secreto ya están configurados. El cliente OAuth «Orkéstalo Consultorios» se creó desde `info@orkestalo.com` con los seis permisos y el retorno indicados; Cal.com lo muestra **Pendiente**. Su ID y secreto ya están guardados como secretos en Vercel Preview y Production. Este cambio de documentación activa un nuevo despliegue automático de Git para incorporar esas variables. No conectar cuentas de doctoras hasta que Cal.com apruebe el cliente.
+
+Si una variable se añade o cambia después de un despliegue, repetir el flujo commit, push, PR a `main`, integración y verificación del nuevo despliegue. No desplegar con Vercel CLI, API, promoción ni carga manual.
 
 ## 2. Sesión individual por doctora
 
