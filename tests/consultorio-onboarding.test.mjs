@@ -203,10 +203,10 @@ test('reconnecting Cal clears old webhook readiness and patient mail switches', 
   finally {globalThis.fetch=previous.fetch;for(const [key,value] of Object.entries({SUPABASE_URL:previous.url,SUPABASE_SECRET_KEY:previous.key}))value===undefined?delete process.env[key]:process.env[key]=value;}
 });
 
-test('panel opens with onboarding, keeps operations, and uses the published brand logo', async () => {
+test('panel keeps onboarding and operations in tabs with the published brand logo', async () => {
   const html=await readFile(new URL('../src/consultorio/index.html',import.meta.url),'utf8');
   assert.match(html,/id="onboarding"/);
-  assert.match(html,/id="operations"/);
+  assert.match(html,/id="tab-operacion" role="tabpanel"/);
   assert.match(html,/orkesta-lockup-horizontal-propuesta\.svg/);
   assert.match(html,/id="admin-invite-form"/);
   assert.match(html,/id="event-type-select"/);
