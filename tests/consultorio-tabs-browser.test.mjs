@@ -15,7 +15,7 @@ test('tabs open the first pending step, link to its control, and reset on clinic
     const js = await readFile(new URL('../public/assets/consultorio.js', import.meta.url), 'utf8');
     const css = await readFile(new URL('../public/assets/consultorio.css', import.meta.url), 'utf8');
     const errors = [];
-    let settingsUpdate, adminMode = false;
+    let settingsUpdate, requestUpdate, adminMode = false, clinicAdminMode = false;
     page.on('pageerror', error => errors.push(error.message));
     await page.addInitScript(() => sessionStorage.setItem('consultorio_session', JSON.stringify({ access_token:'valid' })));
     await page.route('**/*', async route => {
@@ -24,11 +24,23 @@ test('tabs open the first pending step, link to its control, and reset on clinic
       if (url.pathname === '/assets/consultorio.js') return route.fulfill({ contentType:'application/javascript', body:js });
       if (url.pathname === '/assets/consultorio.css') return route.fulfill({ contentType:'text/css', body:css });
       if (url.pathname === '/api/consultorio-misc') return route.fulfill({ json:{ url:'https://auth.test', key:'public' } });
+      if (url.host === 'auth.test') return route.fulfill({ json:{ access_token:'valid' } });
       if (url.pathname === '/api/consultorio' && url.searchParams.get('action') === 'clinics') return route.fulfill({ json:{ clinics:adminMode?[]:[clinic('a'),clinic('b')] } });
-      if (url.pathname === '/api/consultorio' && url.searchParams.get('action') === 'admin-list') return adminMode ? route.fulfill({ json:{ invitations:[] } }) : route.fulfill({ status:403, json:{ error:'No autorizado' } });
+      if (url.pathname === '/api/consultorio' && url.searchParams.get('action') === 'admin-list') return adminMode || clinicAdminMode ? route.fulfill({ json:{ invitations:[] } }) : route.fulfill({ status:403, json:{ error:'No autorizado' } });
       if (url.pathname === '/api/consultorio' && url.searchParams.get('action') === 'email-settings') {
         settingsUpdate = JSON.parse(route.request().postData());
         return route.fulfill({ json:{ ok:true } });
+      }
+      if (url.pathname === '/api/consultorio' && url.searchParams.get('route') === 'presence') {
+        if (url.searchParams.get('action') === 'measurement') return route.fulfill({ json:{ status:'verificado', dataset:{
+          sites:[{ id:'site-b', name:'Sitio B', active:true }], daily:[{ site_id:'site-b', visits:8, contact_clicks:2, form_submits:1 }],
+          funnel:[{ site_id:'site-b', visits:8, bookings:1, approved_payments:0, confirmed_appointments:1 }],
+          actions:[], sources:[], external:[], connections:[], updatedAt:'2026-11-24T00:00:00Z',
+        } } });
+        if (route.request().method() === 'POST') { requestUpdate = JSON.parse(route.request().postData()); return route.fulfill({ json:{ ok:true } }); }
+        return route.fulfill({ json:{ role:clinicAdminMode?'admin':'doctor', resources:[{ id:'logo', name:'Logo', category:'logo' }], versions:[],
+          presence:{ reviewed_at:'2026-11-24T00:00:00Z', links:[], checklist:[] },
+          requests:[], history:[], events:[] } });
       }
       if (url.pathname === '/api/consultorio' && url.searchParams.get('action') === 'email') {
         const complete = url.searchParams.get('clinic') === 'b';
@@ -67,10 +79,37 @@ test('tabs open the first pending step, link to its control, and reset on clinic
     assert.equal(await page.locator('#home-summary').isVisible(),true);
     assert.equal(await page.locator('#onboarding').isVisible(),false);
     assert.equal(await page.locator('.panel-tabs').evaluate(node => node.scrollWidth > node.clientWidth),true);
-    adminMode = true;
+    assert.match(await page.locator('#measurement-summary-text').textContent(),/Visitas: 8/);
+    assert.equal(await page.locator('#results-section').getAttribute('open'),null);
+    await page.locator('#measurement-summary a').click();
+    assert.equal(await page.locator('#results-section').getAttribute('open'),'');
+    assert.equal(await page.locator('#results-section .mv-grid').isVisible(),true);
+    await page.locator('#tab-button-datos').click();
+    assert.equal(await page.locator('#brand-section').isVisible(),true);
+    assert.equal(await page.locator('#presence-section').isVisible(),true);
+    assert.equal(await page.locator('#requests-section').isVisible(),false);
+    await page.locator('#tab-button-operacion').click();
+    assert.equal(await page.locator('#requests-section').isVisible(),true);
+    await page.locator('#service-request-form [name="title"]').fill('Actualizar horarios');
+    await page.locator('#service-request-form [name="description"]').fill('Cambiar la página de horarios');
+    assert.equal(await page.locator('#service-request-form').evaluate(node=>node.checkValidity()),true);
+    await page.locator('#service-request-form button').click();
+    await page.locator('#notice:has-text("Solicitud enviada.")').waitFor();
+    assert.equal(requestUpdate.title,'Actualizar horarios');
+    clinicAdminMode = true;
     await page.reload();
+    await page.locator('#tab-button-operacion').click();
+    await page.locator('#pilot-section').waitFor({ state:'visible' });
+    adminMode = true;
+    await page.locator('#logout').click();
+    await page.locator('#login-form [name="email"]').fill('admin@example.com');
+    await page.locator('#login-form [name="password"]').fill('secret');
+    await page.locator('#login-form button').first().click();
     await page.locator('#admin-panel').waitFor({ state:'visible' });
     assert.equal(await page.locator('#task-section').isVisible(),false);
+    assert.equal(await page.locator('#requests-section').isVisible(),false);
+    assert.equal(await page.locator('#activity-section').isVisible(),false);
+    assert.equal(await page.locator('#pilot-section').isVisible(),false);
     assert.equal(await page.locator('#tab-button-operacion').getAttribute('aria-selected'),'true');
     assert.equal(await page.locator('#tab-button-inicio').isVisible(),false);
     await page.locator('#tab-button-operacion').focus();

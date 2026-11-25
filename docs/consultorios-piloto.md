@@ -33,6 +33,12 @@ El panel privado está en `/consultorio/`; la encuesta pública de un solo uso e
 
 ## Pruebas del piloto
 
+### Medición compartida
+
+`/medicion/` y «Mis resultados» de `/consultorio/` usan las mismas vistas, seis indicadores y tablas para los últimos 30 días. El consultorio consulta únicamente el sitio vinculado en `clinic_measurement_links` y comprueba la membresía y el dominio en cada solicitud. Un sitio desactivado conserva su historial con «Medición inactiva»; un vínculo ausente o incorrecto muestra «Sin datos verificados».
+
+Antes de integrar esta rama en `main`, comprobar la equivalencia de las seis cifras y cada tabla mediante pruebas automatizadas con datos controlados, y verificar que Preview carga. Probar también una cuenta sin membresía, sesión vencida, sitio desactivado, vínculo y dominio incorrectos, ausencia de filas, más de 1 000 filas y caída de la fuente. Antes de iniciar el piloto de cada doctora, comparar además ambas vistas en el panel publicado con su cuenta y el acceso del administrador con código y autenticador para el mismo sitio y periodo. La publicación sigue el PR a `main` y el despliegue automático de la integración Git de Vercel.
+
 - Crear dos consultorios y dos cuentas. Confirmar que cada cuenta solo ve sus citas, pendientes y mensajes; una petición a la API con el ID de la otra clínica debe devolver 401.
 - Conectar dos calendarios a Cal.com, bloquear un horario en uno y verificar que no se ofrezca allí. Crear cita sin anticipo y enviar a otra paciente el enlace de Cal.com con anticipo. La invitación figura como pendiente; se marca confirmada cuando Cal.com envía `BOOKING_PAID`. El horario que la doctora seleccionó inicialmente es orientativo: la paciente elige uno disponible en Cal.com al pagar.
 - Reprogramar y cancelar en Cal.com; comprobar la actualización en el panel. Registrar una cita coordinada por WhatsApp, comprobar su pendiente y registrarla también en Cal.com con el mismo correo y hora para que se vinculen.

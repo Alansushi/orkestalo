@@ -1,6 +1,7 @@
 import { timingSafeEqual } from 'node:crypto';
 import { db, json } from '../commerce.js';
 import { deliverMessage, deliverPaymentInvite, ensureSurvey, surveyToken } from '../consultorio.js';
+import { deliverRequestNotice } from '../clinic-request-notices.js';
 
 function authorized(value, secret) {
   if (!value || !secret) return false;
@@ -40,6 +41,15 @@ export default async function handler(req, res) {
         const [clinic] = await db('clinics', { query:`?id=eq.${appointment.clinic_id}&select=*` });
         if (clinic?.survey_enabled && await ensureSurvey(clinic, appointment)) sent++;
       }
+    }
+    const notices = [
+      ...await db('clinic_request_history', { query:'?notification_status=in.(queued,failed)&select=*&order=created_at.asc&limit=30' }),
+      ...await db('clinic_request_history', { query:`?notification_status=eq.sending&notification_claimed_at=lt.${stale}&select=*&order=created_at.asc&limit=30` }),
+    ];
+    for (const history of notices) {
+      const [request] = await db('clinic_service_requests', { query:`?id=eq.${history.request_id}&clinic_id=eq.${history.clinic_id}&select=*&limit=1` });
+      const [clinic] = await db('clinics', { query:`?id=eq.${history.clinic_id}&select=name&limit=1` });
+      if (request && clinic && await deliverRequestNotice(clinic, request, history)) sent++;
     }
     return json(res, 200, { sent });
   } catch (error) { console.error('Reintento consultorio', error); return json(res, 503, { error: 'Reintento no disponible' }); }

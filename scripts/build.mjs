@@ -43,6 +43,8 @@ for (const [source, output] of [['app.js','consultorio.js'],['survey.js','survey
   await build({ entryPoints: [fileURLToPath(new URL(`../src/consultorio/${source}`, import.meta.url))], bundle: true, minify: true, target: ['es2020'], outfile: fileURLToPath(new URL(`../assets/${output}`, import.meta.url)) });
 }
 await cp(new URL('../src/consultorio/style.css', import.meta.url), new URL('../assets/consultorio.css', import.meta.url));
+await cp(new URL('../src/measurement/dashboard-view.css', import.meta.url), new URL('../assets/dashboard-view.css', import.meta.url));
+await build({ entryPoints: [fileURLToPath(new URL('../src/measurement/dashboard-view.js', import.meta.url))], bundle: true, minify: true, format: 'esm', target: ['es2020'], outfile: fileURLToPath(new URL('../assets/dashboard-view.js', import.meta.url)) });
 
 const publicDir = new URL('../public/', import.meta.url);
 await rm(publicDir, { recursive: true, force: true });
@@ -56,7 +58,7 @@ for (const file of publicFiles) {
   await cp(new URL(`../${file}`, import.meta.url), new URL(`../public/${file}`, import.meta.url));
 }
 await mkdir(new URL('../public/assets/', import.meta.url), { recursive: true });
-for (const file of ['site.js', 'rebrand.js', 'rebrand.css', 'measurement.js', 'consultorio.js', 'survey.js', 'consultorio.css']) {
+for (const file of ['site.js', 'rebrand.js', 'rebrand.css', 'measurement.js', 'consultorio.js', 'survey.js', 'consultorio.css', 'dashboard-view.js', 'dashboard-view.css']) {
   await cp(new URL(`../assets/${file}`, import.meta.url), new URL(`../public/assets/${file}`, import.meta.url));
 }
 await mkdir(new URL('../public/medicion/', import.meta.url), { recursive: true });
