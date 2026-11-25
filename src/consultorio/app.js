@@ -1,6 +1,8 @@
+import { renderMeasurementView, measurementViewModel } from '../measurement/dashboard-view.js';
+import { initialTab, progressByTab, tabForStep } from './tabs.js';
 const $ = id => document.getElementById(id);
-import { renderMeasurementView } from '../measurement/dashboard-view.js';
-let config, session, clinics = [], current, snapshot, presenceSnapshot, generation = 0, pendingEmail;
+const tabNames = ['inicio','datos','agenda','mensajes','operacion'];
+let config, session, clinics = [], current, snapshot, presenceSnapshot, generation = 0, pendingEmail, activeTab = null;
 const saved = sessionStorage.getItem('consultorio_session');
 try { session = saved ? JSON.parse(saved) : null; } catch { session = null; }
 const show = (id, value) => { $(id).textContent = value; };
@@ -19,7 +21,37 @@ async function api(path, options = {}) {
   if (!response.ok) throw new Error(data.error || 'No se pudo completar la acción');
   return data;
 }
-function signOut() { generation++; session = null; current = null; snapshot = null; presenceSnapshot = null; pendingEmail = null; clinics = []; sessionStorage.removeItem('consultorio_session'); $('dashboard').hidden = true; $('login').hidden = false; $('logout').hidden = true; $('admin-panel').hidden = true; $('login-form').hidden = false; $('code-form').hidden = true; for (const id of ['login-form','code-form','task-form','manual-form','slot-form','booking-form','email-settings-form','admin-invite-form','service-request-form','brand-upload-form','presence-form','measurement-link-form','pilot-form']) $(id).reset(); for (const id of ['appointments','tasks','messages','slots','clinic-select','site-proposal','template-editors','onboarding-steps','admin-invites','brand-list','presence-detail','request-list','results-detail','presence-activity']) $(id).replaceChildren(); $('booking-form').hidden = true; note(''); }
+function signOut() { generation++; session = null; current = null; snapshot = null; presenceSnapshot = null; pendingEmail = null; clinics = []; activeTab = null; sessionStorage.removeItem('consultorio_session'); $('dashboard').hidden = true; $('login').hidden = false; $('logout').hidden = true; $('admin-panel').hidden = true; $('login-form').hidden = false; $('code-form').hidden = true; for (const id of ['login-form','code-form','task-form','manual-form','slot-form','booking-form','email-settings-form','admin-invite-form','service-request-form','brand-upload-form','presence-form','measurement-link-form','pilot-form']) $(id).reset(); for (const id of ['appointments','tasks','messages','slots','clinic-select','site-proposal','template-editors','onboarding-steps','admin-invites','brand-list','presence-detail','request-list','results-detail','presence-activity']) $(id).replaceChildren(); for (const node of document.querySelectorAll('.admin-only')) node.hidden=true; for (const id of ['upcoming-count','pending-count','failed-count']) show(id,'0'); show('pilot-state',''); $('booking-form').hidden = true; $('results-section').open = false; note(''); }
+function activateTab(name, focus = false) {
+  if (!tabNames.includes(name) || $(`tab-button-${name}`).hidden) return;
+  activeTab = name;
+  for (const tab of tabNames) {
+    const selected = tab === name, button = $(`tab-button-${tab}`);
+    button.setAttribute('aria-selected', String(selected));
+    button.tabIndex = selected ? 0 : -1;
+    $(`tab-${tab}`).hidden = !selected;
+  }
+  if (focus) $(`tab-button-${name}`).focus();
+}
+function updateTabStates(steps) {
+  const progress = progressByTab(steps);
+  for (const tab of ['datos','agenda','mensajes']) {
+    const { done, total } = progress[tab], button = $(`tab-button-${tab}`);
+    button.dataset.status = total && done === total ? 'done' : 'pending';
+    button.querySelector('.tab-state').textContent = total && done === total ? 'Listo' : 'Pendiente';
+  }
+}
+function navigateToTarget(id) {
+  let target = $(id);
+  if (target?.matches(':disabled')) target = target.closest('.surface');
+  const panel = target?.closest('[role="tabpanel"]');
+  if (!panel) return;
+  activateTab(panel.id.slice(4));
+  if (target.tagName === 'DETAILS') target.open = true;
+  if (!target.matches('a[href],button,input,select,textarea,[tabindex]')) target.tabIndex = -1;
+  target.focus({ preventScroll:true });
+  target.scrollIntoView({ block:'center' });
+}
 function element(tag, text, className) { const node = document.createElement(tag); if (text != null) node.textContent = text; if (className) node.className = className; return node; }
 function item(title, detail, action, onClick) {
   const row = element('div', null, 'item'), body = element('div');
@@ -53,24 +85,29 @@ function render() {
   for (const m of messages.slice(0,20)) ml.append(item({ welcome:'Bienvenida', followup:'Reserva posterior', survey:'Encuesta' }[m.kind] || m.kind, `${m.status}${m.last_error ? ` · ${m.last_error}` : ''} · ${when(m.created_at)}`));
   for (const invite of paymentInvites.slice(0,10)) ml.append(item('Enlace con anticipo', `${invite.email_status} · ${when(invite.created_at)}`));
 }
-async function load() { if (!current || !session) return; const version = generation, clinic = current, accessToken = session.access_token; const [result, emails, presence, measurement] = await Promise.all([api(`consultorio?clinic=${clinic}`), api(`consultorio?action=email&clinic=${clinic}`), api(`consultorio?route=presence&clinic=${clinic}`), api(`consultorio?route=presence&clinic=${clinic}&action=measurement`).catch(() => ({status:'medición no disponible'}))]); if (version !== generation || clinic !== current || accessToken !== session?.access_token) return; snapshot = result; presenceSnapshot = presence; render(); renderEmails(emails); renderPresence(presence,measurement); await renderEventTypes(result); }
+async function load(resetTab = false) { if (!current || !session) return; const version = generation, clinic = current, accessToken = session.access_token; const [result, emails, presence, measurement] = await Promise.all([api(`consultorio?clinic=${clinic}`), api(`consultorio?action=email&clinic=${clinic}`), api(`consultorio?route=presence&clinic=${clinic}`), api(`consultorio?route=presence&clinic=${clinic}&action=measurement`).catch(() => ({status:'medición no disponible'}))]); if (version !== generation || clinic !== current || accessToken !== session?.access_token) return; snapshot = result; presenceSnapshot = presence; render(); renderEmails(emails); renderPresence(presence,measurement); if (resetTab) $('results-section').open = false; activateTab(resetTab || !activeTab ? initialTab(emails.steps) : activeTab); await renderEventTypes(result); }
 const emailNames = { welcome:'Bienvenida', followup:'Reserva posterior', invite:'Invitación con anticipo', survey:'Encuesta' };
 const stepCopy = {
-  identity:['Confirma tus datos','Revisa el nombre que verán tus pacientes y el correo al que responderán. Puedes añadir tu sitio web o escribir todo a mano.','identity-settings'],
-  calendar:['Conecta Cal.com','Autoriza tu cuenta y elige por nombre tu tipo de cita normal. Si falla la conexión, usa «Conectar o reconectar Cal.com».','cal-setup'],
-  content:['Revisa la información propuesta','Analiza tu sitio si tienes uno, comprueba las fuentes y guarda los datos que quieras usar.','identity-settings'],
-  welcome:['Prueba y aprueba la bienvenida','Edita el mensaje, envíate una prueba y aprueba la versión que recibiste.','template-editors'],
-  followup:['Prueba y aprueba la siguiente cita','Comprueba los datos de la nueva reserva y aprueba la versión final.','template-editors'],
-  invite:['Prueba y aprueba la invitación','Prepara este correo aunque no cobres anticipos. El envío con anticipo es opcional.','template-editors'],
-  survey:['Prueba y aprueba la encuesta','Verifica que la encuesta solo se envíe con autorización de cada paciente.','template-editors'],
-  privacy:['Revisa privacidad y encuestas','Lee el aviso y confirma cómo solicitarás la autorización de encuesta en cada cita.','privacy-settings'],
-  activate:['Activa los mensajes','Activa expresamente cada tipo después de completar sus pruebas y aprobaciones.','template-editors'],
+  identity:['Confirma tus datos','Revisa el nombre que verán tus pacientes y el correo al que responderán. Puedes añadir tu sitio web o escribir todo a mano.','confirm-identity'],
+  calendar:['Conecta Cal.com','Autoriza tu cuenta y elige por nombre tu tipo de cita normal. Si falla la conexión, usa «Conectar o reconectar Cal.com».','event-type-select'],
+  content:['Revisa la información propuesta','Analiza tu sitio si tienes uno, comprueba las fuentes y guarda los datos que quieras usar.','confirm-content'],
+  welcome:['Prueba y aprueba la bienvenida','Edita el mensaje, envíate una prueba y aprueba la versión que recibiste.','template-welcome-subject'],
+  followup:['Prueba y aprueba la siguiente cita','Comprueba los datos de la nueva reserva y aprueba la versión final.','template-followup-subject'],
+  invite:['Prueba y aprueba la invitación','Prepara este correo aunque no cobres anticipos. El envío con anticipo es opcional.','template-invite-subject'],
+  survey:['Prueba y aprueba la encuesta','Verifica que la encuesta solo se envíe con autorización de cada paciente.','template-survey-subject'],
+  privacy:['Revisa privacidad y encuestas','Lee el aviso y confirma cómo solicitarás la autorización de encuesta en cada cita.','accept-privacy'],
+  activate:['Activa los mensajes','Activa expresamente cada tipo después de completar sus pruebas y aprobaciones.','activate-welcome'],
 };
-function renderOnboarding(steps) {
+function renderOnboarding(steps, clinic) {
   const list=$('onboarding-steps'); list.replaceChildren();
   const completed=steps.filter(s => s.done).length;
   show('onboarding-progress',`${completed} de ${steps.length} pasos`);
-  for(const step of steps){ const [title,help,target]=stepCopy[step.id] || [step.id,'','operations']; const li=element('li',null,`step ${step.done?'done':'pending'}`); const badge=element('span',step.done?'Listo':'Pendiente','step-status'); const content=element('div'); content.append(element('strong',title),element('p',help)); const link=element('a',step.done?'Revisar':'Continuar','step-link'); link.href=`#${target}`; li.append(badge,content,link); list.append(li); }
+  const next=steps.find(step => !step.done);
+  $('onboarding').hidden=!next;
+  $('home-summary').hidden=!!next;
+  show('next-step',next?`Siguiente paso: ${stepCopy[next.id]?.[0] || next.id}`:'');
+  updateTabStates(steps);
+  for(const step of steps){ const [title,help,defaultTarget]=stepCopy[step.id] || [step.id,'','onboarding']; let target=defaultTarget; if(step.id==='calendar'&&!snapshot?.connected) target='cal-reconnect'; if(step.id==='activate') target=`activate-${['welcome','followup','survey'].find(kind=>!clinic[`${kind}_enabled`])||'welcome'}`; const li=element('li',null,`step ${step.done?'done':'pending'}`); const badge=element('span',step.done?'Listo':'Pendiente','step-status'); const content=element('div'); content.append(element('strong',title),element('p',help)); const link=element('a',step.done?'Revisar':'Continuar','step-link'); link.href=`#${target}`; link.dataset.tab=tabForStep(step.id); li.append(badge,content,link); list.append(li); }
 }
 async function renderEventTypes(data) {
   const normal=$('event-type-select'), paid=$('paid-event-select');
@@ -88,7 +125,7 @@ function renderEmails(data) {
   settings.elements.reply_to.value = data.clinic.reply_to;
   settings.elements.brand_color.value = data.clinic.brand_color || '#163f51';
   settings.elements.location.value = data.clinic.location || '';
-  renderOnboarding(data.steps || []);
+  renderOnboarding(data.steps || [],data.clinic);
   $('confirm-identity').disabled=!!data.clinic.identity_confirmed_at;
   $('confirm-content').disabled=!!data.clinic.content_reviewed_at;
   $('accept-privacy').disabled=!!data.clinic.privacy_accepted_at;
@@ -106,9 +143,9 @@ function renderEmails(data) {
   const root = $('template-editors'); root.replaceChildren();
   for (const [kind, name] of Object.entries(emailNames)) {
     const history = data.templates.filter(t => t.kind === kind), draft = history.find(t => !t.approved_at), latest = draft || history[0];
-    const box = element('section', null, 'email-editor'); box.append(element('h3', name));
+    const box = element('section', null, 'email-editor'); box.id=`template-${kind}`; box.append(element('h3', name));
     const form = element('form');
-    const subjectLabel = element('label', 'Asunto'); const subject = element('input'); subject.name='subject'; subject.maxLength=200; subject.required=true; subject.value=latest?.subject || ''; subjectLabel.append(subject);
+    const subjectLabel = element('label', 'Asunto'); const subject = element('input'); subject.id=`template-${kind}-subject`; subject.name='subject'; subject.maxLength=200; subject.required=true; subject.value=latest?.subject || ''; subjectLabel.append(subject);
     const bodyLabel = element('label', 'Cuerpo'); const body = element('textarea'); body.name='body'; body.maxLength=5000; body.required=true; body.rows=6; body.value=latest?.body || ''; bodyLabel.append(body);
     const save = element('button','Guardar borrador'); form.append(subjectLabel, bodyLabel, save); form.addEventListener('submit', event => { event.preventDefault(); run(async () => { await api(`consultorio?action=email-template&clinic=${current}`, { method:'PATCH', body:JSON.stringify({ kind, subject:subject.value, body:body.value }) }); await load(); note('Borrador guardado.'); }); }); box.append(form);
     const versions = element('p', `Versiones: ${history.map(t => `v${t.version} ${t.approved_at ? 'aprobada' : 'borrador'}`).join(' · ') || 'ninguna'}`, 'muted'); box.append(versions);
@@ -120,7 +157,7 @@ function renderEmails(data) {
       }
       box.append(actions);
     }
-    const toggle = element('label', ` Activar ${name}`); const check = element('input'); check.type='checkbox'; check.checked=!!data.clinic[`${kind}_enabled`]; check.addEventListener('change', () => run(async () => { try { await api(`consultorio?action=email-settings&clinic=${current}`, { method:'PATCH', body:JSON.stringify({ [`${kind}_enabled`]:check.checked }) }); } finally { await load(); } })); toggle.prepend(check); box.append(toggle); root.append(box);
+    const toggle = element('label', ` Activar ${name}`); const check = element('input'); check.id=`activate-${kind}`; check.type='checkbox'; check.checked=!!data.clinic[`${kind}_enabled`]; check.addEventListener('change', () => run(async () => { try { await api(`consultorio?action=email-settings&clinic=${current}`, { method:'PATCH', body:JSON.stringify({ [`${kind}_enabled`]:check.checked }) }); } finally { await load(); } })); toggle.prepend(check); box.append(toggle); root.append(box);
   }
 }
 function renderPresence(data,measurement) {
@@ -180,8 +217,16 @@ function renderPresence(data,measurement) {
     requests.append(box);
   }
   const result=$('results-detail');result.replaceChildren();
-  if(measurement?.status==='verificado') renderMeasurementView(result,measurement.dataset,{siteId:measurement.dataset.sites[0]?.id});
-  else result.append(element('p',measurement?.status==='medición no disponible'?'Medición no disponible. Intenta actualizar más tarde.':'Sin datos verificados para este consultorio.','muted'));
+  if(measurement?.status==='verificado') {
+    const siteId=measurement.dataset.sites[0]?.id || '';
+    const model=measurementViewModel(measurement.dataset,siteId);
+    const brief=['Visitas','Intención de contacto','Citas confirmadas'].map(label=>{const metric=model.metrics.find(item=>item.label===label);return `${label}: ${metric.value}`;});
+    show('measurement-summary-text',brief.join(' · '));
+    renderMeasurementView(result,measurement.dataset,{siteId});
+  } else {
+    show('measurement-summary-text',measurement?.status==='medición no disponible'?'Medición no disponible. Intenta actualizar más tarde.':'Aún no hay resultados verificados para este consultorio.');
+    result.append(element('p',measurement?.status==='medición no disponible'?'Medición no disponible. Intenta actualizar más tarde.':'Sin datos verificados para este consultorio.','muted'));
+  }
   const activity=$('presence-activity');activity.replaceChildren();
   if(!data.events.length) activity.append(element('p','Todavía no hay actividad documentada.','muted'));
   const labels={version_uploaded:'Versión cargada',version_approved:'Versión aprobada',resource_archived:'Material archivado',presence_updated:'Ficha de presencia revisada',presence_reviewed:'Ficha confirmada por la doctora',request_created:'Solicitud recibida',request_status:'Solicitud actualizada'};
@@ -197,10 +242,15 @@ async function enter() {
   if (!clinics.length && !admin) { signOut(); throw new Error('Tu cuenta aún no está asignada a un consultorio.'); }
   const select = $('clinic-select'); select.replaceChildren();
   for (const clinic of clinics) { const option = element('option', clinic.name); option.value = clinic.id; select.append(option); }
-  if (clinics.length) {current=clinics[0].id;await load();if(!session)return;}
+  for (const name of tabNames) $(`tab-button-${name}`).hidden = !clinics.length && name !== 'operacion';
+  if (clinics.length) {current=clinics[0].id;await load(true);if(!session)return;}
   else {current=null;show('clinic-name','Administración de consultorios');}
-  $('onboarding').hidden=!clinics.length;$('cal-setup').hidden=!clinics.length;$('operations').hidden=!clinics.length;select.hidden=!clinics.length;$('refresh').hidden=!clinics.length;
-  if(!clinics.length){$('brand-section').parentElement.hidden=true;$('activity-section').hidden=true;$('pilot-section').hidden=true;}
+  $('task-section').hidden=!clinics.length;
+  $('requests-section').hidden=!clinics.length;
+  $('activity-section').hidden=!clinics.length;
+  if (!clinics.length) $('pilot-section').hidden=true;
+  if (!clinics.length) activateTab('operacion');
+  select.hidden=!clinics.length;$('refresh').hidden=!clinics.length;
   $('dashboard').hidden = false; $('login').hidden = true; $('logout').hidden = false; $('login-form').reset();
   $('admin-panel').hidden=!admin;if(admin)renderAdmin(admin.invitations);
 }
@@ -233,6 +283,9 @@ $('code-form').addEventListener('submit', event => { event.preventDefault(); run
   $('code-form').hidden=true; $('login-form').hidden=false; pendingEmail=null; show('login-error','');
 }); });
 $('logout').addEventListener('click', signOut);
+$('dashboard').addEventListener('click', event => { const link=event.target.closest('a[href^="#"]'); if (!link) return; const id=decodeURIComponent(link.hash.slice(1)); if ($(id)?.closest('[role="tabpanel"]')) { event.preventDefault(); navigateToTarget(id); } });
+for (const name of tabNames) $(`tab-button-${name}`).addEventListener('click',()=>activateTab(name));
+document.querySelector('.panel-tabs').addEventListener('keydown', event => { if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key) || event.target.getAttribute('role') !== 'tab') return; event.preventDefault(); const available=tabNames.filter(name=>!$(`tab-button-${name}`).hidden), index=available.indexOf(activeTab); const next=event.key==='Home'?0:event.key==='End'?available.length-1:(index+(event.key==='ArrowRight'?1:-1)+available.length)%available.length; activateTab(available[next],true); });
 $('refresh').addEventListener('click', () => run(load));
 $('analyze-site').addEventListener('click', () => run(async () => { await api(`consultorio?action=analyze-site&clinic=${current}`, { method:'POST' }); await load(); note('Propuesta creada. Revisa las fuentes y los borradores.'); }));
 $('email-settings-form').addEventListener('submit', event => { event.preventDefault(); run(async () => { const values = formData(event.target); await api(`consultorio?action=email-settings&clinic=${current}`, { method:'PATCH', body:JSON.stringify(values) }); await load(); note('Identidad guardada.'); }); });
@@ -243,7 +296,7 @@ $('admin-invite-form').addEventListener('submit',event=>{event.preventDefault();
 $('cal-reconnect').addEventListener('click',()=>run(async()=>{const data=await api(`consultorio?action=connect&clinic=${current}`,{method:'POST'});location.assign(data.url);}));
 $('event-type-form').addEventListener('submit',event=>{event.preventDefault();run(async()=>{await api(`consultorio?action=select-event&clinic=${current}`,{method:'POST',body:JSON.stringify({eventTypeId:Number(formData(event.target).eventTypeId),paid:false})});await load();note('Tipo de cita y avisos de Cal.com comprobados.');});});
 $('paid-event-form').addEventListener('submit',event=>{event.preventDefault();run(async()=>{const id=formData(event.target).eventTypeId;if(!id){note('No se configuró anticipo.');return;}await api(`consultorio?action=select-event&clinic=${current}`,{method:'POST',body:JSON.stringify({eventTypeId:Number(id),paid:true})});await load();note('Anticipo y avisos de Cal.com comprobados.');});});
-$('clinic-select').addEventListener('change', event => { generation++; current = event.target.value; snapshot = null; $('dashboard').hidden = true; run(async () => { await load(); if (snapshot && current === event.target.value) $('dashboard').hidden = false; }); });
+$('clinic-select').addEventListener('change', event => { generation++; current = event.target.value; snapshot = null; $('dashboard').hidden = true; run(async () => { await load(true); if (snapshot && current === event.target.value) $('dashboard').hidden = false; }); });
 $('task-form').addEventListener('submit', event => { event.preventDefault(); run(async () => { await api(`consultorio?clinic=${current}`, { method:'POST', body: JSON.stringify({ action:'task', title:formData(event.target).title }) }); event.target.reset(); await load(); }); });
 $('manual-form').addEventListener('submit', event => { event.preventDefault(); run(async () => { const form = formData(event.target); await api(`consultorio?clinic=${current}`, { method:'POST', body: JSON.stringify({ action:'manual', name:form.name, email:form.email, phone:form.phone, start:new Date(form.start).toISOString(), end:new Date(form.end).toISOString(), surveyAllowed: !!form.surveyAllowed }) }); event.target.reset(); await load(); note('Cita pendiente guardada. Regístrala en Cal.com.'); }); });
 $('cal-connect').addEventListener('click', () => run(async () => { const data = await api(`consultorio?action=connect&clinic=${current}`, { method:'POST' }); location.assign(data.url); }));
