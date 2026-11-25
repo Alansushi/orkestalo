@@ -14,9 +14,9 @@ Las descargas se autorizan por versión y consultorio. El servidor emite una URL
 
 Cada movimiento de solicitud deja una fila de historial. El aviso a Orkesta o a la doctora tiene estado propio; si Resend falla, el cron existente de consultorios lo reintenta con una clave de idempotencia ligada al movimiento. La solicitud permanece visible durante el fallo.
 
-## Aceptación antes de integrar en main
+## Aceptación técnica y activación de consultorios
 
-Probar con cuenta administradora, Ana, Fernanda, una cuenta sin membresía y una sesión vencida:
+Antes de integrar en `main`, comprobar que Preview carga y que las pruebas automatizadas con cuentas y datos simulados cubren el aislamiento por membresía, el manejo de sesión vencida y los flujos siguientes. Las comprobaciones de Ana y Fernanda con sus cuentas se realizan antes de iniciar el piloto en cada consultorio, sin activar mensajes ni anticipos por la mera publicación del código:
 
 - Biblioteca: borrador propio visible solo en el consultorio correspondiente, aprobación solo por la doctora, descarga de versión aprobada y bloqueo de borrador/archivo ajeno. Comprobar caducidad de URL firmada a los cinco minutos.
 - Presencia: edición solo por Orkesta, revisión por la doctora, evidencia y próxima acción visibles. Confirmar que la revisión de un consultorio no altera el otro.
