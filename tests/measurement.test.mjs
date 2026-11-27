@@ -41,3 +41,16 @@ test('site origin is exact and HTTPS', () => {
 test('medical contact ingestion is disabled', () => {
   assert.equal(existsSync(new URL('../api/measurement-contact.js', import.meta.url)), false);
 });
+
+test('Orkesta page views accept a positive order only on public routes', () => {
+  const page = { ...batch.events[0], name: 'page_view', path: '/proyectos/grafik/', channel: undefined, page_order: 2 };
+  assert.equal(validateMeasurement({ site: 'orkesta', events: [page] })?.events[0].page_order, 2);
+  assert.equal(validateMeasurement({ site: 'orkesta', events: [{ ...page, path: '/contacto/' }] })?.events[0].path, '/contacto/');
+  for (const path of ['/pedido/', '/medicion/', '/buen-fin-2026/', '/proyectos/private/', '/contacto/?folio=123']) {
+    assert.equal(validateMeasurement({ site: 'orkesta', events: [{ ...page, path }] }), null, path);
+  }
+  for (const page_order of [0, -1, 1.5, '2', 1000001]) {
+    assert.equal(validateMeasurement({ site: 'orkesta', events: [{ ...page, page_order }] }), null);
+  }
+  assert.equal(validateMeasurement({ site: 'orkesta', events: [{ ...page, name: 'contact_click' }] }), null);
+});

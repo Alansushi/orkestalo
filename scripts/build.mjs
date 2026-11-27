@@ -34,6 +34,13 @@ await build({
 });
 
 await build({
+  entryPoints: [fileURLToPath(new URL('../src/measurement/consent.js', import.meta.url))],
+  minify: true,
+  target: ['es2020'],
+  outfile: fileURLToPath(new URL('../assets/measurement-consent.js', import.meta.url)),
+});
+
+await build({
   entryPoints: [fileURLToPath(new URL('../rebrand.css', import.meta.url))],
   minify: true,
   outfile: fileURLToPath(new URL('../assets/rebrand.css', import.meta.url)),
@@ -58,7 +65,7 @@ for (const file of publicFiles) {
   await cp(new URL(`../${file}`, import.meta.url), new URL(`../public/${file}`, import.meta.url));
 }
 await mkdir(new URL('../public/assets/', import.meta.url), { recursive: true });
-for (const file of ['site.js', 'rebrand.js', 'rebrand.css', 'measurement.js', 'consultorio.js', 'survey.js', 'consultorio.css', 'dashboard-view.js', 'dashboard-view.css']) {
+for (const file of ['site.js', 'rebrand.js', 'rebrand.css', 'measurement.js', 'measurement-consent.js', 'consultorio.js', 'survey.js', 'consultorio.css', 'dashboard-view.js', 'dashboard-view.css']) {
   await cp(new URL(`../assets/${file}`, import.meta.url), new URL(`../public/assets/${file}`, import.meta.url));
 }
 await mkdir(new URL('../public/medicion/', import.meta.url), { recursive: true });

@@ -13,7 +13,13 @@ El esquema de `supabase/migrations/20261116035541_shared_measurement.sql` agrega
 
 ## Contrato
 
-Eventos: `page_view`, `section_view`, `contact_click`, `form_start`, `form_submit`, `site_error`. Solo se aceptan campos definidos y etiquetas de una lista cerrada. La ruta se reduce a `/` para impedir que una URL con texto de un paciente llegue al colector. Un clic de WhatsApp es intención de contacto, no mensaje enviado ni cita confirmada. Las conversiones repiten el mismo UUID dentro de una sesión y la clave primaria `(site_id, event_id)` elimina duplicados.
+Eventos: `page_view`, `section_view`, `contact_click`, `form_start`, `form_submit`, `site_error`. Solo se aceptan campos definidos y etiquetas de una lista cerrada. Los sitios médicos solo envían categorías públicas de ruta para impedir que una URL con texto de un paciente llegue al colector. Un clic de WhatsApp es intención de contacto, no mensaje enviado ni cita confirmada. Las conversiones repiten el mismo UUID dentro de una sesión y la clave primaria `(site_id, event_id)` elimina duplicados.
+
+### Orkesta
+
+La migración `20261127021004_orkesta_measurement_navigation.sql` registra `orkesta` con origen `https://www.orkestalo.com`, aviso de privacidad público y conservación de 90 días. Se aplica después de que la integración Git de Vercel publique el código y el aviso. La interfaz de consentimiento carga `/assets/measurement.js` solo tras aceptar; el rechazo y la retirada están disponibles desde cualquier página. Al retirar el permiso, el colector revoca la referencia anónima de la sesión y elimina sus eventos. La señal DNT o GPC impide cargar la medición propia.
+
+Las 14 páginas públicas de contenido se aceptan por una lista cerrada. `/pedido/`, `/medicion/`, `/consultorio/` y las rutas retiradas no se capturan. Se guardan rutas canónicas sin consultas ni fragmentos, clics de contacto, inicio del formulario y envío confirmado; no se envían campos, folios ni textos. `page_order` se incrementa por pestaña antes de enviar cada `page_view`, para ordenar las transiciones aunque la red entregue los eventos fuera de secuencia. El panel devuelve `pages` (vistas y sesiones únicas por ruta) y `transitions` (origen, destino y conteo), agregados de los últimos 30 días. No devuelve recorridos individuales.
 
 El endpoint opcional de contactos admite nombre, correo o teléfono, canal, y versión de consentimiento. Rechaza motivos de consulta, síntomas, fotografías y texto libre. La identidad y el consentimiento corresponden a cada sitio mediante `site_id`; no se unen visitantes entre sitios.
 

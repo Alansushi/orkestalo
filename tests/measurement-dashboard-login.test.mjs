@@ -136,6 +136,8 @@ test('presentation isolates one site and empty sites never show invented zeroes'
       sources: [{ site_id: 'ana', source: 'google', medium: 'organic', campaign: null, visits: 12, contact_clicks: 3 }],
       funnel: [],
       actions: [{ site_id: 'ana', day: '2026-11-15', path: '/preguntas-frecuentes', name: 'section_view', label: 'faq', events: 4 }, { site_id: 'ana', day: '2026-11-15', path: '/', name: 'agenda_click', label: 'booking', events: 2 }],
+      pages: [{ site_id: 'ana', day: '2026-11-15', path: '/', page_views: 14, visits: 12 }, { site_id: 'fernanda', day: '2026-11-15', path: '/', page_views: 2, visits: 2 }],
+      transitions: [{ site_id: 'ana', day: '2026-11-15', from_path: '/', to_path: '/preguntas-frecuentes', transitions: 3 }],
       external: [{ site_id: 'ana', day: '2026-11-15', provider: 'search_console', campaign_ref: null, metric: 'clicks', value: 7 }],
       connections: [{ site_id: 'ana', provider: 'search_console', last_synced_at: '2026-11-15T12:00:00Z', last_error: null }],
     };
@@ -151,12 +153,16 @@ test('presentation isolates one site and empty sites never show invented zeroes'
       return route.fulfill({ status: 404 });
     });
     await page.goto('https://measurement.test/medicion/');
+    assert.match(await page.locator('.mv-card').filter({ hasText: 'Páginas visitadas' }).innerText(), /Dra\. Ana Mora/);
+    assert.match(await page.locator('.mv-card').filter({ hasText: 'Páginas visitadas' }).innerText(), /Dra\. Fernanda Suaste/);
     await page.locator('#site').selectOption('ana');
     assert.match(await page.locator('.mv-grid').innerText(), /12/);
     assert.match(await page.locator('.mv-grid').innerText(), /Reservas verificadas\s*Aún sin datos/);
-    assert.match(await page.locator('.mv-card').nth(1).innerText(), /preguntas-frecuentes/);
-    assert.match(await page.locator('.mv-card').nth(1).innerText(), /agenda_click/);
-    assert.match(await page.locator('.mv-card').nth(4).innerText(), /Google Search Console/);
+    assert.match(await page.locator('.mv-card').filter({ hasText: 'Páginas visitadas' }).innerText(), /14/);
+    assert.match(await page.locator('.mv-card').filter({ hasText: 'Entre páginas' }).innerText(), /preguntas-frecuentes/);
+    assert.match(await page.locator('.mv-card').filter({ hasText: 'Rutas y acciones' }).innerText(), /preguntas-frecuentes/);
+    assert.match(await page.locator('.mv-card').filter({ hasText: 'Rutas y acciones' }).innerText(), /agenda_click/);
+    assert.match(await page.locator('.mv-card').filter({ hasText: 'Métricas importadas' }).innerText(), /Google Search Console/);
     await page.getByRole('button', { name: 'Presentar este sitio' }).click();
     assert.equal(await page.locator('#site').isVisible(), false);
     assert.doesNotMatch(await page.locator('body').innerText(), /Fernanda Suaste/);

@@ -4,8 +4,12 @@ const NAMES = new Set(['page_view', 'section_view', 'contact_click', 'agenda_cli
 const CHANNELS = new Set(['whatsapp', 'phone', 'email', 'form']);
 const LABELS = new Set(['hero', 'nav', 'services', 'about', 'faq', 'booking', 'contact', 'footer', 'form', 'other']);
 const INPUT_KEYS = new Set(['site', 'events']);
-const EVENT_KEYS = new Set(['id', 'session', 'name', 'path', 'label', 'channel', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer_host', 'attribution_ref']);
+const EVENT_KEYS = new Set(['id', 'session', 'name', 'path', 'label', 'channel', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer_host', 'attribution_ref', 'page_order']);
 const ROUTES = new Set(['/','/servicios','/preguntas-frecuentes','/buen-fin-mercado-pago','/aviso-de-privacidad','/politica-de-cookies','/politica-cancelacion','/terminos-de-uso','/gracias','/pago-pendiente','/error-pago']);
+const ORKESTA_ROUTES = new Set(['/', '/proyectos/', '/contacto/', '/aviso-de-privacidad/',
+  '/proyectos/grafik/', '/proyectos/dra-ana-mora/', '/proyectos/diego-y-giselle/',
+  '/proyectos/dra-fernanda-suaste/', '/proyectos/expression-grafica/', '/proyectos/aranza-y-mateo/', '/proyectos/engranes-cami/',
+  '/servicios/diseno-desarrollo-web/', '/servicios/experiencias-digitales/', '/servicios/automatizacion-ia/']);
 const SOURCES = new Set(['google','bing','facebook','instagram','meta','tiktok','doctoralia','whatsapp','email','direct','other']);
 const MEDIUMS = new Set(['cpc','paid','organic','social','email','referral','none','other']);
 const REFERRERS = new Set(['google','bing','facebook','instagram','doctoralia','other']);
@@ -22,12 +26,14 @@ export function validateMeasurement(input) {
   const events = [];
   for (const item of input.events) {
     if (!item || typeof item !== 'object' || Array.isArray(item) || Object.keys(item).some(k => !EVENT_KEYS.has(k))) return null;
-    if (!UUID.test(item.id) || !UUID.test(item.session) || !NAMES.has(item.name) || !ROUTES.has(item.path)) return null;
+    if (!UUID.test(item.id) || !UUID.test(item.session) || !NAMES.has(item.name) || !(input.site === 'orkesta' ? ORKESTA_ROUTES : ROUTES).has(item.path)) return null;
+    if (item.page_order != null && (item.name !== 'page_view' || !Number.isSafeInteger(item.page_order) || item.page_order < 1 || item.page_order > 1000000)) return null;
     if (item.attribution_ref != null && !UUID.test(item.attribution_ref)) return null;
     if (item.label != null && !LABELS.has(item.label)) return null;
     if (item.channel != null && !CHANNELS.has(item.channel)) return null;
     if (item.name === 'contact_click' && !item.channel) return null;
     const row = { event_id: item.id, session_id: item.session, name: item.name, path: item.path, attribution_ref: item.attribution_ref || null };
+    if (item.page_order != null) row.page_order = item.page_order;
     for (const key of ['label', 'channel', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer_host']) {
       if (item[key] != null) {
         const max = key === 'referrer_host' ? 160 : key === 'label' ? 80 : 100;
