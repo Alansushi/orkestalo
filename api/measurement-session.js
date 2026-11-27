@@ -1,11 +1,6 @@
 import { db, json, readBody } from '../src/server/commerce.js';
-import { ownerFromToken, ownerUserFromToken } from '../src/server/measurement.js';
+import { measurementAccessForEmail, measurementAccessFromToken, measurementUserFromToken } from '../src/server/measurement.js';
 import { readPending, setPending } from '../src/server/measurement-auth.js';
-
-function ownerEmail(value) {
-  return typeof value === 'string' && value.length <= 254 &&
-    value.trim().toLowerCase() === process.env.MEASUREMENT_OWNER_EMAIL?.toLowerCase();
-}
 
 function configured() {
   return ['SUPABASE_URL', 'SUPABASE_SECRET_KEY', 'MEASUREMENT_OWNER_EMAIL', 'RESEND_API_KEY', 'ORKESTA_EMAIL_FROM']
@@ -21,7 +16,7 @@ async function authRequest(path, token, body) {
   });
 }
 
-export default async function handler(req, res) {
+async function handle(req, res) {
   if (req.method === 'DELETE') {
     res.setHeader('Set-Cookie', [
       'orkesta_measurement_session=; HttpOnly; Secure; SameSite=Strict; Path=/api/measurement-dashboard; Max-Age=0',
@@ -34,8 +29,9 @@ export default async function handler(req, res) {
   const { email, code, type, action, factorId } = readBody(req) || {};
   if (action === 'enroll' || req.method === 'PATCH') {
     const token = readPending(req);
-    const user = await ownerUserFromToken(token, false);
-    if (!user) return json(res, 401, { error: 'Vuelve a introducir el código del correo' });
+    const access = await measurementUserFromToken(token, { requireAal2: false });
+    if (!access) return json(res, 401, { error: 'Vuelve a introducir el código del correo' });
+    const user = access.user;
     const verified = user.factors?.find(f => f.factor_type === 'totp' && f.status === 'verified');
     if (action === 'enroll' && req.method === 'POST') {
       if (verified) return json(res, 409, { error: 'El autenticador ya está configurado' });
@@ -51,15 +47,16 @@ export default async function handler(req, res) {
     const verifiedResponse = await authRequest(`factors/${encodeURIComponent(factorId)}/verify`, token, { challenge_id: challengeId, code });
     if (!verifiedResponse.ok) return json(res, 422, { error: 'Código de autenticador inválido o vencido' });
     const session = await verifiedResponse.json();
-    if (!await ownerFromToken(session.access_token)) return json(res, 403, { error: 'Acceso sin segundo factor confirmado' });
+    if (!await measurementAccessFromToken(session.access_token)) return json(res, 403, { error: 'Acceso sin segundo factor confirmado' });
     res.setHeader('Set-Cookie', [
       `orkesta_measurement_session=${encodeURIComponent(session.access_token)}; HttpOnly; Secure; SameSite=Strict; Path=/api/measurement-dashboard; Max-Age=${Math.min(session.expires_in || 3600, 3600)}`,
       'orkesta_measurement_pending=; HttpOnly; Secure; SameSite=Strict; Path=/api/measurement-session; Max-Age=0',
     ]);
     return json(res, 200, { ok: true });
   }
-  if (!ownerEmail(email)) return json(res, 403, { error: 'Sin acceso al panel' });
-  const normalizedEmail = process.env.MEASUREMENT_OWNER_EMAIL;
+  const emailAccess = await measurementAccessForEmail(email);
+  if (!emailAccess) return json(res, 403, { error: 'Sin acceso al panel' });
+  const normalizedEmail = emailAccess.email;
 
   if (req.method === 'POST') {
     try {
@@ -103,13 +100,22 @@ export default async function handler(req, res) {
     });
     if (!response.ok) return json(res, 401, { error: 'Código inválido o vencido' });
     const data = await response.json();
-    const user = await ownerUserFromToken(data.access_token, false);
-    if (!user) return json(res, 403, { error: 'Sin acceso al panel' });
+    const access = await measurementUserFromToken(data.access_token, { requireAal2: false });
+    if (!access || access.email !== normalizedEmail) return json(res, 403, { error: 'Sin acceso al panel' });
+    const user = access.user;
     setPending(res, data.access_token);
     const factor = user.factors?.find(f => f.factor_type === 'totp' && f.status === 'verified');
     return json(res, 200, { ok: true, mfa: factor ? 'verify' : 'enroll', factorId: factor?.id });
   } catch (error) {
     console.error('Fallo de acceso al panel', error);
+    return json(res, 503, { error: 'Acceso no disponible' });
+  }
+}
+
+export default async function handler(req, res) {
+  try { return await handle(req, res); }
+  catch (error) {
+    console.error('Fallo de autorización del panel', error);
     return json(res, 503, { error: 'Acceso no disponible' });
   }
 }

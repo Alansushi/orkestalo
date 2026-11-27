@@ -54,3 +54,15 @@ test('Orkesta page views accept a positive order only on public routes', () => {
   }
   assert.equal(validateMeasurement({ site: 'orkesta', events: [{ ...page, name: 'contact_click' }] }), null);
 });
+
+test('CAMI accepts only its public routes and predefined action labels', () => {
+  const event = { id, session, name: 'product_interest', path: '/', label: 'engranes-rectos' };
+  assert.equal(validateMeasurement({ site: 'engranes-cami', events: [event] })?.events[0].label, 'engranes-rectos');
+  assert.equal(validateMeasurement({ site: 'engranes-cami', events: [{ ...event, name: 'quote_draft', path: '/cotizar', label: 'form' }] })?.events[0].name, 'quote_draft');
+  assert.equal(validateMeasurement({ site: 'engranes-cami', events: [{ ...event, name: 'form_error', path: '/cotizar', label: 'email' }] })?.events[0].label, 'email');
+  assert.equal(validateMeasurement({ site: 'engranes-cami', events: [{ ...event, name: 'contact_click', channel: 'map', label: 'footer' }] })?.events[0].channel, 'map');
+  for (const bad of [{ path: '/cotizar?nombre=Ana' }, { path: '/otro' }, { label: 'Ana Pérez' }, { label: 'pieza-ABC123' }, { name: 'patient_note' }]) {
+    assert.equal(validateMeasurement({ site: 'engranes-cami', events: [{ ...event, ...bad }] }), null);
+  }
+  assert.equal(validateMeasurement({ site: 'dra-ana-mora', events: [event] }), null);
+});

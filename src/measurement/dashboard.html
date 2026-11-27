@@ -42,6 +42,13 @@
   <main id="results" hidden>
     <div class="toolbar"><div class="chooser" id="chooser"><label for="site">Sitio que quieres consultar</label><select id="site"></select></div><button id="presentation" class="secondary" type="button" disabled>Presentar este sitio</button></div>
     <div id="measurement-view"></div>
+    <p id="historical-analytics" class="note" hidden>El histórico anterior de CAMI permanece en <a href="https://vercel.com/alansushis-projects/engranes-cami/analytics" target="_blank" rel="noopener noreferrer">Vercel Analytics ↗</a>. El enlace requiere acceso al proyecto de Vercel.</p>
+    <section id="invites" class="card" hidden>
+      <h2>Acceso invitado a CAMI</h2><p>Invita un correo para consultar únicamente sus métricas. El acceso requiere código por correo y autenticador.</p>
+      <p id="invite-pending" hidden>Las invitaciones se habilitarán después de validar el aviso de privacidad y activar la captura.</p>
+      <form id="invite-form"><label for="invite-email">Correo de la persona invitada</label><input id="invite-email" name="inviteEmail" type="email" autocomplete="off" required maxlength="254"><button>Enviar invitación</button></form>
+      <div id="invite-list" aria-live="polite"></div>
+    </section>
   </main>
   </div><footer class="footer"><div class="wrap">Orkesta · Panel de uso privado</div></footer>
   <script type="module">
@@ -53,7 +60,7 @@
       const selected=dataset.sites.find(x=>x.id===id);
       $('presentation').disabled=!selected&&!presenting;
       $('presentation').textContent=presenting?'Salir de presentación':'Presentar este sitio';
-      $('chooser').hidden=presenting;
+      $('chooser').hidden=presenting||dataset.role==='viewer';
       renderMeasurementView($('measurement-view'),dataset,{siteId:id,presenting});
     }
     async function load() {
@@ -61,10 +68,41 @@
       if(!response.ok) { dataset=undefined;presenting=false;if($('verify').hidden&&$('mfa').hidden)$('login').hidden=false;$('results').hidden=true;$('logout').hidden=true;return; }
       dataset=await response.json();
       $('site').replaceChildren();
-      const all=document.createElement('option');all.value='';all.textContent='Todos los sitios';$('site').append(all);
+      if(dataset.role!=='viewer') {const all=document.createElement('option');all.value='';all.textContent='Todos los sitios';$('site').append(all);}
       for(const site of dataset.sites) { const option=document.createElement('option');option.value=site.id;option.textContent=site.name;$('site').append(option); }
+      $('presentation').hidden=dataset.role==='viewer';
+      $('historical-analytics').hidden=dataset.role==='viewer';
+      $('invites').hidden=dataset.role==='viewer'||!dataset.sites.some(site=>site.slug==='engranes-cami');
+      const cami=dataset.sites.find(site=>site.slug==='engranes-cami');
+      $('invite-pending').hidden=!cami||cami.active;
+      $('invite-form').hidden=!cami||!cami.active;
+      renderInvites();
       $('login').hidden=true;$('verify').hidden=true;$('mfa').hidden=true;$('results').hidden=false;$('logout').hidden=false;render();
     }
+    function renderInvites() {
+      $('invite-list').replaceChildren();
+      for(const viewer of dataset?.viewers||[]) {
+        const row=document.createElement('p');
+        const label=document.createElement('span');label.textContent=viewer.email+' · ';
+        const revoke=document.createElement('button');revoke.type='button';revoke.className='secondary';revoke.textContent='Revocar';revoke.setAttribute('aria-label','Revocar '+viewer.email);
+        revoke.addEventListener('click',async()=>{
+          revoke.disabled=true;
+          try {const response=await fetch('/api/measurement-dashboard',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:viewer.email})});
+            if(!response.ok) throw new Error();$('status').textContent='Acceso revocado.';await load();}
+          catch {$('status').textContent='No se pudo revocar el acceso.';revoke.disabled=false;}
+        });
+        row.append(label,revoke);$('invite-list').append(row);
+      }
+    }
+    $('invite-form').addEventListener('submit',async event=>{
+      event.preventDefault();
+      const site=dataset.sites.find(row=>row.slug==='engranes-cami');
+      if(!site)return;
+      const email=String(new FormData(event.currentTarget).get('inviteEmail')||'');
+      try {const response=await fetch('/api/measurement-dashboard',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,siteId:site.id})});
+        if(!response.ok)throw new Error();$('invite-form').reset();$('status').textContent='Invitación enviada.';await load();}
+      catch {$('status').textContent='No se pudo enviar la invitación.';}
+    });
     $('site').addEventListener('change',render);
     $('presentation').addEventListener('click',()=>{if(!presenting&&!$('site').value)return;presenting=!presenting;render();$('presentation').focus();});
     let loginEmail='',loginType='magiclink',mfaFactor='';

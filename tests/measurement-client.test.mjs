@@ -5,8 +5,8 @@ import { runInNewContext } from 'node:vm';
 import { webcrypto } from 'node:crypto';
 
 const source = await readFile(new URL('../src/measurement/client.js', import.meta.url), 'utf8');
-async function browser({ consent = 'accepted', beacon = () => true, site = 'dra-ana-mora', pathname = '/' } = {}) {
-  const values = new Map([['dental-cookie-consent-v2', consent], ['orkesta-measurement-consent-v1', consent]]);
+async function browser({ consent = 'accepted', beacon = () => true, site = 'dra-ana-mora', pathname = '/', now = () => Date.now() } = {}) {
+  const values = new Map([['dental-cookie-consent-v2', consent], ['orkesta-measurement-consent-v1', consent], ['cami-analytics-consent-v1', consent]]);
   const handlers = {};
   const windowHandlers = {};
   const payloads = [];
@@ -14,13 +14,14 @@ async function browser({ consent = 'accepted', beacon = () => true, site = 'dra-
   let serial = 0;
   const context = {
     URL, URLSearchParams, Blob, TextEncoder, Uint8Array,
+    Date: class extends Date { static now() { return now(); } },
     crypto: { randomUUID: () => `00000000-0000-4000-8000-${String(++serial).padStart(12,'0')}`, subtle: webcrypto.subtle },
     navigator: { sendBeacon: (url, blob) => { (String(url).includes('action=revoke') ? revocations : payloads).push(blob.text()); return beacon(url, blob); } },
     location: { search: '?utm_source=google&utm_campaign=noviembre&patient=dolor', pathname },
     localStorage: { getItem: key => values.get(key) },
     sessionStorage: { getItem: key => values.get(key) || null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) },
     document: {
-      currentScript: { src: 'https://www.orkestalo.com/assets/measurement.js', dataset: { site, consentKey: site === 'orkesta' ? 'orkesta-measurement-consent-v1' : 'dental-cookie-consent-v2' } },
+      currentScript: { src: 'https://www.orkestalo.com/assets/measurement.js', dataset: { site, consentKey: site === 'orkesta' ? 'orkesta-measurement-consent-v1' : site === 'engranes-cami' ? 'cami-analytics-consent-v1' : 'dental-cookie-consent-v2' } },
       referrer: '',
       addEventListener: (name, fn) => { handlers[name] = fn; },
       querySelectorAll: () => [],
@@ -94,4 +95,24 @@ test('a page restored from browser history records another ordered page view', a
   windowHandlers.pageshow({ persisted: true });
   const events = (await Promise.all(payloads)).map(x => JSON.parse(x).events[0]);
   assert.deepEqual(events.map(x => [x.path, x.page_order]), [['/proyectos/', 1], ['/contacto/', 2]]);
+});
+
+test('CAMI collector sends only predefined actions, paths and labels', async () => {
+  let time = 100000;
+  const { context, payloads } = await browser({ site: 'engranes-cami', pathname: '/cotizar', now: () => time });
+  context.window.orkestaMeasurement.track('form_error', { label: 'email', path: '/cotizar?name=Ana' });
+  context.window.orkestaMeasurement.track('quote_draft', { label: 'form' });
+  context.window.orkestaMeasurement.track('quote_draft', { label: 'form' });
+  time += 2001;
+  context.window.orkestaMeasurement.track('quote_draft', { label: 'form' });
+  context.window.orkestaMeasurement.track('product_interest', { label: 'engranes-rectos', path: '/' });
+  context.window.orkestaMeasurement.track('product_interest', { label: 'pieza-Ana' });
+  context.window.orkestaMeasurement.page('/nosotros?email=ana@example.com');
+  context.window.orkestaMeasurement.page('/private/Ana');
+  const events = (await Promise.all(payloads)).map(x => JSON.parse(x).events[0]);
+  assert.deepEqual(events.map(x => x.name), ['page_view','form_error','quote_draft','quote_draft','quote_draft','product_interest','page_view']);
+  assert.equal(events[2].id, events[3].id);
+  assert.notEqual(events[3].id, events[4].id);
+  assert.deepEqual(events.filter(x => x.name === 'page_view').map(x => x.page_order), [1,2]);
+  assert.equal(events.every(x => !JSON.stringify(x).includes('Ana') && !JSON.stringify(x).includes('example.com')), true);
 });

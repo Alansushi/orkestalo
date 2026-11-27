@@ -48,3 +48,17 @@ test('view model groups consented page visits and directed transitions', () => {
   assert.deepEqual(model.pages.map(({ path, page_views, visits }) => [path, page_views, visits]), [['/proyectos/', 3, 3]]);
   assert.deepEqual(model.transitions.map(({ from_path, to_path, transitions }) => [from_path, to_path, transitions]), [['/proyectos/', '/contacto/', 2]]);
 });
+
+test('CAMI uses draft and click labels without claiming delivery', () => {
+  const model = measurementViewModel({
+    sites: [{ id: 'cami', slug: 'engranes-cami', name: 'Engranes CAMI', active: false }],
+    daily: [{ site_id: 'cami', day: '2026-11-27', visits: 4, contact_clicks: 2, quote_drafts: 1, form_errors: 3 }],
+    actions: [{ site_id: 'cami', path: '/', name: 'product_interest', label: 'engranes-rectos', events: 2 }],
+    channels: [{ site_id: 'cami', day: '2026-11-27', channel: 'whatsapp', clicks: 2 }],
+    funnel: [], sources: [], external: [], connections: [],
+  }, 'cami');
+  assert.deepEqual(model.metrics.map(x => x.label), ['Visitas', 'Borradores preparados', 'Clics para abrir', 'Errores de validación']);
+  assert.deepEqual(model.metrics.map(x => x.value), [4, 1, 2, 3]);
+  assert.equal(model.interests[0].label, 'engranes-rectos');
+  assert.equal(model.channels[0].clicks, 2);
+});

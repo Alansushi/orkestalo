@@ -8,6 +8,28 @@ const chrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const view = await readFile(new URL('../src/measurement/dashboard-view.js', import.meta.url), 'utf8');
 const viewCss = await readFile(new URL('../src/measurement/dashboard-view.css', import.meta.url), 'utf8');
 
+test('CAMI guest sees only their site and no invitation controls', { skip: process.platform !== 'darwin' }, async () => {
+  const browser = await chromium.launch({ executablePath: chrome, headless: true, args: ['--no-sandbox'] });
+  try {
+    const page = await browser.newPage();
+    const html = await readFile(new URL('../src/measurement/dashboard.html', import.meta.url), 'utf8');
+    await page.route('**/*', route => {
+      const path = new URL(route.request().url()).pathname;
+      if (path === '/assets/dashboard-view.js') return route.fulfill({ status: 200, contentType: 'text/javascript', body: view });
+      if (path === '/assets/dashboard-view.css') return route.fulfill({ status: 200, contentType: 'text/css', body: viewCss });
+      if (path === '/medicion/') return route.fulfill({ status: 200, contentType: 'text/html', body: html });
+      if (path === '/api/measurement-dashboard') return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ role: 'viewer', sites: [{ id: 'cami', slug: 'engranes-cami', name: 'Engranes CAMI', active: false }], daily: [], sources: [], actions: [], channels: [], connections: [], external: [], funnel: [] }) });
+      return route.fulfill({ status: 404 });
+    });
+    await page.goto('https://measurement.test/medicion/');
+    await page.locator('#results').waitFor({ state: 'visible' });
+    assert.equal(await page.locator('#chooser').isVisible(), false);
+    assert.equal(await page.locator('#invites').isVisible(), false);
+    assert.equal(await page.locator('#historical-analytics').isVisible(), false);
+    assert.match(await page.locator('.mv-scope').innerText(), /Engranes CAMI/);
+  } finally { await browser.close(); }
+});
+
 test('email code needs TOTP before opening the measurement dashboard', { skip: process.platform !== 'darwin' }, async () => {
   const browser = await chromium.launch({ executablePath: chrome, headless: true, args: ['--no-sandbox'] });
   try {
@@ -41,6 +63,7 @@ test('email code needs TOTP before opening the measurement dashboard', { skip: p
     await page.locator('input[name="totp"]').fill('123456');
     await page.getByRole('button', { name: 'Verificar autenticador' }).click();
     await page.locator('#results').waitFor({ state: 'visible' });
+    assert.equal(await page.locator('#historical-analytics').isVisible(), true);
     assert.deepEqual(errors, []);
     assert.equal(await page.locator('#results').isVisible(), true);
     assert.equal(await page.locator('#verify').isVisible(), false);
