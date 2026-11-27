@@ -38,3 +38,13 @@ test('one site has identical indicators and every detail table in admin and clin
   const admin = {...own,sites:[site,{id:'fer',name:'Fer',active:true}],...Object.fromEntries(Object.keys(foreign).map(key => [key,[...own[key],...foreign[key]]]))};
   assert.deepEqual(measurementViewModel(admin,'ana'),measurementViewModel(own,'ana'));
 });
+
+test('view model groups consented page visits and directed transitions', () => {
+  const model = measurementViewModel({
+    sites: [{ id: 'orkesta', name: 'Orkesta', active: true }], daily: [], funnel: [], actions: [], sources: [], external: [], connections: [],
+    pages: [{ site_id: 'orkesta', day: '2026-11-25', path: '/proyectos/', page_views: 2, visits: 2 }, { site_id: 'orkesta', day: '2026-11-26', path: '/proyectos/', page_views: 1, visits: 1 }],
+    transitions: [{ site_id: 'orkesta', day: '2026-11-26', from_path: '/proyectos/', to_path: '/contacto/', transitions: 2 }],
+  }, 'orkesta');
+  assert.deepEqual(model.pages.map(({ path, page_views, visits }) => [path, page_views, visits]), [['/proyectos/', 3, 3]]);
+  assert.deepEqual(model.transitions.map(({ from_path, to_path, transitions }) => [from_path, to_path, transitions]), [['/proyectos/', '/contacto/', 2]]);
+});

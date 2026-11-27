@@ -30,6 +30,20 @@ test('privacy notice and forms separate optional proposals from project messages
   }
 });
 
+test('every public page offers analytics consent and privacy notice explains withdrawal', async () => {
+  for (const file of productionPages) {
+    const html = await read(`public/${file}`);
+    assert.match(html, /data-measure-consent/);
+    assert.match(html, /data-measure-settings/);
+    assert.match(html, /assets\/measurement-consent\.js/);
+    assert.doesNotMatch(html, /<script[^>]+src="\/assets\/measurement\.js"/);
+  }
+  const notice = await read('public/aviso-de-privacidad/index.html');
+  assert.match(notice, /90 días/);
+  assert.match(notice, /retirar.*consentimiento/s);
+  assert.match(notice, /rutas.*sin.*consultas/s);
+});
+
 test('the guided WhatsApp URL preserves source, situation, name and process', async () => {
   const { makeWhatsAppUrl } = await import('../src/contact.js');
   const url = makeWhatsAppUrl({

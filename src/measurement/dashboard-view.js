@@ -30,6 +30,8 @@ export function measurementViewModel(dataset, siteId = '') {
     site, metrics, updatedAt: dataset.updatedAt,
     funnel: grouped(funnel, ['site_id','source','medium','campaign'], ['visits','bookings','approved_payments','confirmed_appointments']),
     actions: grouped(scope(dataset.actions), ['site_id','path','name','label'], ['events']),
+    pages: grouped(scope(dataset.pages), ['site_id','path'], ['page_views','visits']).sort((a,b) => b.page_views-a.page_views),
+    transitions: grouped(scope(dataset.transitions), ['site_id','from_path','to_path'], ['transitions']).sort((a,b) => b.transitions-a.transitions),
     daily: [...daily].reverse(),
     sources: grouped(scope(dataset.sources), ['source','medium','campaign'], ['visits','contact_clicks']).sort((a,b) => b.visits-a.visits),
     external: scope(dataset.external).sort((a,b) => String(b.day).localeCompare(String(a.day))),
@@ -41,6 +43,8 @@ export function measurementViewModel(dataset, siteId = '') {
 }
 
 const tables = [
+  ['pages','Páginas visitadas','Vistas y sesiones de visitantes que aceptaron la medición.',['Sitio','Página','Vistas','Sesiones'],'Aquí aparecerán las páginas visitadas con consentimiento.'],
+  ['transitions','Entre páginas','Cambios de página agregados de visitantes que aceptaron la medición.',['Sitio','Origen','Destino','Transiciones'],'Aquí aparecerán las transiciones entre páginas.'],
   ['funnel','Embudo por campaña','Las reservas, pagos y citas proceden de verificaciones de los servidores del sitio.',['Sitio','Origen','Medio','Campaña','Visitas','Reservas','Pagos aprobados','Citas confirmadas'],'Aquí aparecerán las campañas de visitas con consentimiento.'],
   ['actions','Rutas y acciones','Secciones y accesos a agenda separados de los clics de contacto.',['Ruta','Acción','Sección','Eventos'],'Aquí aparecerán las rutas, secciones y accesos registrados.'],
   ['daily','Evolución diaria','Visitas e intención de contacto por día.',['Fecha','Visitas','Clics de contacto','Formularios enviados'],'Aquí aparecerán las visitas y acciones registradas por día.'],
@@ -70,7 +74,10 @@ export function renderMeasurementView(container, dataset, { siteId = '', present
   container.append(summary);
   container.append(el('p','mv-updated',model.updatedAt ? `Actualizado: ${new Date(model.updatedAt).toLocaleString('es-MX')}` : 'Actualización no disponible'));
   container.append(el('p','mv-note','Cobertura limitada a visitantes que aceptaron analítica. Un clic de contacto no confirma una reserva ni un pago.'));
+  if (dataset.navigationPending) container.append(el('p','mv-note','Los informes de navegación se activarán al terminar la actualización de datos.'));
   const values = {
+    pages: row => [dataset.sites.find(site => site.id === row.site_id)?.name,row.path,row.page_views,row.visits],
+    transitions: row => [dataset.sites.find(site => site.id === row.site_id)?.name,row.from_path,row.to_path,row.transitions],
     funnel: row => [dataset.sites.find(s => s.id === row.site_id)?.name,row.source,row.medium,row.campaign,row.visits,row.bookings,row.approved_payments,row.confirmed_appointments],
     actions: row => [row.path,row.name,row.label || '—',row.events],
     daily: row => [row.day,row.visits,row.contact_clicks,row.form_submits],

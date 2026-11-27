@@ -93,6 +93,7 @@ if (contactForm) {
       document.querySelector('[data-contact-whatsapp]').href = makeProjectWhatsAppUrl({ ...data, description: `Folio: ${result.folio}\n${data.description}` }, document.documentElement.lang);
       contactForm.hidden = true;
       document.querySelector('[data-contact-success]').hidden = false;
+      window.orkestaMeasurement?.track('form_submit', { channel: 'form', label: 'form' });
       window.orkestaTrack?.('contact_submit', { type: data.type, reference: data.reference });
     } catch (error) {
       feedback.textContent = error.message || 'No pudimos guardar tu consulta. Intenta de nuevo.';

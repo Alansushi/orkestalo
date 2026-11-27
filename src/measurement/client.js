@@ -15,11 +15,11 @@
         const allowed = consentKey && localStorage.getItem(consentKey) === 'accepted';
         if (!allowed) {
           const oldRef = session.getItem(`${key}:ref`);
-          if (oldRef) try {
+          if (oldRef && site !== 'orkesta') try {
             const body = JSON.stringify({ site, reference: oldRef });
             navigator.sendBeacon(revocationEndpoint, new Blob([body], { type: 'text/plain' }));
           } catch { /* keep consent withdrawal immediate */ }
-          for (const suffix of ['', ':ref', ':ctx']) session.removeItem(key + suffix);
+          for (const suffix of ['', ':ref', ':ctx', ':seq']) session.removeItem(key + suffix);
         }
         return allowed;
       }
@@ -62,9 +62,15 @@
       session.setItem(`${key}:ctx`, JSON.stringify(context));
     }
     const once = new Set();
-    const routes = new Set(['/','/servicios','/preguntas-frecuentes','/buen-fin-mercado-pago','/aviso-de-privacidad','/politica-de-cookies','/politica-cancelacion','/terminos-de-uso','/gracias','/pago-pendiente','/error-pago']);
+    const routes = site === 'orkesta'
+      ? new Set(['/', '/proyectos/', '/contacto/', '/aviso-de-privacidad/',
+        '/proyectos/grafik/', '/proyectos/dra-ana-mora/', '/proyectos/diego-y-giselle/',
+        '/proyectos/dra-fernanda-suaste/', '/proyectos/expression-grafica/', '/proyectos/aranza-y-mateo/', '/proyectos/engranes-cami/',
+        '/servicios/diseno-desarrollo-web/', '/servicios/experiencias-digitales/', '/servicios/automatizacion-ia/'])
+      : new Set(['/','/servicios','/preguntas-frecuentes','/buen-fin-mercado-pago','/aviso-de-privacidad','/politica-de-cookies','/politica-cancelacion','/terminos-de-uso','/gracias','/pago-pendiente','/error-pago']);
     function safePath(input) {
-      const path = String(input || location.pathname).split(/[?#]/)[0].replace(/\/$/, '') || '/';
+      const raw = String(input || location.pathname).split(/[?#]/)[0];
+      const path = site === 'orkesta' ? (raw === '/' ? '/' : `${raw.replace(/\/$/, '')}/`) : (raw.replace(/\/$/, '') || '/');
       return routes.has(path) ? path : null;
     }
     function track(name, options = {}) {
@@ -83,6 +89,12 @@
         if (!currentRef) { currentRef = crypto.randomUUID(); session.setItem(`${key}:ref`, currentRef); }
         if (!session.getItem(key)) { sessionId = crypto.randomUUID(); session.setItem(key, sessionId); context = {}; }
         const event = { id: eventId, session: sessionId, attribution_ref: currentRef, name, path, ...context };
+        if (name === 'page_view' && site === 'orkesta') {
+          const next = (Number(session.getItem(`${key}:seq`)) || 0) + 1;
+          if (next > 1000000) return;
+          session.setItem(`${key}:seq`, String(next));
+          event.page_order = next;
+        }
         if (['hero','nav','services','about','faq','booking','contact','footer','form','other'].includes(options.label)) event.label = options.label;
         if (['whatsapp','phone','email','form'].includes(options.channel)) event.channel = options.channel;
         const data = JSON.stringify({ site, events: [event] });
@@ -133,6 +145,7 @@
     };
     window.addEventListener?.('site-consent-changed', permitted);
     window.addEventListener?.('storage', permitted);
+    window.addEventListener?.('pageshow', event => { if (event.persisted) window.orkestaMeasurement.page(); });
     if (safePath() ) trackOnce('page', 'page_view', { path: safePath() });
   } catch { /* measurement must never interrupt the site */ }
 })();

@@ -5,8 +5,8 @@ import { runInNewContext } from 'node:vm';
 import { webcrypto } from 'node:crypto';
 
 const source = await readFile(new URL('../src/measurement/client.js', import.meta.url), 'utf8');
-async function browser({ consent = 'accepted', beacon = () => true } = {}) {
-  const values = new Map([['dental-cookie-consent-v2', consent]]);
+async function browser({ consent = 'accepted', beacon = () => true, site = 'dra-ana-mora', pathname = '/' } = {}) {
+  const values = new Map([['dental-cookie-consent-v2', consent], ['orkesta-measurement-consent-v1', consent]]);
   const handlers = {};
   const windowHandlers = {};
   const payloads = [];
@@ -16,11 +16,11 @@ async function browser({ consent = 'accepted', beacon = () => true } = {}) {
     URL, URLSearchParams, Blob, TextEncoder, Uint8Array,
     crypto: { randomUUID: () => `00000000-0000-4000-8000-${String(++serial).padStart(12,'0')}`, subtle: webcrypto.subtle },
     navigator: { sendBeacon: (url, blob) => { (String(url).includes('action=revoke') ? revocations : payloads).push(blob.text()); return beacon(url, blob); } },
-    location: { search: '?utm_source=google&utm_campaign=noviembre&patient=dolor', pathname: '/' },
+    location: { search: '?utm_source=google&utm_campaign=noviembre&patient=dolor', pathname },
     localStorage: { getItem: key => values.get(key) },
     sessionStorage: { getItem: key => values.get(key) || null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) },
     document: {
-      currentScript: { src: 'https://www.orkestalo.com/assets/measurement.js', dataset: { site: 'dra-ana-mora', consentKey: 'dental-cookie-consent-v2' } },
+      currentScript: { src: 'https://www.orkestalo.com/assets/measurement.js', dataset: { site, consentKey: site === 'orkesta' ? 'orkesta-measurement-consent-v1' : 'dental-cookie-consent-v2' } },
       referrer: '',
       addEventListener: (name, fn) => { handlers[name] = fn; },
       querySelectorAll: () => [],
@@ -74,4 +74,24 @@ test('consent withdrawal immediately sends revocation without another click', as
   values.set('dental-cookie-consent-v2', 'rejected');
   windowHandlers['site-consent-changed']();
   assert.equal(revocations.length, 1);
+});
+
+test('Orkesta tracks current public pages with increasing order across navigation and reload', async () => {
+  const { context, payloads } = await browser({ site: 'orkesta', pathname: '/proyectos/' });
+  context.window.orkestaMeasurement.page('/proyectos/grafik/?folio=private#detail');
+  context.window.orkestaMeasurement.page('/contacto/');
+  context.window.orkestaMeasurement.page('/pedido/?folio=private');
+  await runInNewContext(source, context);
+  const events = (await Promise.all(payloads)).map(x => JSON.parse(x).events[0]);
+  assert.deepEqual(events.map(x => x.path), ['/proyectos/', '/proyectos/grafik/', '/contacto/', '/proyectos/']);
+  assert.deepEqual(events.map(x => x.page_order), [1, 2, 3, 4]);
+  assert.equal(events.every(x => !JSON.stringify(x).includes('private')), true);
+});
+
+test('a page restored from browser history records another ordered page view', async () => {
+  const { context, windowHandlers, payloads } = await browser({ site: 'orkesta', pathname: '/proyectos/' });
+  context.location.pathname = '/contacto/';
+  windowHandlers.pageshow({ persisted: true });
+  const events = (await Promise.all(payloads)).map(x => JSON.parse(x).events[0]);
+  assert.deepEqual(events.map(x => [x.path, x.page_order]), [['/proyectos/', 1], ['/contacto/', 2]]);
 });

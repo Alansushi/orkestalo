@@ -47,3 +47,34 @@ test('clinic without a verified link never reads a measurement site', async () =
   assert.equal((await loadClinicMeasurement({ website_url:'https://ana.example.com' }, 'clinic-a', { db })).status, 'sin datos verificados');
   assert.deepEqual(calls, ['clinic_measurement_links']);
 });
+
+test('dashboard returns scoped page and transition aggregates for the last 30 days', async () => {
+  const calls = [];
+  const db = async (table, { query }) => {
+    calls.push({ table, query });
+    if (table === 'measurement_sites') return [{ id: 'orkesta', name: 'Orkesta', active: true }];
+    if (table === 'measurement_page_30d') return [{ site_id: 'orkesta', path: '/contacto/', page_views: 3, visits: 2 }];
+    if (table === 'measurement_transition_30d') return [{ site_id: 'orkesta', from_path: '/proyectos/', to_path: '/contacto/', transitions: 2 }];
+    return [];
+  };
+  const result = await loadMeasurementDashboard({ siteId: 'orkesta', db, now: new Date('2026-11-26T12:00:00Z') });
+  assert.equal(result.pages[0].visits, 2);
+  assert.equal(result.transitions[0].transitions, 2);
+  for (const table of ['measurement_page_30d', 'measurement_transition_30d']) {
+    assert.ok(calls.some(call => call.table === table && call.query.includes('site_id=eq.orkesta') && !call.query.includes('day=gte.')));
+  }
+});
+
+test('existing dashboard remains available before navigation views are migrated', async () => {
+  const db = async table => {
+    if (table === 'measurement_sites') return [{ id: 'ana', name: 'Ana', active: true }];
+    if (table === 'measurement_event_daily') return [{ site_id: 'ana', day: '2026-11-26', visits: 4 }];
+    if (table === 'measurement_page_30d' || table === 'measurement_transition_30d') throw new Error('Supabase 404');
+    return [];
+  };
+  const data = await loadMeasurementDashboard({ db });
+  assert.equal(data.daily[0].visits, 4);
+  assert.deepEqual(data.pages, []);
+  assert.deepEqual(data.transitions, []);
+  assert.equal(data.navigationPending, true);
+});
