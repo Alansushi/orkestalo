@@ -1,6 +1,7 @@
 import { db } from './commerce.js';
 
 const NAMES = new Set(['page_view', 'section_view', 'contact_click', 'agenda_click', 'form_start', 'form_submit', 'site_error']);
+const CAMI_NAMES = new Set(['page_view', 'section_view', 'contact_click', 'form_start', 'form_error', 'quote_draft', 'product_interest', 'faq_open']);
 const CHANNELS = new Set(['whatsapp', 'phone', 'email', 'form']);
 const LABELS = new Set(['hero', 'nav', 'services', 'about', 'faq', 'booking', 'contact', 'footer', 'form', 'other']);
 const INPUT_KEYS = new Set(['site', 'events']);
@@ -10,6 +11,10 @@ const ORKESTA_ROUTES = new Set(['/', '/proyectos/', '/contacto/', '/aviso-de-pri
   '/proyectos/grafik/', '/proyectos/dra-ana-mora/', '/proyectos/diego-y-giselle/',
   '/proyectos/dra-fernanda-suaste/', '/proyectos/expression-grafica/', '/proyectos/aranza-y-mateo/', '/proyectos/engranes-cami/',
   '/servicios/diseno-desarrollo-web/', '/servicios/experiencias-digitales/', '/servicios/automatizacion-ia/']);
+const CAMI_ROUTES = new Set(['/', '/nosotros', '/trabajos', '/cotizar', '/aviso-de-privacidad']);
+const CAMI_INTERESTS = new Set(['engranes-rectos', 'engranes-helicoidales', 'engranes-conicos', 'coronas-y-sinfines', 'flechas-y-ejes', 'maquinados-industriales', 'reparacion-de-reductores', 'fabricacion-sobre-plano-o-muestra']);
+const CAMI_FIELDS = new Set(['name', 'email', 'phone', 'city', 'type', 'description', 'quantity', 'material', 'neededBy', 'files']);
+const CAMI_LABELS = new Set([...LABELS, ...CAMI_INTERESTS, ...CAMI_FIELDS, ...Array.from({ length: 8 }, (_, i) => `faq-${i + 1}`)]);
 const SOURCES = new Set(['google','bing','facebook','instagram','meta','tiktok','doctoralia','whatsapp','email','direct','other']);
 const MEDIUMS = new Set(['cpc','paid','organic','social','email','referral','none','other']);
 const REFERRERS = new Set(['google','bing','facebook','instagram','doctoralia','other']);
@@ -26,12 +31,18 @@ export function validateMeasurement(input) {
   const events = [];
   for (const item of input.events) {
     if (!item || typeof item !== 'object' || Array.isArray(item) || Object.keys(item).some(k => !EVENT_KEYS.has(k))) return null;
-    if (!UUID.test(item.id) || !UUID.test(item.session) || !NAMES.has(item.name) || !(input.site === 'orkesta' ? ORKESTA_ROUTES : ROUTES).has(item.path)) return null;
+    const cami = input.site === 'engranes-cami';
+    const routes = cami ? CAMI_ROUTES : input.site === 'orkesta' ? ORKESTA_ROUTES : ROUTES;
+    if (!UUID.test(item.id) || !UUID.test(item.session) || !(cami ? CAMI_NAMES : NAMES).has(item.name) || !routes.has(item.path)) return null;
     if (item.page_order != null && (item.name !== 'page_view' || !Number.isSafeInteger(item.page_order) || item.page_order < 1 || item.page_order > 1000000)) return null;
     if (item.attribution_ref != null && !UUID.test(item.attribution_ref)) return null;
-    if (item.label != null && !LABELS.has(item.label)) return null;
-    if (item.channel != null && !CHANNELS.has(item.channel)) return null;
+    if (item.label != null && !(cami ? CAMI_LABELS : LABELS).has(item.label)) return null;
+    if (item.channel != null && !(cami && item.channel === 'map') && !CHANNELS.has(item.channel)) return null;
     if (item.name === 'contact_click' && !item.channel) return null;
+    if (cami && (item.name === 'product_interest' && !CAMI_INTERESTS.has(item.label) ||
+      item.name === 'faq_open' && !/^faq-[1-8]$/.test(item.label || '') ||
+      item.name === 'form_error' && (!CAMI_FIELDS.has(item.label) || item.path !== '/cotizar') ||
+      item.name === 'quote_draft' && (item.path !== '/cotizar' || item.label !== 'form'))) return null;
     const row = { event_id: item.id, session_id: item.session, name: item.name, path: item.path, attribution_ref: item.attribution_ref || null };
     if (item.page_order != null) row.page_order = item.page_order;
     for (const key of ['label', 'channel', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer_host']) {
@@ -65,7 +76,7 @@ export async function siteForCapture(slug, origin, requireActive = true) {
   return site && (!requireActive || site.active) && exactOrigin(origin, site.allowed_origins) ? site : null;
 }
 
-export async function ownerUserFromToken(token, requireAal2 = true) {
+async function authUserFromToken(token, requireAal2 = true) {
   if (!token || !process.env.MEASUREMENT_OWNER_EMAIL || !process.env.SUPABASE_URL || !process.env.SUPABASE_SECRET_KEY) return false;
   const response = await fetch(`${process.env.SUPABASE_URL}/auth/v1/user`, {
     headers: { apikey: process.env.SUPABASE_SECRET_KEY, Authorization: `Bearer ${token}` },
@@ -73,7 +84,7 @@ export async function ownerUserFromToken(token, requireAal2 = true) {
   });
   if (!response.ok) return false;
   const user = await response.json();
-  if (!user.email_confirmed_at || user.email?.toLowerCase() !== process.env.MEASUREMENT_OWNER_EMAIL.toLowerCase()) return false;
+  if (!user.email_confirmed_at || typeof user.email !== 'string' || (requireAal2 && !user.id)) return false;
   if (requireAal2) {
     try {
       const payload = JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString('utf8'));
@@ -81,6 +92,32 @@ export async function ownerUserFromToken(token, requireAal2 = true) {
     } catch { return false; }
   }
   return user;
+}
+
+export async function ownerUserFromToken(token, requireAal2 = true) {
+  const user = await authUserFromToken(token, requireAal2);
+  return user && user.email.toLowerCase() === process.env.MEASUREMENT_OWNER_EMAIL.toLowerCase() ? user : false;
+}
+
+export async function measurementAccessForEmail(email, { db: database = db } = {}) {
+  if (typeof email !== 'string' || email.length > 254) return null;
+  const normalized = email.trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized)) return null;
+  if (normalized === process.env.MEASUREMENT_OWNER_EMAIL?.toLowerCase()) return { role: 'owner', email: normalized };
+  const rows = await database('measurement_viewers', { query: `?email=eq.${encodeURIComponent(normalized)}&select=site_id&limit=1` });
+  return rows[0] ? { role: 'viewer', siteId: rows[0].site_id, email: normalized } : null;
+}
+
+export async function measurementUserFromToken(token, { requireAal2 = true, db: database = db } = {}) {
+  const user = await authUserFromToken(token, requireAal2);
+  if (!user) return null;
+  const access = await measurementAccessForEmail(user.email, { db: database });
+  return access ? { ...access, user } : null;
+}
+
+export async function measurementAccessFromToken(token, options = {}) {
+  const result = await measurementUserFromToken(token, options);
+  return result ? { role: result.role, ...(result.siteId ? { siteId: result.siteId } : {}) } : null;
 }
 
 export async function ownerFromToken(token) {

@@ -2,12 +2,13 @@ import { db as defaultDb } from './commerce.js';
 
 const PAGE_SIZE = 1000;
 const datasets = {
-  daily: ['measurement_event_daily', 'site_id,day,page_views,visits,contact_clicks,form_submits', 'site_id.asc,day.asc'],
+  daily: ['measurement_event_daily', 'site_id,day,page_views,visits,contact_clicks,form_submits,quote_drafts,form_errors', 'site_id.asc,day.asc'],
   sources: ['measurement_source_daily', 'site_id,day,source,medium,campaign,visits,contact_clicks,form_submits', 'site_id.asc,day.asc,source.asc,medium.asc,campaign.asc'],
   connections: ['measurement_connections', 'id,site_id,provider,last_synced_at,last_error', 'site_id.asc,provider.asc,id.asc'],
   external: ['measurement_daily_metrics', 'site_id,provider,day,campaign_ref,metric,value', 'site_id.asc,provider.asc,day.asc,campaign_ref.asc,metric.asc'],
   funnel: ['measurement_funnel', 'site_id,day,source,medium,campaign,visits,bookings,approved_payments,confirmed_appointments', 'site_id.asc,day.asc,source.asc,medium.asc,campaign.asc'],
   actions: ['measurement_action_daily', 'site_id,day,path,name,label,events', 'site_id.asc,day.asc,path.asc,name.asc,label.asc'],
+  channels: ['measurement_channel_daily', 'site_id,day,channel,clicks', 'site_id.asc,day.asc,channel.asc'],
   pages: ['measurement_page_30d', 'site_id,path,page_views,visits', 'site_id.asc,path.asc'],
   transitions: ['measurement_transition_30d', 'site_id,from_path,to_path,transitions', 'site_id.asc,from_path.asc,to_path.asc'],
 };
@@ -23,7 +24,8 @@ async function allRows(db, table, params) {
 }
 
 export async function loadMeasurementDashboard({ siteId, db = defaultDb, now = new Date() } = {}) {
-  const since = new Date(now.getTime() - 30 * 86400000).toISOString().slice(0, 10);
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Mexico_City', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
+  const since = new Date(Date.parse(`${today}T12:00:00Z`) - 29 * 86400000).toISOString().slice(0, 10);
   const scope = siteId ? `&site_id=eq.${encodeURIComponent(siteId)}` : '';
   const sites = await allRows(db, 'measurement_sites', `select=id,slug,name,active${siteId ? `&id=eq.${encodeURIComponent(siteId)}` : ''}&order=name.asc,id.asc`);
   const entries = await Promise.all(Object.entries(datasets).map(async ([key, [table, columns, order]]) => {

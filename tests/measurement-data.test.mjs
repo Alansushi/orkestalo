@@ -17,10 +17,16 @@ test('dashboard pages every dataset beyond 1000 rows and scopes clinic queries',
   const result = await loadMeasurementDashboard({ siteId: 'site-a', db, now: new Date('2026-11-19T12:00:00Z') });
   assert.equal(result.daily.length, 1001);
   assert.equal(result.sites[0].active, false);
-  assert.equal(result.since, '2026-10-20');
+  assert.equal(result.since, '2026-10-21');
   assert.ok(result.updatedAt);
   assert.ok(calls.filter(x => x.table === 'measurement_event_daily').some(x => x.query.includes('offset=1000')));
   assert.ok(calls.filter(x => x.table !== 'measurement_sites').every(x => x.query.includes('site_id=eq.site-a')));
+});
+
+test('dashboard thirty-day window uses Mexico City date near UTC midnight', async () => {
+  const db = async () => [];
+  const data = await loadMeasurementDashboard({ db, now: new Date('2026-11-27T01:00:00Z') });
+  assert.equal(data.since, '2026-10-28');
 });
 
 test('clinic measurement accepts inactive linked history but rejects mismatched domains', async () => {

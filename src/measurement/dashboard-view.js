@@ -15,21 +15,33 @@ function grouped(rows, fields, totals) {
 
 export function measurementViewModel(dataset, siteId = '') {
   const site = dataset.sites.find(row => row.id === siteId);
+  const cami = site?.slug === 'engranes-cami';
   const scope = rows => (rows || []).filter(row => !siteId || row.site_id === siteId);
   const daily = scope(dataset.daily);
   const funnel = scope(dataset.funnel);
-  const metrics = [
+  const definitions = cami ? [
+    ['Visitas', daily, 'visits', 'Sesiones con consentimiento'],
+    ['Borradores preparados', daily, 'quote_drafts', 'El formulario quedó validado; no acredita recepción'],
+    ['Clics para abrir', daily, 'contact_clicks', 'Salida hacia un canal; no acredita envío'],
+    ['Errores de validación', daily, 'form_errors', 'Campos que necesitaron corrección'],
+  ] : [
     ['Visitas', daily, 'visits', 'Sesiones registradas'],
     ['Intención de contacto', daily, 'contact_clicks', 'Clics en canales de contacto'],
     ['Formularios enviados', daily, 'form_submits', 'Envíos registrados'],
     ['Reservas verificadas', funnel, 'bookings', 'Solo agenda activa'],
     ['Pagos aprobados', funnel, 'approved_payments', 'Confirmados por Mercado Pago'],
     ['Citas confirmadas', funnel, 'confirmed_appointments', 'Confirmadas en Cal.com'],
-  ].map(([label, rows, key, hint]) => ({ label, value: rows.length ? sum(rows, key) : 'Aún sin datos', hint }));
+  ];
+  const metrics = definitions.map(([label, rows, key, hint]) => ({ label, value: rows.length ? sum(rows, key) : 'Aún sin datos', hint }));
+  const actions = grouped(scope(dataset.actions), ['site_id','path','name','label'], ['events']);
   return {
-    site, metrics, updatedAt: dataset.updatedAt,
+    site, cami, metrics, updatedAt: dataset.updatedAt,
     funnel: grouped(funnel, ['site_id','source','medium','campaign'], ['visits','bookings','approved_payments','confirmed_appointments']),
-    actions: grouped(scope(dataset.actions), ['site_id','path','name','label'], ['events']),
+    actions,
+    interests: actions.filter(row => row.name === 'product_interest').sort((a,b) => b.events-a.events),
+    faqs: actions.filter(row => row.name === 'faq_open').sort((a,b) => b.events-a.events),
+    formSteps: actions.filter(row => ['form_start','form_error','quote_draft'].includes(row.name)).sort((a,b) => b.events-a.events),
+    channels: grouped(scope(dataset.channels), ['channel'], ['clicks']).sort((a,b) => b.clicks-a.clicks),
     pages: grouped(scope(dataset.pages), ['site_id','path'], ['page_views','visits']).sort((a,b) => b.page_views-a.page_views),
     transitions: grouped(scope(dataset.transitions), ['site_id','from_path','to_path'], ['transitions']).sort((a,b) => b.transitions-a.transitions),
     daily: [...daily].reverse(),
@@ -73,19 +85,30 @@ export function renderMeasurementView(container, dataset, { siteId = '', present
   }
   container.append(summary);
   container.append(el('p','mv-updated',model.updatedAt ? `Actualizado: ${new Date(model.updatedAt).toLocaleString('es-MX')}` : 'Actualización no disponible'));
-  container.append(el('p','mv-note','Cobertura limitada a visitantes que aceptaron analítica. Un clic de contacto no confirma una reserva ni un pago.'));
+  container.append(el('p','mv-note',model.cami ? 'Cobertura limitada a visitantes que aceptaron analítica. Un borrador preparado no acredita una solicitud recibida; un clic para abrir correo o WhatsApp no acredita el envío.' : 'Cobertura limitada a visitantes que aceptaron analítica. Un clic de contacto no confirma una reserva ni un pago.'));
   if (dataset.navigationPending) container.append(el('p','mv-note','Los informes de navegación se activarán al terminar la actualización de datos.'));
   const values = {
     pages: row => [dataset.sites.find(site => site.id === row.site_id)?.name,row.path,row.page_views,row.visits],
     transitions: row => [dataset.sites.find(site => site.id === row.site_id)?.name,row.from_path,row.to_path,row.transitions],
     funnel: row => [dataset.sites.find(s => s.id === row.site_id)?.name,row.source,row.medium,row.campaign,row.visits,row.bookings,row.approved_payments,row.confirmed_appointments],
     actions: row => [row.path,row.name,row.label || '—',row.events],
-    daily: row => [row.day,row.visits,row.contact_clicks,row.form_submits],
+    daily: row => [row.day,row.visits,row.contact_clicks,model.cami ? row.quote_drafts : row.form_submits],
     sources: row => [row.source,row.medium,row.campaign,row.visits,row.contact_clicks],
     external: row => [row.day,providerNames[row.provider] || row.provider,row.campaign_ref,metricNames[row.metric] || row.metric,row.value],
     connections: row => [row.provider,row.updated,row.status],
+    interests: row => [row.label,row.events],
+    faqs: row => [row.label,row.events],
+    formSteps: row => [({form_start:'Inicio',form_error:'Error de validación',quote_draft:'Borrador preparado'})[row.name] || row.name,row.label || '—',row.events],
+    channels: row => [({whatsapp:'WhatsApp',email:'Correo',phone:'Teléfono',map:'Mapa'})[row.channel] || row.channel,row.clicks],
   };
-  for (const [key,title,description,heads,empty] of tables) {
+  const displayTables = model.cami ? [
+    ...tables.filter(([key]) => key !== 'funnel').map(row => row[0] === 'daily' ? ['daily','Evolución diaria','Visitas, clics y borradores por día.',['Fecha','Visitas','Clics para abrir','Borradores preparados'],row[4]] : row),
+    ['interests','Productos y servicios de interés','Interacciones con opciones del catálogo.',['Producto o servicio','Interacciones'],'Aquí aparecerá el interés por el catálogo.'],
+    ['faqs','Preguntas frecuentes consultadas','Aperturas de respuestas predefinidas.',['Pregunta','Aperturas'],'Aquí aparecerán las preguntas consultadas.'],
+    ['formSteps','Pasos del formulario','Inicio, correcciones y borradores preparados.',['Paso','Campo','Eventos'],'Aquí aparecerá el recorrido del formulario.'],
+    ['channels','Canales de contacto','Clics para abrir cada canal; no se confirma el envío.',['Canal','Clics para abrir'],'Aquí aparecerán los clics por canal.'],
+  ] : tables;
+  for (const [key,title,description,heads,empty] of displayTables) {
     const card = el('section','mv-card'); card.append(el('h2','',title),el('p','',description));
     const rows = model[key];
     if (!rows.length && empty) card.append(el('div','mv-empty',`Aún sin datos · ${empty}`));

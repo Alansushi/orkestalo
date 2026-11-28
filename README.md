@@ -25,6 +25,10 @@ Configura `CRON_SECRET` como valor aleatorio privado en Vercel. La tarea diaria 
 
 Las comprobaciones pendientes de reserva, pago y capturas de Ana están en [docs/seguimiento-medicion.md](docs/seguimiento-medicion.md).
 
+CAMI se registra como `engranes-cami` con el origen exacto `https://www.engranescami.com`, 90 días de retención y captura inactiva. El panel `/medicion/` permite a Orkéstalo invitar y revocar correos para consultar solo CAMI; cada consulta verifica de nuevo el correo, la invitación y el segundo factor, y filtra los datos en el servidor. Las invitaciones se habilitan cuando el registro está activo y su aviso de privacidad está aprobado. Los indicadores «borradores preparados» y «clics para abrir» expresan pasos del sitio, no solicitudes recibidas. El histórico anterior sigue en Vercel Analytics para quienes ya tienen acceso al proyecto.
+
+La activación queda pendiente de nombre legal, domicilio y correo de CAMI para el aviso, validación del dominio y revisión del aviso publicado. Después se activa el registro de base de datos y la variable pública de CAMI, se verifica la captura consentida y se invita el correo designado. Google Ads y Search Console permanecen pendientes de conexión autorizada.
+
 ## Piloto de consultorios
 
 El panel privado, las integraciones y la activación por clínica están documentados en [docs/consultorios-piloto.md](docs/consultorios-piloto.md). Hasta configurar las credenciales, conectar Cal.com y aprobar textos y avisos con las doctoras, el panel queda inactivo para pacientes reales.
